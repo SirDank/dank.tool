@@ -13,19 +13,19 @@ while True:
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
         modules = [
-            'Software Downloader [UNFINISHED]',
-            'Minecraft Paper Server Builder [UNFINISHED]'
+            'Minecraft Server Builder [UNFINISHED]',
+            'Software Downloader [UNFINISHED]'
         ]
         counter = 1; to_print = ""
         for module in modules: to_print += f"\n\n    {counter} > {module}"; counter += 1
-        choice = input(clr(f"\n  Modules: {to_print}\n\n  Choice: ") + white)
+        choice = input(clr(f"\n  - Modules: {to_print}\n\n  - Choice: ") + white)
         if choice.isdigit() and int(choice) > 0 and int(choice) < int(len(modules))+1: break
 
     choice = modules[int(choice)-1]
 
     try:
         if choice == "Software Downloader": project = "dank.downloader"
-        elif choice == "Minecraft Paper Server Builder": project = "dank.server-builder"
+        elif choice == "Minecraft Paper Server Builder": project = "dank.minecraft-server-builder"
         # elif choice == "Instagram Ghostbuster": project = "dank.insta-tool"
         # elif choice == "Chatbot": project = "dank.ai"
         # elif choice == "Analyze suspicious file":
