@@ -5,9 +5,6 @@ import requests
 from webbrowser import open_new_tab as web
 from dankware import clr_banner, align, cls, clr, magenta, white, chdir
 
-def banner_printer(banner): # print randomly coloured and aligned banner
-    cls(); print(align(clr_banner(banner).replace('X',f"{white}s i r {magenta}. {white}d a n k {magenta}<3")))
-
 def get_src(project): # get src from github
     while True:
         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py").content.decode(); break
@@ -22,7 +19,7 @@ def main(): # choose module to execute
     banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n                                            \n                    X      \n'
 
     while True:
-        banner_printer(banner)
+        cls(); print(align(clr_banner(banner).replace('X',f"{white}s i r {magenta}. {white}d a n k {magenta}<3"))) # print randomly coloured and aligned banner
         modules = [
             'Software Downloader [UNFINISHED]',
             'Minecraft Paper Server Builder [UNFINISHED]'
@@ -48,14 +45,15 @@ def main(): # choose module to execute
         # elif choice == "Youtube Music Downloader":
         # elif choice == "Youtube Video Downloader":
         # elif choice == "Temp File Cleaner":
-        exec(get_src(project)); cls()
-        print(clr(f"\n  > [{project}] executed successfully! Returning to menu in 5s...")); time.sleep(5)
+        code = get_src(project)
+        if code == "404: Not Found": print(clr(f"  > {project} has not yet been released! Returning to menu in 5s...",2)); time.sleep(5)
+        else: exec(code); cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
 
     except Exception as exp:
         
         cls(); exc_type, exc_obj, exc_tb = sys.exc_info()
         print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
-        print(clr(f"\n  > Please take a screenshot of this and post it on https://github.com/SirDank/dank.tool/issues/new"))
+        print(clr(f"\n  > Please take a screenshot of this and post it on > https://github.com/SirDank/dank.tool/issues/new"))
         print(clr("\n  > Opening in 3s..."))
         time.sleep(3); web("https://github.com/SirDank/dank.tool/issues/new")
         wait = input(clr(f"\n  > Press [ENTER] to continue: "))
