@@ -43,7 +43,7 @@ while True:
             except: wait = input(clr(f"\n  > Failed to get src for {project}! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
         
         if code == "404: Not Found": print(clr(f"\n  > {project} has not yet been released! Returning to menu in 5s...",2)); time.sleep(5)
-        else: exec(code); cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
+        else: exec(code.replace("exec_mode = 'script'", 'exec_mode = "exe"').replace('exec_mode = "script"', 'exec_mode = "exe"')); cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
 
     except Exception as exp:
         

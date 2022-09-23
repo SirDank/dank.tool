@@ -7,7 +7,7 @@ from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from webbrowser import open_new_tab as web
-from dankware import multithread, clr_banner, align, cls, clr, magenta, white, chdir, title, github_downloads
+from dankware import multithread, clr_banner, align, cls, clr, magenta, white, red, reset, chdir, title, github_downloads, rm_line
 
 # required imports for executor.py
 
@@ -20,7 +20,7 @@ from packaging.version import parse
 # change directory to exe's location
 
 project = "dank.tool"
-current_version = "0.1"
+current_version = "0.2"
 title(f"{project} [ initializing ]"); exec(chdir('exe'))
 print(clr(f"\n  > Version: {current_version}"))
 
