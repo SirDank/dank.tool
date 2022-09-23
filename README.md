@@ -1,3 +1,8 @@
+<p align="center">
+  <b>~ Visits ~</b><br><br>
+  <img src="https://profile-counter.glitch.me/dank.tool/count.svg" />
+</p>
+
 # 🚨 DISCLAIMER 🚨
 - dank.tool is in EARLY BETA! Modules are still being worked on!
 
