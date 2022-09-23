@@ -24,8 +24,8 @@ while True:
     choice = modules[int(choice)-1]
 
     try:
-        if choice == "Software Downloader": project = "dank.downloader"
-        elif choice == "Minecraft Paper Server Builder": project = "dank.minecraft-server-builder"
+        if choice == "Minecraft Server Builder [BETA]": project = "dank.minecraft-server-builder"
+        elif choice == "Software Downloader [UNFINISHED]": project = "dank.downloader"
         # elif choice == "Instagram Ghostbuster": project = "dank.insta-tool"
         # elif choice == "Chatbot": project = "dank.ai"
         # elif choice == "Analyze suspicious file":
@@ -37,13 +37,16 @@ while True:
         # elif choice == "Youtube Music Downloader":
         # elif choice == "Youtube Video Downloader":
         # elif choice == "Temp File Cleaner":
+        else: project = "404"
         
         while True: # get src from github
             try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py").content.decode(); break
             except: wait = input(clr(f"\n  > Failed to get src for {project}! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
         
         if code == "404: Not Found": print(clr(f"\n  > {project} has not yet been released! Returning to menu in 5s...",2)); time.sleep(5)
-        else: exec(code.replace("exec_mode = 'script'", 'exec_mode = "exe"').replace('exec_mode = "script"', 'exec_mode = "exe"')); cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
+        else:
+            exec(code.replace("exec_mode = 'script'", 'exec_mode = "exe"').replace('exec_mode = "script"', 'exec_mode = "exe"'))
+            cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
 
     except Exception as exp:
         
