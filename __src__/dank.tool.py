@@ -13,7 +13,7 @@ while True:
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
         modules = [
-            'Minecraft Server Builder',
+            'Minecraft Server Builder [BETA]',
             'Software Downloader [UNFINISHED]'
         ]
         counter = 1; to_print = ""

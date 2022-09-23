@@ -62,8 +62,8 @@ print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{w
 print("")
 while True:
     playit = input(clr("  > Choice [ 1 / 2 ]: ") + magenta)
-    if playit in [1,2]:
-        if playit == 2: playit = True
+    if playit in ["1","2"]:
+        if playit == "2": playit = True
         else: playit = False
         break
     else: rm_line()
@@ -95,7 +95,7 @@ to_download_urls, to_download_filenames = [], []
 
 # github server-builder files
 
-for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO 2.1.217.jar', 'TreeAssist.jar']:
+for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO.jar', 'TreeAssist.jar']:
     to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
     if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
     else: to_download_filenames.append(file)
@@ -117,7 +117,7 @@ def github_file_selector(url, mode, name_list, plugin = True):
             else: to_download_filenames.append(file_url.split('/')[-1])
 
 # > EssentialsX
-github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'Protect', 'XMPP'])
+github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP'])
 
 # > ProtocolLib.jar
 github_file_selector("dmulloy2/ProtocolLib", "add", ['ProtocolLib.jar'])
@@ -155,7 +155,7 @@ to_download_filenames.append("paper.jar")
 
 # begin downloads
 
-print(clr("\n  > Starting Multiple Downloads... [ this might take a few minutes ]"))
+print(clr("\n  > Starting Multiple Downloads... [ this might take a few seconds ]"))
 
 def downloader(url, filename):
     
@@ -168,9 +168,9 @@ def downloader(url, filename):
 
 start_time = time.time()
 multithread(downloader, 2, to_download_urls, to_download_filenames, False)
-time_taken = int((time.time()-start_time)/60)
+time_taken = int(time.time()-start_time)
 
-cls(); print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} minutes! Sleeping 5 seconds...")); time.sleep(5)
+cls(); print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping 5 seconds...")); time.sleep(5)
 
 # creating local files
 
@@ -183,7 +183,7 @@ elif version in ["1.12", "1.13", "1.14", "1.15", "1.16"]: extra_flag = "-Dlog4j.
 elif version in ["1.7", "1.8", "1.9", "1.10", "1.11"]: extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
 else: extra_flag = ""
 
-open('start_server.cmd', 'w+').write(f'''
+open('start_server.cmd', 'w+').write(f'''@echo off
 title Minecraft Server Console [ {name} - {version} ]
 java -jar AutoPlug-Client.jar
 ''')
@@ -193,9 +193,6 @@ open('start_server.sh', 'wb+').write(f'''
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-#java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}-jar paper.jar -nogui
-#java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptionsb-XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom --add-modules jdk.incubator.vector {extra_flag}-jar paper.jar -nogui
-
 open('autoplug/general.yml', 'w+').write(f'''
 general: 
   autoplug: 
@@ -204,8 +201,11 @@ general:
     system-tray: 
       enable: false
   server: 
-    start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptionsb-XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom --add-modules jdk.incubator.vector {extra_flag}-jar paper.jar -nogui
+    start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}-jar paper.jar -nogui
 ''')
+
+# WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}-jar paper.jar -nogui
+# BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom --add-modules jdk.incubator.vector {extra_flag}-jar paper.jar -nogui
 
 open('autoplug/updater.yml', 'w+').write(f'''
 updater: 
@@ -226,15 +226,51 @@ updater:
     profile: AUTOMATIC
 ''')
 
+open('autoplug/plugins.yml', 'w+').write('''
+plugins: 
+  general: 
+    keep-removed: false
+  ActionHealth: 
+    exclude: false
+    spigot-id: 2661
+    alternatives: 
+      github: 
+        repo-name: zeshan321/ActionHealth
+        asset-name: ActionHealth
+  EssentialsChat: 
+    alternatives: 
+      github: 
+        repo-name: EssentialsX/Essentials
+        asset-name: EssentialsXChat
+      jenkins: 
+        project-url: https://ci.ender.zone/job/EssentialsX/
+        artifact-name: EssentialsXChat
+  EssentialsSpawn: 
+    alternatives: 
+      github: 
+        repo-name: EssentialsX/Essentials
+        asset-name: EssentialsXSpawn
+      jenkins: 
+        project-url: https://ci.ender.zone/job/EssentialsX/
+        artifact-name: EssentialsXSpawn
+  mcMMO: 
+    spigot-id: 64348
+    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/mcMMO.jar
+  PlayerNPC: 
+    spigot-id: 93625
+  SkinsRestorer: 
+    spigot-id: 2124
+''')
+
 # one-time setup
 
 if playit:
 
     for file in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
-        if "signed" in file: playit_filename = file
-    open("start_tunnel.cmd","w+").write(f'title Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_filename}\npause')
+        if "signed" in file: playit_filename = str(file.split('/')[-1])
+    open("start_tunnel.cmd","w+").write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_filename}\npause')
 
-    time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to https://imgur.com/a/W30s7bw and https://playit.gg/manage manually.\n\n  > Opening in 10s..."))
+    time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
     time.sleep(10); os.system("start https://imgur.com/a/W30s7bw")
     time.sleep(10); os.system("start https://playit.gg/manage")
     print(clr("\n  > To start your server, run start_server.cmd\n\n  > To start your tunnel so people can connect over the internet, run start_tunnel.cmd"))
@@ -244,7 +280,9 @@ else:
     
     print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
     if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y": os.system("start https://youtu.be/X75GbRaGzu8")
-    
+
+# start server and shutdown server
+
 # done!
 
 os.system(f"title dank.serverbuilder [ complete! ]")
