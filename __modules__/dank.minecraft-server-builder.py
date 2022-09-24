@@ -95,7 +95,7 @@ to_download_urls, to_download_filenames = [], []
 
 # github server-builder files
 
-for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO.jar', 'TreeAssist.jar', 'Iris.jar']: # Iris 2.3.2
+for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO.jar', 'TreeAssist.jar', 'Log4JExploitFix.jar', 'Iris.jar']: # Iris 2.3.2 | Log4JExploitFix 1.3.3
     to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
     if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
     else: to_download_filenames.append(file)
@@ -252,6 +252,13 @@ plugins:
       jenkins: 
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXSpawn
+  Iris: 
+    spigot-id: 84586
+    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/Iris.jar
+  Log4JExploitFix: 
+    exclude: false
+    spigot-id: 98243
+    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/Log4JExploitFix.jar
   mcMMO: 
     spigot-id: 64348
     custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/mcMMO.jar
