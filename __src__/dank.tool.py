@@ -24,19 +24,18 @@ while True:
     choice = modules[int(choice)-1]
 
     try:
-        if choice == "Minecraft Server Builder [BETA]": project = "dank.minecraft-server-builder"
-        elif choice == "Software Downloader [UNFINISHED]": project = "dank.downloader"
-        # elif choice == "Instagram Ghostbuster": project = "dank.insta-tool"
-        # elif choice == "Chatbot": project = "dank.ai"
-        # elif choice == "Analyze suspicious file":
-        # elif choice == "Sussy Optimiser":
-        # elif choice == "HWID Spoofer":
-        # elif choice == "Discord Backup":
-        # elif choice == "Spotify Ad Blocker":
-        # elif choice == "Spotify Downloader":
-        # elif choice == "Youtube Music Downloader":
-        # elif choice == "Youtube Video Downloader":
-        # elif choice == "Temp File Cleaner":
+        if "Server Builder" in choice: project = "dank.minecraft-server-builder"
+        elif "Software Downloader" in choice: project = "dank.downloader"
+        # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
+        # elif "Chatbot" in choice: project = "dank.ai"
+        # elif "Analyze suspicious file" in choice:
+        # elif "Sussy Optimiser" in choice:
+        # elif "HWID Spoofer" in choice:
+        # elif "Discord Backup" in choice:
+        # elif "Spotify Ad Blocker" in choice:
+        # elif "Spotify Downloader" in choice:
+        # elif "Youtube Video Downloader" in choice:
+        # elif "Temp File Cleaner" in choice:
         else: project = "404"
         
         while True: # get src from github

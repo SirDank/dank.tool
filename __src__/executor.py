@@ -16,10 +16,11 @@ import sys
 import time
 import requests
 from packaging.version import parse
+session = requests.Session()
 
 # change directory to exe's location
 
-current_version = "0.2"
+current_version = "0.3"
 title("dank.tool [ initializing ]"); exec(chdir('exe'))
 print(clr(f"\n  > Version: {current_version}"))
 
@@ -27,7 +28,7 @@ print(clr(f"\n  > Version: {current_version}"))
 
 while True:
     try:
-        latest_version = requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version.txt").content.decode()
+        latest_version = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version.txt").content.decode()
         if "Not Found" in latest_version: latest_version = 0
         #else: latest_version = float(latest_version); break
         else: break
@@ -39,16 +40,16 @@ def download_latest():
 
     print(clr("\n  > Downloading dank.tool-latest.exe..."))
     while True:
-        try: data = requests.get("https://github.com/SirDank/dank.tool/blob/main/dank.tool.exe?raw=true", allow_redirects=True).content; break
+        try: data = session.get("https://github.com/SirDank/dank.tool/blob/main/dank.tool.exe?raw=true", allow_redirects=True).content; break
         except: wait = input(clr("\n  > Failed to download! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
     open("dank.tool-latest.exe","wb+").write(data); data = None
-    open("dankware-updater.cmd","w+").write("@echo off\ntitle dankware-updater\ncolor 0d\ntimeout 3\ndel /F dank.tool.exe\nren dank.tool-latest.exe dank.tool.exe\nstart dank.tool.exe\ndel \"%~f0\" >nul 2>&1")
+    open("dankware-updater.cmd","w+").write("@echo off\ntitle dankware-updater\ncolor 0a\ntimeout 3\ndel /F dank.tool.exe\nren dank.tool-latest.exe dank.tool.exe\nstart dank.tool.exe\ndel \"%~f0\" >nul 2>&1\nexit")
     print(clr("\n  > Downloaded!\n\n  > Starting in 3s..."))
-    toast = ToastNotifier(); toast.show_toast("dank.tool", "Updating and restarting in 5s...", duration = 3, icon_path = "dankware.ico", threaded = False)
+    toast = ToastNotifier(); toast.show_toast("dank.tool", "Updating and restarting in 5s...", duration = 5, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = False)
     time.sleep(3); os.system(f"start dankware-updater.cmd"); sys.exit()
 
 if parse(latest_version) > parse(current_version):
-    choice = input(clr(f"\n  > Update Found: {latest_version}\n\n  > Download latest version? [ y / n ]: ")).lower()
+    choice = input(clr(f"\n  > Update Found: {latest_version}\n\n  > Download latest version? [ y / n ]: ") + magenta).lower()
     if choice == "y": download_latest()
 elif latest_version == current_version: print(clr(f"\n  > Latest Version!"))
 else: print(clr("\n  > Development Version!"))
@@ -56,7 +57,7 @@ else: print(clr("\n  > Development Version!"))
 # get main src from github
 
 while True:
-    try: code = requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py").content.decode(); break
+    try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py").content.decode(); break
     except: wait = input(clr("\n  > Failed to get src! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
 # execute, catch errors if any
@@ -73,7 +74,7 @@ except Exception as exp:
     time.sleep(3); web("https://github.com/SirDank/dank.tool/issues/new")
 
     if not latest_version == current_version:
-        choice = input(clr("\n  > Download latest version? [ y / n ]: ")).lower()
+        choice = input(clr("\n  > Download latest version? [ y / n ]: ") + magenta).lower()
         if choice == "y": download_latest()
 
     wait = input(clr("\n  > Press [ENTER] to continue: "))
