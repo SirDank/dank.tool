@@ -95,7 +95,7 @@ to_download_urls, to_download_filenames = [], []
 
 # github server-builder files
 
-for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO.jar', 'TreeAssist.jar']:
+for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO.jar', 'TreeAssist.jar', 'Iris.jar']: # Iris 2.3.2
     to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
     if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
     else: to_download_filenames.append(file)
