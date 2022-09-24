@@ -8,9 +8,9 @@
 </p>
 
 # 🚨 DISCLAIMER 🚨
-- dank.tool is in EARLY BETA! Modules are still being worked on!
+- Currently in EARLY BETA! Modules are still being worked on!
 
-# dank.tool
+# SirDank's dank.tool
 - An all in one, portable windows executable with a wide variety of features!
  
 ## Beta Preview:
