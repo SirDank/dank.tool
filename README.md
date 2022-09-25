@@ -22,7 +22,7 @@
 
 # 🚨 Minecraft Server Builder [BETA] 🚨
 
-- A complete package for building and hosting a minecraft paper server on your local windows/linux system without port-forwarding!
+- A complete package for building and hosting a minecraft paper/purpur server on your local windows/linux system without port-forwarding!
 
 <img width="696" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png">
 
