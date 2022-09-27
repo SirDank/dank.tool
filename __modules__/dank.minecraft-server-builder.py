@@ -95,7 +95,7 @@ to_download_urls, to_download_filenames = [], []
 
 # github server-builder files
 
-for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'mcMMO.jar', 'TreeAssist.jar', 'Log4JExploitFix.jar', 'Iris.jar']: # Iris 2.3.2 | Log4JExploitFix 1.3.3
+for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'TreeAssist.jar', 'Log4JExploitFix.jar', 'ChestSort.jar', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.2 | Log4JExploitFix 1.3.3
     to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
     if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
     else: to_download_filenames.append(file)
@@ -236,6 +236,9 @@ plugins:
       github: 
         repo-name: zeshan321/ActionHealth
         asset-name: ActionHealth
+  ChestSort: 
+    spigot-id: 59773
+    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/ChestSort.jar
   EssentialsChat: 
     alternatives: 
       github: 
