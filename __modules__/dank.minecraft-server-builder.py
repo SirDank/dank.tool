@@ -95,12 +95,32 @@ to_download_urls, to_download_filenames = [], []
 
 # github server-builder files
 
-for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Clearlag.jar', 'TreeAssist.jar', 'Log4JExploitFix.jar', 'ChestSort.jar', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.2 | Log4JExploitFix 1.3.3
+for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.2
     to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
     if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
     else: to_download_filenames.append(file)
 
-# github plugins
+# spigot plugins 
+
+spigot_plugins = {
+  "ActionHealth": 2661,
+  "BetterSleeping": 60837,
+  "ChestSort": 59773,
+  "Chunky": 81534,
+  "Corpses": 96774,
+  "Log4JExploitFix": 98243,
+  "NeoPerformance": 103183,
+  "PLayerNPC": 93625,
+  "ProtocolLib": 1997,
+  "SkinRestorer": 2124,
+  "Spark": 57242,
+  "TabTPS": 82528,
+  "TreeAssist": 67436,
+}
+
+for plugin in spigot_plugins:
+    to_download_urls.append(f"https://api.spiget.org/v2/resources/{spigot_plugins[plugin]}/download")
+    to_download_filenames.append(f"plugins/{plugin}.jar")
 
 def github_file_selector(url, mode, name_list, plugin = True):
     
@@ -108,7 +128,7 @@ def github_file_selector(url, mode, name_list, plugin = True):
         if mode == "add": valid = False
         elif mode == "remove": valid = True
         for name in name_list:
-            if name in file_url:
+            if name in file_url.split('/')[-1]:
                 if mode == "add": valid = True
                 elif mode == "remove": valid = False
         if valid:
@@ -116,30 +136,16 @@ def github_file_selector(url, mode, name_list, plugin = True):
             if plugin: to_download_filenames.append(f"plugins/{file_url.split('/')[-1]}")
             else: to_download_filenames.append(file_url.split('/')[-1])
 
+# github plugins
+
 # > EssentialsX
 github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP'])
-
-# > ProtocolLib.jar
-github_file_selector("dmulloy2/ProtocolLib", "add", ['ProtocolLib.jar'])
-
-# > tabtps
-github_file_selector("jpenilla/TabTPS", "add", ['spigot'])
-
-# > BetterSleeping
-github_file_selector("Nuytemans-Dieter/BetterSleeping", "add", ['BetterSleeping'])
-# github_file_selector("Nuytemans-Dieter/BetterSleeping", "remove", []) WORKS AS WELL!
-
-# > ActionHealth
-github_file_selector("zeshan321/ActionHealth", "add", ['ActionHealth'])
-# github_file_selector("zeshan321/ActionHealth", "remove", []) WORKS AS WELL!
-
-# > SkinRestorer
-github_file_selector("SkinsRestorer/SkinsRestorerX", "add", ['SkinsRestorer'])
-# github_file_selector("SkinsRestorer/SkinsRestorerX", "remove", []) WORKS AS WELL!
-
-# > PlayerNPC API
-github_file_selector("SergiFerry/PlayerNPC", "add", ['PlayerNPC'])
-# github_file_selector("SergiFerry/PlayerNPC", "remove", []) WORKS AS WELL!
+# > ProtocolLib.jar > github_file_selector("dmulloy2/ProtocolLib", "add", ['ProtocolLib.jar'])
+# > tabtps > github_file_selector("jpenilla/TabTPS", "add", ['spigot'])
+# > BetterSleeping > github_file_selector("Nuytemans-Dieter/BetterSleeping", "add", ['BetterSleeping']) # "remove", [] WORKS AS WELL!
+# > ActionHealth > github_file_selector("zeshan321/ActionHealth", "add", ['ActionHealth']) # "remove", [] WORKS AS WELL!
+# > SkinRestorer > github_file_selector("SkinsRestorer/SkinsRestorerX", "add", ['SkinsRestorer']) # "remove", [] WORKS AS WELL!
+# > PlayerNPC > github_file_selector("SergiFerry/PlayerNPC", "add", ['PlayerNPC']) # "remove", []) WORKS AS WELL!
 
 # > playit.gg tunnel prorgram
 if playit: github_file_selector("playit-cloud/playit-agent", "remove", ['apple-intel', 'apple-m1', 'unsigned', 'dmg'], False)
@@ -160,8 +166,8 @@ def downloader(url, filename):
     
     while True:
         try:
-            data = requests.get(url, allow_redirects=True).content
-            open(filename,"wb").write(data); data = ""
+            data = requests.get(url, headers={'user-agent':'dankware'}, allow_redirects=True).content
+            open(filename,"wb+").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ]")); break
         except: wait = input(clr(f"\n  > Failed [ {filename} ]! Press {white}ENTER{red} to try again!",2))
 
@@ -238,7 +244,13 @@ plugins:
         asset-name: ActionHealth
   ChestSort: 
     spigot-id: 59773
-    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/ChestSort.jar
+  Essentials: 
+    github: 
+        repo-name: EssentialsX/Essentials
+        asset-name: EssentialsX
+      jenkins: 
+        project-url: https://ci.ender.zone/job/EssentialsX/
+        artifact-name: EssentialsX
   EssentialsChat: 
     alternatives: 
       github: 
@@ -261,14 +273,42 @@ plugins:
   Log4JExploitFix: 
     exclude: false
     spigot-id: 98243
-    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/Log4JExploitFix.jar
   mcMMO: 
     spigot-id: 64348
     custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/mcMMO.jar
   PlayerNPC: 
     spigot-id: 93625
+    alternatives: 
+      github: 
+        repo-name: SergiFerry/PlayerNPC
+        asset-name: PlayerNPC
   SkinsRestorer: 
     spigot-id: 2124
+    alternatives: 
+      github: 
+        repo-name: SkinsRestorer/SkinsRestorerX
+        asset-name: SkinsRestorer
+  ProtocolLib: 
+    spigot-id: 1997
+    alternatives: 
+      github: 
+        repo-name: dmulloy2/ProtocolLib
+        asset-name: ProtocolLib
+      jenkins: 
+        project-url: https://ci.dmulloy2.net/job/ProtocolLib
+        artifact-name: ProtocolLib
+  NeoPerformance: 
+    spigot-id: 103183
+  BetterSleeping4: 
+    alternatives: 
+      github: 
+        repo-name: Nuytemans-Dieter/BetterSleeping
+        asset-name: BetterSleeping
+  TabTPS: 
+    alternatives: 
+      github: 
+        repo-name: jpenilla/TabTPS
+        asset-name: tabtps-spigot
 ''')
 
 # one-time setup
