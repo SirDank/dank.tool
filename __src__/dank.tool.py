@@ -13,7 +13,7 @@ while True:
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
         modules = [
-            'Minecraft Server Builder [BETA]',
+            'Minecraft Server Builder',
             'Software Downloader [UNFINISHED]'
         ]
         counter = 1; to_print = ""
@@ -24,7 +24,7 @@ while True:
     choice = modules[int(choice)-1]
 
     try:
-        if "Server Builder" in choice: project = "dank.minecraft-server-builder"
+        if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"
         elif "Software Downloader" in choice: project = "dank.downloader"
         # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
         # elif "Chatbot" in choice: project = "dank.ai"
