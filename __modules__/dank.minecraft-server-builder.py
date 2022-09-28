@@ -170,7 +170,7 @@ def downloader(url, filename):
             data = requests.get(url, headers={'user-agent':'dankware'}, allow_redirects=True).content
             open(filename,"wb+").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ]")); break
-        except: wait = input(clr(f"\n  > Failed [ {filename} ]! Press {white}ENTER{red} to try again!",2))
+        except: wait = input(clr(f"\n  > Failed [ {filename} ]! Press {white}ENTER{red} to try again... ",2))
 
 start_time = time.time()
 multithread(downloader, 2, to_download_urls, to_download_filenames, False)
@@ -371,27 +371,39 @@ pufferfish_config = {
     "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
 }
 
+essentials_config = {
+    "nickname-prefix: '~'": "nickname-prefix: ''",
+    "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
+    'custom-join-message: "none"': 'custom-join-message: "&8&l[&a+&8&l]&a&l {PLAYER}"',
+    'custom-quit-message: "none"': 'custom-quit-message: "&8&l[&c-&8&l]&c&l {PLAYER}"',
+    "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
+    "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
+}
+
 while not os.path.exists("server.properties") or not os.path.exists("purpur.yml") or not os.path.exists("config/paper-world-defaults.yml") or not os.path.exists("spigot.yml") or not os.path.exists("bukkit.yml"):
-    cls(); input(clr("\n  > Start and stop the server once to generate config files to be optimized\n\n  > Start your server using start_server.cmd\n\n  > After you have started and stopped your server, press [ ENTER ]"))
+    cls(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > After your server has stopped, press [ ENTER ] "))
     try:
         purpur = open("purpur.yml", "r").read()
         spigot = open("spigot.yml", "r").read()
         pufferfish = open("pufferfish.yml", "r").read()
         server_properties = open("server.properties", "r").read()
+        essentials = open("plugins/Essentials/config.yml", "r").read()
         paper_world_defaults = open("config/paper-world-defaults.yml", "r").read()
 
         for setting in purpur_config: purpur = purpur.replace(setting, purpur_config[setting])
         for setting in spigot_config: spigot = spigot.replace(setting, spigot_config[setting])
         for setting in pufferfish_config: pufferfish = pufferfish.replace(setting, pufferfish_config[setting])
+        for setting in essentials_config: essentials = essentials.replace(setting, essentials_config[setting])
         for setting in server_properties_config: server_properties = server_properties.replace(setting, server_properties_config[setting])
         for setting in paper_world_defaults_config: paper_world_defaults = paper_world_defaults.replace(setting, paper_world_defaults_config[setting])
         if cracked: server_properties = server_properties.replace("online-mode=true","online-mode=true")
 
-        open("purpur.yml", "w").write(purpur)
-        open("spigot.yml", "w").write(spigot)
-        open("pufferfish.yml", "w").write(pufferfish)
-        open("server.properties", "w").write(server_properties)
-        open("config/paper-world-defaults.yml", "w").write(paper_world_defaults)
+        open("purpur.yml", "w", encoding='utf-8').write(purpur)
+        open("spigot.yml", "w", encoding='utf-8').write(spigot)
+        open("pufferfish.yml", "w", encoding='utf-8').write(pufferfish)
+        open("server.properties", "w", encoding='utf-8').write(server_properties)
+        open("plugins/Essentials/config.yml", "w", encoding='utf-8').write(essentials)
+        open("config/paper-world-defaults.yml", "w", encoding='utf-8').write(paper_world_defaults)
         break
 
     except Exception as exp:
