@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import requests
 from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, multithread
@@ -175,7 +176,7 @@ start_time = time.time()
 multithread(downloader, 2, to_download_urls, to_download_filenames, False)
 time_taken = int(time.time()-start_time)
 
-cls(); print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping 5 seconds...")); time.sleep(5)
+cls(); print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}5{white} seconds...")); time.sleep(5)
 
 # creating local files
 
@@ -245,7 +246,8 @@ plugins:
   ChestSort: 
     spigot-id: 59773
   Essentials: 
-    github: 
+    alternatives: 
+      github: 
         repo-name: EssentialsX/Essentials
         asset-name: EssentialsX
       jenkins: 
@@ -330,13 +332,77 @@ else:
     print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
     if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y": os.system("start https://youtu.be/X75GbRaGzu8")
 
-# start server and shutdown server
+# start server and shutdown server for optimizing the below settings
+
+server_properties_config = {
+    "simulation-distance=10": "simulation-distance=4",
+    "motd=A Minecraft Server": f"motd=\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {name} \\u00A76<\\u00A7a---\\u00A7r\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
+    "server-name=Unknown Server": f"server-name={name}",
+    # "view-distance=10": "view-distance=8",
+    # resource-pack-prompt=
+    # resource-pack=
+    # resource-pack-sha1=
+}
+
+purpur_config = {
+    "use-alternate-keepalive: false": "use-alternate-keepalive: true",
+    "aggressive-towards-villager-when-lagging: true": "aggressive-towards-villager-when-lagging: false",
+    "brain-ticks: 1": "brain-ticks: 2",
+    "lobotomize\n          enabled: false": "lobotomize\n          enabled: true",
+    "teleport-if-outside-border: false": "teleport-if-outside-border: true",
+}
+
+spigot_config = {
+    "merge-radius:\n      item: 2.5\n      exp: 3.0": "merge-radius:\n      item: 3.5\n      exp: 4.0",
+    # "mob-spawn-range: 8": "mob-spawn-range: 2",
+    # "entity-activation-range\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
+}
+
+paper_world_defaults_config = {
+    "prevent-moving-into-unloaded-chunks: false": "prevent-moving-into-unloaded-chunks: true",
+    "alt-item-despawn-rate:\n      enabled: false\n      items:\n        cobblestone: 300": "alt-item-despawn-rate:\n      enabled: true\n      items:\n        cobblestone: 300\n        netherrack: 300\n        sand: 300\n        red_sand: 300\n        gravel: 300\n        dirt: 300\n        grass: 300\n        pumpkin: 300\n        melon_slice: 300\n        kelp: 300\n        bamboo: 300\n        sugar_cane: 300\n        twisting_vines: 300\n        weeping_vines: 300\n        oak_leaves: 300\n        spruce_leaves: 300\n        birch_leaves: 300\n        jungle_leaves: 300\n        acacia_leaves: 300\n        dark_oak_leaves: 300\n        mangrove_leaves: 300\n        cactus: 300\n        diorite: 300\n        granite: 300\n        andesite: 300\n        scaffolding: 600",
+    "redstone-implementation: VANILLA": "redstone-implementation: ALTERNATE_CURRENT",
+    "optimize-explosions: false": "optimize-explosions: true",
+    # "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
+}
+
+pufferfish_config = {
+    "dab:\n  enabled: false": "dab:\n  enabled: true",
+    "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
+}
+
+while not os.path.exists("server.properties") or not os.path.exists("purpur.yml") or not os.path.exists("config/paper-world-defaults.yml") or not os.path.exists("spigot.yml") or not os.path.exists("bukkit.yml"):
+    cls(); input(clr("\n  > Start and stop the server once to generate config files to be optimized\n\n  > Start your server using start_server.cmd\n\n  > After you have started and stopped your server, press [ ENTER ]"))
+    try:
+        purpur = open("purpur.yml", "r").read()
+        spigot = open("spigot.yml", "r").read()
+        pufferfish = open("pufferfish.yml", "r").read()
+        server_properties = open("server.properties", "r").read()
+        paper_world_defaults = open("config/paper-world-defaults.yml", "r").read()
+
+        for setting in purpur_config: purpur = purpur.replace(setting, purpur_config[setting])
+        for setting in spigot_config: spigot = spigot.replace(setting, spigot_config[setting])
+        for setting in pufferfish_config: pufferfish = pufferfish.replace(setting, pufferfish_config[setting])
+        for setting in server_properties_config: server_properties = server_properties.replace(setting, server_properties_config[setting])
+        for setting in paper_world_defaults_config: paper_world_defaults = paper_world_defaults.replace(setting, paper_world_defaults_config[setting])
+        if cracked: server_properties = server_properties.replace("online-mode=true","online-mode=true")
+
+        open("purpur.yml", "w").write(purpur)
+        open("spigot.yml", "w").write(spigot)
+        open("pufferfish.yml", "w").write(pufferfish)
+        open("server.properties", "w").write(server_properties)
+        open("config/paper-world-defaults.yml", "w").write(paper_world_defaults)
+        break
+
+    except Exception as exp:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
+        time.sleep(5)
 
 # done!
 
-os.system(f"title dank.serverbuilder [ complete! ]")
+title("dank.serverbuilder [ complete! ]")
 complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
 cls(); print(align(clr_banner(complete)))
 time.sleep(5); os.system("start https://allmylinks.com/sir-dankenstein")
-
 
