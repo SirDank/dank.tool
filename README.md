@@ -14,17 +14,29 @@
 - Note: The dank.tool executable might be flagged as malware, since it has been built using python. Also try to not spam the [ enter ] key on the exe, as it can cause the program to take in the wrong input. If this has occured, close the exe and relaunch it.
  
 ## Beta Preview:
-<img width="473" alt="image" src="https://user-images.githubusercontent.com/52797753/189164838-db15e03c-2122-4d5d-a6de-f55f5b3bba7c.png">
+<p align="center">
+  <img width="473" alt="image" src="https://user-images.githubusercontent.com/52797753/189164838-db15e03c-2122-4d5d-a6de-f55f5b3bba7c.png">
+</p>
 
 <p>&nbsp;</p>    
 
 ---  
 
-# 🚨 Minecraft Server Builder [BETA] 🚨
+# 🚨 Minecraft Server Builder 🚨
 
 - A complete package for building and hosting a minecraft paper/purpur server on your local windows/linux system without port-forwarding!
 
-<img width="696" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png">
+- Downloads several plugins and sets up config for automatic updates via AutoPlug
+
+- Several ( fully compatible & safe ) config optimizations are also done
+
+- Uses playit.gg as the hosting solution
+
+- Beginnings of dank.serverbuilder ( dsb actually started out as a simple batchscript ) > https://github.com/SirDank/dank.serverbuilder
+
+<p align="center">
+  <img width="696" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png">
+</p>
 
 - Short url: https://bit.ly/dank-tool
 
