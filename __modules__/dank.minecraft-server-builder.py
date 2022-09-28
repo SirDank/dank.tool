@@ -318,7 +318,7 @@ plugins:
 if playit:
 
     for file in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
-        if "signed" in file: playit_filename = str(file.split('/')[-1])
+        if "signed" in file and not "unsigned" in file: playit_filename = str(file.split('/')[-1])
     open("start_tunnel.cmd","w+").write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_filename}\npause')
 
     time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
