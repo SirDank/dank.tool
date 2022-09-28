@@ -26,6 +26,12 @@
 
 - A complete package for building and hosting a minecraft paper/purpur server on your local windows/linux system without port-forwarding!
 
+- Downloads several plugins and sets up config for automatic updates via AutoPlug
+
+- Several ( fully compatible & safe ) config optimizations are also done
+
+- Uses playit.gg as the hosting solution
+
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batchscript ) > https://github.com/SirDank/dank.serverbuilder
 
 <p align="center">
