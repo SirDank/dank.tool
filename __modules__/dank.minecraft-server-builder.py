@@ -4,6 +4,8 @@ import time
 import requests
 from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, multithread
 
+os_name = os.name
+
 # change dir and print banner
 
 exec_mode = "script"
@@ -37,7 +39,7 @@ while not success:
     if version in version_list: success = True
     else: rm_line()
 
-title(f"dank.serverbuilder [ {name} - {version} ]")
+if os_name == 'nt': title(f"dank.serverbuilder [ {name} - {version} ]")
 
 print("")
 while True:
@@ -79,7 +81,9 @@ except:
         dir_name = name + f"_{counter}"
         try: os.mkdir(dir_name); break
         except: counter += 1
-os.system(f'explorer.exe "{dir_name}"'); os.chdir(dir_name)
+if os_name == 'nt': os.system(f'explorer.exe "{dir_name}"')
+else: os.system(f'xdg-open "{dir_name}"')
+os.chdir(dir_name)
 
 # create folders
 
@@ -320,17 +324,24 @@ if playit:
     for file in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
         if "signed" in file and not "unsigned" in file: playit_filename = str(file.split('/')[-1])
     open("start_tunnel.cmd","w+").write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_filename}\npause')
+    open('start_tunnel.sh', 'wb+').write(f'#!/bin/sh\n./{playit_filename.replace("-signed.exe","")}'.encode().replace(b'\r\n',b'\n'))
 
     time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
-    time.sleep(10); os.system("start https://imgur.com/a/W30s7bw")
-    time.sleep(10); os.system("start https://playit.gg/manage")
-    print(clr("\n  > To start your server, run start_server.cmd\n\n  > To start your tunnel so people can connect over the internet, run start_tunnel.cmd"))
+    time.sleep(10)
+    if os_name == 'nt': os.system("start https://imgur.com/a/W30s7bw")
+    else: os.system("xdg-open https://imgur.com/a/W30s7bw")
+    time.sleep(10)
+    if os_name == 'nt': os.system("start https://playit.gg/manage")
+    else: os.system("xdg-open https://playit.gg/manage")
+    print(clr("\n  > To start your server, run start_server.cmd / start_server.sh\n\n  > To start your tunnel so people can connect over the internet, run start_tunnel.cmd / start_tunnel.sh"))
     wait = input(clr("\n  > After you have read the above and created a tunnel, press [ ENTER ] "))
  
 else:
     
     print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
-    if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y": os.system("start https://youtu.be/X75GbRaGzu8")
+    if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
+        if os_name == 'nt': os.system("start https://youtu.be/X75GbRaGzu8")
+        else: os.system("xdg-open https://youtu.be/X75GbRaGzu8")
 
 # start server and shutdown server for optimizing the below settings
 
@@ -413,8 +424,10 @@ while not os.path.exists("server.properties") or not os.path.exists("purpur.yml"
 
 # done!
 
-title("dank.serverbuilder [ complete! ]")
+if os_name == 'nt': title("dank.serverbuilder [ complete! ]")
 complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
 cls(); print(align(clr_banner(complete)))
-time.sleep(5); os.system("start https://allmylinks.com/sir-dankenstein")
+time.sleep(5)
+if os_name == 'nt': os.system("start https://allmylinks.com/sir-dankenstein")
+else: os.system("xdg-open https://allmylinks.com/sir-dankenstein")
 
