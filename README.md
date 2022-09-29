@@ -26,6 +26,8 @@
 
 - A complete package for building and hosting a minecraft paper/purpur server on your local windows/linux system without port-forwarding!
 
+- You do not need python or jre installed on your system to use this tool or host your server, just run the portable executable
+
 - Downloads several plugins and sets up config for automatic updates via AutoPlug
 
 - Several ( fully compatible & safe ) config optimizations are also done
