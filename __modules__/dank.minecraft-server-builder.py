@@ -58,7 +58,7 @@ while True:
     else: rm_line()
 if ram < 256: ram = 256
 
-# hosting methods
+# use playit.gg
 
 print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{white} for your mc server!\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods, Choose {magenta}Option 1\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's tunnel without port-forwarding, Choose {magenta}Option 2"))
 
@@ -71,7 +71,7 @@ while True:
         break
     else: rm_line()
 
-# go to workspace
+# create and go to workspace
 
 dir_name = name
 try: os.mkdir(dir_name)
@@ -98,7 +98,7 @@ cls(); print(clr("\n  > Preparing Downloads..."))
 session = requests.Session()
 to_download_urls, to_download_filenames = [], []
 
-# github server-builder files
+# github server-builder files and plugins
 
 for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.2
     to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
@@ -108,19 +108,19 @@ for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMM
 # spigot plugins 
 
 spigot_plugins = {
-  "ActionHealth": 2661,
-  "BetterSleeping": 60837,
-  "ChestSort": 59773,
-  "Chunky": 81534,
-  "Corpses": 96774,
-  "Log4JExploitFix": 98243,
-  "NeoPerformance": 103183,
-  "PLayerNPC": 93625,
-  "ProtocolLib": 1997,
-  "SkinRestorer": 2124,
-  "Spark": 57242,
-  "TabTPS": 82528,
-  "TreeAssist": 67436,
+    "ActionHealth": 2661,
+    "BetterSleeping": 60837,
+    "ChestSort": 59773,
+    "Chunky": 81534,
+    "Corpses": 96774,
+    "Log4JExploitFix": 98243,
+    "NeoPerformance": 103183,
+    "PLayerNPC": 93625,
+    "ProtocolLib": 1997,
+    "SkinRestorer": 2124,
+    "Spark": 57242,
+    "TabTPS": 82528,
+    "TreeAssist": 67436,
 }
 
 for plugin in spigot_plugins:
@@ -163,7 +163,7 @@ to_download_filenames.append("AutoPlug-Client.jar")
 to_download_urls.append(f"https://api.purpurmc.org/v2/purpur/{version}/latest/download")
 to_download_filenames.append("purpur.jar")
 
-# begin downloads
+# begin multithreaded downloads | threads = 2
 
 print(clr("\n  > Starting Multiple Downloads... [ this might take a few seconds ]"))
 
@@ -198,8 +198,7 @@ title Minecraft Server Console [ {name} - {version} ]
 java -jar AutoPlug-Client.jar
 ''')
 
-open('start_server.sh', 'wb+').write(f'''
-#!/bin/sh
+open('start_server.sh', 'wb+').write(f'''#!/bin/sh
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
@@ -392,7 +391,9 @@ essentials_config = {
 }
 
 while not os.path.exists("server.properties") or not os.path.exists("purpur.yml") or not os.path.exists("config/paper-world-defaults.yml") or not os.path.exists("spigot.yml") or not os.path.exists("bukkit.yml"):
+
     cls(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > After your server has stopped, press [ ENTER ] "))
+
     try:
         purpur = open("purpur.yml", "r").read()
         spigot = open("spigot.yml", "r").read()
@@ -426,8 +427,7 @@ while not os.path.exists("server.properties") or not os.path.exists("purpur.yml"
 
 if os_name == 'nt': title("dank.serverbuilder [ complete! ]")
 complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
-cls(); print(align(clr_banner(complete)))
-time.sleep(5)
+cls(); print(align(clr_banner(complete))); time.sleep(5)
 if os_name == 'nt': os.system("start https://allmylinks.com/sir-dankenstein")
 else: os.system("xdg-open https://allmylinks.com/sir-dankenstein")
 
