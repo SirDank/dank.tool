@@ -9,9 +9,11 @@
 
 # 🚨 SirDank's dank.tool 🚨
 
-- An all in one, portable windows executable with a wide variety of features built with python!
+- An all-in-one, portable windows executable with a wide variety of features built with python!
 
-- Note: The dank.tool executable might be flagged as malware, since it has been built using python. Also try to not spam the [ enter ] key on the exe, as it can cause the program to take in the wrong input. If this has occured, close the exe and relaunch it.
+- This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the tool itself and its modules!
+
+- Note: The dank.tool executable might be flagged as malware since it has been built using python. Also try to not spam the [ enter ] key on the exe, as it can cause the program to take in the wrong input. If this has occurred, close the exe and relaunch it.
  
 ## Beta Preview:
 <p align="center">
@@ -24,23 +26,27 @@
 
 # 🚨 Minecraft Server Builder 🚨
 
-- A complete package for building and hosting a minecraft paper/purpur server on your local windows/linux system without port-forwarding!
+- A complete package for building and hosting a Minecraft paper/purpur server on your local Windows/Linux system without port-forwarding!
 
-- You do not need python or jre installed on your system to use this tool or host your server, just run the portable executable
+- You do not need python or JRE installed on your system to use this tool to build your server, just run the portable executable
 
-- Downloads several plugins and sets up config for automatic updates via AutoPlug
+- Has several plugins pre-downloaded straight from [spigot](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py#L110) / [github](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py#L144)
 
-- Several ( fully compatible & safe ) config optimizations are also done
+- Uses some optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization)
 
-- Uses playit.gg as the hosting solution
+- Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating java / plugins / server and much more!
 
-- Beginnings of dank.serverbuilder ( dsb actually started out as a simple batchscript ) > https://github.com/SirDank/dank.serverbuilder
+- Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
+
+- Uses [Aikar's Flags](https://github.com/etil2jz/etil-minecraft-flags) | [Extra](https://github.com/YouHaveTrouble/minecraft-optimization)
+
+- Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > https://github.com/SirDank/dank.serverbuilder
 
 <p align="center">
   <img width="696" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png">
 </p>
 
-- Short url: https://bit.ly/dank-tool
+- Short URL: https://bit.ly/dank-tool
 
 - Direct download: https://bit.ly/dank-tool-download
 
