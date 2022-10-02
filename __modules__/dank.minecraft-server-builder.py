@@ -94,7 +94,7 @@ os.chdir(dir_name)
 
 # create folders
 
-for folder in ['world', 'world/datapacks', 'plugins', 'autoplug']:
+for folder in ['world', 'world/datapacks', 'world_nether', 'world_nether/datapacks', 'world_the_end', 'world_the_end/datapacks', 'plugins', 'autoplug']:
     try: os.mkdir(folder)
     except: pass
 
@@ -183,13 +183,13 @@ def downloader(url, filename):
             data = requests.get(url, headers={'user-agent':'dankware'}, allow_redirects=True).content
             open(filename,"wb+").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ]")); break
-        except: wait = input(clr(f"\n  > Failed [ {filename} ]! Press {white}ENTER{red} to try again... ",2))
+        except: wait = input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
 
 start_time = time.time()
 multithread(downloader, 2, to_download_urls, to_download_filenames, False)
 time_taken = int(time.time()-start_time)
 
-cls(); print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}5{white} seconds...")); time.sleep(5)
+print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}5{white} seconds...")); time.sleep(5)
 
 # creating local files
 
@@ -219,11 +219,11 @@ general:
     system-tray: 
       enable: false
   server: 
-    start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}-jar purpur.jar -nogui
+    start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 ''')
 
-# WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}-jar purpur.jar -nogui
-# BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom --add-modules jdk.incubator.vector {extra_flag}-jar purpur.jar -nogui
+# WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
+# BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 
 open('autoplug/updater.yml', 'w+').write(f'''
 updater: 
@@ -335,7 +335,7 @@ plugins:
 
 if playit:
     
-    for files in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
+    for file in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
         filename = str(file.split('/')[-1])
         if "aarch64" in filename: playit_aarch64 = filename
         elif "arm7" in filename: playit_arm7 = filename
@@ -417,37 +417,34 @@ corpses_config = {
     "secondsToDisappear: 300": "secondsToDisappear: 3600",
 }
 
-while not os.path.exists("server.properties"):
+chestsort_config = {
+    "use-permissions: true": "use-permissions: false",
+}
 
-    cls(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > After your server has stopped, press [ ENTER ] "))
+# ===== # ===== # ===== # ===== # ===== # ===== # ===== # ===== # ===== # ===== #
+
+configs = {
+    "config/paper-world-defaults.yml": paper_world_defaults_config,
+    "plugins/ChestSort/config.yml": chestsort_config,
+    "plugins/Corpses/config.yml": corpses_config,
+    "plugins/Essentials/config.yml": essentials_config,
+    "pufferfish.yml": pufferfish_config,
+    "purpur.yml": purpur_config,
+    "server.properties": server_properties_config,
+    "spigot.yml": spigot_config,
+}
+
+while True:
+    
+    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > After your server has stopped, press [ ENTER ] "))
 
     try:
-        purpur = open("purpur.yml", "r").read()
-        spigot = open("spigot.yml", "r").read()
-        pufferfish = open("pufferfish.yml", "r").read()
-        server_properties = open("server.properties", "r").read()
-        essentials = open("plugins/Essentials/config.yml", "r").read()
-        paper_world_defaults = open("config/paper-world-defaults.yml", "r").read()
-        corpses = open("plugins/Corpses/config.yml", "r").read()
-
-        for setting in purpur_config: purpur = purpur.replace(setting, purpur_config[setting])
-        for setting in spigot_config: spigot = spigot.replace(setting, spigot_config[setting])
-        for setting in corpses_config: corpses = corpses.replace(setting, corpses_config[setting])
-        for setting in pufferfish_config: pufferfish = pufferfish.replace(setting, pufferfish_config[setting])
-        for setting in essentials_config: essentials = essentials.replace(setting, essentials_config[setting])
-        for setting in server_properties_config: server_properties = server_properties.replace(setting, server_properties_config[setting])
-        for setting in paper_world_defaults_config: paper_world_defaults = paper_world_defaults.replace(setting, paper_world_defaults_config[setting])
-        if cracked: server_properties = server_properties.replace("online-mode=true","online-mode=false")
-
-        open("purpur.yml", "w", encoding='utf-8').write(purpur)
-        open("spigot.yml", "w", encoding='utf-8').write(spigot)
-        open("pufferfish.yml", "w", encoding='utf-8').write(pufferfish)
-        open("plugins/Corpses/config.yml", "w", encoding='utf-8').write(corpses)
-        open("server.properties", "w", encoding='utf-8').write(server_properties)
-        open("plugins/Essentials/config.yml", "w", encoding='utf-8').write(essentials)
-        open("config/paper-world-defaults.yml", "w", encoding='utf-8').write(paper_world_defaults)
+        for path in configs:
+            config_data = open(path, 'r', encoding='utf-8').read()
+            for setting in configs[path]: config_data = config_data.replace(setting, configs[path][setting])
+            if cracked and path == "server.properties": config_data = config_data.replace("online-mode=true","online-mode=false")
+            open(path, 'w', encoding='utf-8').write(config_data)
         break
-
     except Exception as exp:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
