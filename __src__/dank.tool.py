@@ -25,6 +25,7 @@ while True:
 
     try:
         if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"
+        #elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"
         elif "Software Downloader" in choice: project = "dank.downloader"
         # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
         # elif "Chatbot" in choice: project = "dank.ai"

@@ -31,12 +31,19 @@ while True:
 
 # user inputs [ name, version, ram, allow_cracked ]
 
-name = input(clr("\n  > Server Name: ") + magenta)
+max_motd_len = 49
+used_motd_len = 10
+print("")
+while True:
+    name = input(clr("  > Server Name: ") + magenta)
+    if not len(name) > (max_motd_len - used_motd_len): break
+    else: rm_line()
+motd_spaces = ' '*int((max_motd_len - used_motd_len - len(name))/4)
 
-print(""); success = False
-while not success:
+print("")
+while True:
     version = input(clr("  > Version: ") + magenta)
-    if version in version_list: success = True
+    if version in version_list: break
     else: rm_line()
 
 if os_name == 'nt': title(f"dank.serverbuilder [ {name} - {version} ]")
@@ -110,6 +117,8 @@ for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMM
 spigot_plugins = {
     "ActionHealth": 2661,
     "BetterSleeping": 60837,
+    "BloodEffect": 90955,
+    "BloodFading": 99263,
     "ChestSort": 59773,
     "Chunky": 81534,
     "Corpses": 96774,
@@ -273,13 +282,11 @@ plugins:
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXSpawn
   Iris: 
-    spigot-id: 84586
     custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/Iris.jar
   Log4JExploitFix: 
     exclude: false
     spigot-id: 98243
   mcMMO: 
-    spigot-id: 64348
     custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/mcMMO.jar
   PlayerNPC: 
     spigot-id: 93625
@@ -314,16 +321,31 @@ plugins:
       github: 
         repo-name: jpenilla/TabTPS
         asset-name: tabtps-spigot
+  BloodEffect: 
+    spigot-id: 90955
+  BloodFading: 
+    spigot-id: 99263
+    alternatives: 
+      github: 
+        repo-name: ventureoo/BloodFading
+        asset-name: BloodFading
 ''')
 
 # one-time setup
 
 if playit:
+    
+    for files in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
+        filename = str(file.split('/')[-1])
+        if "aarch64" in filename: playit_aarch64 = filename
+        elif "arm7" in filename: playit_arm7 = filename
+        elif not "unsigned" in filename and "signed" in filename: playit_win = filename
+        elif "apple" not in filename and "dmg" not in filename: playit_linux64 = filename
 
-    for file in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
-        if "signed" in file and not "unsigned" in file: playit_filename = str(file.split('/')[-1])
-    open("start_tunnel.cmd","w+").write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_filename}\npause')
-    open('start_tunnel.sh', 'wb+').write(f'#!/bin/sh\n./{playit_filename.replace("-signed.exe","")}'.encode().replace(b'\r\n',b'\n'))
+    open('start_tunnel.cmd','w+').write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_win}\npause')
+    open('start_tunnel.sh', 'wb+').write(f'#!/bin/sh\n./{playit_linux64}'.encode().replace(b'\r\n',b'\n'))
+    open('start_tunnel_aarch64.sh', 'wb+').write(f'#!/bin/sh\n./{playit_aarch64}'.encode().replace(b'\r\n',b'\n'))
+    open('start_tunnel_arm7.sh', 'wb+').write(f'#!/bin/sh\n./{playit_arm7}'.encode().replace(b'\r\n',b'\n'))
 
     time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
     time.sleep(10)
@@ -342,16 +364,17 @@ else:
         if os_name == 'nt': os.system("start https://youtu.be/X75GbRaGzu8")
         else: os.system("xdg-open https://youtu.be/X75GbRaGzu8")
 
-# start server and shutdown server for optimizing the below settings
+# start server and shutdown server for optimizing the below settings and configuring
 
 server_properties_config = {
     "simulation-distance=10": "simulation-distance=4",
-    "motd=A Minecraft Server": f"motd=\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {name} \\u00A76<\\u00A7a---\\u00A7r\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
+    "motd=A Minecraft Server": f"motd={motd_spaces}\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
     "server-name=Unknown Server": f"server-name={name}",
+    "require-resource-pack=false": "require-resource-pack=true",
+    'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resourcepack","color":"light_purple"}',
+    "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip",
     # "view-distance=10": "view-distance=8",
-    # resource-pack-prompt=
-    # resource-pack=
-    # resource-pack-sha1=
+    #"resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f"
 }
 
 purpur_config = {
@@ -390,7 +413,11 @@ essentials_config = {
     "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
 }
 
-while not os.path.exists("server.properties") or not os.path.exists("purpur.yml") or not os.path.exists("config/paper-world-defaults.yml") or not os.path.exists("spigot.yml") or not os.path.exists("bukkit.yml"):
+corpses_config = {
+    "secondsToDisappear: 300": "secondsToDisappear: 3600",
+}
+
+while not os.path.exists("server.properties"):
 
     cls(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > After your server has stopped, press [ ENTER ] "))
 
@@ -401,18 +428,21 @@ while not os.path.exists("server.properties") or not os.path.exists("purpur.yml"
         server_properties = open("server.properties", "r").read()
         essentials = open("plugins/Essentials/config.yml", "r").read()
         paper_world_defaults = open("config/paper-world-defaults.yml", "r").read()
+        corpses = open("plugins/Corpses/config.yml", "r").read()
 
         for setting in purpur_config: purpur = purpur.replace(setting, purpur_config[setting])
         for setting in spigot_config: spigot = spigot.replace(setting, spigot_config[setting])
+        for setting in corpses_config: corpses = corpses.replace(setting, corpses_config[setting])
         for setting in pufferfish_config: pufferfish = pufferfish.replace(setting, pufferfish_config[setting])
         for setting in essentials_config: essentials = essentials.replace(setting, essentials_config[setting])
         for setting in server_properties_config: server_properties = server_properties.replace(setting, server_properties_config[setting])
         for setting in paper_world_defaults_config: paper_world_defaults = paper_world_defaults.replace(setting, paper_world_defaults_config[setting])
-        if cracked: server_properties = server_properties.replace("online-mode=true","online-mode=true")
+        if cracked: server_properties = server_properties.replace("online-mode=true","online-mode=false")
 
         open("purpur.yml", "w", encoding='utf-8').write(purpur)
         open("spigot.yml", "w", encoding='utf-8').write(spigot)
         open("pufferfish.yml", "w", encoding='utf-8').write(pufferfish)
+        open("plugins/Corpses/config.yml", "w", encoding='utf-8').write(corpses)
         open("server.properties", "w", encoding='utf-8').write(server_properties)
         open("plugins/Essentials/config.yml", "w", encoding='utf-8').write(essentials)
         open("config/paper-world-defaults.yml", "w", encoding='utf-8').write(paper_world_defaults)
