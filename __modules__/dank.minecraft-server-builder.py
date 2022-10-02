@@ -373,6 +373,8 @@ server_properties_config = {
     "require-resource-pack=false": "require-resource-pack=true",
     'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resourcepack","color":"light_purple"}',
     "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip",
+    "enable-query=false": "enable-query=true",
+    "max-players=20": "max-players=69",
     # "view-distance=10": "view-distance=8",
     #"resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f"
 }
