@@ -1,13 +1,14 @@
 # [NOTE] executor.py is meant to be executed only as an executable, not as a python script!
 # the below imports are not required by the executor.py but is required by dank.tool.py
 
-from keyboard import press
 from playsound import playsound
+from mcstatus import JavaServer
 from win10toast import ToastNotifier
-from pynput.keyboard import Key, Listener
-from pynput.mouse import Button, Controller
-from webbrowser import open_new_tab as web
-from dankware import multithread, clr_banner, align, cls, clr, magenta, white, red, reset, chdir, title, github_downloads, rm_line
+from dankware import multithread, clr_banner, align, cls, clr, magenta, white, red, reset, chdir, title, github_downloads, github_file_selector, rm_line, random_ip
+#from keyboard import press
+#from pynput.keyboard import Key, Listener
+#from pynput.mouse import Button, Controller
+#from webbrowser import open_new_tab as web
 
 # required imports for executor.py
 
@@ -20,8 +21,9 @@ session = requests.Session()
 
 # change directory to exe's location
 
-current_version = "0.3"
-title("dank.tool [ initializing ]"); exec(chdir('exe'))
+current_version = "1.0"
+exec_mode = "exe"
+title("dank.tool [ initializing ]"); exec(chdir(exec_mode))
 print(clr(f"\n  > Version: {current_version}"))
 
 # get latest version
@@ -29,8 +31,7 @@ print(clr(f"\n  > Version: {current_version}"))
 while True:
     try:
         latest_version = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version.txt").content.decode()
-        if "Not Found" in latest_version: latest_version = 0
-        #else: latest_version = float(latest_version); break
+        if "Not Found" in latest_version: latest_version = "0"
         else: break
     except: wait = input(clr("\n  > Failed to check for an update! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
@@ -71,7 +72,9 @@ except Exception as exp:
     print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
     print(clr("\n  > Please take a screenshot of this and post it on https://github.com/SirDank/dank.tool/issues/new"))
     print(clr("\n  > Opening in 3s..."))
-    time.sleep(3); web("https://github.com/SirDank/dank.tool/issues/new")
+    time.sleep(3)
+    if os.name == 'nt': os.system("start https://github.com/SirDank/dank.tool/issues/new")
+    else: os.system("xdg-open https://github.com/SirDank/dank.tool/issues/new")
 
     if not latest_version == current_version:
         choice = input(clr("\n  > Download latest version? [ y / n ]: ") + magenta).lower()

@@ -8,24 +8,25 @@ from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title
 
 while True:
     
-    title("dank.tool"); exec(chdir('exe')); banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
+    title("dank.tool"); exec_mode = "exe"; exec(chdir(exec_mode)); banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
 
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
         modules = [
             'Minecraft Server Builder',
-            'Software Downloader [UNFINISHED]'
+            'Minecraft Server Scanner',
+            'Software Downloader [UNFINISHED]',
         ]
         counter = 1; to_print = ""
         for module in modules: to_print += f"\n\n    {counter} > {module}"; counter += 1
-        choice = input(clr(f"\n  - Modules: {to_print}\n\n  - Choice: ") + white)
+        choice = input(clr(f"\n  - Modules: {to_print}\n\n  - Choice: ") + magenta)
         if choice.isdigit() and int(choice) > 0 and int(choice) < int(len(modules))+1: break
 
     choice = modules[int(choice)-1]
 
     try:
         if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"
-        #elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"
+        elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"
         elif "Software Downloader" in choice: project = "dank.downloader"
         # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
         # elif "Chatbot" in choice: project = "dank.ai"
@@ -45,7 +46,7 @@ while True:
         
         if code == "404: Not Found": print(clr(f"\n  > {project} has not yet been released! Returning to menu in 5s...",2)); time.sleep(5)
         else:
-            exec(code.replace("exec_mode = 'script'", 'exec_mode = "exe"').replace('exec_mode = "script"', 'exec_mode = "exe"'))
+            cls(); exec(code.replace("exec_mode = 'script'", "exec_mode = 'exe'").replace('exec_mode = "script"', 'exec_mode = "exe"'))
             cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
 
     except Exception as exp:
