@@ -62,9 +62,9 @@
 
 - Generates the specified amount of ips and scans the default minecraft server port 25565
 
-- IPs are crafted in such a way that it avoid ips that aren't valid / locals ips / will not have mc servers hosted on them
+- IPs are crafted in such a way that it avoid ips that aren't valid / local ips / will not have mc servers hosted on them
 
-- Prints server info including ip, version, number of players online, latency in ms, host city, host org, hosting domain, server description
+- Prints server info including ip, version, number of players online, latency in ms, host city, host org, host domain, server description
 
 <p align="center">
   <img width="633" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png">
