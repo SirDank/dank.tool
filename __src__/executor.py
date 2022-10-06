@@ -21,7 +21,7 @@ session = requests.Session()
 
 # change directory to exe's location
 
-current_version = "1.0"
+current_version = "1.0.1"
 exec_mode = "exe"
 title("dank.tool [ initializing ]"); exec(chdir(exec_mode))
 print(clr(f"\n  > Version: {current_version}"))
@@ -43,11 +43,11 @@ def download_latest():
     while True:
         try: data = session.get("https://github.com/SirDank/dank.tool/blob/main/dank.tool.exe?raw=true", allow_redirects=True).content; break
         except: wait = input(clr("\n  > Failed to download! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
-    open("dank.tool-latest.exe","wb+").write(data); data = None
-    open("dankware-updater.cmd","w+").write("@echo off\ntitle dankware-updater\ncolor 0a\ntimeout 3\ndel /F dank.tool.exe\nren dank.tool-latest.exe dank.tool.exe\nstart dank.tool.exe\ndel \"%~f0\" >nul 2>&1\nexit")
+    open("dank.tool-latest.exe","wb+").write(data); data = None                                                                                                                                   # removed "start dank.tool.exe"
+    open("dankware-updater.cmd","w+").write("@echo off\ntitle dankware-updater\ncolor 0a\ntimeout 3\ndel /F dank.tool.exe\nren dank.tool-latest.exe dank.tool.exe\ncls\necho.\necho =======================\necho.\necho    UPDATE COMPLETE\necho.\necho =======================\necho.\necho       Close This\necho.\necho    Run dank.tool.exe\necho.\necho =======================\necho.\necho  T E R M I N A T I N G\necho.\ntimeout 20\ndel \"%~f0\" >nul 2>&1\nexit")
     print(clr("\n  > Downloaded!\n\n  > Starting in 3s..."))
-    toast = ToastNotifier(); toast.show_toast("dank.tool", "Updating and restarting in 5s...", duration = 5, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = False)
-    time.sleep(3); os.system(f"start dankware-updater.cmd"); sys.exit()
+    time.sleep(3); os.system(f"start dankware-updater.cmd"); toast = ToastNotifier(); toast.show_toast("dank.tool", "Please restart dank.tool.exe", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
+    sys.exit()
 
 if parse(latest_version) > parse(current_version):
     choice = input(clr(f"\n  > Update Found: {latest_version}\n\n  > Download latest version? [ y / n ]: ") + magenta).lower()
@@ -81,4 +81,7 @@ except Exception as exp:
         if choice == "y": download_latest()
 
     wait = input(clr("\n  > Press [ENTER] to continue: "))
+
+
+
 

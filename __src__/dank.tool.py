@@ -2,7 +2,10 @@ import os
 import sys
 import time
 import requests
+from win10toast import ToastNotifier
 from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title
+
+toast = ToastNotifier(); toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
 
 # main
 
@@ -27,7 +30,7 @@ while True:
             cls()
             while True:
                 cmd = input(clr("\n  > ") + white)
-                if cmd == 'exit': sys.exit()
+                if cmd == 'exit': break
                 try: exec(cmd)
                 except Exception as exc: print(clr(f"\n  > ERROR: {exc}",2))
 
@@ -35,7 +38,7 @@ while True:
         if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"
         elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"
         elif "Software Downloader" in choice: project = "dank.downloader"
-        elif "Spotify Ad Blocker" in choice: project = "dank.spotx-win"
+        elif "Spotify Ad Blocker" in choice: project = "dank.spotx-windows"
         # elif "Spotify Downloader" in choice:
         # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
         # elif "Chatbot" in choice: project = "dank.ai"
