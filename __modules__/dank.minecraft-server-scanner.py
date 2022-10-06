@@ -1,6 +1,4 @@
-import os
 import socket
-import random
 import requests
 from mcstatus import JavaServer
 from dankware import multithread, chdir, clr, cls, title, clr_banner, align, random_ip, magenta
@@ -58,10 +56,9 @@ def main():
     except: pass
     try: open('servers.txt','x')
     except: pass
-    scanned = list(set(open('scanned.txt','r').read().splitlines()))
-    scanned.sort()
-    for ip in scanned:
-        if len(ip) > 15: scanned.remove(ip)
+    scanned = sorted(list(set(open('scanned.txt','r').read().splitlines())))
+    #for ip in scanned:
+    #    if len(ip) > 15: scanned.remove(ip)
     open('scanned.txt','w').write('\n'.join(scanned) + "\n")
 
     while True:
@@ -83,8 +80,9 @@ def main():
     cls(); print(clr(f"\n  > Checking {ips_amt} ips...\n"))
     multithread(check, threads, ips)
     
-    scanned = list(set(scanned + ips)); scanned.sort()
+    scanned = sorted(list(set(scanned + ips)))
     open('scanned.txt','w+').write('\n'.join(scanned))
+    #cls(); print(clr(f"\n > Scanning Complete! Sleeping 5s...")); time.sleep(5)
     
 if __name__ == "__main__": 
     main()
