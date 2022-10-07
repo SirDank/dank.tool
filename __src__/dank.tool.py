@@ -2,10 +2,19 @@ import os
 import sys
 import time
 import requests
+from datetime import datetime
 from win10toast import ToastNotifier
-from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title
+from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title, sys_open, get_duration
 
-toast = ToastNotifier(); toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
+session = requests.Session()
+toast = ToastNotifier()
+toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
+
+def updated_on(module):
+    date, time = session.get(f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{module}.py&page=1&per_page=1").json()[0]["commit"]["author"]["date"].split("T")
+    date = date.split("-")
+    time = time.replace("Z","").split(":")
+    get_duration(datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2])), interval='days')
 
 # main
 
@@ -16,10 +25,10 @@ while True:
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
         modules = [
-            'Minecraft Server Builder',
-            'Minecraft Server Scanner',
-            'Spotify Ad Blocker',
-            'Software Downloader [UNFINISHED]',
+            f'Minecraft Server Builder [ updated {updated_on("dank.minecraft-server-builder")} days ago ]',
+            f'Minecraft Server Scanner [ updated {updated_on("dank.minecraft-server-scanner")} days ago ]',
+            f'Spotify Ad Blocker [ updated {updated_on("dank.spotx-windows")} days ago ]',
+            'Software Downloader [ UNFINISHED ]',
         ]
         counter = 1; to_print = ""
         for module in modules: to_print += f"\n\n    {counter} > {module}"; counter += 1
@@ -65,8 +74,6 @@ while True:
         print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
         print(clr(f"\n  > Please take a screenshot of this and post it on > https://github.com/SirDank/dank.tool/issues/new"))
         print(clr("\n  > Opening in 3s..."))
-        time.sleep(3); url = "https://github.com/SirDank/dank.tool/issues/new"
-        if os.name == 'nt': os.system(f"start {url}")
-        else: os.system(f"xdg-open {url}")
+        time.sleep(3); sys_open("https://github.com/SirDank/dank.tool/issues/new")
         wait = input(clr(f"\n  > Press [ENTER] to continue: "))
 

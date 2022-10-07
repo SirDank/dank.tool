@@ -30,11 +30,11 @@ def check(ip):
             to_print = f"{ip} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {response['city']} | {response['connection']['org']} | {response['connection']['domain']} | {status.description}".replace('\n','|')
             for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']: to_print = to_print.replace(_,'')
             print(clr(f"  > {to_print}\n"))
-            open('servers.txt','a').write(f"{to_print}\n")
+            open('servers.txt','a').write(f"\n{to_print}")
         except Exception as exc:
             exc = str(exc)
             if not "timed out" in exc and not "unreachable" in exc and not "refused" in exc and not "not valid" in exc and not "invalid" in exc and not "closed" in exc and not "did not" in exc and not "aborted" in exc and not "failed" in exc and not "no route" in exc:
-                open('servers.txt','a').write(f"{ip} | {exc}\n")
+                open('servers.txt','a').write(f"\n{ip} | {exc}")
                 print(f"{ip} | {exc}\n")
 
 def generate():
@@ -57,9 +57,8 @@ def main():
     try: open('servers.txt','x')
     except: pass
     scanned = sorted(list(set(open('scanned.txt','r').read().splitlines())))
-    #for ip in scanned:
-    #    if len(ip) > 15: scanned.remove(ip)
-    open('scanned.txt','w').write('\n'.join(scanned) + "\n")
+    servers = sorted(list(set(open('servers.txt','r').read().splitlines())))
+    open('servers.txt','w+').write('\n'.join(servers))
 
     while True:
         cls(); print(align(clr_banner(banner)))

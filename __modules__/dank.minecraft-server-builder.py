@@ -2,17 +2,13 @@ import os
 import sys
 import time
 import requests
-from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread
+from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open
 
 def print_banner():
     cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
 
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{magenta}#")))
-
-def web(url):
-    if os_name == 'nt': os.system(f"start {url}")
-    else: os.system(f"xdg-open {url}")
 
 def downloader(url, filename):
     
@@ -26,10 +22,8 @@ def downloader(url, filename):
         except: wait = input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
 
 def one():
-    
-    global os_name, banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag
 
-    os_name = os.name
+    global banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag
 
     # change dir and print banner
 
@@ -107,8 +101,7 @@ def one():
             dir_name = name + f"_{counter}"
             try: os.mkdir(dir_name); break
             except: counter += 1
-    if os_name == 'nt': os.system(f'explorer.exe "{dir_name}"')
-    else: os.system(f'xdg-open "{dir_name}"')
+    sys_open(f'"{dir_name}"')
     os.chdir(dir_name)
 
     # create folders
@@ -351,16 +344,16 @@ def two():
         open('start_tunnel_arm7.sh', 'wb+').write(f'#!/bin/sh\n./{playit_arm7}'.encode().replace(b'\r\n',b'\n'))
 
         time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
-        time.sleep(10); web("https://imgur.com/a/W30s7bw")
-        time.sleep(10); web("https://playit.gg/manage")
+        time.sleep(10); sys_open(f'https://imgur.com/a/W30s7bw')
+        time.sleep(10); sys_open(f'https://playit.gg/manage')
         print(clr("\n  > To start your server, run start_server.cmd / start_server.sh\n\n  > To start your tunnel so people can connect over the internet, run start_tunnel.cmd / start_tunnel.sh"))
         wait = input(clr("\n  > After you have read the above and created a tunnel, press [ ENTER ] "))
-    
+
     else:
         
         print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
         if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
-            web("https://youtu.be/X75GbRaGzu8")
+            sys_open('https://youtu.be/X75GbRaGzu8')
 
 two()
 
@@ -450,6 +443,6 @@ def three():
     title("dank.serverbuilder [ complete! ]")
     complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
     cls(); print(align(clr_banner(complete))); time.sleep(5)
-    web("https://allmylinks.com/sir-dankenstein")
-    
+    sys_open('https://allmylinks.com/sir-dankenstein')
+
 three()
