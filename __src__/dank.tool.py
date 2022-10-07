@@ -14,7 +14,7 @@ def updated_on(module):
     date, time = session.get(f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{module}.py&page=1&per_page=1").json()[0]["commit"]["author"]["date"].split("T")
     date = date.split("-")
     time = time.replace("Z","").split(":")
-    get_duration(datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2])), interval='days')
+    return get_duration(datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2])), interval='days')
 
 # main
 
