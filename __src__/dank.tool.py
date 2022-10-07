@@ -11,10 +11,26 @@ toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
 
 def updated_on(module):
+
     date, time = session.get(f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{module}.py&page=1&per_page=1").json()[0]["commit"]["author"]["date"].split("T")
     date = date.split("-")
     time = time.replace("Z","").split(":")
-    return get_duration(datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2])), interval='days')
+    date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
+
+    duration = get_duration(date_time_data, interval='days')
+    if duration == 0:
+        duration = get_duration(date_time_data, interval='hours')
+        if duration == 0:
+            duration = get_duration(date_time_data, interval='minutes')
+            if duration == 0:
+                duration = get_duration(date_time_data, interval='seconds')
+                return f"{duration} seconds"
+            elif duration == 1: return f"{duration} minute"
+            else: return f"{duration} minutes"
+        elif duration == 1: return f"{duration} hour"
+        else: return f"{duration} hours"
+    elif duration == 1: return f"{duration} day"
+    else: return f"{duration} days"
 
 # main
 
@@ -25,9 +41,9 @@ while True:
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
         modules = [
-            f'Minecraft Server Builder [ updated {updated_on("dank.minecraft-server-builder")} days ago ]',
-            f'Minecraft Server Scanner [ updated {updated_on("dank.minecraft-server-scanner")} days ago ]',
-            f'Spotify Ad Blocker [ updated {updated_on("dank.spotx-windows")} days ago ]',
+            f'Minecraft Server Builder [ updated {updated_on("dank.minecraft-server-builder")} ago ]',
+            f'Minecraft Server Scanner [ updated {updated_on("dank.minecraft-server-scanner")} ago ]',
+            f'Spotify Ad Blocker [ updated {updated_on("dank.spotx-windows")} ago ]',
             'Software Downloader [ UNFINISHED ]',
         ]
         counter = 1; to_print = ""
