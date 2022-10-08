@@ -14,7 +14,11 @@
 - This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the tool itself and its modules!
 
 - Note: The dank.tool executable might be flagged as malware since it has been built using python. Also try to not spam the [ enter ] key on the exe, as it can cause the program to take in the wrong input. If this has occurred, close the exe and relaunch it.
- 
+
+- Short URL: https://bit.ly/dank-tool
+
+- Direct download: https://bit.ly/dank-tool-download
+
 ## Beta Preview:
 <p align="center">
   <img width="560" alt="image" src="https://user-images.githubusercontent.com/52797753/189164838-db15e03c-2122-4d5d-a6de-f55f5b3bba7c.png">
@@ -41,10 +45,6 @@
 - Uses [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) | [Extra](https://github.com/etil2jz/etil-minecraft-flags)
 
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > https://github.com/SirDank/dank.serverbuilder
-
-- Short URL: https://bit.ly/dank-tool
-
-- Direct download: https://bit.ly/dank-tool-download
 
 - Start building your server by running [dank.serverbuilder.exe](https://github.com/SirDank/dank.tool/raw/main/dank.tool.exe) or [this](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py) python script
 

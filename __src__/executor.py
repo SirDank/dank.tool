@@ -3,7 +3,10 @@
 
 from playsound import playsound
 from mcstatus import JavaServer
+from pypresence import Presence
+from shutil import unpack_archive
 from win10toast import ToastNotifier
+from concurrent.futures import ThreadPoolExecutor
 from dankware import multithread, clr_banner, align, cls, clr, magenta, white, red, reset, chdir, title, github_downloads, github_file_selector, rm_line, random_ip, sys_open, get_duration
 
 # required imports for executor.py
@@ -17,7 +20,7 @@ session = requests.Session()
 
 # change directory to exe's location
 
-current_version = "1.1.1"
+current_version = "1.2"
 exec_mode = "exe"
 title("dank.tool [ initializing ]"); exec(chdir(exec_mode))
 print(clr(f"\n  > Version: {current_version}"))
@@ -38,7 +41,10 @@ latest_version = latest_dank_tool_version()
 # version checker / updater: overwrites the existing executable with the latest one using the help of a batch script called 'dankware-updater.cmd' which deletes itself upon completion!
 
 def download_latest_dank_tool():
-
+    
+    if not os.path.isfile("dank.tool.exe"):
+        print(clr('\n  > Rename this executable back to "dank.tool.exe" for it to update properly!\n\n  > Exiting in 25 seconds...',2))
+        time.sleep(25); sys.exit()
     print(clr("\n  > Downloading dank.tool-latest.exe..."))
     while True:
         try: data = session.get("https://github.com/SirDank/dank.tool/blob/main/dank.tool.exe?raw=true", allow_redirects=True).content; break
@@ -58,6 +64,30 @@ else: print(clr("\n  > Development Version!"))
 while True:
     try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py").content.decode(); break
     except: wait = input(clr("\n  > Failed to get src! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+
+# start discord rpc
+
+def dank_discord_rpc():
+
+    start = int(time.time())
+    while True:
+        try:
+            RPC.update(
+                large_image = "dankware",
+                large_text = "dank.tool",
+                details = "running dank.tool",
+                state = discord_rpc_state,
+                start = start,
+                buttons = [{"label": "Download", "url": "https://github.com/SirDank/dank.tool"}, {"label": "Discord", "url": "https://discord.gg/jqj7CFx"}]
+            )
+            time.sleep(15)
+        except: break
+
+try:
+    RPC = Presence("1028269752386326538")
+    RPC.connect(); discord_rpc_state = "on the main menu"
+    ThreadPoolExecutor(1).submit(dank_discord_rpc)
+except: pass
 
 # execute, catch errors if any
 

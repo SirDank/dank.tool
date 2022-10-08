@@ -37,6 +37,7 @@ def updated_on(module):
 while True:
     
     title("dank.tool"); exec_mode = "exe"; exec(chdir(exec_mode)); banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
+    discord_rpc_state = "on the main menu"
 
     while True: # choose module to execute
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3")) # print randomly coloured and aligned banner
@@ -60,10 +61,10 @@ while True:
                 except Exception as exc: print(clr(f"\n  > ERROR: {exc}",2))
 
     try:
-        if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"
-        elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"
-        elif "Software Downloader" in choice: project = "dank.downloader"
-        elif "Spotify Ad Blocker" in choice: project = "dank.spotx-windows"
+        if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"; discord_rpc_state = "building a minecraft server"
+        elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"; discord_rpc_state = "scanning for minecraft servers"
+        elif "Software Downloader" in choice: project = "dank.downloader"; discord_rpc_state = "bulk downloading software"
+        elif "Spotify Ad Blocker" in choice: project = "dank.spotx-windows"; discord_rpc_state = "disabling ads on spotify"
         # elif "Spotify Downloader" in choice:
         # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
         # elif "Chatbot" in choice: project = "dank.ai"
