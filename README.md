@@ -98,3 +98,13 @@
 <p align="center">
   <img width="661" alt="image" src="https://user-images.githubusercontent.com/52797753/194408190-f8b21de3-4d24-4a00-b609-b57af43cc245.png">
 </p>
+
+<p>&nbsp;</p>    
+
+---  
+
+# 🚨 Stats 🚨
+
+<p align="center">
+  <img width="900" alt="image" src="https://repobeats.axiom.co/api/embed/42c9b248a6c2f5a3c5709d6a205b8c3735486a9b.svg">
+</p>
