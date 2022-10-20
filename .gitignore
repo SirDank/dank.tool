@@ -155,3 +155,5 @@ cython_debug/
 __modules__/_dank.downloader.py
 __modules__/scanned.txt
 __modules__/servers.txt
+scanned.txt
+servers.txt
