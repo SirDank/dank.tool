@@ -276,11 +276,13 @@ plugins:
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXSpawn
   Iris: 
+    spigot-id: 84586
     custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/Iris.jar
   Log4JExploitFix: 
     exclude: false
     spigot-id: 98243
   mcMMO: 
+    spigot-id: 64348
     custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/mcMMO.jar
   PlayerNPC: 
     spigot-id: 93625
