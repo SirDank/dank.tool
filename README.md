@@ -3,7 +3,7 @@
   <img src="https://profile-counter.glitch.me/dank.tool/count.svg">
 </p>
 
-<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png"></p>
+<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png"></p><br>
 
 # 🚨 SirDank's dank.tool 🚨
 
@@ -41,7 +41,7 @@
 
 - Start building your server by running [dank.serverbuilder.exe](https://github.com/SirDank/dank.tool/raw/main/dank.tool.exe) or [this](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py) python script
 
-<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p><br>
 
 <p>&nbsp;</p>    
 
@@ -57,7 +57,7 @@
 
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description
 
-<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png"></p>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png"></p><br>
 
 ## Also check out dank.resourcepack!
 
@@ -84,7 +84,7 @@
 - Removed RTL rules (Removed all right-to-left CSS rules to simplify CSS files)
 - Code minification
 
-<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194408190-f8b21de3-4d24-4a00-b609-b57af43cc245.png"></p>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194408190-f8b21de3-4d24-4a00-b609-b57af43cc245.png"></p><br>
 
 <p>&nbsp;</p>    
 
@@ -98,7 +98,7 @@
 
 - Cool sounds and notifications!
 
-<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></p>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></p><br>
 
 <p>&nbsp;</p>    
 
@@ -106,4 +106,4 @@
 
 # 🚨 Stats 🚨
 
-<p align="center"><img width="900" alt="image" src="https://repobeats.axiom.co/api/embed/42c9b248a6c2f5a3c5709d6a205b8c3735486a9b.svg"></p>
+<br><p align="center"><img width="800" alt="image" src="https://repobeats.axiom.co/api/embed/42c9b248a6c2f5a3c5709d6a205b8c3735486a9b.svg"></p><br>
