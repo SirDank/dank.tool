@@ -18,6 +18,8 @@ https://github.com/Footsiefat/Minecraft-Server-Scanner
 
 '''
 
+# checks if ip has a server running on port 25565
+
 def check(ip):
 
     if socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex((ip,25565)) == 0:
@@ -36,6 +38,8 @@ def check(ip):
             if not "timed out" in exc and not "unreachable" in exc and not "refused" in exc and not "not valid" in exc and not "invalid" in exc and not "closed" in exc and not "did not" in exc and not "aborted" in exc and not "failed" in exc and not "no route" in exc:
                 open('servers.txt','a').write(f"\n{ip} | {exc}")
                 print(f"{ip} | {exc}\n")
+
+# generates random valid ip
 
 def generate():
 
@@ -58,7 +62,7 @@ def main():
     except: pass
     scanned = sorted(list(set(open('scanned.txt','r').read().splitlines())))
     servers = sorted(list(set(open('servers.txt','r').read().splitlines())))
-    open('servers.txt','w+').write('\n'.join(servers))
+    open('servers.txt','w').write('\n'.join(servers))
 
     while True:
         cls(); print(align(clr_banner(banner)))
@@ -80,7 +84,7 @@ def main():
     multithread(check, threads, ips)
     
     scanned = sorted(list(set(scanned + ips)))
-    open('scanned.txt','w+').write('\n'.join(scanned))
+    open('scanned.txt','w').write('\n'.join(scanned))
     #cls(); print(clr(f"\n > Scanning Complete! Sleeping 5s...")); time.sleep(5)
     
 if __name__ == "__main__": 
