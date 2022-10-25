@@ -17,7 +17,7 @@ def downloader(url, filename):
             response = requests.get(url, headers={'user-agent':'dankware'}, allow_redirects=True)
             data = response.content
             size = response.headers['Content-Length']
-            open(filename,"wb+").write(data); data = ""
+            open(filename,"wb").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ] [ {int(int(size)/1024000)} MB ]")); break
         except: wait = input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
 
@@ -187,7 +187,7 @@ def one():
 
     cls(); print(clr("\n  > Creating local files..."))
 
-    open('eula.txt','w+').write('eula=true')
+    open('eula.txt','w').write('eula=true')
 
     if version in ["1.17", "1.18"]: extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
     elif version in ["1.12", "1.13", "1.14", "1.15", "1.16"]: extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
@@ -196,16 +196,16 @@ def one():
 
 one()
 
-open('start_server.cmd', 'w+').write(f'''@echo off
+open('start_server.cmd', 'w').write(f'''@echo off
 title Minecraft Server Console [ {name} - {version} ]
 java -jar AutoPlug-Client.jar
 ''')
 
-open('start_server.sh', 'wb+').write(f'''#!/bin/sh
+open('start_server.sh', 'wb').write(f'''#!/bin/sh
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-open('autoplug/general.yml', 'w+').write(f'''
+open('autoplug/general.yml', 'w').write(f'''
 general: 
   autoplug: 
     target-software: MINECRAFT_SERVER
@@ -219,7 +219,7 @@ general:
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 # BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 
-open('autoplug/updater.yml', 'w+').write(f'''
+open('autoplug/updater.yml', 'w').write(f'''
 updater: 
   java-updater: 
     enable: true
@@ -238,7 +238,7 @@ updater:
     profile: AUTOMATIC
 ''')
 
-open('autoplug/plugins.yml', 'w+').write('''
+open('autoplug/plugins.yml', 'w').write('''
 plugins: 
   general: 
     keep-removed: false
@@ -340,10 +340,10 @@ def two():
             elif not "unsigned" in filename and "signed" in filename: playit_win = filename
             elif "apple" not in filename and "dmg" not in filename: playit_linux64 = filename
 
-        open('start_tunnel.cmd','w+').write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_win}\npause')
-        open('start_tunnel.sh', 'wb+').write(f'#!/bin/sh\n./{playit_linux64}'.encode().replace(b'\r\n',b'\n'))
-        open('start_tunnel_aarch64.sh', 'wb+').write(f'#!/bin/sh\n./{playit_aarch64}'.encode().replace(b'\r\n',b'\n'))
-        open('start_tunnel_arm7.sh', 'wb+').write(f'#!/bin/sh\n./{playit_arm7}'.encode().replace(b'\r\n',b'\n'))
+        open('start_tunnel.cmd','w').write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_win}\npause')
+        open('start_tunnel.sh', 'wb').write(f'#!/bin/sh\n./{playit_linux64}'.encode().replace(b'\r\n',b'\n'))
+        open('start_tunnel_aarch64.sh', 'wb').write(f'#!/bin/sh\n./{playit_aarch64}'.encode().replace(b'\r\n',b'\n'))
+        open('start_tunnel_arm7.sh', 'wb').write(f'#!/bin/sh\n./{playit_arm7}'.encode().replace(b'\r\n',b'\n'))
 
         time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
         time.sleep(10); sys_open(f'https://imgur.com/a/W30s7bw')
