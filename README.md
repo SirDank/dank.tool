@@ -37,7 +37,7 @@
 
 - Uses [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) | [Extra](https://github.com/etil2jz/etil-minecraft-flags)
 
-- Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > https://github.com/SirDank/dank.serverbuilder
+- Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > [old version](https://github.com/SirDank/dank.serverbuilder)
 
 - Start building your server by running [dank.serverbuilder.exe](https://github.com/SirDank/dank.tool/raw/main/dank.tool.exe) or [this](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py) python script
 
