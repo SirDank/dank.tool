@@ -39,7 +39,7 @@
 
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > [old version](https://github.com/SirDank/dank.serverbuilder)
 
-- Start building your server by running [dank.serverbuilder.exe](https://github.com/SirDank/dank.tool/raw/main/dank.tool.exe) or [this](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py) python script
+- Start building your server by running [dank.tool.exe](https://github.com/SirDank/dank.tool/raw/main/dank.tool.exe) or [this](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py) python script
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p><br>
 
