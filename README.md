@@ -9,11 +9,25 @@
 
 - An all-in-one, portable windows executable with a wide variety of features built with python!
 
-- This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the tool itself and its modules!
+- This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the [tool](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py) itself and its [modules](https://github.com/SirDank/dank.tool/tree/main/__modules__)!
 
-- Note: The dank.tool executable might be flagged as malware since it has been built using python. Also try to not spam the [ enter ] key on the exe, as it can cause the program to take in the wrong input. If this has occurred, close the exe and relaunch it.
+## Quickstart
 
-- Short URL: https://bit.ly/dank-tool
+- Run the [dank.tool.exe](https://github.com/SirDank/dank.tool/releases)
+
+- Note: If you would like to run the python scripts instead, there might be small changes you might have to make for it to execute properly.
+
+## Note
+
+- The dank.tool executable might be flagged as malware (false positive) since it has been built using python (nuitka).
+
+- Python is not required to use the protable exe version of this tool.
+
+- Try to not spam the [ ENTER ] key on the exe's terminal, as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
+
+## Short URLs
+
+- Github Short URL: https://bit.ly/dank-tool
 
 - Direct download: https://bit.ly/dank-tool-download
 
@@ -23,25 +37,30 @@
 
 # 🚨 Minecraft Server Builder 🚨
 
-- A complete package for building and hosting an optimized minecraft purpur server on your local Windows/Linux system without port-forwarding!
+- A complete package for building and hosting a fully optimised minecraft purpur server on your local Windows/Linux system without port-forwarding!
 
-- You do not need python or JRE installed on your system to use this tool to build your server, just run the portable executable
+## Features
 
-- Has several plugins pre-downloaded straight from [spigot](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py#L110) / [github](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py#L144)
-
-- Uses some optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization)
-
+- Customization for server name, [purpur](https://github.com/PurpurMC/Purpur) version, server ram, allowing cracked players.
+- Multithreaded file downloader (2 threads)
 - Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating java / plugins / server and much more!
-
 - Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
+- Downloads selected minecraft [purpur](https://github.com/PurpurMC/Purpur) version.
+- Downloads several plugins from [spigot](https://github.com/SirDank/dank.tool/search?q=%23+spigot+plugins) / [github](https://github.com/SirDank/dank.tool/search?q=%23+github+server-builder+files+and+plugins).
+- Applies [Log4j](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition) exploit patches automatically.
+- Creates startup scripts for starting the server / tunnel to be run on Windows / Linux with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags).
+- Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically.
+- Configures most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically.
 
-- Uses [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) | [Extra](https://github.com/etil2jz/etil-minecraft-flags)
+## To Do
+
+- [ ] Add datapacks
+- [ ] Add GeyserMC / Floodgate Options
+- [ ] Add Iris Dimensions ( newhorizons / nether / theend )
+
+## History
 
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > [old version](https://github.com/SirDank/dank.serverbuilder)
-
-- Start building your server by running [dank.tool.exe](https://github.com/SirDank/dank.tool/raw/main/dank.tool.exe)
-
-- [Source Code](https://github.com/SirDank/dank.tool/blob/main/__modules__/dank.minecraft-server-builder.py)
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p><br>
 
@@ -58,6 +77,10 @@
 - IPs are crafted in such a way that it avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
 
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description
+
+## To Do
+
+- [ ] Use masscan for windows
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png"></p><br>
 
