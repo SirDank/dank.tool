@@ -57,6 +57,7 @@
 - [ ] Add datapacks
 - [ ] Add GeyserMC / Floodgate Options
 - [ ] Add Iris Dimensions ( newhorizons / nether / theend )
+- [ ] Maybe add a super simple web panel to only display stats
 
 ## History
 
