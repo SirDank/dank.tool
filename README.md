@@ -11,13 +11,13 @@
 
 - This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the [tool](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py) itself and its [modules](https://github.com/SirDank/dank.tool/tree/main/__modules__)!
 
-## Quickstart
+## ♦️ Quickstart ♦️
 
 - Run the [dank.tool.exe](https://github.com/SirDank/dank.tool/releases)
 
 - Note: If you would like to run the python scripts instead, there might be small changes you might have to make for it to execute properly.
 
-## Note
+## ♦️ Note ♦️
 
 - The dank.tool executable might be flagged as malware (false positive) since it has been built using python (nuitka).
 
@@ -25,7 +25,7 @@
 
 - Try to not spam the [ ENTER ] key on the exe's terminal, as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
 
-## Short URLs
+## ♦️ Short URLs ♦️
 
 - Github Short URL: https://bit.ly/dank-tool
 
@@ -39,7 +39,7 @@
 
 - A complete package for building and hosting a fully optimised minecraft purpur server on your local Windows/Linux system without port-forwarding!
 
-## Features
+## ♦️ Features ♦️
 
 - Customization for server name, [purpur](https://github.com/PurpurMC/Purpur) version, server ram, allowing cracked players.
 - Multithreaded file downloader (2 threads)
@@ -52,14 +52,14 @@
 - Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically.
 - Configures most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically.
 
-## To Do
+## ♦️ To Do ♦️
 
 - [ ] Add datapacks
 - [ ] Add GeyserMC / Floodgate Options
 - [ ] Add Iris Dimensions ( newhorizons / nether / theend )
 - [ ] Maybe add a super simple web panel to only display stats
 
-## History
+## ♦️ History ♦️
 
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > [old version](https://github.com/SirDank/dank.serverbuilder)
 
@@ -79,13 +79,13 @@
 
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description
 
-## To Do
+## ♦️ To Do ♦️
 
 - [ ] Use masscan for windows
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png"></p><br>
 
-## Also check out dank.resourcepack!
+## ♦️ Also check out dank.resourcepack! ♦️
 
 - https://github.com/SirDank/dank.resourcepack
 
@@ -97,7 +97,7 @@
 
 - Full credits to [amd64fox](https://github.com/SpotX-CLI/SpotX-Win)
 
-## Features
+## ♦️ Features ♦️
 
 - Blocks all banner, video and audio ads in the client
 - Unlocks the skip function of any track

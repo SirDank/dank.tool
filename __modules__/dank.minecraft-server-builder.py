@@ -10,7 +10,7 @@ def print_banner():
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{magenta}#")))
 
-def downloader(url, filename):
+def file_downloader(url, filename):
     
     while True:
         try:
@@ -19,7 +19,7 @@ def downloader(url, filename):
             size = response.headers['Content-Length']
             open(filename,"wb").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ] [ {int(int(size)/1024000)} MB ]")); break
-        except: wait = input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
+        except: input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
 
 def one():
 
@@ -40,7 +40,7 @@ def one():
         try:
             version_list = requests.get("https://api.purpurmc.org/v2/purpur").json()['versions']
             print(clr(f'  > Available Purpur Versions: {", ".join(version_list)}')); break
-        except: wait = input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+        except: input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
     # user inputs [ name, version, ram, allow_cracked ]
 
@@ -106,8 +106,8 @@ def one():
 
     # create folders
 
-    for folder in ['world', 'world/datapacks', 'world_nether', 'world_nether/datapacks', 'world_the_end', 'world_the_end/datapacks', 'plugins', 'autoplug']:
-        try: os.mkdir(folder)
+    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins', 'autoplug']:
+        try: os.makedirs(folder)
         except: pass
 
     # begin preparing downloads
@@ -178,7 +178,7 @@ def one():
     print(clr("\n  > Starting Multiple Downloads... [ this might take a few seconds ]"))
 
     start_time = time.time()
-    multithread(downloader, 2, to_download_urls, to_download_filenames, False)
+    multithread(file_downloader, 2, to_download_urls, to_download_filenames, False)
     time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}5{white} seconds...")); time.sleep(5)
@@ -349,7 +349,7 @@ def two():
         time.sleep(10); sys_open(f'https://imgur.com/a/W30s7bw')
         time.sleep(10); sys_open(f'https://playit.gg/manage')
         print(clr("\n  > To start your server, run start_server.cmd / start_server.sh\n\n  > To start your tunnel so people can connect over the internet, run start_tunnel.cmd / start_tunnel.sh"))
-        wait = input(clr("\n  > After you have read the above and created a tunnel, press [ ENTER ] "))
+        input(clr("\n  > After you have read the above and created a tunnel, press [ ENTER ] "))
 
     else:
         
