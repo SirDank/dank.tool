@@ -31,6 +31,10 @@
 
 - Direct download: https://bit.ly/dank-tool-download
 
+## ♦️ To Do ♦️
+
+- [ ] Add offline mode for offline scripts
+
 <p>&nbsp;</p>    
 
 ---  
