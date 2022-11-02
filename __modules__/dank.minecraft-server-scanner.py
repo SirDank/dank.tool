@@ -35,7 +35,13 @@ def check(ip):
             open('servers.txt','a').write(f"\n{to_print}")
         except Exception as exc:
             exc = str(exc)
-            if not "timed out" in exc and not "unreachable" in exc and not "refused" in exc and not "not valid" in exc and not "invalid" in exc and not "closed" in exc and not "did not" in exc and not "aborted" in exc and not "failed" in exc and not "no route" in exc:
+            err_found = False
+            
+            for err in ["timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "Broken pipe"]:
+                if err in exc:
+                    err_found = True; break
+            
+            if not err_found:
                 open('servers.txt','a').write(f"\n{ip} | {exc}")
                 print(f"{ip} | {exc}\n")
 
