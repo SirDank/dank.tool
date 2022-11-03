@@ -21,7 +21,7 @@
 
 - The dank.tool executable might be flagged as malware (false positive) since it has been built using python (nuitka).
 
-- Python is not required to use the protable exe version of this tool.
+- Python is not required to use the portable exe version of this tool.
 
 - Try to not spam the [ ENTER ] key on the exe's terminal, as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
 
