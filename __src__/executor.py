@@ -29,7 +29,7 @@ session = requests.Session()
 
 current_version = "1.3"
 exec_mode = "exe"
-title("dank.tool [ initializing ]"); exec(chdir(exec_mode))
+title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]"); exec(chdir(exec_mode))
 print(clr(f"\n  > Version: {current_version}"))
 
 # get latest version number
@@ -111,7 +111,7 @@ ThreadPoolExecutor(10).submit(dankware_counter)
 
 # execute, catch errors if any
 
-time.sleep(3); title("dank.tool"); cls()
+time.sleep(3); title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); cls()
 
 try: exec(code)
 except Exception as exp:

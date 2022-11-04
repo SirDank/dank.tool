@@ -2,6 +2,8 @@ import os
 import sys
 import time
 import requests
+from shutil import unpack_archive
+from packaging.version import parse
 from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open
 
 def print_banner():
@@ -14,11 +16,12 @@ def file_downloader(url, filename):
     
     while True:
         try:
-            response = requests.get(url, headers={'user-agent':'dankware'}, allow_redirects=True)
+            response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
             data = response.content
-            size = response.headers['Content-Length']
+            try: size = int(int(response.headers['Content-Length'])/1024000)
+            except: size = "unknown"
             open(filename,"wb").write(data); data = ""
-            print(clr(f"\n  > Completed [ {filename} ] [ {int(int(size)/1024000)} MB ]")); break
+            print(clr(f"\n  > Completed [ {filename} ] [ {size} MB ]")); break
         except: input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
 
 def one():
@@ -59,7 +62,7 @@ def one():
         if version in version_list: break
         else: rm_line()
 
-    title(f"dank.serverbuilder [ {name} - {version} ]")
+    title(f"𝚍𝚊𝚗𝚔.𝚜𝚎𝚛𝚟𝚎𝚛𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ {name} - {version} ]")
 
     print("")
     while True:
@@ -67,6 +70,13 @@ def one():
         if 'y' in cracked: cracked = True; break
         elif 'n' in cracked: cracked = False; break
         else: rm_line() # BROKEN
+        
+    # setting extra flags
+
+    if version in ["1.17", "1.18"]: extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
+    elif version in ["1.12", "1.13", "1.14", "1.15", "1.16"]: extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
+    elif version in ["1.7", "1.8", "1.9", "1.10", "1.11"]: extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
+    else: extra_flag = ""
 
     # setting max ram
 
@@ -106,7 +116,7 @@ def one():
 
     # create folders
 
-    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins', 'autoplug']:
+    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'autoplug']:
         try: os.makedirs(folder)
         except: pass
 
@@ -121,8 +131,14 @@ def one():
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
         else: to_download_filenames.append(file)
+        
+    # iris packs
+    
+    for file in ['newhorizons', 'theend']:
+        to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/main.zip")
+        to_download_filenames.append(f"plugins/Iris/packs/{file}.zip")
 
-    # spigot plugins 
+    # spigot plugins
 
     spigot_plugins = {
         "ActionHealth": 2661,
@@ -182,19 +198,25 @@ def one():
     time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}5{white} seconds...")); time.sleep(5)
-
-    # creating local files
-
-    cls(); print(clr("\n  > Creating local files..."))
-
-    open('eula.txt','w').write('eula=true')
-
-    if version in ["1.17", "1.18"]: extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
-    elif version in ["1.12", "1.13", "1.14", "1.15", "1.16"]: extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
-    elif version in ["1.7", "1.8", "1.9", "1.10", "1.11"]: extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
-    else: extra_flag = ""
+    
+    # unpacking downloaded archives
+    
+    print(clr("\n  > Unpacking..."))
+    
+    for name in ['newhorizons', 'theend']:
+    
+        unpack_archive(f'plugins/Iris/packs/{name}.zip', 'plugins/Iris/packs', 'zip')
+        time.sleep(1)
+        os.rename(f'plugins/Iris/packs/{name}-main', f'plugins/Iris/packs/{name}')
+        os.remove(f'plugins/Iris/packs/{name}.zip')
 
 one()
+
+# creating local files
+
+cls(); print(clr("\n  > Creating local files..."))
+
+open('eula.txt','w').write('eula=true')
 
 open('start_server.cmd', 'w').write(f'''@echo off
 title Minecraft Server Console [ {name} - {version} ]
@@ -438,11 +460,12 @@ def three():
         except Exception as exp:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
-            time.sleep(5)
+            print(clr("\n  > Sleeping 10 seconds...",2))
+            time.sleep(10)
 
     # done!
 
-    title("dank.serverbuilder [ complete! ]")
+    title("𝚍𝚊𝚗𝚔.𝚜𝚎𝚛𝚟𝚎𝚛𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
     complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
     cls(); print(align(clr_banner(complete))); time.sleep(5)
     sys_open('https://allmylinks.com/sir-dankenstein')
