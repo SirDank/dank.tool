@@ -15,13 +15,13 @@
 
 - Run the [dank.tool.exe](https://github.com/SirDank/dank.tool/releases)
 
-- Note: If you would like to run the python scripts instead, there might be small changes you might have to make for it to execute properly.
-
 ## ♦️ Note ♦️
 
 - The dank.tool executable might be flagged as malware (false positive) since it has been built using python (nuitka).
 
 - Python is not required to use the portable exe version of this tool.
+
+- If you would like to run the python scripts instead, there might be small changes you might have to make for it to execute properly.
 
 - Try to not spam the [ ENTER ] key on the exe's terminal, as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
 
@@ -34,12 +34,16 @@
 ## ♦️ To Do ♦️
 
 - [ ] Add offline mode for offline scripts
+- [ ] Finish reworking dank.downloader.py
+- [ ] Add dank.proxy.py ( scraper / checker )
+- [ ] Add dank.hwid-spoofer
+- [ ] Add Linux Support ( Far Future )
 
 <p>&nbsp;</p>    
 
 ---  
 
-# 🚨 Minecraft Server Builder 🚨
+# 🚨 Most Advanced Minecraft Server Builder 🚨
 
 - A complete package for building and hosting a fully optimised minecraft purpur server on your local Windows/Linux system without port-forwarding!
 
@@ -58,9 +62,9 @@
 
 ## ♦️ To Do ♦️
 
-- [ ] Add datapacks
+- [x] Add Iris Dimensions ( newhorizons / theend )
+- [ ] Add datapacks ( based on mc version )
 - [ ] Add GeyserMC / Floodgate Options
-- [ ] Add Iris Dimensions ( newhorizons / nether / theend )
 - [ ] Maybe add a super simple web panel to only display stats
 
 ## ♦️ History ♦️
