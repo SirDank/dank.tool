@@ -18,7 +18,7 @@ def file_downloader(url, filename):
         try:
             response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
             data = response.content
-            try: size = int(int(response.headers['Content-Length'])/1024000)
+            try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
             except: size = "unknown"
             open(filename,"wb").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ] [ {size} MB ]")); break
@@ -90,13 +90,13 @@ def one():
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{white} for your mc server!\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods, Choose {magenta}Option 1\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's tunnel without port-forwarding, Choose {magenta}Option 2"))
+    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{white} for your mc server!\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's plugin without port-forwarding, Choose {magenta}Option 1\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods, Choose {magenta}Option 2"))
 
     print("")
     while True:
         playit = input(clr("  > Choice [ 1 / 2 ]: ") + magenta)
         if playit in ["1","2"]:
-            if playit == "2": playit = True
+            if playit == "1": playit = True
             else: playit = False
             break
         else: rm_line()
@@ -111,7 +111,7 @@ def one():
             dir_name = name + f"_{counter}"
             try: os.mkdir(dir_name); break
             except: counter += 1
-    sys_open(f'"{dir_name}"')
+    sys_open(f'{dir_name}')
     os.chdir(dir_name)
 
     # create folders
@@ -127,12 +127,15 @@ def one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.5
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
         else: to_download_filenames.append(file)
         
     # iris packs
+
+    to_download_urls.append(f"https://github.com/IrisDimensions/overworld/archive/refs/heads/stable.zip")
+    to_download_filenames.append(f"plugins/Iris/packs/overworld.zip")
     
     for file in ['newhorizons', 'theend']:
         to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/main.zip")
@@ -157,6 +160,9 @@ def one():
         "TabTPS": 82528,
         "TreeAssist": 67436,
     }
+    
+    if playit:
+        spigot_plugins["playit-gg"] = 105566
 
     for plugin in spigot_plugins:
         to_download_urls.append(f"https://api.spiget.org/v2/resources/{spigot_plugins[plugin]}/download")
@@ -168,18 +174,6 @@ def one():
     for file_url in github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']):
         to_download_urls.append(file_url)
         to_download_filenames.append(f"plugins/{file_url.split('/')[-1]}")
-    # > ProtocolLib.jar > github_file_selector("dmulloy2/ProtocolLib", "add", ['ProtocolLib.jar'])
-    # > tabtps > github_file_selector("jpenilla/TabTPS", "add", ['spigot'])
-    # > BetterSleeping > github_file_selector("Nuytemans-Dieter/BetterSleeping", "add", ['BetterSleeping']) # "remove", [] WORKS AS WELL!
-    # > ActionHealth > github_file_selector("zeshan321/ActionHealth", "add", ['ActionHealth']) # "remove", [] WORKS AS WELL!
-    # > SkinRestorer > github_file_selector("SkinsRestorer/SkinsRestorerX", "add", ['SkinsRestorer']) # "remove", [] WORKS AS WELL!
-    # > PlayerNPC > github_file_selector("SergiFerry/PlayerNPC", "add", ['PlayerNPC']) # "remove", []) WORKS AS WELL!
-
-    # > playit.gg tunnel prorgram
-    if playit:
-        for file_url in github_file_selector("playit-cloud/playit-agent", "remove", ['apple-intel', 'apple-m1', 'unsigned', 'dmg']):
-            to_download_urls.append(file_url)
-            to_download_filenames.append(file_url.split('/')[-1])
 
     # > AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
@@ -203,12 +197,12 @@ def one():
     
     print(clr("\n  > Unpacking..."))
     
-    for name in ['newhorizons', 'theend']:
+    for file in ['newhorizons', 'theend']:
     
-        unpack_archive(f'plugins/Iris/packs/{name}.zip', 'plugins/Iris/packs', 'zip')
+        unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
-        os.rename(f'plugins/Iris/packs/{name}-main', f'plugins/Iris/packs/{name}')
-        os.remove(f'plugins/Iris/packs/{name}.zip')
+        os.rename(f'plugins/Iris/packs/{file}-main', f'plugins/Iris/packs/{file}')
+        os.remove(f'plugins/Iris/packs/{file}.zip')
 
 one()
 
@@ -219,6 +213,7 @@ cls(); print(clr("\n  > Creating local files..."))
 open('eula.txt','w').write('eula=true')
 
 open('start_server.cmd', 'w').write(f'''@echo off
+COLOR 0F
 title Minecraft Server Console [ {name} - {version} ]
 java -jar AutoPlug-Client.jar
 ''')
@@ -312,6 +307,8 @@ plugins:
       github: 
         repo-name: SergiFerry/PlayerNPC
         asset-name: PlayerNPC
+  playit-gg: 
+    spigot-id: 105566
   SkinsRestorer: 
     spigot-id: 2124
     alternatives: 
@@ -348,38 +345,6 @@ plugins:
         repo-name: ventureoo/BloodFading
         asset-name: BloodFading
 ''')
-
-def two():
-
-    # one-time setup
-
-    if playit:
-        
-        for file in github_downloads("https://api.github.com/repos/playit-cloud/playit-agent/releases/latest"):
-            filename = str(file.split('/')[-1])
-            if "aarch64" in filename: playit_aarch64 = filename
-            elif "arm7" in filename: playit_arm7 = filename
-            elif not "unsigned" in filename and "signed" in filename: playit_win = filename
-            elif "apple" not in filename and "dmg" not in filename: playit_linux64 = filename
-
-        open('start_tunnel.cmd','w').write(f'@echo off\ntitle Minecraft Java Playit.gg Tunnel [ {name} - {version} ] Keep me running to allow players to join your server!\n{playit_win}\npause')
-        open('start_tunnel.sh', 'wb').write(f'#!/bin/sh\n./{playit_linux64}'.encode().replace(b'\r\n',b'\n'))
-        open('start_tunnel_aarch64.sh', 'wb').write(f'#!/bin/sh\n./{playit_aarch64}'.encode().replace(b'\r\n',b'\n'))
-        open('start_tunnel_arm7.sh', 'wb').write(f'#!/bin/sh\n./{playit_arm7}'.encode().replace(b'\r\n',b'\n'))
-
-        time.sleep(3); print_read_me(); print(clr(f"\n  > To allow players to connect to your server you first need to create a tunnel.\n\n  > Follow the steps on {magenta}imgur{white} and complete the one-time setup.\n\n  > If it does not open, please go to [ https://imgur.com/a/W30s7bw ] and [ https://playit.gg/manage ] manually.\n\n  > Opening in 10s..."))
-        time.sleep(10); sys_open(f'https://imgur.com/a/W30s7bw')
-        time.sleep(10); sys_open(f'https://playit.gg/manage')
-        print(clr("\n  > To start your server, run start_server.cmd / start_server.sh\n\n  > To start your tunnel so people can connect over the internet, run start_tunnel.cmd / start_tunnel.sh"))
-        input(clr("\n  > After you have read the above and created a tunnel, press [ ENTER ] "))
-
-    else:
-        
-        print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
-        if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
-            sys_open('https://youtu.be/X75GbRaGzu8')
-
-two()
 
 # start server and shutdown server for optimizing the below settings and configuring
 
@@ -448,7 +413,12 @@ def three():
 
     while True:
         
-        print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > After your server has stopped, press [ ENTER ] "))
+        print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
+
+        # im not sure how or why this file is being created, its being deleted regardless
+
+        try: os.remove(f'C:\Users\{os.getlogin()}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\javaw.jar')
+        except: pass
 
         try:
             for path in configs:
@@ -462,6 +432,13 @@ def three():
             print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
             print(clr("\n  > Sleeping 10 seconds...",2))
             time.sleep(10)
+    
+    if playit:    
+        print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message..."))  
+    else:
+        print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
+        if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
+            sys_open('https://youtu.be/X75GbRaGzu8')
 
     # done!
 

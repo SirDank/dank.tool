@@ -51,7 +51,7 @@
 
 - Customization for server name, [purpur](https://github.com/PurpurMC/Purpur) version, server ram, allowing cracked players.
 - Multithreaded file downloader (2 threads)
-- Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating java / plugins / server and much more!
+- Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating jdk / plugins / server and much more!
 - Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
 - Downloads selected minecraft [purpur](https://github.com/PurpurMC/Purpur) version.
 - Downloads several plugins from [spigot](https://github.com/SirDank/dank.tool/search?q=%23+spigot+plugins) / [github](https://github.com/SirDank/dank.tool/search?q=%23+github+server-builder+files+and+plugins).
