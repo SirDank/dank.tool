@@ -4,30 +4,43 @@ import time
 import requests
 from datetime import datetime
 from win10toast import ToastNotifier
-from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title, sys_open, get_duration
+from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
 
-session = requests.Session()
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
 
 # get commit date & time
 
 def updated_on(url, dankware_module = True):
-    
-    while True:
-        try:
-            if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
-            response = session.get(url).json()
-            if response == []: return f"[ unreleased ]"
-            else:
-                date, time = response[0]["commit"]["author"]["date"].split("T")
-                date = date.split("-")
-                time = time.replace("Z","").split(":")
-                date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
-                break
-        except: input(clr(f"\n  > Failed to get commit date & time! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
+    if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
+    response = requests.get(url).json()
+    if response == []: return f"[ unreleased ]"
+    else:
+        date, time = response[0]["commit"]["author"]["date"].split("T")
+        date = date.split("-")
+        time = time.replace("Z","").split(":")
+        date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
+    
     return f"[ updated {get_duration(date_time_data, interval='dynamic')} ago ]"
+
+# multithread requests
+
+def get_request_responses(task_id):
+    
+    global request_responses
+    
+    # get global runs
+    
+    if task_id == 0: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware").json()['value']
+    elif task_id == 1: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool").json()['value']
+        
+    # get updated on time
+    
+    elif task_id == 2: request_responses["dank.minecraft-server-builder"] = updated_on("dank.minecraft-server-builder")
+    elif task_id == 3: request_responses["dank.minecraft-server-scanner"] = updated_on("dank.minecraft-server-scanner")
+    elif task_id == 4: request_responses["SpotX-Win"] = updated_on("https://api.github.com/repos/SpotX-CLI/SpotX-Win/commits?path=Install.ps1&page=1&per_page=1",False)
+    elif task_id == 5: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
 
 # main
 
@@ -41,24 +54,25 @@ while True:
         # print randomly coloured and aligned banner
         
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
-
-        # get global runs
         
+        # multithread requests
+        
+        request_responses = {}
         while True:
-            try:
-                dankware_runs = session.get("https://api.countapi.xyz/get/dankware").json()['value']
-                danktool_runs = session.get("https://api.countapi.xyz/get/dank.tool").json()['value']
-                stats = f"\n\n    > Global dankware runs: {dankware_runs}\n\n    > Global dank.tool runs: {danktool_runs}"
-                break
-            except: input(clr(f"\n  > Failed to get runs! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+            try: multithread(get_request_responses, 100, [ _ for _ in range(6) ], progress_bar=False); break
+            except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+        
+        # global runs
+        
+        stats = f"\n\n    > Global dankware runs: {request_responses['dankware_runs']}\n\n    > Global dank.tool runs: {request_responses['danktool_runs']}"
             
         # available modules
         
         modules = [
-            f'Minecraft Server Builder {updated_on("dank.minecraft-server-builder")}',
-            f'Minecraft Server Scanner {updated_on("dank.minecraft-server-scanner")}',
-            f'Spotify Ad Blocker {updated_on("https://api.github.com/repos/SpotX-CLI/SpotX-Win/commits?path=Install.ps1&page=1&per_page=1",False)}',
-            f'Auto Clicker {updated_on("dank.auto-clicker")}',
+            f'Minecraft Server Builder {request_responses["dank.minecraft-server-builder"]}',
+            f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
+            f'Spotify Ad Blocker {request_responses["SpotX-Win"]}',
+            f'Auto Clicker {request_responses["dank.auto-clicker"]}',
             'Software Downloader [ UNFINISHED ]',
         ]
         
@@ -79,7 +93,7 @@ while True:
                 cmd_to_be_executed = input(clr("\n  > ") + white)
                 if cmd_to_be_executed == 'exit': break
                 try: exec(cmd_to_be_executed)
-                except Exception as exc: print(clr(f"\n  > ERROR: {exc}",2))
+                except: print(clr("\n" + err(sys.exc_info()), 2))
 
     try:
     
@@ -88,14 +102,9 @@ while True:
         elif "Software Downloader" in choice: project = "dank.downloader"; discord_rpc_state = "bulk downloading software"
         elif "Spotify Ad Blocker" in choice: project = "dank.spotx-windows"; discord_rpc_state = "disabling ads on spotify"
         elif "Auto Clicker" in choice: project = "dank.auto-clicker"; discord_rpc_state = "running auto-clicker"
-        # elif "Spotify Downloader" in choice: project = "dank.spotiflyer"
-        # elif "Instagram Ghostbuster" in choice: project = "dank.insta-tool"
-        # elif "Chatbot" in choice: project = "dank.ai"
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
-        # elif "Discord Backup" in choice: project = "dank.discord-backup"
-        # elif "Youtube Video Downloader" in choice: project = "dank.yt-downloader"
         # elif "Temp File Cleaner" in choice: project = "dank.temp-cleaner"
         else: project = "404"
         
@@ -117,12 +126,13 @@ while True:
             cls(); exec(code.replace("exec_mode = 'script'", "exec_mode = 'exe'").replace('exec_mode = "script"', 'exec_mode = "exe"'))
             cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
 
-    except Exception as exp:
-        
-        cls(); exc_type, exc_obj, exc_tb = sys.exc_info()
-        print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
-        print(clr(f"\n  > Please take a screenshot of this and post it on > https://github.com/SirDank/dank.tool/issues/new"))
-        print(clr("\n  > Opening in 3s..."))
-        time.sleep(3); sys_open("https://github.com/SirDank/dank.tool/issues/new")
-        input(clr(f"\n  > Press [ENTER] to continue: "))
+    except:
+
+        err_message = err(sys.exc_info())
+        print(clr(err_message, 2))
+        while True:
+            try: requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Module: {choice}\n\n  {err_message}```"}); break
+            except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+        print(clr("\n  > Error Reported! It will be fixed soon!"))
+        input(clr("\n  > Press [ENTER] to EXIT..."))
 

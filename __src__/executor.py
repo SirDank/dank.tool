@@ -22,12 +22,12 @@ import requests
 from pypresence import Presence
 from packaging.version import parse
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, chdir, title, sys_open
+from dankware import cls, clr, chdir, title, sys_open, err
 session = requests.Session()
 
 # change directory to exe's location
 
-current_version = "1.3"
+current_version = "1.4"
 exec_mode = "exe"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]"); exec(chdir(exec_mode))
 print(clr(f"\n  > Version: {current_version}"))
@@ -114,15 +114,16 @@ ThreadPoolExecutor(10).submit(dankware_counter)
 time.sleep(3); title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); cls()
 
 try: exec(code)
-except Exception as exp:
-
+except:
+    
     cls(); latest_version = latest_dank_tool_version()
     if not latest_version == current_version:
         print(clr(f"\n  > An error occured! Updating to the latest version...\n\n> Update Found: {latest_version}")); download_latest_dank_tool()
     else:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        print(clr(f"\n  > Version: {current_version} | Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
-        print(clr("\n  > Please take a screenshot of this and post it on https://github.com/SirDank/dank.tool/issues/new\n\n  > Paste the contents of dank.tool_error.txt if it exists!\n\n  > Opening in 3s..."))
-        time.sleep(3); sys_open("https://github.com/SirDank/dank.tool/issues/new")
-    input(clr("\n  > Press [ENTER] to continue: "))
-
+        err_message = err(sys.exc_info())
+        print(clr(err_message, 2))
+        while True:
+            try: requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Version: {current_version}\n\n  {err_message}```"}); break
+            except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+        print(clr("\n  > Error Reported! It will be fixed soon!"))
+    input(clr("\n  > Press [ENTER] to EXIT..."))
