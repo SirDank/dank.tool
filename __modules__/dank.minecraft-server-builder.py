@@ -417,7 +417,7 @@ def three():
 
         # im not sure how or why this file is being created, its being deleted regardless
 
-        try: os.remove(f'C:\Users\{os.getlogin()}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\javaw.jar')
+        try: os.remove(f'C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\javaw.jar')
         except: pass
 
         try:
