@@ -127,7 +127,7 @@ def one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217 # 'mcMMO.jar'
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
         else: to_download_filenames.append(file)
@@ -191,7 +191,7 @@ def one():
     multithread(file_downloader, 2, to_download_urls, to_download_filenames, False)
     time_taken = int(time.time()-start_time)
 
-    print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}5{white} seconds...")); time.sleep(5)
+    print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
     
     # unpacking downloaded archives
     
