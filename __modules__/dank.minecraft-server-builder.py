@@ -90,7 +90,7 @@ def one():
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{white} for your mc server!\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's plugin without port-forwarding, Choose {magenta}Option 1\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods, Choose {magenta}Option 2"))
+    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{white} for your mc server!\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's plugin without port-forwarding\n  - Choose {magenta}Option 1\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods\n  - Choose {magenta}Option 2"))
 
     print("")
     while True:
@@ -197,7 +197,7 @@ def one():
     
     print(clr("\n  > Unpacking..."))
     
-    for file in ['newhorizons', 'theend']:
+    for file in ['newhorizons', 'theend', 'overworld']:
     
         unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
@@ -434,7 +434,7 @@ def three():
                 open(path, 'w', encoding='utf-8').write(config_data)
             break
         except:
-            print(clr(err(sys.exc_info()) + "\n\n  > Sleeping 10 seconds...", 2))
+            print(clr(f"\n{err(sys.exc_info())}\n\n  > Sleeping 10 seconds...", 2))
             time.sleep(10)
     
     if playit:    
