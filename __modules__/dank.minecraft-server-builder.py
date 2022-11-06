@@ -134,11 +134,11 @@ def one():
         
     # iris packs
 
-    to_download_urls.append(f"https://github.com/IrisDimensions/overworld/archive/refs/heads/stable.zip")
-    to_download_filenames.append(f"plugins/Iris/packs/overworld.zip")
-    
-    for file in ['newhorizons', 'theend']:
-        to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/main.zip")
+    for file in ['newhorizons', 'theend', 'overworld']:
+        
+        if file == 'overworld': tmp_name = 'stable'
+        else: tmp_name = 'main'
+        to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/{tmp_name}.zip")
         to_download_filenames.append(f"plugins/Iris/packs/{file}.zip")
 
     # spigot plugins
@@ -198,10 +198,13 @@ def one():
     print(clr("\n  > Unpacking..."))
     
     for file in ['newhorizons', 'theend', 'overworld']:
+        
+        if file == 'overworld': tmp_name = 'stable'
+        else: tmp_name = 'main'
     
         unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
-        os.rename(f'plugins/Iris/packs/{file}-main', f'plugins/Iris/packs/{file}')
+        os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
         os.remove(f'plugins/Iris/packs/{file}.zip')
 
 one()
