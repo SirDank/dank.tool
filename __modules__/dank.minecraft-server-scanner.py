@@ -37,7 +37,7 @@ def check(ip):
             exc = str(exc)
             err_found = False
             
-            for err in ["timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "Broken pipe"]:
+            for err in ["timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe"]:
                 if err in exc:
                     err_found = True; break
             

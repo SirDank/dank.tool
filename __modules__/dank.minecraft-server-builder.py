@@ -4,7 +4,7 @@ import time
 import requests
 from shutil import unpack_archive
 from packaging.version import parse
-from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open
+from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open, err
 
 def print_banner():
     cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
@@ -375,6 +375,10 @@ configs = {
         "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
     },
     
+    "plugins/Log4JExploitFix/config.yml": {
+        "enabled: false": "enabled: true"
+    },
+    
     "pufferfish.yml": {
         "dab:\n  enabled: false": "dab:\n  enabled: true",
         "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
@@ -419,6 +423,8 @@ def three():
 
         try: os.remove(f'C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\javaw.jar')
         except: pass
+        
+        # updating configs
 
         try:
             for path in configs:
@@ -427,10 +433,8 @@ def three():
                 if path == "server.properties" and cracked: config_data = config_data.replace("online-mode=true","online-mode=false")
                 open(path, 'w', encoding='utf-8').write(config_data)
             break
-        except Exception as exp:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            print(clr(f"\n  > Error: {str(exp)} | {exc_type} | Line: {exc_tb.tb_lineno}",2))
-            print(clr("\n  > Sleeping 10 seconds...",2))
+        except:
+            print(clr(err(sys.exc_info()) + "\n\n  > Sleeping 10 seconds...", 2))
             time.sleep(10)
     
     if playit:    
