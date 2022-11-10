@@ -182,6 +182,11 @@ def one():
     # > purpur.jar
     to_download_urls.append(f"https://api.purpurmc.org/v2/purpur/{version}/latest/download")
     to_download_filenames.append("purpur.jar")
+    
+    # > MCAntiMalware.jar
+    for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
+        to_download_urls.append(file_url)
+        to_download_filenames.append(file_url.split('/')[-1])
 
     # begin multithreaded downloads | threads = 2
 
@@ -224,6 +229,13 @@ java -jar AutoPlug-Client.jar
 open('start_server.sh', 'wb').write(f'''#!/bin/sh
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
+
+open('anti-malware.cmd', 'w').write(f'''@echo off
+COLOR 0F
+title Minecraft Anti-Malware [ {name} - {version} ]
+java -jar MCAntiMalware.jar
+pause
+''')
 
 open('autoplug/general.yml', 'w').write(f'''
 general: 
