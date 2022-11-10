@@ -127,7 +127,7 @@ def one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217 # 'mcMMO.jar'
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
         else: to_download_filenames.append(file)
@@ -422,11 +422,6 @@ def three():
         
         print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
 
-        # im not sure how or why this file is being created, its being deleted regardless
-
-        try: os.remove(f'C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\javaw.jar')
-        except: pass
-        
         # updating configs
 
         try:
