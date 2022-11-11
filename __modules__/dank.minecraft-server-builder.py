@@ -237,6 +237,12 @@ java -jar MCAntiMalware.jar
 pause
 ''')
 
+open('anti-malware.sh', 'wb').write(f'''#!/bin/sh
+java -jar MCAntiMalware.jar
+'''.encode().replace(b'\r\n',b'\n'))
+
+# creating autoplug configs
+
 open('autoplug/general.yml', 'w').write(f'''
 general: 
   autoplug: 
@@ -417,7 +423,7 @@ configs = {
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
         # "view-distance=10": "view-distance=8",
-        #"resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f"
+        # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f"
     },
     
     "spigot.yml": {

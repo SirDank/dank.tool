@@ -53,12 +53,13 @@
 - Multithreaded file downloader (2 threads)
 - Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating jdk / plugins / server and much more!
 - Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
-- Downloads [purpur](https://github.com/PurpurMC/Purpur) of selected minecraft version.
-- Downloads several plugins from [spigot](https://github.com/SirDank/dank.tool/search?q=%23+spigot+plugins) / [github](https://github.com/SirDank/dank.tool/search?q=%23+github+server-builder+files+and+plugins).
-- Applies [Log4j](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition) exploit patches automatically.
-- Creates startup scripts for starting the server / tunnel to be run on Windows / Linux with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags).
-- Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically.
-- Configures most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically.
+- Downloads [purpur](https://github.com/PurpurMC/Purpur) of selected minecraft version
+- Downloads several plugins from [spigot](https://github.com/SirDank/dank.tool/search?q=%23+spigot+plugins) / [github](https://github.com/SirDank/dank.tool/search?q=%23+github+server-builder+files+and+plugins)
+- Downloads [minecraft anti-malware](https://www.spigotmc.org/resources/spigot-anti-malware.64982/)
+- Applies [Log4j](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition) exploit patches automatically
+- Creates startup scripts for starting the server / tunnel to be run on Windows / Linux with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags)
+- Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically
+- Configures most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically
 
 ## ♦️ To Do ♦️
 
