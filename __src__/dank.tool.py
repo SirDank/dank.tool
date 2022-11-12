@@ -48,19 +48,19 @@ while True:
     
     title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); exec_mode = "exe"; exec(chdir(exec_mode)); banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
     discord_rpc_state = "on the main menu"
+    
+    # multithread requests
+        
+    request_responses = {}
+    while True:
+        try: multithread(get_request_responses, 100, [ _ for _ in range(6) ], progress_bar=False); break
+        except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
     while True:
         
         # print randomly coloured and aligned banner
         
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
-        
-        # multithread requests
-        
-        request_responses = {}
-        while True:
-            try: multithread(get_request_responses, 100, [ _ for _ in range(6) ], progress_bar=False); break
-            except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
         
         # global runs
         
@@ -131,7 +131,7 @@ while True:
         err_message = err(sys.exc_info())
         print(clr(err_message, 2))
         while True:
-            try: requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Module: {choice}\n\n  {err_message}```"}); break
+            try: requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"}); break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
         print(clr("\n  > Error Reported! It will be fixed soon!"))
         input(clr("\n  > Press [ENTER] to EXIT..."))
