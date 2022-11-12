@@ -39,6 +39,10 @@
 - [ ] Add dank.hwid-spoofer
 - [ ] Add Linux Support ( Far Future )
 
+## ♦️ Support ♦️
+
+- [Discord](https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god)
+
 <p>&nbsp;</p>    
 
 ---  
