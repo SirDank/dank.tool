@@ -116,7 +116,7 @@ def one():
 
     # create folders
 
-    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'autoplug']:
+    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'datapacks_backup', 'autoplug']:
         try: os.makedirs(folder)
         except: pass
 
@@ -144,7 +144,7 @@ def one():
     # spigot plugins
 
     spigot_plugins = {
-        "ActionHealth": 2661,
+        #"ActionHealth": 2661,
         "BetterSleeping": 60837,
         "BloodEffect": 90955,
         "BloodFading": 99263,
@@ -159,6 +159,9 @@ def one():
         "Spark": 57242,
         "TabTPS": 82528,
         "TreeAssist": 67436,
+        "LevelledMobs": 74304,
+        "PlayTime": 26016,
+        "PlaceholderAPI": 6245,
     }
     
     if playit:
@@ -272,14 +275,14 @@ updater:
     enable: true
     profile: AUTOMATIC
   mods-updater: 
-    enable: true
+    enable: false
     profile: AUTOMATIC
 ''')
 
 open('autoplug/plugins.yml', 'w').write('''
 plugins: 
   general: 
-    keep-removed: false
+    keep-removed: true
   ActionHealth: 
     exclude: false
     spigot-id: 2661
@@ -365,11 +368,21 @@ plugins:
       github: 
         repo-name: ventureoo/BloodFading
         asset-name: BloodFading
+  LevelledMobs: 
+    spigot-id: 74304
+    alternatives: 
+      github: 
+        repo-name: ArcanePlugins/LevelledMobs
+        asset-name: LevelledMobs
+  PlayTime: 
+    spigot-id: 26016
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
 
 configs = {
+    
+    # paper config
 
     "config/paper-world-defaults.yml": {
         "prevent-moving-into-unloaded-chunks: false": "prevent-moving-into-unloaded-chunks: true",
@@ -379,8 +392,12 @@ configs = {
         # "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
     },
     
+    # plugins
+    
     "plugins/ChestSort/config.yml": {
         "use-permissions: true": "use-permissions: false",
+        "sorting-enabled-by-default: false": "sorting-enabled-by-default: true",
+        "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
     },
     
     "plugins/Corpses/config.yml": {
@@ -394,11 +411,20 @@ configs = {
         'custom-quit-message: "none"': 'custom-quit-message: "&8&l[&c-&8&l]&c&l {PLAYER}"',
         "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
         "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
+        "use-bukkit-permissions: true": "use-bukkit-permissions: false",
+        "  - playtime.check\n  - playtime.uptime\n  - afk": "  - afk", # to prevent multiple entries
+        "  - afk": "  - playtime.check\n  - playtime.uptime\n  - afk",
     },
     
     "plugins/Log4JExploitFix/config.yml": {
         "enabled: false": "enabled: true"
     },
+    
+    "plugins/LevelledMobs/rules.yml": {
+        " | &f%displayname%": "",
+    },
+    
+    # server configs
     
     "pufferfish.yml": {
         "dab:\n  enabled: false": "dab:\n  enabled: true",
@@ -409,16 +435,18 @@ configs = {
         "use-alternate-keepalive: false": "use-alternate-keepalive: true",
         "aggressive-towards-villager-when-lagging: true": "aggressive-towards-villager-when-lagging: false",
         "brain-ticks: 1": "brain-ticks: 2",
-        "lobotomize\n          enabled: false": "lobotomize\n          enabled: true",
+        "lobotomize:\n          enabled: false": "lobotomize:\n          enabled: true",
         "teleport-if-outside-border: false": "teleport-if-outside-border: true",
     },
     
     "server.properties": {
         "simulation-distance=10": "simulation-distance=4",
-        "motd=A Minecraft Server": f"motd={motd_spaces}\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
+        "motd=A Minecraft Server": f"motd={motd_spaces}\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
         "server-name=Unknown Server": f"server-name={name}",
         "require-resource-pack=false": "require-resource-pack=true",
+        'resource-pack-prompt={"text":"github.com/SirDank/dank.resourcepack","color":"light_purple"}': 'resource-pack-prompt=', # to prevent multiple entries
         'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resourcepack","color":"light_purple"}',
+        "resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip": "resource-pack=", # to prevent multiple entries
         "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip",
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
@@ -438,7 +466,7 @@ def three():
 
     while True:
         
-        print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server using start_server.cmd / start_server.sh\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
+        print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
 
         # updating configs
 
