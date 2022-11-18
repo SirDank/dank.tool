@@ -43,6 +43,10 @@
 
 - [Discord](https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god)
 
+## ♦️ Suggestions ♦️
+
+- [Give SirDank Ideas for Windows Tools!](https://dank-site.onrender.com/dank-tool-suggestions)
+
 <p>&nbsp;</p>    
 
 ---  
