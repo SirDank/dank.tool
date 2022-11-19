@@ -80,9 +80,9 @@ def main():
 
     cls(); print(clr(f"\n  > Generating {ips_amt} ips...\n"))
     ips = []; temp_ips_amt = ips_amt
-    while temp_ips_amt >= 1000:
-        multithread(generate, 1000, progress_bar=False)
-        temp_ips_amt -= 1000
+    while temp_ips_amt >= 2500:
+        multithread(generate, 2500, progress_bar=False)
+        temp_ips_amt -= 2500
     if temp_ips_amt > 0: multithread(generate, temp_ips_amt, progress_bar=False)
 
     ips = list(set(ips))
