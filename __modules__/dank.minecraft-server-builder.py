@@ -130,6 +130,7 @@ def one():
     for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
+        if '.zip' in file: to_download_filenames.append(f"datapacks_backup/{file}")
         else: to_download_filenames.append(file)
         
     # iris packs
