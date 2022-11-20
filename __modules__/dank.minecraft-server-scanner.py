@@ -33,7 +33,7 @@ def check(ip):
             to_print = f"{ip} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {response['city']} | {response['connection']['org']} | {response['connection']['domain']} | {status.description}".replace('\n','|')
             for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']: to_print = to_print.replace(_,'')
             print(clr(f"  > {to_print}\n"))
-            open('servers.txt','a').write(f"\n{to_print}")
+            open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
         except Exception as exc:
             exc = str(exc)
             err_found = False
@@ -43,7 +43,7 @@ def check(ip):
                     err_found = True; break
             
             if not err_found:
-                open('servers.txt','a').write(f"\n{ip} | {exc}")
+                open('servers.txt','a',encoding='utf-8').write(f"\n{ip} | {exc}")
                 print(f"{ip} | {exc}\n")
 
 # generates random valid ip
