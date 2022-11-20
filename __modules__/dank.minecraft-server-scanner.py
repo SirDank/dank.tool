@@ -30,7 +30,7 @@ def check(ip):
             #try: query = server.query(); query_response = f"| {query.software}"
             #except: query_response = ""
             response = requests.get(f"http://ipwho.is/{ip}").json()
-            to_print = f"{ip} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {response['city']} | {response['connection']['org']} | {response['connection']['domain']} | {status.description}".replace('\n','|')
+            to_print = f"{ip} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {response['city']} | {response['connection']['org']} | {response['connection']['domain']} | {status.description}".replace('\n','|').replace('ü','u')
             for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']: to_print = to_print.replace(_,'')
             print(clr(f"  > {to_print}\n"))
             open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
