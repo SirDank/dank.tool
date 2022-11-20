@@ -68,7 +68,7 @@ def main():
     try: open('servers.txt','x')
     except: pass
     scanned = sorted(list(set(open('scanned.txt','r').read().splitlines())))
-    servers = open('servers.txt','r').read().splitlines()
+    #servers = open('servers.txt','r').read().splitlines()
     #open('servers.txt','w').write('\n'.join(servers))
 
     while True:
@@ -79,24 +79,29 @@ def main():
         ips_amt = input(clr("\n  > Amount of IPs to scan: ") + magenta)
         if ips_amt.isdigit(): ips_amt = int(ips_amt); break
 
-    cls(); print(clr(f"\n  > Generating {ips_amt} ips...\n"))
-    ips = []
+    gen_rem = ips_amt
+    while gen_rem > 0:
+        
+        ips = []
+        generated = 0
+        gen_rate = 500 # threads to generate at
+        gen_amt = 10000 # max generate / check amount
+        if not gen_rem >= gen_amt: gen_amt = gen_rem
+        
+        cls(); print(clr(f"\n  > Generating {gen_amt} ips...\n"))
 
-    #temp_ips_amt = ips_amt
-    #while temp_ips_amt >= 2500:
-    #    multithread(generate, 2500, progress_bar=False)
-    #    temp_ips_amt -= 2500
-    #if temp_ips_amt > 0: multithread(generate, temp_ips_amt, progress_bar=False)
-
-    multithread(generate, ips_amt, progress_bar=False)
-
-    ips = list(set(ips))
-    cls(); print(clr(f"\n  > Checking {ips_amt} ips...\n"))
-    multithread(check, threads, ips)
-    
-    scanned = sorted(list(set(scanned + ips)))
-    open('scanned.txt','w').write('\n'.join(scanned))
-    #cls(); print(clr(f"\n > Scanning Complete! Sleeping 5s...")); time.sleep(5)
+        while generated < gen_amt:
+            if gen_amt >= gen_rate:
+                multithread(generate, gen_rate); generated += gen_rate
+            else:
+                multithread(generate, gen_amt); generated += gen_amt
+ 
+        ips = list(set(ips))
+        cls(); print(clr(f"\n  > Checking {gen_amt} ips...\n"))
+        multithread(check, threads, ips)
+        scanned = sorted(list(set(scanned + ips)))
+        open('scanned.txt','w').write('\n'.join(scanned))
+        gen_rem -= gen_amt
     
 if __name__ == "__main__": 
     main()
