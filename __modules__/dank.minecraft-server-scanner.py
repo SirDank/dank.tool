@@ -92,9 +92,9 @@ def main():
 
         while generated < gen_amt:
             if gen_amt >= gen_rate:
-                multithread(generate, gen_rate); generated += gen_rate
+                multithread(generate, gen_rate, progress_bar=False); generated += gen_rate
             else:
-                multithread(generate, gen_amt); generated += gen_amt
+                multithread(generate, gen_amt, progress_bar=False); generated += gen_amt
  
         ips = list(set(ips))
         cls(); print(clr(f"\n  > Checking {gen_amt} ips...\n"))
