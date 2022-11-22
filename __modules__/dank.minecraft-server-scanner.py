@@ -1,4 +1,6 @@
 import os
+import time
+import json
 import socket
 import requests
 from mcstatus import JavaServer
@@ -52,8 +54,8 @@ def generate():
 
     while True:
         ip = random_ip()
-        if ip in ips or ip in scanned: continue
-        ips.append(ip); break
+        if ip in ips.keys() or ip in scanned.keys(): continue
+        ips[ip] = ""; break
 
 def main():
     
@@ -67,9 +69,9 @@ def main():
     except: pass
     try: open('servers.txt','x')
     except: pass
-    scanned = sorted(list(set(open('scanned.txt','r').read().splitlines())))
-    #servers = open('servers.txt','r').read().splitlines()
-    #open('servers.txt','w').write('\n'.join(servers))
+    cls(); print(clr("\n  > Loading scanned.txt..."))
+    try: scanned = json.loads(open('scanned.txt','r').read())
+    except: scanned = {}
 
     while True:
         cls(); print(align(clr_banner(banner)))
@@ -82,25 +84,34 @@ def main():
     gen_rem = ips_amt
     while gen_rem > 0:
         
-        ips = []
+        ips = {}
         generated = 0
         gen_rate = 500 # threads to generate at
-        gen_amt = 10000 # max generate / check amount
+        gen_amt = 50000 # max generate / check amount
         if not gen_rem >= gen_amt: gen_amt = gen_rem
         
+        # multithreaded generator
+        
         cls(); print(clr(f"\n  > Generating {gen_amt} ips...\n"))
-
         while generated < gen_amt:
             if gen_amt >= gen_rate:
                 multithread(generate, gen_rate, progress_bar=False); generated += gen_rate
             else:
                 multithread(generate, gen_amt, progress_bar=False); generated += gen_amt
- 
-        ips = list(set(ips))
-        cls(); print(clr(f"\n  > Checking {gen_amt} ips...\n"))
-        multithread(check, threads, ips)
-        scanned = sorted(list(set(scanned + ips)))
-        open('scanned.txt','w').write('\n'.join(scanned))
+                
+        # multithreaded checker
+
+        cls(); print(clr(f"\n  > Checking {len(ips)} ips...\n"))
+        multithread(check, threads, list(ips.keys()))
+        
+        # saving scanned ips
+    
+        cls(); print(clr("\n  > Saving scanned.txt..."))
+        for ip in ips: scanned[ip] = ""
+        print(clr(f"\n  > Totally Scanned {len(scanned)} IPs!"))
+        open('scanned.txt','w').write(str(scanned).replace("'",'"'))
+        time.sleep(5)
+        
         gen_rem -= gen_amt
     
 if __name__ == "__main__": 
