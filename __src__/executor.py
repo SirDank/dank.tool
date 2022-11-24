@@ -111,7 +111,8 @@ ThreadPoolExecutor(10).submit(dankware_counter)
 
 # execute, catch errors if any
 
-time.sleep(3); title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); cls()
+#time.sleep(3)
+title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); cls()
 
 try: exec(code)
 except:
@@ -125,5 +126,5 @@ except:
         while True:
             try: requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"}); break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
-        print(clr("\n  > Error Reported! It will be fixed soon!"))
+        print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again, else if it is a logic error, it will be fixed soon!"))
     input(clr("\n  > Press [ENTER] to EXIT..."))
