@@ -109,7 +109,7 @@ def main():
         cls(); print(clr("\n  > Saving scanned.txt..."))
         for ip in ips: scanned[ip] = ""
         print(clr(f"\n  > Totally Scanned {len(scanned)} IPs!"))
-        open('scanned.txt','w').write(str(scanned).replace("'",'"'))
+        open('scanned.txt','w').write(str(scanned).replace("'",'"').replace(",",",\n"))
         time.sleep(5)
         
         gen_rem -= gen_amt
