@@ -32,8 +32,12 @@ def get_request_responses(task_id):
     
     # get global runs
     
-    if task_id == 0: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware").json()['value']
-    elif task_id == 1: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool").json()['value']
+    if task_id == 0: 
+        try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", timeout=3).json()['value']
+        except: request_responses["dankware_runs"] = "unknown"
+    elif task_id == 1: 
+        try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool", timeout=3).json()['value']
+        except: request_responses["danktool_runs"] = "unknown"
         
     # get updated on time
     
