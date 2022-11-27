@@ -213,7 +213,8 @@ def one():
     
         unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
-        os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
+        try: os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
+        except: print(clr(f'\n  > ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"',2)); input(clr("\n  > Press [ENTER] after doing the above... "))
         os.remove(f'plugins/Iris/packs/{file}.zip')
 
 one()
