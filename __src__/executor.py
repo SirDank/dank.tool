@@ -105,7 +105,7 @@ except: pass
 # update counter
 
 def dankware_counter():
-    try: requests.get("https://api.countapi.xyz/hit/dank.tool")
+    try: requests.get("https://api.countapi.xyz/hit/dank.tool", timeout=3)
     except: pass
 ThreadPoolExecutor(10).submit(dankware_counter)
 
