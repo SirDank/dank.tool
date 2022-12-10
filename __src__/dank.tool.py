@@ -44,7 +44,8 @@ def get_request_responses(task_id):
     elif task_id == 2: request_responses["dank.minecraft-server-builder"] = updated_on("dank.minecraft-server-builder")
     elif task_id == 3: request_responses["dank.minecraft-server-scanner"] = updated_on("dank.minecraft-server-scanner")
     elif task_id == 4: request_responses["SpotX-Win"] = updated_on("https://api.github.com/repos/SpotX-CLI/SpotX-Win/commits?path=Install.ps1&page=1&per_page=1",False)
-    elif task_id == 5: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
+    elif task_id == 5: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=install.ps1&page=1&per_page=1",False)
+    elif task_id == 6: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
 
 # main
 
@@ -57,7 +58,7 @@ while True:
         
     request_responses = {}
     while True:
-        try: multithread(get_request_responses, 100, [ _ for _ in range(6) ], progress_bar=False); break
+        try: multithread(get_request_responses, 100, [ _ for _ in range(7) ], progress_bar=False); break
         except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
     while True:
@@ -75,7 +76,7 @@ while True:
         modules = [
             f'Minecraft Server Builder {request_responses["dank.minecraft-server-builder"]}',
             f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
-            f'Spotify Ad Blocker {request_responses["SpotX-Win"]}',
+            f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
             f'Auto Clicker {request_responses["dank.auto-clicker"]}',
             'Software Downloader [ UNFINISHED ]',
         ]
@@ -101,18 +102,19 @@ while True:
 
     try:
     
-        if "Minecraft Server Builder" in choice: project = "dank.minecraft-server-builder"; discord_rpc_state = "building a minecraft server"
-        elif "Minecraft Server Scanner" in choice: project = "dank.minecraft-server-scanner"; discord_rpc_state = "scanning for minecraft servers"
-        elif "Software Downloader" in choice: project = "dank.downloader"; discord_rpc_state = "bulk downloading software"
-        elif "Spotify Ad Blocker" in choice: project = "dank.spotx-windows"; discord_rpc_state = "disabling ads on spotify"
-        elif "Auto Clicker" in choice: project = "dank.auto-clicker"; discord_rpc_state = "running auto-clicker"
+        if "Minecraft Server Builder" in choice: project, discord_rpc_state = "dank.minecraft-server-builder", "building a minecraft server"
+        elif "Minecraft Server Scanner" in choice: project, discord_rpc_state = "dank.minecraft-server-scanner", "scanning for minecraft servers"
+        elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
+        elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
+        elif "Auto Clicker" in choice: project, discord_rpc_state = "dank.auto-clicker", "running auto-clicker"
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
         # elif "Temp File Cleaner" in choice: project = "dank.temp-cleaner"
+        # elif "Software Updater" in choice: project = "dank.software-updater"
         else: project = "404"
         
-        # get src from github if not dev_ver else locally
+        # get src from github if not dev_ver else get src locally
 
         if not development_version: # development_version defined in executor.py
             while True:
