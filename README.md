@@ -110,12 +110,11 @@
 
 ---  
 
-# 🚨 Spotify Ad Blocker 🚨
+# 🚨 SpotX + Spicetify Installer 🚨
+
+## ♦️ SpotX Features ♦️
 
 - Full credits to [amd64fox](https://github.com/SpotX-CLI/SpotX-Win)
-
-## ♦️ Features ♦️
-
 - Blocks all banner, video and audio ads in the client
 - Unlocks the skip function of any track
 - Hiding podcasts, episodes and audiobooks from the homepage (optional)
@@ -127,11 +126,15 @@
 - Removed RTL rules (Removed all right-to-left CSS rules to simplify CSS files)
 - Code minification
 
-## ♦️ To Do ♦️
+## ♦️ Spicetify Features ♦️
 
-- [ ] Add [Spicetify](https://spicetify.app/)
+- Change colors whole UI
+- Inject CSS for advanced customization
+- Inject Extensions (Javascript script) to extend functionalities, manipulate UI and control player.
+- Inject Custom apps
+- Remove bloated components to improve performance
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194408190-f8b21de3-4d24-4a00-b609-b57af43cc245.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/206840952-513f2ded-09c0-4202-8fad-f191933acd3c.png"></p><br>
 
 <p>&nbsp;</p>    
 
