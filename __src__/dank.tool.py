@@ -44,7 +44,7 @@ def get_request_responses(task_id):
     elif task_id == 2: request_responses["dank.minecraft-server-builder"] = updated_on("dank.minecraft-server-builder")
     elif task_id == 3: request_responses["dank.minecraft-server-scanner"] = updated_on("dank.minecraft-server-scanner")
     elif task_id == 4: request_responses["SpotX-Win"] = updated_on("https://api.github.com/repos/SpotX-CLI/SpotX-Win/commits?path=Install.ps1&page=1&per_page=1",False)
-    elif task_id == 5: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=install.ps1&page=1&per_page=1",False)
+    elif task_id == 5: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1",False)
     elif task_id == 6: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
 
 # main
