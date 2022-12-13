@@ -94,10 +94,14 @@ def main():
         
         cls(); print(clr(f"\n  > Generating {gen_amt} ips...\n"))
         while generated < gen_amt:
-            if gen_amt >= gen_rate:
-                multithread(generate, gen_rate, progress_bar=False); generated += gen_rate
-            else:
-                multithread(generate, gen_amt, progress_bar=False); generated += gen_amt
+            while True:
+                try: 
+                    if gen_amt >= gen_rate:
+                        multithread(generate, gen_rate, progress_bar=False); generated += gen_rate
+                    else:
+                        multithread(generate, gen_amt, progress_bar=False); generated += gen_amt
+                    break
+                except KeyboardInterrupt: input(clr(f"\n  > Failed to generate ips! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
                 
         # multithreaded checker
 

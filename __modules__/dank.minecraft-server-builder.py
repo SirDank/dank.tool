@@ -19,7 +19,7 @@ def file_downloader(url, filename):
             response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
             data = response.content
             try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
-            except: size = "unknown"
+            except: size = "?"
             open(filename,"wb").write(data); data = ""
             print(clr(f"\n  > Completed [ {filename} ] [ {size} MB ]")); break
         except: input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
@@ -196,9 +196,14 @@ def one():
 
     print(clr("\n  > Starting Multiple Downloads... [ this might take a few seconds ]"))
 
-    start_time = time.time()
-    multithread(file_downloader, 2, to_download_urls, to_download_filenames, False)
-    time_taken = int(time.time()-start_time)
+    while True:
+        try:
+            start_time = time.time()
+            multithread(file_downloader, 2, to_download_urls, to_download_filenames, False)
+            time_taken = int(time.time()-start_time)
+            break
+        except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
+        
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
     
