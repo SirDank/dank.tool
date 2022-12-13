@@ -59,6 +59,7 @@ while True:
     request_responses = {}
     while True:
         try: multithread(get_request_responses, 100, [ _ for _ in range(7) ], progress_bar=False); break
+        except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
         except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
 
     while True:
