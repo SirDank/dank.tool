@@ -41,8 +41,12 @@ def main():
     banner ="\n\n                                                               \n   _         _             _               _ _     _           \n _| |___ ___| |_   ___ _ _| |_ ___ ___ ___| |_|___| |_ ___ ___ \n| . | .'|   | '_|_| .'| | |  _| . |___|  _| | |  _| '_| -_|  _|\n|___|__,|_|_|_,_|_|__,|___|_| |___|   |___|_|_|___|_,_|___|_|  \n                                                               \n"
 
     exec(chdir("script"))
-    cls(); print(align(clr_banner(banner)))
-    delay = float(input(clr("\n  > Click Delay in Seconds: ") + magenta))
+    while True:
+        try:
+            cls(); print(align(clr_banner(banner)))
+            delay = float(input(clr("\n  > Click Delay in Seconds: ") + magenta))
+            break
+        except: pass
     notifications = input(clr("\n  > Disable Notifications? [y/n]: ") + magenta).lower()
     if 'y' in notifications: notifications = False
     else: notifications = True
