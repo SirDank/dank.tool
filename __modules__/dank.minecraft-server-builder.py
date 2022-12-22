@@ -3,7 +3,6 @@ import sys
 import time
 import requests
 from shutil import unpack_archive
-from packaging.version import parse
 from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open, err
 
 def print_banner():
@@ -127,7 +126,7 @@ def one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # Iris 2.3.7 | mcMMO 2.1.217
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'PublicCrafters.jar', 'Iris.jar']: # Iris 2.3.11 | mcMMO 2.1.217 | PublicCrafters 4.13.5
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
         elif '.zip' in file: to_download_filenames.append(f"datapacks_backup/{file}")
@@ -469,24 +468,30 @@ configs = {
 
 }
 
-def three():
+def two():
+  
+    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
 
-    while True:
-        
-        print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
+    def config_updater(path):
+        config_data = open(path, 'r', encoding='utf-8').read()
+        for setting in configs[path]: config_data = config_data.replace(setting, configs[path][setting])
+        if path == "server.properties" and cracked: config_data = config_data.replace("online-mode=true","online-mode=false")
+        open(path, 'w', encoding='utf-8').write(config_data)
 
-        # updating configs
+    # [ updating configs ] try all and ignore errors
 
-        try:
-            for path in configs:
-                config_data = open(path, 'r', encoding='utf-8').read()
-                for setting in configs[path]: config_data = config_data.replace(setting, configs[path][setting])
-                if path == "server.properties" and cracked: config_data = config_data.replace("online-mode=true","online-mode=false")
-                open(path, 'w', encoding='utf-8').write(config_data)
-            break
-        except:
-            print(clr(f"\n{err(sys.exc_info())}\n\n  > Sleeping 10 seconds...", 2))
-            time.sleep(10)
+    for path in configs:
+        try: config_updater(path)
+        except: pass
+  
+    # [ updating configs ] try all without ignoring errors
+
+    for path in configs:
+        while True:
+            try: config_updater(path); break
+            except:
+                choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > Press [ ENTER ] to retry or type \"skip\" to skip: ", 2))
+                if choice == "skip": pass
     
     if playit:    
         print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message..."))  
@@ -502,4 +507,4 @@ def three():
     cls(); print(align(clr_banner(complete))); time.sleep(5)
     sys_open('https://allmylinks.com/sir-dankenstein')
 
-three()
+two()
