@@ -42,7 +42,7 @@ def one():
         try:
             version_list = requests.get("https://api.purpurmc.org/v2/purpur").json()['versions']
             print(clr(f'  > Available Purpur Versions: {", ".join(version_list)}')); break
-        except: input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+        except: input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the Internet! Press [ ENTER ] to try again... ",2))
 
     # user inputs [ name, version, ram, allow_cracked ]
 
@@ -61,7 +61,7 @@ def one():
         if version in version_list: break
         else: rm_line()
 
-    title(f"𝚍𝚊𝚗𝚔.𝚜𝚎𝚛𝚟𝚎𝚛𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ {name} - {version} ]")
+    title(f"𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ {name} - {version} ]")
 
     print("")
     while True:
@@ -110,7 +110,8 @@ def one():
             dir_name = name + f"_{counter}"
             try: os.mkdir(dir_name); break
             except: counter += 1
-    sys_open(f'{dir_name}')
+    #sys_open(f'{dir_name}')
+    os.system(f'explorer.exe "{dir_name}"')
     os.chdir(dir_name)
 
     # create folders
@@ -218,7 +219,7 @@ def one():
         unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
         try: os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
-        except: print(clr(f'\n  > ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"',2)); input(clr("\n  > Press [ENTER] after doing the above... "))
+        except: input(clr(f'\n  > ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after doing the above... ',2))
         os.remove(f'plugins/Iris/packs/{file}.zip')
 
 one()
@@ -470,7 +471,7 @@ configs = {
 
 def two():
   
-    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, enter \".check java\" in the console window to download it\n\n  > Use \".start\" to start the server\n\n  > Use \".stop\" to stop the server\n\n  > Use \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration..."))
+    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration... "))
 
     def config_updater(path):
         config_data = open(path, 'r', encoding='utf-8').read()
@@ -494,7 +495,7 @@ def two():
                 if choice == "skip": pass
     
     if playit:    
-        print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message..."))  
+        print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message... "))  
     else:
         print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
         if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
@@ -502,7 +503,7 @@ def two():
 
     # done!
 
-    title("𝚍𝚊𝚗𝚔.𝚜𝚎𝚛𝚟𝚎𝚛𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
+    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
     complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
     cls(); print(align(clr_banner(complete))); time.sleep(5)
     sys_open('https://allmylinks.com/sir-dankenstein')

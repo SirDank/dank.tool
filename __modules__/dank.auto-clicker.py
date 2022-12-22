@@ -5,7 +5,7 @@ from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from concurrent.futures import ThreadPoolExecutor
-from dankware import clr_banner, align, clr, cls, chdir, magenta
+from dankware import clr_banner, align, clr, cls, chdir, title, magenta
 
 def notify(mode):
     
@@ -74,4 +74,4 @@ def main():
     toast.show_toast("dank.auto-clicker","😁 Goodbye!",duration = 5,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
 
 if __name__ == "__main__":
-    main()
+    title(f"𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛"); main()
