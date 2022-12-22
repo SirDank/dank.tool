@@ -423,9 +423,9 @@ configs = {
         "  - afk": "  - playtime.check\n  - playtime.uptime\n  - afk",
     },
     
-    "plugins/Log4JExploitFix/config.yml": {
-        "enabled: false": "enabled: true"
-    },
+    #"plugins/Log4JExploitFix/config.yml": {
+    #    "enabled: false": "enabled: true"
+    #},
     
     "plugins/LevelledMobs/rules.yml": {
         " | &f%displayname%": "",
