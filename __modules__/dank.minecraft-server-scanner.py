@@ -4,8 +4,7 @@ import json
 import socket
 import requests
 from mcstatus import JavaServer
-from dankware import multithread, chdir, clr, cls, title, clr_banner, align, random_ip, magenta, rm_line
-#from dankware import multithread, chdir, clr, cls, title, align, random_ip, magenta, rm_line
+from dankware import multithread, chdir, clr, cls, title, align, random_ip, magenta, rm_line
 
 '''
 
@@ -75,8 +74,7 @@ def main():
     except: scanned = {}
 
     while True:
-        cls(); print(align(clr_banner(banner)))
-        #cls(); print(align(clr(banner,4)))
+        cls(); print(align(clr(banner,4)))
         threads = input(clr("\n  > The scanned.txt file stores the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The scanned.txt is only updated after the scan is complete.\n\n  > Threads: ") + magenta)
         if threads.isdigit(): threads = int(threads)
         else: continue

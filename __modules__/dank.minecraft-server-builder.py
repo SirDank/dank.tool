@@ -3,12 +3,10 @@ import sys
 import time
 import requests
 from shutil import unpack_archive
-from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open, err
-#from dankware import title, rm_line, chdir, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
+from dankware import title, rm_line, chdir, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
 
 def print_banner():
-    cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
-    #cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
+    cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
 
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{magenta}#")))
@@ -509,8 +507,7 @@ def two():
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
     complete_banner = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
-    cls(); print(align(clr_banner(complete_banner))); time.sleep(5)
-    #cls(); print(align(clr(complete_banner,4))); time.sleep(5)
+    cls(); print(align(clr(complete_banner,4))); time.sleep(5)
     sys_open('https://allmylinks.com/sir-dankenstein')
 
 two()
