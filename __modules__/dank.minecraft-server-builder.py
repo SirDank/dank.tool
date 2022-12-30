@@ -204,7 +204,7 @@ def one():
             multithread(file_downloader, 2, to_download_urls, to_download_file_names, False)
             time_taken = int(time.time()-start_time)
             break
-        except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
+        except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); rm_line()
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
 
