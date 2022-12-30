@@ -5,8 +5,7 @@ from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from concurrent.futures import ThreadPoolExecutor
-from dankware import clr_banner, align, clr, cls, chdir, title, magenta
-#from dankware import align, clr, cls, chdir, title, magenta
+from dankware import align, clr, cls, chdir, title, magenta
 
 def notify(mode):
     
@@ -44,8 +43,7 @@ def main():
     exec(chdir("script"))
     while True:
         try:
-            cls(); print(align(clr_banner(banner)))
-            #cls(); print(align(clr(banner,4)))
+            cls(); print(align(clr(banner,4)))
             delay = float(input(clr("\n  > Click Delay in Seconds: ") + magenta))
             break
         except: pass

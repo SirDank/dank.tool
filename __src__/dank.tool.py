@@ -10,8 +10,7 @@ import time
 import requests
 from datetime import datetime
 from win10toast import ToastNotifier
-from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
-#from dankware import align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
+from dankware import align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
 
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
@@ -77,8 +76,7 @@ while True:
         
         # print randomly coloured and aligned banner
         
-        cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
-        #cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
+        cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
         
         # global runs
         
@@ -154,8 +152,8 @@ while True:
             try:
                 #if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
                 #else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > Message: {user_message}```"
-                #requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": content})
-                requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
+                # > updated to custom url to prevent webhook spamming
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
                 break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
         cls(); input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
