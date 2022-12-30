@@ -76,10 +76,7 @@ check_file_integrity()
 # version checker / updater: overwrites the existing executable with the latest one using the help of a batch script called 'dankware-updater.cmd' which deletes itself upon completion!
 
 def download_latest_dank_tool():
-    
-    #if not os.path.isfile("dank.tool.exe"):
-    #    print(clr('\n  > Rename this executable back to "dank.tool.exe" for it to update properly!\n\n  > Exiting in 25 seconds...',2))
-    #    time.sleep(25); sys.exit()
+
     print(clr("\n  > Downloading dank.tool-latest.exe..."))
     while True:
         try: data = session.get("https://github.com/SirDank/dank.tool/blob/main/dank.tool.exe?raw=true", allow_redirects=True).content; break
@@ -139,8 +136,7 @@ ThreadPoolExecutor(10).submit(dankware_counter)
 
 # execute, catch errors if any
 
-#time.sleep(3)
-title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); cls()
+title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [{current_version}]"); cls()
 
 try: exec(code)
 except:

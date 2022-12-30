@@ -10,7 +10,7 @@ import time
 import requests
 from datetime import datetime
 from win10toast import ToastNotifier
-from dankware import align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
+from dankware import align, cls, clr, magenta, white, chdir, title, get_duration, multithread, err
 
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
@@ -61,8 +61,10 @@ def get_request_responses(task_id):
 
 while True:
     
-    title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕"); exec_mode = "exe"; exec(chdir(exec_mode)); banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
+    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [{current_version}]") # current_version defined in executor.py
+    exec_mode = "exe"; exec(chdir(exec_mode))
     discord_rpc_state = "on the main menu"
+    banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
     
     # multithread requests
         
