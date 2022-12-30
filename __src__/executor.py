@@ -63,10 +63,10 @@ def check_file_integrity():
 
     global current_version
 
-    current_version = "0"
     if file_name.endswith('.exe'):
         checksum = sha1(open(file_name,'rb').read()).hexdigest()
         if not checksum in checksums:
+            current_version = "0"
             warning_banner = '\n\n\n\n888       888        d8888 8888888b.  888b    888 8888888 888b    888  .d8888b.  888 \n888   o   888       d88888 888   Y88b 8888b   888   888   8888b   888 d88P  Y88b 888 \n888  d8b  888      d88P888 888    888 88888b  888   888   88888b  888 888    888 888 \n888 d888b 888     d88P 888 888   d88P 888Y88b 888   888   888Y88b 888 888        888 \n888d88888b888    d88P  888 8888888P"  888 Y88b888   888   888 Y88b888 888  88888 888 \n88888P Y88888   d88P   888 888 T88b   888  Y88888   888   888  Y88888 888    888 Y8P \n8888P   Y8888  d8888888888 888  T88b  888   Y8888   888   888   Y8888 Y88b  d88P  "  \n888P     Y888 d88P     888 888   T88b 888    Y888 8888888 888    Y888  "Y8888P88 888 \n\n\n'
             cls(); print(clr(align(warning_banner) + "\n  > Integrity check failure! This may indicate that the software has been tampered with.\n\n  > As a precaution, I recommend that you check your system for malware.", 2))
             input(clr("\n  > Press [ ENTER ] to force update dank.tool... ")); cls()
