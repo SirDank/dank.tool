@@ -4,7 +4,8 @@ import json
 import socket
 import requests
 from mcstatus import JavaServer
-from dankware import multithread, chdir, clr, cls, title, clr_banner, align, random_ip, magenta
+from dankware import multithread, chdir, clr, cls, title, clr_banner, align, random_ip, magenta, rm_line
+#from dankware import multithread, chdir, clr, cls, title, align, random_ip, magenta, rm_line
 
 '''
 
@@ -61,7 +62,7 @@ def main():
     
     global ips, scanned
 
-    title("dank.minecraft-server-scanner"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
+    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
     socket.setdefaulttimeout(1)
 
     exec_mode = "script"; exec(chdir(exec_mode))
@@ -75,6 +76,7 @@ def main():
 
     while True:
         cls(); print(align(clr_banner(banner)))
+        #cls(); print(align(clr(banner,4)))
         threads = input(clr("\n  > The scanned.txt file stores the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The scanned.txt is only updated after the scan is complete.\n\n  > Threads: ") + magenta)
         if threads.isdigit(): threads = int(threads)
         else: continue
@@ -95,18 +97,21 @@ def main():
         cls(); print(clr(f"\n  > Generating {gen_amt} ips...\n"))
         while generated < gen_amt:
             while True:
-                try: 
+                try:
                     if gen_amt >= gen_rate:
                         multithread(generate, gen_rate, progress_bar=False); generated += gen_rate
                     else:
                         multithread(generate, gen_amt, progress_bar=False); generated += gen_amt
                     break
-                except KeyboardInterrupt: input(clr(f"\n  > Failed to generate ips! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
+                except KeyboardInterrupt: input(clr(f"\n  > Failed to generate ips! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); rm_line()
                 
         # multithreaded checker
 
-        cls(); print(clr(f"\n  > Checking {len(ips)} ips...\n"))
-        multithread(check, threads, list(ips.keys()))
+        while True:
+            try: 
+                cls(); print(clr(f"\n  > Checking {len(ips)} ips...\n"))
+                multithread(check, threads, list(ips.keys())); break
+            except KeyboardInterrupt: input(clr(f"\n  > Failed to check ips! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); rm_line()
         
         # saving scanned ips
     

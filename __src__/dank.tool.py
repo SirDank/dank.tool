@@ -1,3 +1,9 @@
+###################################################################################
+
+#                            https://github.com/SirDank                            
+
+###################################################################################
+
 import os
 import sys
 import time
@@ -5,6 +11,7 @@ import requests
 from datetime import datetime
 from win10toast import ToastNotifier
 from dankware import clr_banner, align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
+#from dankware import align, cls, clr, magenta, white, chdir, title, sys_open, get_duration, multithread, err
 
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
@@ -14,15 +21,19 @@ toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your
 def updated_on(url, dankware_module = True):
 
     if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
-    response = requests.get(url).json()
-    if response == []: return f"[ unreleased ]"
-    else:
-        date, time = response[0]["commit"]["author"]["date"].split("T")
-        date = date.split("-")
-        time = time.replace("Z","").split(":")
-        date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
+    try:
+
+        response = requests.get(url,timeout=3).json()
+        if response == []: return f"[ unreleased ]"
+        else:
+            date, time = response[0]["commit"]["author"]["date"].split("T")
+            date = date.split("-")
+            time = time.replace("Z","").split(":")
+            date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
+        
+        return f"[ updated {get_duration(date_time_data, interval='dynamic')} ago ]"
     
-    return f"[ updated {get_duration(date_time_data, interval='dynamic')} ago ]"
+    except: return "[ updated ? ago ]"  
 
 # multithread requests
 
@@ -67,6 +78,7 @@ while True:
         # print randomly coloured and aligned banner
         
         cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
+        #cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
         
         # global runs
         
@@ -137,8 +149,14 @@ while True:
 
         err_message = err(sys.exc_info())
         print(clr(err_message, 2))
+        #user_message = input(clr("\n  > Briefly explain what you were doing when this error occurred [ sent to the developer ]: ",2) + white)
         while True:
-            try: requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"}); break
+            try:
+                #if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
+                #else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > Message: {user_message}```"
+                #requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": content})
+                requests.post("https://discord.com/api/webhooks/1038503148681179246/GkOrGGuK3mcYpx3OzDMyqCtcnWbx7cZqSK_PbyIkxIbjizPlmjcHFt2dlPhxSBLf2n38", json={"content": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
+                break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
-        input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT..."))
+        cls(); input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
 
