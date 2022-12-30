@@ -496,7 +496,7 @@ def two():
             try: config_updater(path); break
             except:
                 choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > Press [ ENTER ] to retry or type \"skip\" to skip: ", 2))
-                if choice == "skip": pass
+                if choice == "skip": break
 
     if playit:
         print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message... "))  
