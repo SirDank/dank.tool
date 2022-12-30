@@ -80,6 +80,8 @@
 
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > [old version](https://github.com/SirDank/dank.serverbuilder)
 
+## ♦️ Preview ♦️
+
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p><br>
 
 <p>&nbsp;</p>    
@@ -99,6 +101,8 @@
 ## ♦️ To Do ♦️
 
 - [ ] Use masscan for windows
+
+## ♦️ Preview ♦️
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png"></p><br>
 
@@ -134,6 +138,8 @@
 - Inject Custom apps
 - Remove bloated components to improve performance
 
+## ♦️ Preview ♦️
+
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/206840952-513f2ded-09c0-4202-8fad-f191933acd3c.png"></p><br>
 
 <p>&nbsp;</p>    
@@ -147,6 +153,8 @@
 - Shortcuts for [ start / stop / exit ]
 
 - Cool sounds and notifications!
+
+## ♦️ Preview ♦️
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></p><br>
 
