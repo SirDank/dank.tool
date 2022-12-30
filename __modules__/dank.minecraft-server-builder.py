@@ -4,24 +4,26 @@ import time
 import requests
 from shutil import unpack_archive
 from dankware import title, rm_line, chdir, clr_banner, align, cls, clr, white, magenta, red, reset, github_downloads, github_file_selector, multithread, sys_open, err
+#from dankware import title, rm_line, chdir, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
 
 def print_banner():
     cls(); print(align(clr_banner(banner) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
+    #cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
 
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{magenta}#")))
 
-def file_downloader(url, filename):
-    
+def file_downloader(url, file_name):
+
     while True:
         try:
             response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
             data = response.content
             try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
             except: size = "?"
-            open(filename,"wb").write(data); data = ""
-            print(clr(f"\n  > Completed [ {filename} ] [ {size} MB ]")); break
-        except: input(clr(f"\n  > Failed [ {filename} ] Press {white}ENTER{red} to try again... ",2))
+            open(file_name,"wb").write(data); data = ""
+            print(clr(f"\n  > Downloaded [ {file_name} ] [ {size} MB ]")); break
+        except: input(clr(f"\n  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... ",2))
 
 def one():
 
@@ -123,15 +125,15 @@ def one():
     # begin preparing downloads
 
     cls(); print(clr("\n  > Preparing Downloads..."))
-    to_download_urls, to_download_filenames = [], []
+    to_download_urls, to_download_file_names = [], []
 
     # github server-builder files and plugins
 
     for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'PublicCrafters.jar', 'Iris.jar']: # Iris 2.3.11 | mcMMO 2.1.217 | PublicCrafters 4.13.5
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
-        if '.jar' in file: to_download_filenames.append(f"plugins/{file}")
-        elif '.zip' in file: to_download_filenames.append(f"datapacks_backup/{file}")
-        else: to_download_filenames.append(file)
+        if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
+        elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
+        else: to_download_file_names.append(file)
         
     # iris packs
 
@@ -140,7 +142,7 @@ def one():
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
         to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/{tmp_name}.zip")
-        to_download_filenames.append(f"plugins/Iris/packs/{file}.zip")
+        to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")
 
     # spigot plugins
 
@@ -170,27 +172,27 @@ def one():
 
     for plugin in spigot_plugins:
         to_download_urls.append(f"https://api.spiget.org/v2/resources/{spigot_plugins[plugin]}/download")
-        to_download_filenames.append(f"plugins/{plugin}.jar")
+        to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
 
     # > EssentialsX
     for file_url in github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']):
         to_download_urls.append(file_url)
-        to_download_filenames.append(f"plugins/{file_url.split('/')[-1]}")
+        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
     # > AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
-    to_download_filenames.append("AutoPlug-Client.jar")
+    to_download_file_names.append("AutoPlug-Client.jar")
 
     # > purpur.jar
     to_download_urls.append(f"https://api.purpurmc.org/v2/purpur/{version}/latest/download")
-    to_download_filenames.append("purpur.jar")
+    to_download_file_names.append("purpur.jar")
     
     # > MCAntiMalware.jar
     for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
         to_download_urls.append(file_url)
-        to_download_filenames.append(file_url.split('/')[-1])
+        to_download_file_names.append(file_url.split('/')[-1])
 
     # begin multithreaded downloads | threads = 2
 
@@ -199,28 +201,30 @@ def one():
     while True:
         try:
             start_time = time.time()
-            multithread(file_downloader, 2, to_download_urls, to_download_filenames, False)
+            multithread(file_downloader, 2, to_download_urls, to_download_file_names, False)
             time_taken = int(time.time()-start_time)
             break
         except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
-        
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
-    
+
     # unpacking downloaded archives
-    
+
     print(clr("\n  > Unpacking..."))
     
     for file in ['newhorizons', 'theend', 'overworld']:
-        
+
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
-    
+
         unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
         try: os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
-        except: input(clr(f'\n  > ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after doing the above... ',2))
-        os.remove(f'plugins/Iris/packs/{file}.zip')
+        except:
+            while os.path.exists(f'plugins/Iris/packs/{file}-{tmp_name}'):
+                input(clr(f'\n  > ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after doing the above... ',2))
+        try: os.remove(f'plugins/Iris/packs/{file}.zip')
+        except: pass
 
 one()
 
@@ -388,7 +392,7 @@ plugins:
 # start server and shutdown server for optimizing the below settings and configuring
 
 configs = {
-    
+
     # paper config
 
     "config/paper-world-defaults.yml": {
@@ -398,19 +402,19 @@ configs = {
         "optimize-explosions: false": "optimize-explosions: true",
         # "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
     },
-    
+
     # plugins
-    
+
     "plugins/ChestSort/config.yml": {
         "use-permissions: true": "use-permissions: false",
         "sorting-enabled-by-default: false": "sorting-enabled-by-default: true",
         "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
     },
-    
+
     "plugins/Corpses/config.yml": {
         "secondsToDisappear: 300": "secondsToDisappear: 3600",
     },
-    
+
     "plugins/Essentials/config.yml": {
         "nickname-prefix: '~'": "nickname-prefix: ''",
         "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
@@ -422,22 +426,22 @@ configs = {
         "  - playtime.check\n  - playtime.uptime\n  - afk": "  - afk", # to prevent multiple entries
         "  - afk": "  - playtime.check\n  - playtime.uptime\n  - afk",
     },
-    
+
     #"plugins/Log4JExploitFix/config.yml": {
     #    "enabled: false": "enabled: true"
     #},
-    
+
     "plugins/LevelledMobs/rules.yml": {
         " | &f%displayname%": "",
     },
-    
+
     # server configs
-    
+
     "pufferfish.yml": {
         "dab:\n  enabled: false": "dab:\n  enabled: true",
         "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
     },
-    
+
     "purpur.yml": {
         "use-alternate-keepalive: false": "use-alternate-keepalive: true",
         "aggressive-towards-villager-when-lagging: true": "aggressive-towards-villager-when-lagging: false",
@@ -445,7 +449,7 @@ configs = {
         "lobotomize:\n          enabled: false": "lobotomize:\n          enabled: true",
         "teleport-if-outside-border: false": "teleport-if-outside-border: true",
     },
-    
+
     "server.properties": {
         "simulation-distance=10": "simulation-distance=4",
         "motd=A Minecraft Server": f"motd={motd_spaces}\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
@@ -460,7 +464,7 @@ configs = {
         # "view-distance=10": "view-distance=8",
         # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f"
     },
-    
+
     "spigot.yml": {
         "merge-radius:\n      item: 2.5\n      exp: 3.0": "merge-radius:\n      item: 3.5\n      exp: 4.0",
         # "mob-spawn-range: 8": "mob-spawn-range: 2",
@@ -470,7 +474,7 @@ configs = {
 }
 
 def two():
-  
+
     print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration... "))
 
     def config_updater(path):
@@ -484,7 +488,7 @@ def two():
     for path in configs:
         try: config_updater(path)
         except: pass
-  
+
     # [ updating configs ] try all without ignoring errors
 
     for path in configs:
@@ -493,8 +497,8 @@ def two():
             except:
                 choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > Press [ ENTER ] to retry or type \"skip\" to skip: ", 2))
                 if choice == "skip": pass
-    
-    if playit:    
+
+    if playit:
         print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message... "))  
     else:
         print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
@@ -504,8 +508,9 @@ def two():
     # done!
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
-    complete = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
-    cls(); print(align(clr_banner(complete))); time.sleep(5)
+    complete_banner = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
+    cls(); print(align(clr_banner(complete_banner))); time.sleep(5)
+    #cls(); print(align(clr(complete_banner,4))); time.sleep(5)
     sys_open('https://allmylinks.com/sir-dankenstein')
 
 two()
