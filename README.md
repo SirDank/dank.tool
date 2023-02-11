@@ -11,9 +11,13 @@
 
 - This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the [tool](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py) itself and its [modules](https://github.com/SirDank/dank.tool/tree/main/__modules__)!
 
-## ♦️ Quickstart ♦️
+## ♦️ Download ♦️
 
-- Run the [dank.tool.exe](https://github.com/SirDank/dank.tool/releases)
+- Direct download: https://bit.ly/dank-tool-download
+
+## ♦️ Short URL ♦️
+
+- Github Short URL: https://bit.ly/dank-tool
 
 ## ♦️ Note ♦️
 
@@ -24,12 +28,6 @@
 - If you would like to run the python scripts instead, there might be small changes you might have to make for it to execute properly.
 
 - Try to not spam the [ ENTER ] key on the exe's terminal, as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
-
-## ♦️ Short URLs ♦️
-
-- Github Short URL: https://bit.ly/dank-tool
-
-- Direct download: https://bit.ly/dank-tool-download
 
 ## ♦️ To Do ♦️
 
