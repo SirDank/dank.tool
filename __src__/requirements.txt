@@ -1,0 +1,10 @@
+wheel
+setuptools
+playsound
+mcstatus
+win10toast
+pynput
+dankware
+requests
+pypresence
+packaging
