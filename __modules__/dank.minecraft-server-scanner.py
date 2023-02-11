@@ -4,7 +4,7 @@ import json
 import socket
 import requests
 from mcstatus import JavaServer
-from dankware import multithread, chdir, clr, cls, title, align, random_ip, magenta, rm_line
+from dankware import multithread, clr, cls, title, align, magenta, rm_line, random_ip
 
 '''
 
@@ -64,10 +64,15 @@ def main():
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
     socket.setdefaulttimeout(1)
 
-    exec_mode = "script"; exec(chdir(exec_mode))
-    try: open('scanned.txt','x')
+    #exec_mode = "script"; exec(chdir(exec_mode))
+    os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    try: os.mkdir('dank.mc-server-scanner')
     except: pass
-    try: open('servers.txt','x')
+    os.system(f'explorer.exe "dank.mc-server-scanner"')
+    os.chdir('dank.mc-server-scanner')
+    try: open('scanned.txt','x').close()
+    except: pass
+    try: open('servers.txt','x').close()
     except: pass
     cls(); print(clr("\n  > Loading scanned.txt..."))
     try: scanned = json.loads(open('scanned.txt','r').read())
@@ -121,5 +126,4 @@ def main():
         
         gen_rem -= gen_amt
     
-if __name__ == "__main__": 
-    main()
+if __name__ == "__main__": main()

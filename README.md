@@ -90,7 +90,7 @@
 
 # 🚨 Minecraft Server Scanner 🚨
 
-- A super-fast Minecraft server scanner to find random servers around the world! [ 466/s ~ 500 threads ~ 50K IPs ~ 1:47 ~ Ryzen 7 5800H Mobile ]
+- A super-fast Minecraft server scanner to find random servers around the world! [ 493/s ~ 500 threads ~ 100K IPs ~ 3 minutes 35 seconds ~ Ryzen 7 5800H Mobile ]
 
 - Generates the specified amount of IPs and scans the default Minecraft server port 25565
 

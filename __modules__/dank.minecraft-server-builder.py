@@ -3,7 +3,7 @@ import sys
 import time
 import requests
 from shutil import unpack_archive
-from dankware import title, rm_line, chdir, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
+from dankware import title, rm_line, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
 
 def print_banner():
     cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
@@ -11,26 +11,14 @@ def print_banner():
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{magenta}#")))
 
-def file_downloader(url, file_name):
-
-    while True:
-        try:
-            response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
-            data = response.content
-            try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
-            except: size = "?"
-            open(file_name,"wb").write(data); data = ""
-            print(clr(f"\n  > Downloaded [ {file_name} ] [ {size} MB ]")); break
-        except: input(clr(f"\n  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... ",2))
-
-def one():
+def main_one():
 
     global banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag
 
     # change dir and print banner
 
-    exec_mode = "script"
-    exec(chdir(exec_mode))
+    #exec_mode = "script"; exec(chdir(exec_mode))
+    os.chdir(os.path.join(os.path.join(os.environ['USERPROFILE']),'Desktop'))
     banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
     read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
 
@@ -42,7 +30,7 @@ def one():
         try:
             version_list = requests.get("https://api.purpurmc.org/v2/purpur").json()['versions']
             print(clr(f'  > Available Purpur Versions: {", ".join(version_list)}')); break
-        except: input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the Internet! Press [ ENTER ] to try again... ",2))
+        except: input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again... ",2))
 
     # user inputs [ name, version, ram, allow_cracked ]
 
@@ -110,7 +98,7 @@ def one():
             dir_name = name + f"_{counter}"
             try: os.mkdir(dir_name); break
             except: counter += 1
-    #sys_open(f'{dir_name}')
+
     os.system(f'explorer.exe "{dir_name}"')
     os.chdir(dir_name)
 
@@ -127,7 +115,7 @@ def one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'PublicCrafters.jar', 'Iris.jar']: # Iris 2.3.11 | mcMMO 2.1.217 | PublicCrafters 4.13.5
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.3.11 | mcMMO 2.1.217 |
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
@@ -150,7 +138,7 @@ def one():
         "BloodEffect": 90955,
         "BloodFading": 99263,
         "ChestSort": 59773,
-        "Chunky": 81534,
+        #"Chunky": 81534,
         "Corpses": 96774,
         "Log4JExploitFix": 98243,
         "NeoPerformance": 103183,
@@ -163,6 +151,7 @@ def one():
         "LevelledMobs": 74304,
         "PlayTime": 26016,
         "PlaceholderAPI": 6245,
+        "LuckyBlock-NTD": 92026,
     }
     
     if playit:
@@ -193,6 +182,18 @@ def one():
         to_download_file_names.append(file_url.split('/')[-1])
 
     # begin multithreaded downloads | threads = 2
+    
+    def file_downloader(url, file_name):
+
+        while True:
+            try:
+                response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
+                data = response.content
+                try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
+                except: size = "?"
+                open(file_name,"wb").write(data); data = ""
+                print(clr(f"\n  > Downloaded [ {file_name} ] [ {size} MB ]")); break
+            except: input(clr(f"\n  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... ",2))
 
     print(clr("\n  > Starting Multiple Downloads... [ this might take a few seconds ]"))
 
@@ -224,7 +225,7 @@ def one():
         try: os.remove(f'plugins/Iris/packs/{file}.zip')
         except: pass
 
-one()
+main_one()
 
 # creating local files
 
@@ -471,9 +472,9 @@ configs = {
 
 }
 
-def two():
+def main_two():
 
-    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration... "))
+    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".stop both\" to stop the server and autoplug\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration... "))
 
     def config_updater(path):
         config_data = open(path, 'r', encoding='utf-8').read()
@@ -503,6 +504,8 @@ def two():
         if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
             sys_open('https://youtu.be/X75GbRaGzu8')
 
+    print_read_me(); input('\n  > If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "autoplug\\updater.yml"\n\n  > After you move the folder to a linux system, run "sudo chmod -R 777 folder_name"\n\n  > Run start_server.sh and then install jdk with ".check java"\n\n  > Press [ ENTER ] after you have read the message... ')
+
     # done!
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
@@ -510,4 +513,4 @@ def two():
     cls(); print(align(clr(complete_banner,4))); time.sleep(5)
     sys_open('https://allmylinks.com/sir-dankenstein')
 
-two()
+main_two()
