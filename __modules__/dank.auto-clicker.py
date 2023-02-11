@@ -7,25 +7,29 @@ from pynput.mouse import Button, Controller
 from concurrent.futures import ThreadPoolExecutor
 from dankware import align, clr, cls, chdir, title, magenta
 
+# sounds
+
+def start():
+    try: playsound('start.mp3')
+    except: pass
+    if notifications: toast.show_toast("dank.auto-clicker","✅ Started",duration = 3,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
+
+def stop():
+    try: playsound('stop.mp3')
+    except: pass
+    if notifications: toast.show_toast("dank.auto-clicker","❌ Stopped",duration = 3,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
+
+def terminate():
+    try: playsound('stop.mp3')
+    except: pass
+
+# main
+
 def notify(mode):
     
-    def start():
-        try: playsound('start.mp3')
-        except: pass
-        if notifications: toast.show_toast("dank.auto-clicker","✅ Started",duration = 3,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
-    
-    def stop():
-        try: playsound('stop.mp3')
-        except: pass
-        if notifications: toast.show_toast("dank.auto-clicker","❌ Stopped",duration = 3,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
-    
-    def terminate():
-        try: playsound('stop.mp3')
-        except: pass
-    
-    if mode == 1: ThreadPoolExecutor(10).submit(start)
-    elif mode == 2: ThreadPoolExecutor(10).submit(stop)
-    elif mode == 3: ThreadPoolExecutor(10).submit(terminate)
+    if mode == 1: executor.submit(start)
+    elif mode == 2: executor.submit(stop)
+    elif mode == 3: executor.submit(terminate)
 
 def on_press(key):
     
@@ -36,7 +40,7 @@ def on_press(key):
     
 def main():
     
-    global delay, notifications, toast, start_key, stop_key, exit_key, running, paused
+    global delay, notifications, toast, start_key, stop_key, exit_key, running, paused, executor
     
     banner ="\n\n                                                               \n   _         _             _               _ _     _           \n _| |___ ___| |_   ___ _ _| |_ ___ ___ ___| |_|___| |_ ___ ___ \n| . | .'|   | '_|_| .'| | |  _| . |___|  _| | |  _| '_| -_|  _|\n|___|__,|_|_|_,_|_|__,|___|_| |___|   |___|_|_|___|_,_|___|_|  \n                                                               \n"
 
@@ -50,7 +54,8 @@ def main():
     notifications = input(clr("\n  > Disable Notifications? [y/n]: ") + magenta).lower()
     if 'y' in notifications: notifications = False
     else: notifications = True
-
+    
+    executor = ThreadPoolExecutor()
     toast = ToastNotifier()
     mouse = Controller()
     start_key = Key.f2
@@ -70,7 +75,8 @@ def main():
             time.sleep(delay)
         else:time.sleep(2)
     listener.stop()
-
+    
+    executor.shutdown()
     toast.show_toast("dank.auto-clicker","😁 Goodbye!",duration = 5,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
 
 if __name__ == "__main__":
