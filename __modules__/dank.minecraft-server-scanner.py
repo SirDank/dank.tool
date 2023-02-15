@@ -65,7 +65,8 @@ def main():
     socket.setdefaulttimeout(1)
 
     #exec_mode = "script"; exec(chdir(exec_mode))
-    os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    except: os.chdir("C:\\")
     try: os.mkdir('dank.mc-server-scanner')
     except: pass
     os.system(f'explorer.exe "dank.mc-server-scanner"')

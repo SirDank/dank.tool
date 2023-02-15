@@ -5,7 +5,7 @@ from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from concurrent.futures import ThreadPoolExecutor
-from dankware import align, clr, cls, chdir, title, magenta
+from dankware import align, clr, cls, title, magenta
 
 # sounds
 
@@ -44,7 +44,7 @@ def main():
     
     banner ="\n\n                                                               \n   _         _             _               _ _     _           \n _| |___ ___| |_   ___ _ _| |_ ___ ___ ___| |_|___| |_ ___ ___ \n| . | .'|   | '_|_| .'| | |  _| . |___|  _| | |  _| '_| -_|  _|\n|___|__,|_|_|_,_|_|__,|___|_| |___|   |___|_|_|___|_,_|___|_|  \n                                                               \n"
 
-    exec(chdir("script"))
+    os.chdir(os.path.dirname(__file__)) # exec(chdir("script"))
     while True:
         try:
             cls(); print(align(clr(banner,4)))
