@@ -13,7 +13,11 @@
 
 ## ♦️ Download ♦️
 
-- Direct download: https://bit.ly/dank-tool-download
+- Short Direct download: https://bit.ly/dank-tool-zip
+
+- Direct Download: https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip
+
+- NOTE: password for the zip is: "dankware"
 
 ## ♦️ Short URL ♦️
 
