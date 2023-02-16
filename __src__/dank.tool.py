@@ -10,7 +10,7 @@ import time
 import requests
 from datetime import datetime
 from win10toast import ToastNotifier
-from dankware import align, cls, clr, magenta, white, chdir, title, get_duration, multithread, err
+from dankware import align, cls, clr, magenta, white, title, get_duration, multithread, err
 
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
@@ -44,25 +44,31 @@ def get_request_responses(task_id):
     
     if task_id == 0: 
         try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", timeout=3).json()['value']
-        except: request_responses["dankware_runs"] = "unknown"
+        except: request_responses["dankware_runs"] = "?"
     elif task_id == 1: 
         try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool", timeout=3).json()['value']
-        except: request_responses["danktool_runs"] = "unknown"
+        except: request_responses["danktool_runs"] = "?"
+    elif task_id == 2:
+        try:
+            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers={"User-Agent": "dank.tool"}).content.decode()
+            if tmp.isdigit(): request_responses["chatroom_user_count"] = tmp
+            else: request_responses["chatroom_user_count"] = "?"
+        except: request_responses["chatroom_user_count"] = "?"
         
-    # get updated on time
+    # get last update time
     
-    elif task_id == 2: request_responses["dank.minecraft-server-builder"] = updated_on("dank.minecraft-server-builder")
-    elif task_id == 3: request_responses["dank.minecraft-server-scanner"] = updated_on("dank.minecraft-server-scanner")
-    elif task_id == 4: request_responses["SpotX-Win"] = updated_on("https://api.github.com/repos/SpotX-CLI/SpotX-Win/commits?path=Install.ps1&page=1&per_page=1",False)
-    elif task_id == 5: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1",False)
-    elif task_id == 6: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
+    elif task_id == 3: request_responses["dank.minecraft-server-builder"] = updated_on("dank.minecraft-server-builder")
+    elif task_id == 4: request_responses["dank.minecraft-server-scanner"] = updated_on("dank.minecraft-server-scanner")
+    elif task_id == 5: request_responses["SpotX-Win"] = updated_on("https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1",False)
+    elif task_id == 6: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1",False)
+    elif task_id == 7: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
 
 # main
 
 while True:
-    
+
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [{current_version}]") # current_version defined in executor.py
-    exec_mode = "exe"; exec(chdir(exec_mode))
+    os.chdir(os.path.dirname(__file__)) # exec_mode = "exe"; exec(chdir(exec_mode))
     discord_rpc_state = "on the main menu"
     banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
     
@@ -70,9 +76,9 @@ while True:
         
     request_responses = {}
     while True:
-        try: multithread(get_request_responses, 100, [ _ for _ in range(7) ], progress_bar=False); break
+        try: multithread(get_request_responses, 100, [ _ for _ in range(8) ], progress_bar=False); break
         except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
-        except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+        except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
     while True:
         
@@ -91,7 +97,7 @@ while True:
             f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
             f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
             f'Auto Clicker {request_responses["dank.auto-clicker"]}',
-            'Software Downloader [ UNFINISHED ]',
+            f'Chatroom [ {request_responses["chatroom_user_count"]} online ] [ coming soon! ]',
         ]
         
         # print modules with counter and get choice
@@ -120,6 +126,7 @@ while True:
         elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
         elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
         elif "Auto Clicker" in choice: project, discord_rpc_state = "dank.auto-clicker", "running auto-clicker"
+        elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "texting in the chatroom"
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
@@ -132,11 +139,11 @@ while True:
         if not development_version: # development_version defined in executor.py
             while True:
                 try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py").content.decode(); break
-                except: input(clr(f"\n  > Failed to get src for {project}! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+                except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
         else:
             while True:
                 try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
-                except: input(clr(f"\n  > Failed to get src! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again... ",2))
+                except: input(clr(f"\n  > Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again... ",2))
 
         # execute src
         
@@ -157,6 +164,6 @@ while True:
                 # > updated to custom url to prevent webhook spamming
                 requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
                 break
-            except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the Internet! Press [ENTER] to try again... ",2))
+            except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
         cls(); input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
 
