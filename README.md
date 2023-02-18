@@ -9,7 +9,7 @@
 
 - An all-in-one, portable windows executable with a wide variety of features built with python!
 
-- This tool will rarely need to be updated as it executes the latest source code straight from GitHub for both the [tool](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py) itself and its [modules](https://github.com/SirDank/dank.tool/tree/main/__modules__)!
+- This tool will rarely need to be updated as it executes the latest source code straight from GitHub for the [tool](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py) itself, its [modules](https://github.com/SirDank/dank.tool/tree/main/__modules__) and for [updates](https://github.com/SirDank/dank.tool/blob/main/__src__/updater.py)!
 
 ## ♦️ Download ♦️
 
