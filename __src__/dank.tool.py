@@ -52,7 +52,7 @@ def get_request_responses(task_id):
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers={"User-Agent": "dank.tool"}).content.decode()
             if tmp.isdigit(): request_responses["chatroom_user_count"] = tmp
-            else: request_responses["chatroom_user_count"] = "?"
+            else: request_responses["chatroom_user_count"] = "1"
         except: request_responses["chatroom_user_count"] = "?"
         
     # get last update time
