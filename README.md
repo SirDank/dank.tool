@@ -167,3 +167,7 @@
 # 🚨 Stats 🚨
 
 <br><p align="center"><img width="800" alt="image" src="https://repobeats.axiom.co/api/embed/42c9b248a6c2f5a3c5709d6a205b8c3735486a9b.svg"></p><br>
+
+# 🚨 Star History 🚨
+
+<br><p align="center">[![Star History Chart](https://api.star-history.com/svg?repos=SirDank/dank.tool&type=Date)](https://star-history.com/#SirDank/dank.tool&Date)</p><br>
