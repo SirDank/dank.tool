@@ -1,8 +1,8 @@
 import os
 import sys
 import time
+import shutil
 import requests
-from shutil import unpack_archive
 from dankware import title, rm_line, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
 
 def print_banner():
@@ -217,7 +217,7 @@ def main_one():
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
 
-        unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
+        shutil.unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
         time.sleep(1)
         try: os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
         except:

@@ -148,6 +148,25 @@
 
 ---  
 
+# 🚨 Browser Backup 🚨
+
+- Creates a full backup of your browser data including registry keys and protects it using a user set password
+- Easily transfer your browser to another system by following the provided steps
+
+## ♦️ To Do ♦️
+
+- [] Add support for more browsers
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221374732-126bdd5e-da49-4d68-979e-0c688e88ea4b.png"></p><br>
+
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221374800-f8d4d8c5-5a6e-4f51-a9b1-784c0322543d.png"></p><br>
+
+<p>&nbsp;</p>    
+
+---  
+
 # 🚨 Auto-Clicker 🚨
 
 - Set your own click speed!

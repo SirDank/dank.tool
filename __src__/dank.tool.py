@@ -22,7 +22,7 @@ def updated_on(url, dankware_module = True):
     if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
     try:
 
-        response = requests.get(url,timeout=3).json()
+        response = requests.get(url, timeout=3).json()
         if response == []: return f"[ unreleased ]"
         else:
             date, time = response[0]["commit"]["author"]["date"].split("T")
@@ -62,6 +62,7 @@ def get_request_responses(task_id):
     elif task_id == 5: request_responses["SpotX-Win"] = updated_on("https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1",False)
     elif task_id == 6: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1",False)
     elif task_id == 7: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
+    elif task_id == 8: request_responses["dank.browser-backup"] = updated_on("dank.browser-backup")
 
 # main
 
@@ -70,13 +71,14 @@ while True:
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [{current_version}]") # current_version defined in executor.py
     os.chdir(os.path.dirname(__file__)) # exec_mode = "exe"; exec(chdir(exec_mode))
     discord_rpc_state = "on the main menu"
-    banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
+    #old_banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
+    banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
     
     # multithread requests
         
     request_responses = {}
     while True:
-        try: multithread(get_request_responses, 100, [ _ for _ in range(8) ], progress_bar=False); break
+        try: multithread(get_request_responses, 100, [ _ for _ in range(9) ], progress_bar=False); break
         except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
         except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
@@ -84,11 +86,11 @@ while True:
         
         # print randomly coloured and aligned banner
         
-        cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3"))
+        cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
         
         # global runs
         
-        stats = f"\n\n    > Global dankware runs: {request_responses['dankware_runs']}\n\n    > Global dank.tool runs: {request_responses['danktool_runs']}"
+        stats = f"dankware runs: {request_responses['dankware_runs']} | dank.tool runs: {request_responses['danktool_runs']}"
             
         # available modules
         
@@ -97,15 +99,16 @@ while True:
             f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
             f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
             f'Auto Clicker {request_responses["dank.auto-clicker"]}',
+            f'Browser Backup {request_responses["dank.browser-backup"]}',
             f'Chatroom [ {request_responses["chatroom_user_count"]} online ] [ coming soon! ]',
         ]
         
         # print modules with counter and get choice
         
         counter = 1; modules_to_print = ""
-        for module in modules: modules_to_print += f"\n\n    {counter} > {module}"; counter += 1
-        choice = input(clr(f"\n  - Stats: {stats}\n\n  - Modules: {modules_to_print}\n\n  - Choice: ") + magenta)
-        if choice.isdigit() and int(choice) > 0 and int(choice) < int(len(modules))+1:
+        for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
+        choice = input(clr(f"\n  - Stats: {stats}\n\n  - Modules: \n{modules_to_print}\n\n  - Choice: ") + magenta)
+        if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(modules)):
             choice = modules[int(choice)-1]; break
         
         # debug menu
@@ -126,6 +129,7 @@ while True:
         elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
         elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
         elif "Auto Clicker" in choice: project, discord_rpc_state = "dank.auto-clicker", "running auto-clicker"
+        elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up browser"
         elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "texting in the chatroom"
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"

@@ -13,15 +13,19 @@
 - [ exec_mode = "script" ] is used for testing, to be run as a script | It is automatically changed to [ exec_mode = "exe" ] to be run as an executable
 '''
 
+import shutil
+import ctypes
+import winreg
 import pyminizip
 import subprocess
+from psutil import process_iter
 from playsound import playsound
 from mcstatus import JavaServer
-from shutil import unpack_archive
 from win10toast import ToastNotifier
+from alive_progress import alive_bar
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
-from dankware import multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir
+from dankware import multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys
 
 # required imports for executor.py
 
@@ -33,14 +37,14 @@ import requests
 from pypresence import Presence
 from packaging.version import parse
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, title, sys_open, err
+from dankware import cls, clr, title, err
 
 # variables
 
 session = requests.Session()
 executor = ThreadPoolExecutor()
 
-current_version = "2.0"
+current_version = "2.1"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]") # exec(chdir(exec_mode))
 print(clr(f"\n  > Version: {current_version}"))
 
@@ -73,7 +77,7 @@ def check_file_integrity():
         if not checksum in checksums:
             warning_banner = '\n\n\n\n888       888        d8888 8888888b.  888b    888 8888888 888b    888  .d8888b.  888 \n888   o   888       d88888 888   Y88b 8888b   888   888   8888b   888 d88P  Y88b 888 \n888  d8b  888      d88P888 888    888 88888b  888   888   88888b  888 888    888 888 \n888 d888b 888     d88P 888 888   d88P 888Y88b 888   888   888Y88b 888 888        888 \n888d88888b888    d88P  888 8888888P"  888 Y88b888   888   888 Y88b888 888  88888 888 \n88888P Y88888   d88P   888 888 T88b   888  Y88888   888   888  Y88888 888    888 Y8P \n8888P   Y8888  d8888888888 888  T88b  888   Y8888   888   888   Y8888 Y88b  d88P  "  \n888P     Y888 d88P     888 888   T88b 888    Y888 8888888 888    Y888  "Y8888P88 888 \n\n\n'
             cls(); print(clr(align(warning_banner) + "\n  > Integrity check failure! This may indicate that the software has been tampered with.\n\n  > As a precaution, I recommend that you check your system for malware.", 2))
-            if 'dev' not in input(clr("\n  > Press [ ENTER ] to force update dank.tool... ")): current_version = "0"
+            if 'debug' not in input(clr("\n  > Press [ ENTER ] to force update dank.tool... ")): current_version = "0"
             cls()
     
 check_file_integrity()
@@ -86,14 +90,17 @@ def dank_tool_installer():
     while True:
         try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py").content.decode(); break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-    try: exec(code)
+    try: exec(code); sys.exit("Updated!")
     except:
         err_message = err(sys.exc_info())
+        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
+        except: pass
         print(clr(err_message, 2))
         input(clr("\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(1)
 
-development_version = False
+if os.path.exists('debug'): development_version = True
+else: development_version = False
 if parse(latest_version) > parse(current_version):
     print(clr(f"\n  > Update Found: {latest_version}")); dank_tool_installer()
 elif latest_version == current_version: print(clr(f"\n  > Latest Version!"))
@@ -101,14 +108,14 @@ else: print(clr("\n  > Development Version!")); development_version = True
 
 # get main code from github if development_version = False else locally
 
-if not development_version:
-    while True:
-        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py").content.decode(); break
-        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-else:
+if development_version:
     while True:
         try: code = open('__src__/dank.tool.py', 'r', encoding='utf-8').read(); break
         except: input(clr("\n  > Failed to get code! Unable to read '__src__/dank.tool.py'! Press [ENTER] to try again... ",2))
+else:
+    while True:
+        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py").content.decode(); break
+        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
 # start discord rpc
 
@@ -137,17 +144,17 @@ except: pass
 # update counter
 
 def dank_tool_runs_counter():
-    try: requests.get("https://api.countapi.xyz/hit/dank.tool", timeout=3)
-    except: pass
+    while True:
+        try: requests.get("https://api.countapi.xyz/hit/dank.tool", timeout=3); break
+        except: pass
 executor.submit(dank_tool_runs_counter)
 
 # chatroom user validator
 
 def dank_tool_chatroom():
     session = requests.Session()
-    url = "https://dank-site.onrender.com/chatroom-users"
     while True:
-        try: session.post(url)
+        try: session.post("https://dank-site.onrender.com/chatroom-users")
         except: pass
         time.sleep(240)
 executor.submit(dank_tool_chatroom)
