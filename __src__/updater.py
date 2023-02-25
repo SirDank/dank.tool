@@ -24,4 +24,4 @@ except:
     cls(); input(clr(f"\n  > Failed to extract!\n  > Please manually extract \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\"\n  > Press [ENTER] to EXIT... ",2))
     sys.exit("Failed to extract")
 sys_open("dank.tool-[installer].exe")
-sys.exit("Updated!")
+sys.exit("Updated!") # REMOVE THIS
