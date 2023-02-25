@@ -23,6 +23,10 @@
 
 - Github Short URL: https://bit.ly/dank-tool
 
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221379790-bf6673f1-f2c9-42d6-a6c7-c9320670d0bb.png"></p><br>
+
 ## ♦️ Note ♦️
 
 - The dank.tool executable might be flagged as malware (false positive) since it has been built using python (nuitka).
