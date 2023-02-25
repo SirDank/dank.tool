@@ -159,7 +159,7 @@
 
 ## ♦️ To Do ♦️
 
-- [] Add support for more browsers
+- [ ] Add support for more browsers
 
 ## ♦️ Preview ♦️
 
