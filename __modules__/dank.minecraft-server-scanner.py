@@ -86,6 +86,8 @@ def main():
         else: continue
         ips_amt = input(clr("\n  > Amount of IPs to scan: ") + magenta)
         if ips_amt.isdigit(): ips_amt = int(ips_amt); break
+        
+    cls(); input(clr("\n  [IMPORTANT]\n\n  > Try not to use [COPY] or [PASTE] when the scanner is running!\n\n  > All the servers are saved to servers.txt!\n\n  > Press [ ENTER ] to start the scanner..."))
 
     gen_rem = ips_amt
     while gen_rem > 0:

@@ -181,9 +181,7 @@ def main_one():
     for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
         to_download_urls.append(file_url)
         to_download_file_names.append(file_url.split('/')[-1])
-
-    # begin multithreaded downloads | threads = 2
-    
+        
     def file_downloader(url, file_name):
 
         while True:
@@ -192,11 +190,20 @@ def main_one():
                 data = response.content
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
-                open(file_name,"wb").write(data); data = ""
+                open(file_name,"wb").write(data)
                 print(clr(f"\n  > Downloaded [ {file_name} ] [ {size} MB ]")); break
             except: input(clr(f"\n  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... ",2))
 
-    print(clr("\n  > Starting Multiple Downloads... [ this might take a few seconds ]"))
+    # disabled due to repeated error reports
+
+    '''
+    print_read_me(); input(clr("\n  > Try not to use [COPY] or [PASTE] when the download process is running!\n\n  > Press [ ENTER ] to start the download process... "))
+
+    # begin multithreaded downloader | threads = 2
+    
+    # func
+
+    print(clr("\n  > Starting Multiple Downloads... [ this might take a few minutes ]"))
 
     while True:
         try:
@@ -204,7 +211,17 @@ def main_one():
             multithread(file_downloader, 2, to_download_urls, to_download_file_names, False)
             time_taken = int(time.time()-start_time)
             break
-        except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); rm_line()
+        except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); cls() # rm_line()
+    '''
+
+    # begin single threaded downloader
+    
+    print(clr("\n  > Downloading... [ this might take a few minutes ]"))
+    
+    start_time = time.time()
+    for url, file_name in zip(to_download_urls, to_download_file_names):
+        file_downloader(url, file_name)
+    time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
 
