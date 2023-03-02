@@ -13,7 +13,7 @@ def print_read_me():
 
 def main_one():
 
-    global banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag
+    global banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag, dir_name
 
     # change dir and print banner
 
@@ -404,6 +404,8 @@ plugins:
         asset-name: LevelledMobs
   PlayTime: 
     spigot-id: 26016
+  ntdLuckyBlock: 
+    spigot-id: 92026
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
@@ -518,11 +520,11 @@ def main_two():
     if playit:
         print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message... "))  
     else:
-        print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
+        print_read_me(); print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
         if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
             sys_open('https://youtu.be/X75GbRaGzu8')
 
-    print_read_me(); input('\n  > If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "autoplug\\updater.yml"\n\n  > After you move the folder to a linux system, run "sudo chmod -R 777 folder_name"\n\n  > Run start_server.sh and then install jdk with ".check java"\n\n  > Press [ ENTER ] after you have read the message... ')
+    print_read_me(); input(clr(f'\n  > If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{dir_name}\\autoplug\\updater.yml"\n\n  > After you move the folder to a linux system, run "sudo chmod -R 777 server_folder_name"\n\n  > Run start_server.sh and then install jdk with ".check java"\n\n  > Press [ ENTER ] after you have read the message... '))
 
     # done!
 
