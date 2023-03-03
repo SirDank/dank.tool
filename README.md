@@ -29,7 +29,7 @@
 
 ## ♦️ Note ♦️
 
-- The dank.tool executable might be flagged as malware (false positive) since it has been built using python (nuitka).
+- The dank.tool executable might be flagged as malware by windows defender (false positive) since it has been built using python (nuitka) and also does not have a verified certificate.
 
 - Python is not required to use the portable exe version of this tool.
 
