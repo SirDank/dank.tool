@@ -7,7 +7,7 @@
 
 # 🚨 SirDank's dank.tool 🚨
 
-- An all-in-one, portable windows executable with a wide variety of features built with python!
+- An all-in-one, installable windows program with a wide variety of features built with python!
 
 - This tool will rarely need to be updated as it executes the latest source code straight from GitHub for the [tool](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py) itself, its [modules](https://github.com/SirDank/dank.tool/tree/main/__modules__) and for [updates](https://github.com/SirDank/dank.tool/blob/main/__src__/updater.py)!
 
@@ -17,7 +17,7 @@
 
 - Direct Download: https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip
 
-- NOTE: password for the zip is: "dankware"
+- ZIP Password: "dankware"
 
 ## ♦️ Short URL ♦️
 
@@ -31,11 +31,11 @@
 
 - The dank.tool executable might be flagged as malware by windows defender (false positive) since it has been built using python (nuitka) and also does not have a verified certificate.
 
-- Python is not required to use the portable exe version of this tool.
+- If you would like to run the python scripts instead of the installer, there might be small changes you have to make for it to execute properly.
 
-- If you would like to run the python scripts instead, there might be small changes you might have to make for it to execute properly.
+- Try not to spam the [ ENTER ] key on the exe's terminal as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
 
-- Try to not spam the [ ENTER ] key on the exe's terminal, as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
+- When the tool is running and performing a task, if you click inside the console window, a white rectangle appears and the task is paused. To continue performing the task, press the down arrow key.
 
 ## ♦️ To Do ♦️
 
