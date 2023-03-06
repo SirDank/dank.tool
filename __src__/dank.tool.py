@@ -107,7 +107,7 @@ while True:
         
         counter = 1; modules_to_print = ""
         for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
-        choice = input(clr(f"\n  - Stats: {stats}\n\n  - Modules: \n{modules_to_print}\n\n  - Choice: ") + magenta)
+        choice = input(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n\n  - Choice: ") + magenta) # development_version defined in executor.py
         if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(modules)):
             choice = modules[int(choice)-1]; break
         

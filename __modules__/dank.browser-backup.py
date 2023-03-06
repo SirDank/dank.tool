@@ -1,15 +1,36 @@
 import os
 import sys
 import shutil
+import winreg
 import datetime
 import pyminizip
 from psutil import process_iter
 from alive_progress import alive_bar
 from dankware import title, cls, clr, err, align, magenta, rm_line, is_admin, export_registry_keys
 
+def chrome_installed():
+    try:
+        reg_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_path) as key:
+            winreg.QueryValueEx(key, "Path")
+        return True
+    except FileNotFoundError:
+        return False
+
 def backup(browser, password, compression_level):
 
     if browser == "Chrome":
+        
+        path_to_backup = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data")
+        
+        if not chrome_installed():
+            cls(); print(clr("\n  > Chrome possibly not installed!",2))
+        
+        if not os.path.exists(path_to_backup):
+            print(clr(f"\n  > Invalid Path: {path_to_backup}\n",2))
+            while True:
+                path_to_backup = input(clr("  > Input user data folder path: ")); rm_line()
+                if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup: break
         
         while True:
             cls(); chrome_running = False
@@ -19,23 +40,19 @@ def backup(browser, password, compression_level):
             if chrome_running: input(clr("\n  > Chrome is running! Terminate it and press [ENTER]... ",2))
             else: break
 
-        print(clr("\n  > Copying browser data... (this might take a minute)"))
-        if os.path.exists("User Data"): shutil.rmtree("User Data", ignore_errors=True)
-        shutil.copytree(os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data"), "User Data")
-        
-        print(clr("\n  > Exporting registry keys..."))
+        cls(); print(clr("\n  > Exporting registry keys..."))
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs')
         
         print(clr("\n  > Compressing... (this might take a few minutes)\n"))
         source_files = ["export.reg"]
-        prefixes = ["export.reg"]
+        prefixes = [""]
 
-        for root, dirs, files in os.walk("User Data"):
+        for root, dirs, files in os.walk(path_to_backup):
             for file in files:
                 filepath = os.path.join(root, file)
-                relpath = os.path.relpath(filepath, "User Data")
+                prefix = str("User Data" + filepath.split("User Data")[1]).replace(f"\\{file}",'')
                 source_files.append(filepath)
-                prefixes.append(relpath)
+                prefixes.append(prefix)
 
         now = datetime.datetime.now()
         zip_name = f'chrome_[{now.strftime("%d-%m-%Y")}]_[{now.strftime("%I-%M-%S-%p")}].zip'
@@ -44,8 +61,10 @@ def backup(browser, password, compression_level):
             pyminizip.compress_multiple(source_files, prefixes, zip_name, password, compression_level, lambda x: progress(progress()+1))
 
         print(clr("\n  > Cleaning..."))
-        if os.path.exists("User Data"): shutil.rmtree("User Data", ignore_errors=True)
-        if os.path.exists("export.reg"): os.remove("export.reg")   
+        #if os.path.exists("User Data"): shutil.rmtree("User Data", ignore_errors=True)
+        if os.path.exists("export.reg"): os.remove("export.reg")
+
+        os.system(f'explorer.exe "{os.getcwd()}"')
     
         cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [export.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
     
@@ -95,7 +114,5 @@ def main():
         else: rm_line()
 
     backup(choice, password, compression_level)
-    
-    os.system(f'explorer.exe "{os.getcwd()}"')
 
 if __name__ == "__main__": main()
