@@ -94,7 +94,7 @@ def main():
         
         ips = {}
         generated = 0
-        gen_rate = 500 # threads to generate at
+        gen_rate = 5000 # threads to generate at | higher = faster
         gen_amt = 50000 # max generate / check amount
         if not gen_rem >= gen_amt: gen_amt = gen_rem
         
