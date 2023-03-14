@@ -29,7 +29,7 @@
 
 ## ♦️ Note ♦️
 
-- The dank.tool executable might be flagged as malware by windows defender (false positive) since it has been built using python (nuitka) and also does not have a verified certificate.
+- The executable does not have a verified certificate. Thus, windows defender may show a warning about it being from an unknown source (false positive).
 
 - If you would like to run the python scripts instead of the installer, there might be small changes you have to make for it to execute properly.
 
