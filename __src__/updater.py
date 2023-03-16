@@ -24,4 +24,4 @@ except:
     cls(); input(clr(f"\n  > Failed to extract!\n  > Please manually extract \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\"\n  > Press [ENTER] to EXIT... ",2))
     sys.exit("Failed to extract")
 sys_open("dank.tool-[installer].exe")
-if current_version == "2.0": sys.exit("Updated!") # REMOVE THIS
+if current_version in ["2.0", "2.1"]: os.system("taskkill /f /im dank.tool.exe") # REMOVE THIS
