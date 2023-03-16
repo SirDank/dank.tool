@@ -89,7 +89,7 @@ def dank_tool_installer():
     while True:
         try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py").content.decode(); break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-    try: exec(code); sys.exit("Updated!")
+    try: exec(code)
     except:
         err_message = err(sys.exc_info())
         try: requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
@@ -97,6 +97,7 @@ def dank_tool_installer():
         print(clr(err_message, 2))
         input(clr("\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(1)
+    sys.exit("Updated!")
 
 if os.path.exists('debug'): development_version = True
 else: development_version = False
