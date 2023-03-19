@@ -1,12 +1,17 @@
 import os
 import sys
+import time
 import shutil
 import winreg
 import datetime
 import pyminizip
 from psutil import process_iter
-from alive_progress import alive_bar
 from dankware import title, cls, clr, err, align, magenta, rm_line, is_admin, export_registry_keys
+
+from rich.live import Live
+from rich.panel import Panel
+from rich.table import Table
+from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn
 
 def chrome_installed():
     try:
@@ -56,9 +61,17 @@ def backup(browser, password, compression_level):
 
         now = datetime.datetime.now()
         zip_name = f'chrome_[{now.strftime("%d-%m-%Y")}]_[{now.strftime("%I-%M-%S-%p")}].zip'
+        
+        width = os.get_terminal_size().columns
+        job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[deep_pink1][progress.percentage][bright_cyan]{task.percentage:>3.0f}%"), TimeRemainingColumn())
+        overall_task = job_progress.add_task("[bright_green]Compressing", total=int(len(source_files)))
+        progress_table = Table.grid()
+        progress_table.add_row(Panel.fit(job_progress, title="[bright_red]Jobs", border_style="magenta1", padding=(1, 2)))
 
-        with alive_bar(len(source_files)) as progress:
-            pyminizip.compress_multiple(source_files, prefixes, zip_name, password, compression_level, lambda x: progress(progress()+1))
+        with Live(progress_table, refresh_per_second=10):
+                while not job_progress.finished:
+                    time.sleep(0.1)
+                    pyminizip.compress_multiple(source_files, prefixes, zip_name, password, compression_level, lambda x: job_progress.update(overall_task, advance=1))
 
         print(clr("\n  > Cleaning..."))
         #if os.path.exists("User Data"): shutil.rmtree("User Data", ignore_errors=True)
@@ -66,7 +79,7 @@ def backup(browser, password, compression_level):
 
         os.system(f'explorer.exe "{os.getcwd()}"')
     
-        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [export.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
+        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [export.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
     
     #elif browser == "Firefox"
     #elif browser == "Opera":
