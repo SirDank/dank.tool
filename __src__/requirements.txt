@@ -1,5 +1,5 @@
-wheel
 setuptools
+wheel
 playsound
 mcstatus
 win10toast
@@ -8,3 +8,6 @@ dankware
 requests
 pypresence
 packaging
+pyminizip
+psutil
+rich
