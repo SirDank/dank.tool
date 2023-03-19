@@ -98,9 +98,9 @@
 
 - A super-fast Minecraft server scanner to find random servers around the world! [ 493/s ~ 500 threads ~ 100K IPs ~ 3 minutes 35 seconds ~ Ryzen 7 5800H Mobile ]
 
-- Generates the specified amount of IPs and scans the default Minecraft server port 25565
+- Generates the specified amount of IPs and scans the default Minecraft server port 25565 / 19132
 
-- IPs are crafted in such a way that it avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
+- IPs are crafted in such a way that it is unique and avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
 
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description
 
