@@ -514,7 +514,7 @@ def main_two():
         while True:
             try: config_updater(path); break
             except:
-                choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > Press [ ENTER ] to retry or type \"skip\" to skip: ", 2))
+                choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > Press [ ENTER ] to retry or type \"skip\" to skip: ", 2) + white)
                 if choice == "skip": break
 
     if playit:
