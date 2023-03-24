@@ -89,33 +89,58 @@ def main():
     # create and load files
     
     ###
-    if os.path.isfile("scanned.txt"):
-        os.rename('scanned.txt', 'java_scanned.json')
+    if os.path.isfile("scanned.txt"): os.rename('scanned.txt', 'java_scanned.txt')
     ###
-    try: open('java_scanned.json','x').write("{}")
+
+    try: open('java_scanned.txt','x').close()
     except: pass
-    try: open('bedrock_scanned.json','x').write("{}")
+    try: open('bedrock_scanned.txt','x').close()
     except: pass
     try: open('servers.txt','x').close()
     except: pass
+    
+    ###
+    try:
+        if os.path.isfile('java_scanned.json'):
+            tmp = open('java_scanned.json','r').read()
+            os.remove('java_scanned.json')
+            if "{" in tmp:
+                tmp = sorted(list(set(json.loads(tmp).keys())))
+                open('java_scanned.txt','w').write('\n'.join(tmp))
+    except:
+        open('java_scanned.txt','w').write("")
+
+    try:
+        if os.path.isfile('bedrock_scanned.json'):
+            tmp = open('bedrock_scanned.json','r').read()
+            os.remove('bedrock_scanned.json')
+            if "{" in tmp:
+                tmp = sorted(list(set(json.loads(tmp).keys())))
+                open('bedrock_scanned.txt','w').write('\n'.join(tmp))
+    except:
+        open('bedrock_scanned.txt','w').write("")
+        
+    tmp = None
+    ###
+    
     #cls(); print(clr("\n  > Loading scanned.txt..."))
-    #java_scanned = json.loads(open('java_scanned.json','r').read())
-    #bedrock_scanned = json.loads(open('bedrock_scanned.json','r').read())
 
     # get user input
 
     cls(); print(align(clr(banner,4)))
-    print(clr("\n  > The scanned.json files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The scanned.json file is only updated after the scan is complete."))
+    print(clr("\n  > The scanned.txt files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The scanned.txt file is only updated after the scan is complete."))
     
     print("")
     while True:
         server_type = input(clr("  > Server Type [java/bedrock]: ") + magenta)
         if server_type == "java":
-            scanned = json.loads(open('java_scanned.json','r').read())
+            scanned = open('java_scanned.txt','r').read().splitlines()
+            scanned = {key: "" for key in scanned}
             port = 25565
             break
         elif server_type == "bedrock":
-            scanned = json.loads(open('bedrock_scanned.json','r').read())
+            scanned = open('bedrock_scanned.txt','r').read().splitlines()
+            scanned = {key: "" for key in scanned}
             port = 19132
             break
         else: rm_line()
@@ -175,10 +200,10 @@ def main():
         # saving scanned ips
     
         #cls()
-        print(clr(f"\n  > Saving {server_type}_scanned.json..."))
+        print(clr(f"\n  > Saving {server_type}_scanned.txt..."))
         for ip in ips: scanned[ip] = ""
         print(clr(f"\n  > Totally Scanned {len(scanned)} IPs!"))
-        open(f'{server_type}_scanned.json','w').write(json.dumps(scanned))
+        open(f'{server_type}_scanned.txt','w').write('\n'.join(sorted(list(set(scanned.keys())))))
         time.sleep(5)
         
         gen_rem -= gen_amt
