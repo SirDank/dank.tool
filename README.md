@@ -5,6 +5,12 @@
 
 <p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png"></p><br>
 
+# 💡 Vote for the new icon! 💡
+
+- [Vote Here [1/2]](https://dank-site.onrender.com/dank-tool-suggestions)
+
+<br><p align="center"><img width="300" alt="image" src="https://user-images.githubusercontent.com/52797753/227912374-05afb8b8-4242-41a0-9345-d98d525a027f.png"> <img width="300" alt="image" src="https://user-images.githubusercontent.com/52797753/227912385-e4bfe341-8886-405f-bac7-77e997ea3335.png"></p><br>
+
 # 🚨 SirDank's dank.tool 🚨
 
 - An all-in-one, installable windows program with a wide variety of features built with python!
@@ -80,6 +86,8 @@
 - [x] Add Iris Dimensions ( newhorizons / theend )
 - [ ] Add datapacks ( based on mc version )
 - [ ] Add GeyserMC / Floodgate Options
+- [ ] Add Magma / Mohist Options
+- [ ] Add ViaVersion / ViaBackwards / ViaRewind
 - [ ] Maybe add a super simple web panel to only display stats
 
 ## ♦️ History ♦️
