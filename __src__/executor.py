@@ -9,7 +9,7 @@
 
 - executor.py is meant to be executed only as an executable, not as a python script!
 - the below imports are not required by executor.py but is required by the __modules__ run by dank.tool.py
-- they are here to be imported by the portable executable
+- they are here to be imported by the installable / portable executable
 - [ exec_mode = "script" ] is used for testing, to be run as a script | It is automatically changed to [ exec_mode = "exe" ] to be run as an executable
 '''
 
@@ -41,10 +41,10 @@ from dankware import cls, clr, title, err
 # variables
 
 session = requests.Session()
-executor = ThreadPoolExecutor()
+executor = ThreadPoolExecutor(10)
 
-current_version = "2.1.1"
-title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]") # exec(chdir(exec_mode))
+current_version = "2.2"
+title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
 # get latest version number and valid checksums
@@ -145,7 +145,7 @@ except: pass
 
 def dank_tool_runs_counter():
     while True:
-        try: requests.get("https://api.countapi.xyz/hit/dank.tool", timeout=3); break
+        try: requests.get("https://api.countapi.xyz/hit/dank.tool2"); break
         except: pass
 executor.submit(dank_tool_runs_counter)
 

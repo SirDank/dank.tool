@@ -46,7 +46,7 @@ def get_request_responses(task_id):
         try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", timeout=3).json()['value']
         except: request_responses["dankware_runs"] = "?"
     elif task_id == 1: 
-        try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool", timeout=3).json()['value']
+        try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool2", timeout=3).json()['value']
         except: request_responses["danktool_runs"] = "?"
     elif task_id == 2:
         try:
@@ -68,7 +68,7 @@ def get_request_responses(task_id):
 
 while True:
 
-    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [{current_version}]") # current_version defined in executor.py
+    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {current_version}") # current_version defined in executor.py
     os.chdir(os.path.dirname(__file__)) # exec_mode = "exe"; exec(chdir(exec_mode))
     discord_rpc_state = "on the main menu"
     #old_banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
