@@ -201,12 +201,9 @@ def main():
     
         #cls()
         print(clr(f"\n  > Saving {server_type}_scanned.txt..."))
-        for ip in ips: scanned[ip] = ""
-        print(clr(f"\n  > Totally Scanned {len(scanned)} IPs!"))
-        try: open(f'{server_type}_scanned.txt','w').write('\n'.join(sorted(list(set(scanned.keys())))))
-        except MemoryError: 
-            print(clr(f"\n  > Resetting {server_type}_scanned.txt due to MemoryError...",2))
-            open(f'{server_type}_scanned.txt','w').write('')
+        #for ip in ips: scanned[ip] = ""
+        print(clr(f"\n  > Totally Scanned {len(ips) + len(scanned)} IPs!"))
+        open(f'{server_type}_scanned.txt','a').write('\n' + '\n'.join(sorted(list(set(ips)))))
         time.sleep(5)
         
         gen_rem -= gen_amt
