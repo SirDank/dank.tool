@@ -43,7 +43,7 @@ from dankware import cls, clr, title, err
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
 
-current_version = "2.2"
+current_version = "2.2.1"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
@@ -147,6 +147,7 @@ def dank_tool_runs_counter():
     while True:
         try: requests.get("https://api.countapi.xyz/hit/dank.tool2"); break
         except: pass
+        time.sleep(240)
 executor.submit(dank_tool_runs_counter)
 
 # chatroom user validator

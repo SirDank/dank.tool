@@ -50,7 +50,7 @@ def get_request_responses(task_id):
         except: request_responses["danktool_runs"] = "?"
     elif task_id == 2:
         try:
-            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers={"User-Agent": "dank.tool"}).content.decode()
+            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers={"User-Agent": "dank.tool"}, timeout=3).content.decode()
             if tmp.isdigit(): request_responses["chatroom_user_count"] = tmp
             else: request_responses["chatroom_user_count"] = "1"
         except: request_responses["chatroom_user_count"] = "?"
