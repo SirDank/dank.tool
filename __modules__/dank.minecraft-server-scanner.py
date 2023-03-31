@@ -38,16 +38,26 @@ def check_bedrock(ip):
 def save_server(ip):
     
     try:
+    
         if server_type == "java": server = JavaServer(ip,port)
         else: server = BedrockServer(ip,port)
         status = server.status()
         #try: query = server.query(); query_response = f"| {query.software}"
         #except: query_response = ""
-        response = requests.get(f"http://ipwho.is/{ip}").json()
-        to_print = f"{ip} | {'java' if server_type == 'java' else 'bedrock'} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {response['city']} | {response['connection']['org']} | {response['connection']['domain']} | {status.description}".replace('\n','|').replace('ü','u')
+    
+        try:
+            response = requests.get(f"http://ipwho.is/{ip}").json()
+            if response['success'] == True:
+                server_info = f"{response['city']} | {response['connection']['org']} | {response['connection']['domain']}"
+            else:
+                server_info = "ratelimited on ipwho.is" # 50mil monthly limit
+        except: server_info = "ipwho.is is unreachable"
+        
+        to_print = f"{ip} | {'java' if server_type == 'java' else 'bedrock'} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n','|').replace('ü','u')
         for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']: to_print = to_print.replace(_,'')
         print(clr(f"  > {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
+
     except Exception as exc:
         exc = str(exc)
         err_found = False
