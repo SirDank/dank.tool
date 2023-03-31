@@ -219,8 +219,9 @@ def main_one():
     print(clr("\n  > Downloading... [ this might take a few minutes ]"))
     
     start_time = time.time()
-    for url, file_name in zip(to_download_urls, to_download_file_names):
-        file_downloader(url, file_name)
+    #for url, file_name in zip(to_download_urls, to_download_file_names):
+    #    file_downloader(url, file_name)
+    multithread(file_downloader, 1, to_download_urls, to_download_file_names) # single threaded with progress bar
     time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
