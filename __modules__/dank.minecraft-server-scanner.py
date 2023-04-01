@@ -165,7 +165,7 @@ def main():
     while True:
         ips_amt = input(clr("  > Amount of IPs to scan: ") + magenta)
         if ips_amt.isdigit(): ips_amt = int(ips_amt); break
-        else: break
+        else: rm_line()
         
     # disclaimer
  
