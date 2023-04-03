@@ -14,7 +14,7 @@ def main():
         cls()
         try:
             os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12}"; "& {(Invoke-WebRequest -UseBasicParsing \'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\').Content | Invoke-Expression} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"; "& iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
-            os.system('start cmd.exe @cmd /k "spicetify apply"')
+            os.system('start cmd.exe @cmd /k "spicetify restore backup apply"')
             break
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     time.sleep(5)
