@@ -10,8 +10,9 @@ import time
 import requests
 from datetime import datetime
 from win10toast import ToastNotifier
-from dankware import align, cls, clr, magenta, white, title, get_duration, multithread, err
+from dankware import align, cls, clr, magenta, white, title, get_duration, multithread, err, rm_line
 
+headers = {"User-Agent": "dank.tool"}
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
 
@@ -22,7 +23,7 @@ def updated_on(url, dankware_module = True):
     if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
     try:
 
-        response = requests.get(url, timeout=3).json()
+        response = requests.get(url, headers=headers, timeout=3).json()
         if response == []: return f"[ unreleased ]"
         else:
             date, time = response[0]["commit"]["author"]["date"].split("T")
@@ -43,14 +44,14 @@ def get_request_responses(task_id):
     # get global runs
     
     if task_id == 0: 
-        try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", timeout=3).json()['value']
+        try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", headers=headers, timeout=3).json()['value']
         except: request_responses["dankware_runs"] = "?"
     elif task_id == 1: 
-        try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool2", timeout=3).json()['value']
+        try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool2", headers=headers, timeout=3).json()['value']
         except: request_responses["danktool_runs"] = "?"
     elif task_id == 2:
         try:
-            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers={"User-Agent": "dank.tool"}, timeout=3).content.decode()
+            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit(): request_responses["chatroom_user_count"] = tmp
             else: request_responses["chatroom_user_count"] = "1"
         except: request_responses["chatroom_user_count"] = "?"
@@ -63,6 +64,7 @@ def get_request_responses(task_id):
     elif task_id == 6: request_responses["Spicetify"] = updated_on("https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1",False)
     elif task_id == 7: request_responses["dank.auto-clicker"] = updated_on("dank.auto-clicker")
     elif task_id == 8: request_responses["dank.browser-backup"] = updated_on("dank.browser-backup")
+    elif task_id == 9: request_responses["dank.fusion-fall"] = updated_on("dank.fusion-fall")
 
 # main
 
@@ -78,49 +80,52 @@ while True:
         
     request_responses = {}
     while True:
-        try: multithread(get_request_responses, 100, [ _ for _ in range(9) ], progress_bar=False); break
+        try: multithread(get_request_responses, 50, [ _ for _ in range(10) ], progress_bar=False); break
         except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
         except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
+    # print randomly coloured and aligned banner
+    
+    cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
+    
+    # global runs
+    
+    stats = f"dankware runs: {request_responses['dankware_runs']} | dank.tool runs: {request_responses['danktool_runs']}"
+        
+    # available modules
+    
+    modules = [
+        f'Minecraft Server Builder {request_responses["dank.minecraft-server-builder"]}',
+        f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
+        f'Fusion-Fall Modding Tool {request_responses["dank.fusion-fall"]}',
+        f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
+        f'Browser Backup {request_responses["dank.browser-backup"]}',
+        f'Auto Clicker {request_responses["dank.auto-clicker"]}',
+        f'Chatroom [ {request_responses["chatroom_user_count"]} online ] [ coming soon! ]',
+    ]
+    
+    # print modules with counter and get choice
+
+    counter = 1; modules_to_print = ""
+    for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
+    print(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
+    
     while True:
         
-        # print randomly coloured and aligned banner
-        
-        cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
-        
-        # global runs
-        
-        stats = f"dankware runs: {request_responses['dankware_runs']} | dank.tool runs: {request_responses['danktool_runs']}"
-            
-        # available modules
-        
-        modules = [
-            f'Minecraft Server Builder {request_responses["dank.minecraft-server-builder"]}',
-            f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
-            f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
-            f'Auto Clicker {request_responses["dank.auto-clicker"]}',
-            f'Browser Backup {request_responses["dank.browser-backup"]}',
-            f'Chatroom [ {request_responses["chatroom_user_count"]} online ] [ coming soon! ]',
-        ]
-        
-        # print modules with counter and get choice
-        
-        counter = 1; modules_to_print = ""
-        for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
-        choice = input(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n\n  - Choice: ") + magenta) # development_version defined in executor.py
-        if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(modules)):
+        choice = input(clr("  - Choice: ") + magenta)
+        if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
             choice = modules[int(choice)-1]; break
         
-        # debug menu
-        
-        elif choice == 'debug':
+        elif choice == 'debug': # debug menu
             cls()
             while True:
-                # this variable is long to prevent being changed!
+                # this variable is long to prevent it from being changed!
                 cmd_to_be_executed = input(clr("\n  > ") + white)
                 if cmd_to_be_executed == 'exit': break
                 try: exec(cmd_to_be_executed)
                 except: print(clr("\n" + err(sys.exc_info()), 2))
+        
+        else: rm_line()
 
     try:
     
@@ -129,8 +134,9 @@ while True:
         elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
         elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
         elif "Auto Clicker" in choice: project, discord_rpc_state = "dank.auto-clicker", "running auto-clicker"
-        elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up browser"
+        elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up a browser"
         elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "texting in the chatroom"
+        elif "Fusion-Fall" in choice: project, discord_rpc_state = "dank.fusion-fall", "modding Fusion-Fall"
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
@@ -142,7 +148,7 @@ while True:
 
         if not development_version: # development_version defined in executor.py
             while True:
-                try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py").content.decode(); break
+                try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py", headers=headers).content.decode(); break
                 except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
         else:
             while True:
@@ -166,8 +172,8 @@ while True:
                 #if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
                 #else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > Message: {user_message}```"
                 # > updated to custom url to prevent webhook spamming
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
                 break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-        cls(); input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
+        input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
 
