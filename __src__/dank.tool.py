@@ -33,7 +33,7 @@ def updated_on(url, dankware_module = True):
         
         return f"[ updated {get_duration(date_time_data, interval='dynamic')} ago ]"
     
-    except: return "[ updated ? ago ]"  
+    except: return "[ updated ? ago ]"
 
 # multithread requests
 

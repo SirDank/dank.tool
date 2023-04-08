@@ -285,13 +285,8 @@ def cab():
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
     xdtdata = tabledata.objects[index].contents
     print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))
-
-    while True:
-        try:
-            cmd = logger(input(f"  {magenta}> {green}")); print(reset); cmd_lower = cmd.lower()
-            if cmd_lower == "help":
-
-                print(clr("""  > Available Shortcuts With Examples:\n
+    
+    help_msg = """  > Available Shortcuts With Examples:\n
  - aimport sound.wav, 22.5, sound  >  new_audio = tabledata.add_object(83); import_audio(new_audio.contents,'sound.wav',22.5,'sound'); tabledata.add2ab('sound.wav',new_audio.path_id)
  - aswap sound.wav, 22.5, sound  >  import_audio(xdtdata,'sound.wav',22.5,'sound')
  - export example.obj  >  open('example.obj','w').write(OBJMesh(xdtdata).export())
@@ -321,8 +316,13 @@ def cab():
  - tswap texture.png texture 1  >  import_texture(xdtdata,'texture.png','texture','dxt1')
  - tswap texture.png texture 5  >  import_texture(xdtdata,'texture.png','texture','dxt5')
  - tswap-mass 1  >  mass import_texture (fmt='dxt1')
- - tswap-mass 5  >  mass import_texture (fmt='dxt5')\n"""))
-            
+ - tswap-mass 5  >  mass import_texture (fmt='dxt5')\n"""
+
+    while True:
+        try:
+            cmd = logger(input(f"  {magenta}> {green}")); print(reset, end=''); cmd_lower = cmd.lower()
+            if cmd_lower == "help":
+                print(clr(help_msg))
             elif cmd_lower == "exit": break
             elif cmd_lower == "fix-bundles": fix_bundles()
             elif cmd_lower == "add-npc": add_npc()
