@@ -16,6 +16,7 @@
 import shutil
 import ctypes
 import winreg
+import sqlite3
 import pyminizip
 import subprocess
 from psutil import process_iter
@@ -24,7 +25,15 @@ from mcstatus import JavaServer
 from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
-from dankware import multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys
+from dankware import multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys, file_selector
+
+# required for dank.fusion-fall.py
+
+from wand.image import Image
+from unitypackff.asset import Asset
+from unitypackff.export import OBJMesh
+from unitypackff.object import FFOrderedDict, ObjectPointer
+from unitypackff.modding import import_texture, import_mesh, import_audio
 
 # required imports for executor.py
 
@@ -35,15 +44,16 @@ import requests
 #from hashlib import sha1
 from pypresence import Presence
 from packaging.version import parse
-from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, title, err
+from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
+headers = {"User-Agent": "dank.tool"}
 
-current_version = "2.2.1"
+current_version = "2.3"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
@@ -53,7 +63,7 @@ def latest_dank_tool_version():
 
     while True:
         try:
-            latest_version = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version.txt").content.decode()
+            latest_version = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version.txt", headers=headers).content.decode()
             #checksums = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/checksums.txt").content.decode()
             if "Not Found" in latest_version: latest_version = "0"
             break
@@ -87,12 +97,12 @@ check_file_integrity()
 def dank_tool_installer():
 
     while True:
-        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py").content.decode(); break
+        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py", headers=headers).content.decode(); break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     try: exec(code)
     except:
         err_message = err(sys.exc_info())
-        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
+        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
         except: pass
         print(clr(err_message, 2))
         input(clr("\n  > Press [ENTER] to EXIT... ",2))
@@ -114,7 +124,7 @@ if development_version:
         except: input(clr("\n  > Failed to get code! Unable to read '__src__/dank.tool.py'! Press [ENTER] to try again... ",2))
 else:
     while True:
-        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py").content.decode(); break
+        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py", headers=headers).content.decode(); break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
 # start discord rpc
@@ -145,7 +155,7 @@ except: pass
 
 def dank_tool_runs_counter():
     while True:
-        try: requests.get("https://api.countapi.xyz/hit/dank.tool2"); break
+        try: requests.get("https://api.countapi.xyz/hit/dank.tool2", headers=headers); break
         except: pass
         time.sleep(240)
 executor.submit(dank_tool_runs_counter)
@@ -155,7 +165,7 @@ executor.submit(dank_tool_runs_counter)
 def dank_tool_chatroom():
     session = requests.Session()
     while True:
-        try: session.post("https://dank-site.onrender.com/chatroom-users")
+        try: session.post("https://dank-site.onrender.com/chatroom-users", headers=headers)
         except: pass
         time.sleep(240)
 executor.submit(dank_tool_chatroom)
@@ -179,8 +189,8 @@ except:
                 #if user_message == "": content = f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"
                 #else: content = f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}\n\n  > Message: {user_message}```"
                 # > updated to custom url to prevent webhook spamming
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
                 break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-        cls(); input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... ",2))
+        input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
 

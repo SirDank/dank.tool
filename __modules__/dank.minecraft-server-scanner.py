@@ -2,6 +2,7 @@ import os
 import time
 import json
 import socket
+import sqlite3
 import requests
 from mcstatus import JavaServer, BedrockServer
 from dankware import multithread, clr, cls, title, align, magenta, rm_line, random_ip
@@ -42,7 +43,7 @@ def save_server(ip):
         if server_type == "java": server = JavaServer(ip,port)
         else: server = BedrockServer(ip,port)
         status = server.status()
-        #try: query = server.query(); query_response = f"| {query.software}"
+        #try: query_response = f"{server.query().software}"
         #except: query_response = ""
     
         try:
@@ -53,7 +54,11 @@ def save_server(ip):
                 server_info = "ratelimited on ipwho.is" # 50mil monthly limit
         except: server_info = "ipwho.is is unreachable"
         
-        to_print = f"{ip} | {'java' if server_type == 'java' else 'bedrock'} | {status.version.name} | {status.players.online} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n','|').replace('ü','u')
+        # update this on mcstatus v11 release
+        
+        if server_type == "java": to_print = f"{ip} | java | {status.version.name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n',' ').replace('ü','u')
+        elif server_type == "bedrock": to_print = f"{ip} | bedrock | {status.version.version} | {status.gamemode} | Map: {status.map} | {status.players_online}/{status.players_max} online | {int(status.latency)}ms | {server_info} | {status.motd}".replace('\n',' ').replace('ü','u')
+        
         for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']: to_print = to_print.replace(_,'')
         print(clr(f"  > {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
@@ -74,10 +79,17 @@ def save_server(ip):
 
 def generate_ip():
 
+    cursor = sqlite3.connect(f'{server_type}_scanned_ips.db').cursor()
     while True:
         ip = random_ip()
-        if ip in ips.keys() or ip in scanned.keys(): continue
+        #if ip in ips.keys() or ip in scanned.keys(): continue
+        #ips[ip] = ""; break
+        if ip in ips.keys(): continue
+        cursor.execute('''SELECT ip FROM ips WHERE ip=?''', (ip,))
+        result = cursor.fetchone()
+        if result: continue
         ips[ip] = ""; break
+    cursor.close()
 
 def main():
     
@@ -96,64 +108,42 @@ def main():
     os.system(f'explorer.exe "dank.mc-server-scanner"')
     os.chdir('dank.mc-server-scanner')
     
-    # create and load files
-    
-    ###
-    if os.path.isfile("scanned.txt"): os.rename('scanned.txt', 'java_scanned.txt')
-    ###
-
-    try: open('java_scanned.txt','x').close()
-    except: pass
-    try: open('bedrock_scanned.txt','x').close()
-    except: pass
     try: open('servers.txt','x').close()
     except: pass
     
-    ###
-    try:
-        if os.path.isfile('java_scanned.json'):
-            tmp = open('java_scanned.json','r').read()
-            os.remove('java_scanned.json')
-            if "{" in tmp:
-                tmp = sorted(list(set(json.loads(tmp).keys())))
-                open('java_scanned.txt','w').write('\n'.join(tmp))
-    except:
-        open('java_scanned.txt','w').write("")
-
-    try:
-        if os.path.isfile('bedrock_scanned.json'):
-            tmp = open('bedrock_scanned.json','r').read()
-            os.remove('bedrock_scanned.json')
-            if "{" in tmp:
-                tmp = sorted(list(set(json.loads(tmp).keys())))
-                open('bedrock_scanned.txt','w').write('\n'.join(tmp))
-    except:
-        open('bedrock_scanned.txt','w').write("")
-        
-    tmp = None
-    ###
+    # remove old files
     
-    #cls(); print(clr("\n  > Loading scanned.txt..."))
+    ###
+    if os.path.isfile("scanned.txt"): os.remove("scanned.txt")
+    if os.path.isfile('java_scanned.txt'): os.remove('java_scanned.txt')
+    if os.path.isfile('java_scanned.json'): os.remove('java_scanned.json')
+    if os.path.isfile('bedrock_scanned.txt'): os.remove('bedrock_scanned.txt')
+    if os.path.isfile('bedrock_scanned.json'): os.remove('bedrock_scanned.json')
+    ###
 
     # get user input
 
     cls(); print(align(clr(banner,4)))
-    print(clr("\n  > The scanned.txt files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The scanned.txt file is only updated after the scan is complete."))
+    print(clr("\n  > The database files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The database file is only updated after the scan is complete."))
     
     print("")
     while True:
         server_type = input(clr("  > Server Type [java/bedrock]: ") + magenta)
         if server_type == "java":
-            scanned = open('java_scanned.txt','r').read().splitlines()
-            scanned = {key: "" for key in scanned}
+            conn = sqlite3.connect('java_scanned_ips.db')
+            #scanned = open('java_scanned.txt','r').read().splitlines()
+            #scanned = {key: "" for key in scanned}
             port = 25565
             break
         elif server_type == "bedrock":
-            scanned = open('bedrock_scanned.txt','r').read().splitlines()
-            scanned = {key: "" for key in scanned}
+            conn = sqlite3.connect('bedrock_scanned_ips.db')
+            #scanned = open('bedrock_scanned.txt','r').read().splitlines()
+            #scanned = {key: "" for key in scanned}
             port = 19132
             break
         else: rm_line()
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS ips (ip TEXT UNIQUE PRIMARY KEY)''')
         
     print("")
     while True:
@@ -210,10 +200,12 @@ def main():
         # saving scanned ips
     
         #cls()
-        print(clr(f"\n  > Saving {server_type}_scanned.txt..."))
-        #for ip in ips: scanned[ip] = ""
-        print(clr(f"\n  > Totally Scanned {len(ips) + len(scanned)} IPs!"))
-        open(f'{server_type}_scanned.txt','a').write('\n' + '\n'.join(sorted(list(set(ips)))))
+        print(clr(f"\n  > Saving {server_type}_scanned_ips.db..."))
+        #open(f'{server_type}_scanned.txt','a').write('\n' + '\n'.join(sorted(list(set(ips)))))
+        cursor.executemany('''INSERT INTO ips (ip) VALUES (?)''', [(ip,) for ip in sorted(list(set(ips.keys())))])
+        conn.commit()
+        cursor.execute('''SELECT COUNT(*) FROM ips''')
+        print(clr(f"\n  > Totally Scanned {cursor.fetchone()[0]} IPs!"))
         time.sleep(5)
         
         gen_rem -= gen_amt
