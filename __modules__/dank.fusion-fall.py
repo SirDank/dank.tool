@@ -425,7 +425,9 @@ def main():
                 tswap_mass(cmd)
 
             else:
-                exec(cmd); print()
+                exec(cmd)
+            
+            print()
 
         except: print(clr(err(sys.exc_info()) + '\n', 2))
 
