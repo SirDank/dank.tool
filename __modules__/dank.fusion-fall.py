@@ -48,15 +48,6 @@ from unitypackff.export import OBJMesh
 from unitypackff.object import FFOrderedDict, ObjectPointer
 from unitypackff.modding import import_texture, import_mesh, import_audio
 
-# Dependencies for ffextract.py
-
-#import traceback
-#from PIL.ImageOps import flip
-#from collections import OrderedDict
-#from unitypack.export import OBJMesh
-#from unitypack.object import ObjectPointer
-#from unitypack.environment import UnityEnvironment
-
 def banner():
     
     banner = '\n\n ____  _____ _____ _____   _____ _____    ___ \n|    \\|  _  |   | |  |  | |   __|   __|  |_  |\n|  |  |     | | | |    -|_|   __|   __|  |  _|\n|____/|__|__|_|___|__|__|_|__|  |__|     |___|\n\nx\n\n'
@@ -128,7 +119,8 @@ def dump_xdt():
     for tname, table in xdtdata.items():
         output[tname] = {}
         try:
-            for dname, data in table.items(): output[tname][dname] = data
+            for dname, data in table.items():
+                output[tname][dname] = data
         except: output[tname] = "<err>"
     json.dump(output, open("xdt.json", "w+"), indent=4)
 
@@ -270,12 +262,15 @@ def add_npc():
 
 # main
 
-def cab():
+def main():
     
     global tabledata, xdtdata
 
     print(clr("  > Select Custom Asset Bundle..."))
-    cab_path = file_selector("Select Custom Asset Bundle", os.path.join(os.path.dirname(__file__), "dankware.ico"))
+    if "PYTHONHOME" in os.environ:
+        cab_path = file_selector("Select Custom Asset Bundle", os.path.join(os.path.dirname(__file__), "dankware.ico")).replace('/','\\').replace('"','')
+    else: #cab_path = input(clr("  > Drag and Drop Custom Asset Bundle: ")).replace('/','\\').replace('"','')
+        cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
     rm_line()
     print(clr(logger(f'  > cab_path = "{cab_path}"')))
     index = int(input(clr('  > TableData Object Index: ') + green))
@@ -434,7 +429,7 @@ def cab():
 
         except: print(clr(err(sys.exc_info()) + '\n', 2))
 
-def main():
+def menu():
     
     sys.setrecursionlimit(10000)
     open_workspace()
@@ -444,7 +439,7 @@ def main():
         banner(); print(clr(f"\n  1 > CAB Explorer / Editor\n  2 > Fix Bundles\n  3 > Mission Builder (coming soon)\n  4 > Change workspace [{os.path.basename(os.getcwd())}]\n  5 > Visit {green}nuclearff.{green}com{white}\n  6 > Exit\n"))
         
         choice = input(clr("  > Choice: ") + green)
-        if choice == "1": banner(); cab()
+        if choice == "1": banner(); main()
         elif choice == "2": banner(); fix_bundles()
         #elif choice == "3": banner(); mission_builder()
         elif choice == "4": open_workspace()
@@ -452,7 +447,5 @@ def main():
         elif choice == "6": break
         else: rm_line()
 
-if __name__ == '__main__':
-    log = ''
-    main()
+if __name__ == '__main__': log = ''; menu()
 
