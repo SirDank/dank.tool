@@ -11,8 +11,8 @@ def setup():
 
     try: exec("from wand.image import Image")
     except ImportError:
-        cls(); print(clr("\n > MagickWand shared library not found!",2))
-        if input(clr("\n > Download ImageMagick? [y/n]: ") + magenta).lower() == "y":
+        cls(); print(clr("\n  > MagickWand shared library not found!",2))
+        if input(clr("\n  > Download ImageMagick? [y/n]: ") + magenta).lower() == "y":
             while True:
                 try:
 
@@ -315,16 +315,20 @@ def main():
 
     while True:
         try:
-            cmd = logger(input(f"  {magenta}> {green}")); print(reset, end=''); cmd_lower = cmd.lower()
-            if cmd_lower == "help":
-                print(clr(help_msg))
+            cmd = logger(input(f"  {magenta}> {green}"))
+            print(reset, end='')
+            cmd_lower = cmd.lower()
+
+            if cmd_lower == "help": print(clr(help_msg))
             elif cmd_lower == "exit": break
             elif cmd_lower == "fix-bundles": fix_bundles()
             elif cmd_lower == "add-npc": add_npc()
             elif cmd_lower == "log": open("log.txt","w+").write(log)
+            
             elif cmd_lower == "dump-xdt": 
                 try: dump_xdt()
                 except: print(clr(err(sys.exc_info()), 2))
+            
             elif cmd_lower == "save":
                 try: os.remove(cab_name)
                 except: pass
