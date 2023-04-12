@@ -273,10 +273,12 @@ def main():
         cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
     rm_line()
     print(clr(logger(f'  > cab_path = "{cab_path}"')))
-    index = int(input(clr('  > TableData Object Index: ') + green))
     cab_name = str(cab_path.split('\\')[-1])
     print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
     tabledata = Asset.from_file(open(cab_path, 'rb'))
+    if input(clr("  > Print Available TableData Objects? [y/n]: ")).lower() == 'y':
+        print(clr(logger(f"  > Available TableData Objects: {' '.join(tabledata.objects.keys())}")))
+    index = int(input(clr('  > TableData Object Index: ') + green))
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
     xdtdata = tabledata.objects[index].contents
     print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))

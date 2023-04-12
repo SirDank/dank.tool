@@ -39,7 +39,7 @@
 
 ## ♦️ To Do ♦️
 
-- [ ] Add offline mode for offline scripts
+- [ ] Add offline mode for offline scripts ( High Priority )
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
 - [ ] Add dank.hwid-spoofer
@@ -53,7 +53,7 @@
 
 - [Give SirDank Ideas for Windows Tools!](https://dank-site.onrender.com/dank-tool-suggestions)
 
-<p>&nbsp;</p>    
+<p>&nbsp;</p>
 
 ---  
 
@@ -92,7 +92,7 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p><br>
 
-<p>&nbsp;</p>    
+<p>&nbsp;</p>
 
 ---  
 
@@ -118,7 +118,35 @@
 
 - https://github.com/SirDank/dank.resourcepack
 
-<p>&nbsp;</p>    
+<p>&nbsp;</p>
+
+---  
+
+# 🚨 Fusion-Fall Modding Tool 🚨
+
+- Sponsored by [nuclearff.com](https://nuclearff.com/)
+
+## ♦️ Features ♦️
+
+- Custom Asset Bundle Explorer / Editor
+- ImageMagick installer
+- Several in-built shortcuts for modding
+- Swap Textures
+- Swap Audio
+- Swap Models (static, not animated)
+- Export Models
+- Command Logger
+- Workspaces for multiple projects
+
+## ♦️ To Do ♦️
+
+- [ ] Create Mission Builder
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/231504894-2089319e-eb46-4c72-9726-33b72e8aeff4.png"></p><br>
+
+<p>&nbsp;</p>
 
 ---  
 
@@ -150,7 +178,7 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/206840952-513f2ded-09c0-4202-8fad-f191933acd3c.png"></p><br>
 
-<p>&nbsp;</p>    
+<p>&nbsp;</p>
 
 ---  
 
@@ -169,7 +197,7 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221374800-f8d4d8c5-5a6e-4f51-a9b1-784c0322543d.png"></p><br>
 
-<p>&nbsp;</p>    
+<p>&nbsp;</p>
 
 ---  
 
@@ -185,7 +213,7 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></p><br>
 
-<p>&nbsp;</p>    
+<p>&nbsp;</p>
 
 ---  
 
