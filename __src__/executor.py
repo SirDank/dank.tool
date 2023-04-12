@@ -13,6 +13,9 @@
 - [ exec_mode = "script" ] is used for testing, to be run as a script | It is automatically changed to [ exec_mode = "exe" ] to be run as an executable
 '''
 
+import os
+import sys
+import time
 import shutil
 import ctypes
 import winreg
@@ -25,11 +28,11 @@ from mcstatus import JavaServer
 from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
-from dankware import multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys, file_selector
+from dankware import cls, err, multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys, file_selector
 
 # required for dank.fusion-fall.py
 
-from wand.image import Image
+#from wand.image import Image
 from unitypackff.asset import Asset
 from unitypackff.export import OBJMesh
 from unitypackff.object import FFOrderedDict, ObjectPointer
@@ -37,14 +40,12 @@ from unitypackff.modding import import_texture, import_mesh, import_audio
 
 # required imports for executor.py
 
-import os
-import sys
-import time
+import json
 import requests
 #from hashlib import sha1
 from pypresence import Presence
 from packaging.version import parse
-from dankware import cls, clr, title, err
+from dankware import clr, title, green
 from concurrent.futures import ThreadPoolExecutor
 
 # variables
@@ -53,7 +54,7 @@ session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
 
-current_version = "2.3"
+current_version = "2.3.1"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
@@ -97,7 +98,11 @@ check_file_integrity()
 def dank_tool_installer():
 
     while True:
-        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py", headers=headers).content.decode(); break
+        try:
+            release_notes = json.loads(requests.get("https://api.github.com/repos/SirDank/dank.tool/releases/latest").content.decode())["body"]
+            code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py", headers=headers).content.decode()
+            print(clr(f"\n  > Release Notes:\n\n") + clr(release_notes, colour_two=green))
+            break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     try: exec(code)
     except:
