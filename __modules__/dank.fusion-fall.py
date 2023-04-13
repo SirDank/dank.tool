@@ -5,7 +5,7 @@ import time
 import shutil
 import requests
 import pretty_errors
-from dankware import align, clr, cls, magenta, white, green, red, reset, err, rm_line, file_selector
+from dankware import align, clr, cls, magenta, white, green, red, reset, err, rm_line, file_selector, title
 
 def setup():
 
@@ -440,6 +440,7 @@ def main():
 def menu():
     
     sys.setrecursionlimit(10000)
+    title("𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕")
     open_workspace()
     
     while True:
