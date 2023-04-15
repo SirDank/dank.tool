@@ -272,13 +272,25 @@ def main():
     else: #cab_path = input(clr("  > Drag and Drop Custom Asset Bundle: ")).replace('/','\\').replace('"','')
         cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
     rm_line()
+    
     print(clr(logger(f'  > cab_path = "{cab_path}"')))
     cab_name = str(cab_path.split('\\')[-1])
     print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
     tabledata = Asset.from_file(open(cab_path, 'rb'))
+    
     #if input(clr("  > Print Available TableData Objects? [y/n]: ")).lower() == 'y':
     #    print(clr(logger(f"  > Available TableData Objects: {' '.join(tabledata.objects.keys())}")))
-    index = int(input(clr('  > TableData Object Index: ') + green))
+
+    if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name:
+        print(clr("  > Suggested Index: 7"))
+    elif "CustomAssetBundle-TableData" in cab_name:
+        print(clr("  > Suggested Index: 2139558964"))
+    elif "CustomAssetBundle-8320bfa70e3f04727bfc405b1fd7efcc" in cab_name:
+        print(clr("  > Suggested Index: 3"))
+    elif "sharedassets0.assets" in cab_name:
+        print(clr("  > Suggested Index: 1375"))
+    
+    index = int(input(clr(f'  > TableData Object Index [0-{len(tabledata.objects)-1}]: ') + green))
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
     xdtdata = tabledata.objects[index].contents
     print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))
@@ -288,6 +300,7 @@ def main():
  - aswap sound.wav, 22.5, sound  >  import_audio(xdtdata,'sound.wav',22.5,'sound')
  - export example.obj  >  open('example.obj','w').write(OBJMesh(xdtdata).export())
  - imesh npc_alienx.obj npc_alienx  >  import_mesh(xdtdata, 'npc_alienx.obj', 'npc_alienx')
+ - index 0  >  xdtdata = tabledata.objects[0].contents
  - ms-info  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1])
  - ms-npc 1 2671  >  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'] = NPC_INDEX#
  - ms-npc 1  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'])
@@ -363,6 +376,10 @@ def main():
             elif cmd_lower.startswith('imesh '):
                 cmd = cmd.replace('imesh ','').split(' ')
                 import_mesh(xdtdata, cmd[0], cmd[1])
+                
+            elif cmd_lower.startswith('index '):
+                index = int(cmd.replace('index ',''))
+                xdtdata = tabledata.objects[index].contents
 
             elif cmd_lower.startswith('ms-info '):
                 print(xdtdata['m_pMissionTable']['m_pMissionData'][int(cmd.replace('ms-info ',''))])
