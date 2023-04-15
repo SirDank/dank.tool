@@ -290,7 +290,7 @@ def main():
     elif "sharedassets0.assets" in cab_name:
         print(clr("  > Suggested Index: 1375"))
     
-    index = int(input(clr(f'  > TableData Object Index [0-{len(tabledata.objects)-1}]: ') + green))
+    index = int(input(clr(f'  > TableData Object Index [0-{len(tabledata.objects)}]: ') + green))
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
     xdtdata = tabledata.objects[index].contents
     print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))
