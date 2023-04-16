@@ -289,8 +289,6 @@ def main():
         print(clr("  > Suggested Index: 3"))
     elif "sharedassets0.assets" in cab_name:
         print(clr("  > Suggested Index: 1375"))
-    elif "Manifest.resourcefile" in cab_name:
-        print(clr("  > Suggested Index: 3"))
     
     index = int(input(clr(f'  > TableData Object Index: ') + green))
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
