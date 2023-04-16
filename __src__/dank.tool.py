@@ -10,6 +10,7 @@ import time
 import requests
 from datetime import datetime
 from win10toast import ToastNotifier
+from dateutil.tz import tzlocal, tzutc
 from dankware import align, cls, clr, magenta, white, title, get_duration, multithread, err, rm_line
 
 headers = {"User-Agent": "dank.tool"}
@@ -29,10 +30,9 @@ def updated_on(url, dankware_module = True):
             date, time = response[0]["commit"]["author"]["date"].split("T")
             date = date.split("-")
             time = time.replace("Z","").split(":")
-            date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]))
+            date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
-        return f"[ updated {get_duration(date_time_data, interval='dynamic')} ago ]"
-    
+        return f"[ updated {get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic')} ago ]"
     except: return "[ updated ? ago ]"
 
 # multithread requests

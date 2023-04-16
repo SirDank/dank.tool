@@ -26,6 +26,7 @@ from psutil import process_iter
 from playsound import playsound
 from mcstatus import JavaServer
 from win10toast import ToastNotifier
+from dateutil.tz import tzlocal, tzutc
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from dankware import cls, err, multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys, file_selector
@@ -54,7 +55,7 @@ session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
 
-current_version = "2.3.1"
+current_version = "2.3.2"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
