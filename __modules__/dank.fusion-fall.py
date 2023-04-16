@@ -278,8 +278,8 @@ def main():
     print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
     tabledata = Asset.from_file(open(cab_path, 'rb'))
     
-    #if input(clr("  > Print Available TableData Objects? [y/n]: ")).lower() == 'y':
-    #    print(clr(logger(f"  > Available TableData Objects: {' '.join(tabledata.objects.keys())}")))
+    if input(clr("\n  > Print Available TableData Objects? [y/n]: ")).lower() == 'y':
+        print(clr(logger("  > Available TableData Objects: \n\n" + '\n'.join(tabledata.objects.keys()) + "\n")))
 
     if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name:
         print(clr("  > Suggested Index: 7"))
@@ -289,6 +289,8 @@ def main():
         print(clr("  > Suggested Index: 3"))
     elif "sharedassets0.assets" in cab_name:
         print(clr("  > Suggested Index: 1375"))
+    elif "Manifest.resourcefile" in cab_name:
+        print(clr("  > Suggested Index: 3"))
     
     index = int(input(clr(f'  > TableData Object Index [0-{len(tabledata.objects)}]: ') + green))
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
