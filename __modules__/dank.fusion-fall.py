@@ -278,8 +278,8 @@ def main():
     print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
     tabledata = Asset.from_file(open(cab_path, 'rb'))
     
-    if input(clr("\n  > Print Available TableData Objects? [y/n]: ")).lower() == 'y':
-        print(clr(logger("  > Available TableData Objects: \n\n" + '\n'.join(tabledata.objects.keys()) + "\n")))
+    if input(clr("\n  > Print Available TableData Objects? [y/n]: ") + green).lower() == 'y':
+        print(clr(logger("  > Available TableData Objects: \n\n" + '\n'.join(str(_) for _ in tabledata.objects.keys()))))
 
     if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name:
         print(clr("  > Suggested Index: 7"))
@@ -292,7 +292,7 @@ def main():
     elif "Manifest.resourcefile" in cab_name:
         print(clr("  > Suggested Index: 3"))
     
-    index = int(input(clr(f'  > TableData Object Index [0-{len(tabledata.objects)}]: ') + green))
+    index = int(input(clr(f'  > TableData Object Index: ') + green))
     print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
     xdtdata = tabledata.objects[index].contents
     print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))
