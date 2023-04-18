@@ -93,7 +93,7 @@ def generate_ip():
 
 def main():
     
-    global ips, scanned, server_type, port
+    global ips, server_type, port #, scanned
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
     socket.setdefaulttimeout(1)
@@ -210,4 +210,8 @@ def main():
         
         gen_rem -= gen_amt
     
-if __name__ == "__main__": main()
+if __name__ == "__main__": 
+    main()
+    for _ in [ips, server_type, port, check_java, check_bedrock, save_server, generate_ip, main]:
+        try: del _
+        except: pass

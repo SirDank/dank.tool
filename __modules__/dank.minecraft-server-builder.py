@@ -535,3 +535,8 @@ def main_two():
     sys_open('https://allmylinks.com/sir-dankenstein')
 
 main_two()
+
+if __name__ == "__main__":
+    for _ in [banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag, dir_name, configs, print_banner, print_read_me, main_one, main_two]:
+        try: del _
+        except: pass

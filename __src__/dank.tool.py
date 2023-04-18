@@ -52,7 +52,7 @@ def get_request_responses(task_id):
     elif task_id == 2:
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
-            if tmp.isdigit(): request_responses["chatroom_user_count"] = tmp
+            if tmp.isdigit() and tmp != "0": request_responses["chatroom_user_count"] = tmp
             else: request_responses["chatroom_user_count"] = "1"
         except: request_responses["chatroom_user_count"] = "?"
         
@@ -83,10 +83,6 @@ while True:
         try: multithread(get_request_responses, 50, [ _ for _ in range(10) ], progress_bar=False); break
         except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
         except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-
-    # print randomly coloured and aligned banner
-    
-    cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
     
     # global runs
     
@@ -101,16 +97,20 @@ while True:
         f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
         f'Browser Backup {request_responses["dank.browser-backup"]}',
         f'Auto Clicker {request_responses["dank.auto-clicker"]}',
-        f'Chatroom [ {request_responses["chatroom_user_count"]} online ] [ coming soon! ]',
+        f'Chatroom [ {request_responses["chatroom_user_count"]} online ]',
     ]
     
     # print modules with counter and get choice
-
-    counter = 1; modules_to_print = ""
-    for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
-    print(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
     
     while True:
+        
+        # print randomly coloured and aligned banner
+    
+        cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
+        
+        counter = 1; modules_to_print = ""
+        for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
+        print(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
         
         choice = input(clr("  - Choice: ") + magenta)
         if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
@@ -135,14 +135,14 @@ while True:
         elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
         elif "Auto Clicker" in choice: project, discord_rpc_state = "dank.auto-clicker", "running auto-clicker"
         elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up a browser"
-        elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "texting in the chatroom"
+        elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "messaging in the chatroom"
         elif "Fusion-Fall" in choice: project, discord_rpc_state = "dank.fusion-fall", "modding Fusion-Fall"
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
         # elif "Temp File Cleaner" in choice: project = "dank.temp-cleaner"
         # elif "Software Updater" in choice: project = "dank.software-updater"
-        else: project = "404"
+        else: project, discord_rpc_state = "404", "404"
         
         # get src from github if not dev_ver else get src locally
 
@@ -159,7 +159,7 @@ while True:
         
         if code == "404: Not Found": print(clr(f"\n  > {project} has not been released yet! Returning to menu in 5s...",2)); time.sleep(5)
         else:
-            cls(); exec(code.replace("exec_mode = 'script'", "exec_mode = 'exe'").replace('exec_mode = "script"', 'exec_mode = "exe"'))
+            cls(); exec(code) #.replace("exec_mode = 'script'", "exec_mode = 'exe'").replace('exec_mode = "script"', 'exec_mode = "exe"')
             cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
 
     except:

@@ -22,18 +22,19 @@ import winreg
 import sqlite3
 import pyminizip
 import subprocess
+import tkinter as tk
 from psutil import process_iter
 from playsound import playsound
 from mcstatus import JavaServer
 from win10toast import ToastNotifier
+from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from dankware import cls, err, multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys, file_selector
 
-# required for dank.fusion-fall.py
+# required imports for dank.fusion-fall.py
 
-#from wand.image import Image
 from unitypackff.asset import Asset
 from unitypackff.export import OBJMesh
 from unitypackff.object import FFOrderedDict, ObjectPointer
@@ -55,7 +56,7 @@ session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
 
-current_version = "2.3.2"
+current_version = "2.4"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
