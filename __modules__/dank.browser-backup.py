@@ -128,4 +128,9 @@ def main():
 
     backup(choice, password, compression_level)
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
+    
+    for _ in [chrome_installed, backup, main]:
+        try: del _
+        except: pass

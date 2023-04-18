@@ -473,5 +473,8 @@ def menu():
         elif choice == "6": break
         else: rm_line()
 
-if __name__ == '__main__': log = ''; menu()
-
+if __name__ == '__main__': 
+    log = ''; menu()
+    for _ in [log, tabledata, xdtdata, setup, banner, open_workspace, logger, path_id, dump_xdt, fix_bundles, tswap_mass, timport_mass, shortcut, add_npc, main, menu]:
+        try: del _
+        except: pass

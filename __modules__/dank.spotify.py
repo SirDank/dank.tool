@@ -19,4 +19,6 @@ def main():
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     time.sleep(5)
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
+    del main
