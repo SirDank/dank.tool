@@ -6,7 +6,7 @@ import subprocess
 import tkinter as tk
 from gzip import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, align, rm_line, green, red, white
+from dankware import cls, clr, align, rm_line, green, red, white, title
 
 def chatroom_login():
     
@@ -166,6 +166,8 @@ def chatroom_input():
     running = False
 
 if __name__ == "__main__":
+
+    title("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖")
 
     chat = []
     last_msg_id = 0
