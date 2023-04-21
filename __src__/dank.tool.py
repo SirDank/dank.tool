@@ -96,7 +96,7 @@ while True:
         f'Fusion-Fall Modding Tool {request_responses["dank.fusion-fall"]}',
         f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
         f'Browser Backup {request_responses["dank.browser-backup"]}',
-        f'Auto Clicker {request_responses["dank.auto-clicker"]}',
+        f'Auto Clicker {request_responses["dank.auto-clicker"]} [WIP]',
         f'Chatroom [ {request_responses["chatroom_user_count"]} online ]',
     ]
     
@@ -133,7 +133,7 @@ while True:
         elif "Minecraft Server Scanner" in choice: project, discord_rpc_state = "dank.minecraft-server-scanner", "scanning for minecraft servers"
         elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
         elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
-        elif "Auto Clicker" in choice: project, discord_rpc_state = "dank.auto-clicker", "running auto-clicker"
+        elif "Auto Clicker" in choice: project, discord_rpc_state = "_dank.auto-clicker", "running auto-clicker"
         elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up a browser"
         elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "messaging in the chatroom"
         elif "Fusion-Fall" in choice: project, discord_rpc_state = "dank.fusion-fall", "modding Fusion-Fall"
