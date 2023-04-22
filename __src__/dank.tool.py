@@ -20,6 +20,12 @@ headers = {"User-Agent": "dank.tool"}
 toast = ToastNotifier()
 toast.show_toast("SirDank:", "Thank you for using my tool <3\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
 
+# print randomly coloured and aligned banner
+
+def print_banner():
+    
+    cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
+
 # get commit date & time
 
 def updated_on(url, dankware_module = True):
@@ -107,25 +113,23 @@ while True:
     
     # print modules with index and get choice
     
-    while True:
+    def print_modules():
         
-        # print randomly coloured and aligned banner
-    
-        cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
-        
-        #modules_to_print = ""
-        #for _, module in enumerate(modules): modules_to_print += f"\n    {_+1} > {module}"
-        #print(clr(f"\n  - Modules: {stats} {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
-        
+        print_banner()
         print(clr(f"\n  - Modules: {stats} {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n"))
         user_renderables = []; counter = 1
         for _title, renderable in zip(modules.keys(), modules.values()):
             user_renderables.append(Panel(title=f"[bright_white]{counter} [bright_magenta]> [bright_white][b]{_title}[/b]", title_align="left",
-                                          renderable=f"       [bright_green]{renderable}", style="bright_magenta", expand=True))
+                                            renderable=f"       [bright_green]{renderable}", style="bright_magenta", expand=True))
             counter += 1
         console.print(Columns(user_renderables, expand=True))
+        print("")
         
-        choice = input(clr("\n  - Choice: ") + magenta)
+    print_modules()
+    
+    while True:
+        
+        choice = input(clr("  - Choice: ") + magenta)
         if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
             choice = modules[int(choice)-1]; break
         
@@ -134,9 +138,11 @@ while True:
             while True:
                 # this variable is long to prevent it from being changed!
                 cmd_to_be_executed = input(clr("\n  > ") + white)
-                if cmd_to_be_executed == 'exit': break
+                if cmd_to_be_executed == 'exit': print_modules(); break
                 try: exec(cmd_to_be_executed)
                 except: print(clr("\n" + err(sys.exc_info()), 2))
+        
+        else: rm_line()
 
     try:
     
