@@ -60,7 +60,7 @@ current_version = "2.4"
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  > Version: {current_version}"))
 
-# get latest version number and valid checksums
+# get latest version number
 
 def latest_dank_tool_version():
 

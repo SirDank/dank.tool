@@ -66,6 +66,14 @@ def get_request_responses(task_id):
     elif task_id == 8: request_responses["dank.browser-backup"] = updated_on("dank.browser-backup")
     elif task_id == 9: request_responses["dank.fusion-fall"] = updated_on("dank.fusion-fall")
 
+# multithread requests
+    
+request_responses = {}
+while True:
+    try: multithread(get_request_responses, 50, [ _ for _ in range(10) ], progress_bar=False); break
+    except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
+    except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+
 # main
 
 while True:
@@ -73,16 +81,7 @@ while True:
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {current_version}") # current_version defined in executor.py
     os.chdir(os.path.dirname(__file__)) # exec_mode = "exe"; exec(chdir(exec_mode))
     discord_rpc_state = "on the main menu"
-    #old_banner='\n     _             _                      _ \n    | |           | |     _              | |\n  _ | | ____ ____ | |  _ | |_  ___   ___ | |\n / || |/ _  |  _ \\| | / )|  _)/ _ \\ / _ \\| |\n( (_| ( ( | | | | | |< ( | |_| |_| | |_| | |\n \\____|\\_||_|_| |_|_| \\_|_)___)___/ \\___/|_|\n'
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
-    
-    # multithread requests
-        
-    request_responses = {}
-    while True:
-        try: multithread(get_request_responses, 50, [ _ for _ in range(10) ], progress_bar=False); break
-        except KeyboardInterrupt: input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
-        except: input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     
     # global runs
     
@@ -97,10 +96,11 @@ while True:
         f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
         f'Browser Backup {request_responses["dank.browser-backup"]}',
         f'Auto Clicker {request_responses["dank.auto-clicker"]} [WIP]',
+        f'Join our Discord Server!',
         f'Chatroom [ {request_responses["chatroom_user_count"]} online ]',
     ]
     
-    # print modules with counter and get choice
+    # print modules with index and get choice
     
     while True:
         
@@ -108,8 +108,8 @@ while True:
     
         cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
         
-        counter = 1; modules_to_print = ""
-        for module in modules: modules_to_print += f"\n    {counter} > {module}"; counter += 1
+        modules_to_print = ""
+        for _, module in enumerate(modules): modules_to_print += f"\n    {_+1} > {module}"
         print(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
         
         choice = input(clr("  - Choice: ") + magenta)
@@ -131,12 +131,13 @@ while True:
     
         if "Minecraft Server Builder" in choice: project, discord_rpc_state = "dank.minecraft-server-builder", "building a minecraft server"
         elif "Minecraft Server Scanner" in choice: project, discord_rpc_state = "dank.minecraft-server-scanner", "scanning for minecraft servers"
-        elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
-        elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
-        elif "Auto Clicker" in choice: project, discord_rpc_state = "_dank.auto-clicker", "running auto-clicker"
-        elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up a browser"
-        elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "messaging in the chatroom"
         elif "Fusion-Fall" in choice: project, discord_rpc_state = "dank.fusion-fall", "modding Fusion-Fall"
+        elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
+        elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up a browser"
+        elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
+        elif "Auto Clicker" in choice: project, discord_rpc_state = "_dank.auto-clicker", "running auto-clicker"
+        elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "messaging in the chatroom"
+        elif "Discord" in choice: os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
