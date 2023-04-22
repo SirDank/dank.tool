@@ -8,10 +8,13 @@ import os
 import sys
 import time
 import requests
+from rich.panel import Panel
 from datetime import datetime
+from rich.columns import Columns
+from rich.console import Console
 from win10toast import ToastNotifier
 from dateutil.tz import tzlocal, tzutc
-from dankware import align, cls, clr, magenta, white, title, get_duration, multithread, err, rm_line
+from dankware import align, cls, clr, magenta, white, green, title, get_duration, multithread, err, rm_line
 
 headers = {"User-Agent": "dank.tool"}
 toast = ToastNotifier()
@@ -32,8 +35,8 @@ def updated_on(url, dankware_module = True):
             time = time.replace("Z","").split(":")
             date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
-        return f"[ 🔄 {get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic')} ]"
-    except: return "[ ⚠️ ]"
+        return f"[bright_green]🔄 {get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic')}"
+    except: return "[bright_red]⚠️"
 
 # multithread requests
 
@@ -45,16 +48,16 @@ def get_request_responses(task_id):
     
     if task_id == 0: 
         try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", headers=headers, timeout=3).json()['value']
-        except: request_responses["dankware_runs"] = "?"
+        except: request_responses["dankware_runs"] = "[bright_red]⚠️"
     elif task_id == 1: 
         try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool2", headers=headers, timeout=3).json()['value']
-        except: request_responses["danktool_runs"] = "?"
+        except: request_responses["danktool_runs"] = "[bright_red]⚠️"
     elif task_id == 2:
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit() and tmp != "0": request_responses["chatroom_user_count"] = tmp
             else: request_responses["chatroom_user_count"] = "1"
-        except: request_responses["chatroom_user_count"] = "?"
+        except: request_responses["chatroom_user_count"] = "[bright_red]⚠️"
         
     # get last update time
     
@@ -85,20 +88,22 @@ while True:
     
     # global runs
     
-    stats = f"[ dankware runs: {request_responses['dankware_runs']} | dank.tool runs: {request_responses['danktool_runs']} ]"
+    stats = f"[ dankware runs: {green}{request_responses['dankware_runs']} | dank.tool runs: {green}{request_responses['danktool_runs']} ]"
         
     # available modules
     
-    modules = [
-        f'Minecraft Server Builder {request_responses["dank.minecraft-server-builder"]}',
-        f'Minecraft Server Scanner {request_responses["dank.minecraft-server-scanner"]}',
-        f'Fusion-Fall Modding Tool {request_responses["dank.fusion-fall"]}',
-        f'SpotX {request_responses["SpotX-Win"]} + Spicetify {request_responses["Spicetify"]} Installer',
-        f'Browser Backup {request_responses["dank.browser-backup"]}',
-        f'Auto Clicker {request_responses["dank.auto-clicker"]} [WIP]',
-        f'Join our Discord Server!',
-        f'Chatroom [ {request_responses["chatroom_user_count"]} online ]',
-    ]
+    console = Console()
+
+    modules = {
+        f'Minecraft Server Builder': request_responses["dank.minecraft-server-builder"],
+        f'Minecraft Server Scanner': request_responses["dank.minecraft-server-scanner"],
+        f'Fusion-Fall Modding Tool': request_responses["dank.fusion-fall"],
+        f'SpotX + Spicetify Installer': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
+        f'Browser Backup': request_responses["dank.browser-backup"],
+        f'Auto Clicker [bright_magenta][[bright_red]WIP[bright_magenta]]': request_responses["dank.auto-clicker"],
+        f'Chatroom': f'[bright_white]{request_responses["chatroom_user_count"]} [bright_green]online',
+        f'Discord Server': 'Join Now!',
+    }
     
     # print modules with index and get choice
     
@@ -108,11 +113,19 @@ while True:
     
         cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n"))
         
-        modules_to_print = ""
-        for _, module in enumerate(modules): modules_to_print += f"\n    {_+1} > {module}"
-        print(clr(f"\n  - Modules: {stats} {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
+        #modules_to_print = ""
+        #for _, module in enumerate(modules): modules_to_print += f"\n    {_+1} > {module}"
+        #print(clr(f"\n  - Modules: {stats} {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
         
-        choice = input(clr("  - Choice: ") + magenta)
+        print(clr(f"\n  - Modules: {stats} {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n"))
+        user_renderables = []; counter = 1
+        for _title, renderable in zip(modules.keys(), modules.values()):
+            user_renderables.append(Panel(title=f"[bright_white]{counter} [bright_magenta]> [bright_white][b]{_title}[/b]", title_align="left",
+                                          renderable=f"       [bright_green]{renderable}", style="bright_magenta", expand=True))
+            counter += 1
+        console.print(Columns(user_renderables, expand=True))
+        
+        choice = input(clr("\n  - Choice: ") + magenta)
         if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
             choice = modules[int(choice)-1]; break
         
@@ -124,8 +137,6 @@ while True:
                 if cmd_to_be_executed == 'exit': break
                 try: exec(cmd_to_be_executed)
                 except: print(clr("\n" + err(sys.exc_info()), 2))
-        
-        else: rm_line()
 
     try:
     
