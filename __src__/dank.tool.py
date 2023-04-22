@@ -32,8 +32,8 @@ def updated_on(url, dankware_module = True):
             time = time.replace("Z","").split(":")
             date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
-        return f"[ updated {get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic')} ago ]"
-    except: return "[ updated ? ago ]"
+        return f"[ 🔄 {get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic')} ]"
+    except: return "[ ⚠️ ]"
 
 # multithread requests
 
@@ -85,7 +85,7 @@ while True:
     
     # global runs
     
-    stats = f"dankware runs: {request_responses['dankware_runs']} | dank.tool runs: {request_responses['danktool_runs']}"
+    stats = f"[ dankware runs: {request_responses['dankware_runs']} | dank.tool runs: {request_responses['danktool_runs']} ]"
         
     # available modules
     
@@ -110,7 +110,7 @@ while True:
         
         modules_to_print = ""
         for _, module in enumerate(modules): modules_to_print += f"\n    {_+1} > {module}"
-        print(clr(f"\n  - Stats: {stats}\n\n  - Modules: {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
+        print(clr(f"\n  - Modules: {stats} {clr('DEBUG MODE ENABLED',2) if development_version else ''}\n{modules_to_print}\n"))
         
         choice = input(clr("  - Choice: ") + magenta)
         if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
