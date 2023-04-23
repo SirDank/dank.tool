@@ -122,7 +122,11 @@ def dump_xdt():
             for dname, data in table.items():
                 output[tname][dname] = data
         except: output[tname] = "<err>"
-    json.dump(output, open("xdt.json", "w+"), indent=4)
+    
+    if "CustomAssetBundle-TableData" in cab_name: file_name = "xdt1013.json"
+    else: file_name = "xdt.json"
+
+    json.dump(output, open(file_name, "w+"), indent=4)
 
 def fix_bundles():
 
@@ -264,7 +268,7 @@ def add_npc():
 
 def main():
     
-    global tabledata, xdtdata
+    global tabledata, xdtdata, cab_name
 
     print(clr("  > Select Custom Asset Bundle..."))
     if "PYTHONHOME" in os.environ:
@@ -475,6 +479,6 @@ def menu():
 
 if __name__ == '__main__': 
     log = ''; menu()
-    for _ in ['log', 'tabledata', 'xdtdata', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
+    for _ in ['log', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
         try: del globals()[_]
         except: pass
