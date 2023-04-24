@@ -271,10 +271,12 @@ def main():
     global tabledata, xdtdata, cab_name
 
     print(clr("  > Select Custom Asset Bundle..."))
-    if "PYTHONHOME" in os.environ:
-        cab_path = file_selector("Select Custom Asset Bundle", os.path.join(os.path.dirname(__file__), "dankware.ico")).replace('/','\\').replace('"','')
-    else: #cab_path = input(clr("  > Drag and Drop Custom Asset Bundle: ")).replace('/','\\').replace('"','')
-        cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
+    cab_path = ''
+    while not cab_path:
+        if "PYTHONHOME" in os.environ:
+            cab_path = file_selector("Select Custom Asset Bundle", os.path.join(os.path.dirname(__file__), "dankware.ico")).replace('/','\\').replace('"','')
+        else: #cab_path = input(clr("  > Drag and Drop Custom Asset Bundle: ")).replace('/','\\').replace('"','')
+            cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
     rm_line()
     
     print(clr(logger(f'  > cab_path = "{cab_path}"')))
