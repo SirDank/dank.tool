@@ -178,8 +178,6 @@ def shortcut(mode, cmd, to_exec):
     elif mode == 2: 
         if len(cmd) == 1: exec(f"print({to_exec})".replace('index', cmd[0]))
         else: exec(to_exec.replace('index',cmd[0]) + f" = \"{cmd[1]}\"")
-    elif mode == 3:
-        exec(to_exec)
     print()
 
 def add_npc():
@@ -284,16 +282,17 @@ def main():
     print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
     tabledata = Asset.from_file(open(cab_path, 'rb'))
     
+    tabledata_objects_keys = [str(_) for _ in tabledata.objects.keys()]
     if input(clr(f"\n  > Print {len(tabledata.objects)} Available TableData Objects? [y/n]: ") + green).lower() == 'y':
-        print(clr(logger("  > Available TableData Objects: \n\n" + '\n'.join(str(_) for _ in tabledata.objects.keys()) + "\n")))
+        print(clr(logger("  > Available TableData Objects: \n\n" + '\n'.join(tabledata_objects_keys) + "\n")))
 
-    if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name:
+    if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name and "7" in tabledata_objects_keys:
         print(clr("  > Suggested Index: 7"))
-    elif "CustomAssetBundle-TableData" in cab_name:
+    elif "CustomAssetBundle-TableData" in cab_name and "2139558964" in tabledata_objects_keys:
         print(clr("  > Suggested Index: 2139558964"))
-    elif "CustomAssetBundle-8320bfa70e3f04727bfc405b1fd7efcc" in cab_name:
+    elif "CustomAssetBundle-8320bfa70e3f04727bfc405b1fd7efcc" in cab_name and "3" in tabledata_objects_keys:
         print(clr("  > Suggested Index: 3"))
-    elif "sharedassets0.assets" in cab_name:
+    elif "sharedassets0.assets" in cab_name and "1375" in tabledata_objects_keys:
         print(clr("  > Suggested Index: 1375"))
     
     index = int(input(clr(f'  > TableData Object Index: ') + green))
@@ -323,6 +322,7 @@ def main():
  - npc-name 3148 = test name  >  xdtdata['m_pNpcTable']['m_pNpcStringData'][3148]['m_strName'] = \"test name\"
  - npc-name 3148  >  print(xdtdata['m_pNpcTable']['m_pNpcStringData'][3148]['m_strName'])
  - objects 1 1000  >  for _ in range(1,1000): print(f'{_} - {tabledata.objects[_].contents}')
+ - rename Cone02, DT_MTDB_ETC05  >  xdtdata.name = xdtdata.name.replace('Cone02','DT_MTDB_ETC05')
  - texture 344  >  print(xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMTextureString'])
  - texture 344 fusion_cheese  >  xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMTextureString'] = \"fusion_cheese\"
  - timport texture 1  >  new_texture = tabledata.add_object(28); import_texture(new_texture._contents,'texture.png','texture','dxt1'); tabledata.add2ab('texture.png',new_texture.path_id)
@@ -369,7 +369,7 @@ def main():
                 cmd = cmd.replace('aimport ','').split(', ')
                 new_audio = tabledata.add_object(83)
                 import_audio(new_audio.contents,cmd[0],int(cmd[1]),cmd[2])
-                tabledata.add2ab(cmd[0],new_audio.path_id)
+                tabledata.add2ab(f"sound/{cmd[0]}",new_audio.path_id)
 
             elif cmd_lower.startswith('aswap '):
                 cmd = cmd.replace('aswap ','').split(', ')
@@ -428,7 +428,12 @@ def main():
             elif cmd_lower.startswith('objects '):
                 cmd = cmd.replace('objects ','').split(' ')
                 to_exec = f"for _ in range({cmd[0]},{cmd[1]}): print(f'{{_}} - {{tabledata.objects[_].contents}}')"
-                shortcut(3, cmd, to_exec)
+                exec(to_exec); print()
+            
+            elif cmd_lower.startswith('rename '):
+                cmd = cmd.replace('rename ','').split(', ')
+                to_exec = f"xdtdata.name = xdtdata.name.replace('{cmd[0]}','{cmd[1]}')"
+                exec(to_exec); print()
 
             elif cmd_lower.startswith('texture '):
                 cmd = cmd.replace('texture ','').split(' ')
