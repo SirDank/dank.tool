@@ -173,11 +173,11 @@ def timport_mass(dxt_mode):
 def shortcut(mode, cmd, to_exec):
 
     if mode == 1:
-        if "=" not in cmd: exec(f"print({to_exec})".replace('index', cmd))
-        else: cmd = cmd.split(' = '); exec(to_exec.replace('index',cmd[0]) + f" = \"{cmd[1]}\"")
+        if "=" not in cmd: exec(f"print({to_exec})".replace('key', cmd))
+        else: cmd = cmd.split(' = '); exec(to_exec.replace('key',cmd[0]) + f" = \"{cmd[1]}\"")
     elif mode == 2: 
-        if len(cmd) == 1: exec(f"print({to_exec})".replace('index', cmd[0]))
-        else: exec(to_exec.replace('index',cmd[0]) + f" = \"{cmd[1]}\"")
+        if len(cmd) == 1: exec(f"print({to_exec})".replace('key', cmd[0]))
+        else: exec(to_exec.replace('key',cmd[0]) + f" = \"{cmd[1]}\"")
     print()
 
 def add_npc():
@@ -211,39 +211,39 @@ def add_npc():
     print(clr(f"  > data['m_iBarkerNumber'] = {last_barker_num + 1}"))
     data['m_iBarkerNumber'] = last_barker_num + 1
     
-    for index in ['m_iDifficulty', 'm_iTeam', 'm_iNpcLevel', 'm_iNpcType', 'm_iHNpc', 'm_iHNpcNum', 'm_iNpcStyle', 'm_iAiType', 'm_iHP', 'm_iHPRegen', 'm_iDropType', 'm_iRegenTime', 'm_iHeight', 'm_iRadius', 'm_fScale', 'm_iPower', 'm_iAccuracy', 'm_iProtection', 'm_iDodge', 'm_iRunSpeed', 'm_iSwimSpeed', 'm_iJumpHeight', 'm_iJumpDistance', 'm_iSightRange', 'm_iIdleRange', 'm_iCombatRange', 'm_iAtkRange', 'm_iAtkAngle', 'm_iAtkRate', 'm_iEffectArea', 'm_iTargetMode', 'm_iTargetNumber', 'm_iInitalTime', 'm_iDeliverTime', 'm_iDelayTime', 'm_iDurationTime', 'm_iMegaType', 'm_iMegaTypeProb', 'm_iCorruptionType', 'm_iCorruptionTypeProb', 'm_iActiveSkill1', 'm_iActiveSkill1Prob', 'm_iActiveSkill2', 'm_iActiveSkill2Prob', 'm_iActiveSkill3', 'm_iActiveSkill3Prob', 'm_iSupportSkill', 'm_iPassiveBuff', 'm_iNeck', 'm_iTexture', 'm_iTexture2', 'm_iIcon1', 'm_iEffect', 'm_iSound', 'm_iWalkSpeed', 'm_iMapIcon', 'm_iLegStyle', 'm_iBarkerType', 'm_iMegaAni', 'm_iActiveSkill1Ani', 'm_iActiveSkill2Ani', 'm_iSupportSkillAni', 'm_iMegaString', 'm_iCorruptionString', 'm_iActiveSkill1String', 'm_iActiveSkill2String', 'm_iSupportSkillString', 'm_iServiceNumber']:
+    for key in ['m_iDifficulty', 'm_iTeam', 'm_iNpcLevel', 'm_iNpcType', 'm_iHNpc', 'm_iHNpcNum', 'm_iNpcStyle', 'm_iAiType', 'm_iHP', 'm_iHPRegen', 'm_iDropType', 'm_iRegenTime', 'm_iHeight', 'm_iRadius', 'm_fScale', 'm_iPower', 'm_iAccuracy', 'm_iProtection', 'm_iDodge', 'm_iRunSpeed', 'm_iSwimSpeed', 'm_iJumpHeight', 'm_iJumpDistance', 'm_iSightRange', 'm_iIdleRange', 'm_iCombatRange', 'm_iAtkRange', 'm_iAtkAngle', 'm_iAtkRate', 'm_iEffectArea', 'm_iTargetMode', 'm_iTargetNumber', 'm_iInitalTime', 'm_iDeliverTime', 'm_iDelayTime', 'm_iDurationTime', 'm_iMegaType', 'm_iMegaTypeProb', 'm_iCorruptionType', 'm_iCorruptionTypeProb', 'm_iActiveSkill1', 'm_iActiveSkill1Prob', 'm_iActiveSkill2', 'm_iActiveSkill2Prob', 'm_iActiveSkill3', 'm_iActiveSkill3Prob', 'm_iSupportSkill', 'm_iPassiveBuff', 'm_iNeck', 'm_iTexture', 'm_iTexture2', 'm_iIcon1', 'm_iEffect', 'm_iSound', 'm_iWalkSpeed', 'm_iMapIcon', 'm_iLegStyle', 'm_iBarkerType', 'm_iMegaAni', 'm_iActiveSkill1Ani', 'm_iActiveSkill2Ani', 'm_iSupportSkillAni', 'm_iMegaString', 'm_iCorruptionString', 'm_iActiveSkill1String', 'm_iActiveSkill2String', 'm_iSupportSkillString', 'm_iServiceNumber']:
         while True:
-            try: data[index] = int(input(clr(f"  > data['{index}'] (int) = ") + green)); break
+            try: data[key] = int(input(clr(f"  > data['{key}'] (int) = ") + green)); break
             except: pass
             
-    for index in ['m_fAnimationSpeed', 'm_fWalkAnimationSpeed', 'm_fRunAnimationSpeed']:
+    for key in ['m_fAnimationSpeed', 'm_fWalkAnimationSpeed', 'm_fRunAnimationSpeed']:
         while True:
-            try: data[index] = float(input(clr(f"  > data['{index}'] (float) = ") + green)); break
+            try: data[key] = float(input(clr(f"  > data['{key}'] (float) = ") + green)); break
             except: pass
 
     print(clr("  > xdtdata['m_pNpcTable']['m_pNpcData'].append(data)"))
     xdtdata['m_pNpcTable']['m_pNpcData'].append(data)
 
     #data = FFOrderedDict()
-    #for index in ['m_iIconNumber', 'm_iIconType']:
+    #for key in ['m_iIconNumber', 'm_iIconType']:
     #    while True:
-    #        try: data[index] = int(input(clr(f"  > data['{index}'] (int) = ") + green)); break
+    #        try: data[key] = int(input(clr(f"  > data['{key}'] (int) = ") + green)); break
     #        except: pass
     #print(clr("  > xdtdata['m_pNpcTable']['m_pNpcIconData'].append(data)"))
     #xdtdata['m_pNpcTable']['m_pNpcIconData'].append(data)
     
     data = FFOrderedDict()
-    for index in ['m_pstrMMeshModelString', 'm_pstrMTextureString', 'm_pstrMTextureString2', 'm_pstrFTextureString', 'm_pstrFTextureString2', 'm_pstrFMeshModelString']:
+    for key in ['m_pstrMMeshModelString', 'm_pstrMTextureString', 'm_pstrMTextureString2', 'm_pstrFTextureString', 'm_pstrFTextureString2', 'm_pstrFMeshModelString']:
         while True:
-            try: data[index] = input(clr(f"  > data['{index}'] (string) = ") + green); break
+            try: data[key] = input(clr(f"  > data['{key}'] (string) = ") + green); break
             except: pass
     print(clr("  > xdtdata['m_pNpcTable']['m_pNpcMeshData'].append(data)"))
     xdtdata['m_pNpcTable']['m_pNpcMeshData'].append(data)
 
     data = FFOrderedDict()
-    for index in ['m_strName', 'm_strComment', 'm_strComment1', 'm_strComment2']:
+    for key in ['m_strName', 'm_strComment', 'm_strComment1', 'm_strComment2']:
         while True:
-            try: data[index] = input(clr(f"  > data['{index}'] (string) = ") + green); break
+            try: data[key] = input(clr(f"  > data['{key}'] (string) = ") + green); break
             except: pass
     while True:
         try: data['m_iExtraNumber'] = int(input(clr(f"  > data['m_iExtraNumber'] (int) = ") + green)); break
@@ -252,9 +252,9 @@ def add_npc():
     xdtdata['m_pNpcTable']['m_pNpcBarkerData'].append(data)
     
     data = FFOrderedDict()
-    for index in ['m_strName', 'm_strComment', 'm_strComment1', 'm_strComment2']:
+    for key in ['m_strName', 'm_strComment', 'm_strComment1', 'm_strComment2']:
         while True:
-            try: data[index] = input(clr(f"  > data['{index}'] (string) = ") + green); break
+            try: data[key] = input(clr(f"  > data['{key}'] (string) = ") + green); break
             except: pass
     while True:
         try: data['m_iExtraNumber'] = int(input(clr(f"  > data['m_iExtraNumber'] (int) = ") + green)); break
@@ -282,22 +282,26 @@ def main():
     print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
     tabledata = Asset.from_file(open(cab_path, 'rb'))
     
-    tabledata_objects_keys = [str(_) for _ in tabledata.objects.keys()]
-    if input(clr(f"\n  > Print {len(tabledata.objects)} Available TableData Objects? [y/n]: ") + green).lower() == 'y':
-        print(clr(logger("  > Available TableData Objects: \n\n" + '\n'.join(tabledata_objects_keys) + "\n")))
+    tabledata_keys = [str(_) for _ in tabledata.objects.keys()]
+    if input(clr(f"\n  > Print {len(tabledata.objects)} Available TableData Keys? [y/n]: ") + green).lower() == 'y':
+        print(clr(logger("  > Available TableData Keys: \n\n" + '\n'.join(tabledata_keys) + "\n")))
 
-    if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name and "7" in tabledata_objects_keys:
-        print(clr("  > Suggested Index: 7"))
-    elif "CustomAssetBundle-TableData" in cab_name and "2139558964" in tabledata_objects_keys:
-        print(clr("  > Suggested Index: 2139558964"))
-    elif "CustomAssetBundle-8320bfa70e3f04727bfc405b1fd7efcc" in cab_name and "3" in tabledata_objects_keys:
-        print(clr("  > Suggested Index: 3"))
-    elif "sharedassets0.assets" in cab_name and "1375" in tabledata_objects_keys:
-        print(clr("  > Suggested Index: 1375"))
-    
-    index = int(input(clr(f'  > TableData Object Index: ') + green))
-    print(clr(logger(f"  > xdtdata = tabledata.objects[{index}].contents")))
-    xdtdata = tabledata.objects[index].contents
+    if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name and "7" in tabledata_keys:
+        print(clr("  > Suggested Key: 7"))
+    elif "CustomAssetBundle-TableData" in cab_name and "2139558964" in tabledata_keys:
+        print(clr("  > Suggested Key: 2139558964"))
+    elif "CustomAssetBundle-8320bfa70e3f04727bfc405b1fd7efcc" in cab_name and "3" in tabledata_keys:
+        print(clr("  > Suggested Key: 3"))
+    elif "sharedassets0.assets" in cab_name and "1375" in tabledata_keys:
+        print(clr("  > Suggested Key: 1375"))
+
+    while True:    
+        key = int(input(clr(f'  > TableData Key: ') + green))
+        try:
+            xdtdata = tabledata.objects[key].contents
+            print(clr(logger(f"  > xdtdata = tabledata.objects[{key}].contents")))
+            break
+        except: print(clr(logger(f"  > Invalid Key: {key}"),2))
     print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))
     
     help_msg = """  > Available Shortcuts With Examples:\n
@@ -305,7 +309,7 @@ def main():
  - aswap sound.wav, 22.5, sound  >  import_audio(xdtdata,'sound.wav',22.5,'sound')
  - export example.obj  >  open('example.obj','w').write(OBJMesh(xdtdata).export())
  - imesh npc_alienx.obj npc_alienx  >  import_mesh(xdtdata, 'npc_alienx.obj', 'npc_alienx')
- - index 0  >  xdtdata = tabledata.objects[0].contents
+ - key 0  >  xdtdata = tabledata.objects[0].contents
  - ms-info  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1])
  - ms-npc 1 2671  >  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'] = NPC_INDEX#
  - ms-npc 1  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'])
@@ -383,46 +387,46 @@ def main():
                 cmd = cmd.replace('imesh ','').split(' ')
                 import_mesh(xdtdata, cmd[0], cmd[1])
                 
-            elif cmd_lower.startswith('index '):
-                index = int(cmd.replace('index ',''))
-                xdtdata = tabledata.objects[index].contents
+            elif cmd_lower.startswith('key '):
+                key = int(cmd.replace('key ',''))
+                xdtdata = tabledata.objects[key].contents
 
             elif cmd_lower.startswith('ms-info '):
                 print(xdtdata['m_pMissionTable']['m_pMissionData'][int(cmd.replace('ms-info ',''))])
 
             elif cmd_lower.startswith('ms-npc '):
                 cmd = cmd.replace('ms-npc ','').split(' ')
-                to_exec = "xdtdata['m_pMissionTable']['m_pMissionData'][index]['m_iHNPCID']"
+                to_exec = "xdtdata['m_pMissionTable']['m_pMissionData'][key]['m_iHNPCID']"
                 shortcut(2, cmd, to_exec)
 
             elif cmd_lower.startswith('ms-string '):
                 cmd = cmd.replace('ms-string ','')
-                to_exec = "xdtdata['m_pMissionTable']['m_pMissionStringData'][index]"
+                to_exec = "xdtdata['m_pMissionTable']['m_pMissionStringData'][key]"
                 shortcut(1, cmd, to_exec)
 
             elif cmd_lower.startswith('ms-task '):
                 cmd = cmd.replace('ms-task ','').split(' ')
-                to_exec = "xdtdata['m_pMissionTable']['m_pMissionData'][index]['m_iHTaskID']"
+                to_exec = "xdtdata['m_pMissionTable']['m_pMissionData'][key]['m_iHTaskID']"
                 shortcut(2, cmd, to_exec)
 
             elif cmd_lower.startswith('ms-tasknext '):
                 cmd = cmd.replace('ms-tasknext ','').split(' ')
-                to_exec = "xdtdata['m_pMissionTable']['m_pMissionData'][index]['m_iSUOutgoingTask']"
+                to_exec = "xdtdata['m_pMissionTable']['m_pMissionData'][key]['m_iSUOutgoingTask']"
                 shortcut(2, cmd, to_exec)
 
             elif cmd_lower.startswith('mesh '):
                 cmd = cmd.replace('mesh ','').split(' ')
-                to_exec = "xdtdata['m_pNpcTable']['m_pNpcMeshData'][index]['m_pstrMMeshModelString']"
+                to_exec = "xdtdata['m_pNpcTable']['m_pNpcMeshData'][key]['m_pstrMMeshModelString']"
                 shortcut(2, cmd, to_exec)
 
             elif cmd_lower.startswith('meshid '):
                 cmd = cmd.replace('meshid ','').split(' ')
-                to_exec = "xdtdata['m_pNpcTable']['m_pNpcData'][index]['m_iMesh']"
+                to_exec = "xdtdata['m_pNpcTable']['m_pNpcData'][key]['m_iMesh']"
                 shortcut(2, cmd, to_exec)
 
             elif cmd_lower.startswith('npc-name '):
                 cmd = cmd.replace('npc-name ','')
-                to_exec = "xdtdata['m_pNpcTable']['m_pNpcStringData'][index]['m_strName']"
+                to_exec = "xdtdata['m_pNpcTable']['m_pNpcStringData'][key]['m_strName']"
                 shortcut(1, cmd, to_exec)
 
             elif cmd_lower.startswith('objects '):
@@ -437,7 +441,7 @@ def main():
 
             elif cmd_lower.startswith('texture '):
                 cmd = cmd.replace('texture ','').split(' ')
-                to_exec = "xdtdata['m_pNpcTable']['m_pNpcMeshData'][index]['m_pstrMTextureString']"
+                to_exec = "xdtdata['m_pNpcTable']['m_pNpcMeshData'][key]['m_pstrMTextureString']"
                 shortcut(2, cmd, to_exec)
 
             elif cmd_lower.startswith('timport '):
