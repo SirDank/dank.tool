@@ -14,7 +14,7 @@ from rich.columns import Columns
 from rich.console import Console
 from win10toast import ToastNotifier
 from dateutil.tz import tzlocal, tzutc
-from dankware import align, cls, clr, magenta, white, green, title, get_duration, multithread, err, rm_line
+from dankware import align, cls, clr, magenta, white, green, red, title, get_duration, multithread, err, rm_line
 
 headers = {"User-Agent": "dank.tool"}
 toast = ToastNotifier()
@@ -54,16 +54,16 @@ def get_request_responses(task_id):
     
     if task_id == 0: 
         try: request_responses["dankware_runs"] = requests.get("https://api.countapi.xyz/get/dankware", headers=headers, timeout=3).json()['value']
-        except: request_responses["dankware_runs"] = "[bright_red]⚠️"
+        except: request_responses["dankware_runs"] = f"{red}⚠️{white}"
     elif task_id == 1: 
         try: request_responses["danktool_runs"] = requests.get("https://api.countapi.xyz/get/dank.tool2", headers=headers, timeout=3).json()['value']
-        except: request_responses["danktool_runs"] = "[bright_red]⚠️"
+        except: request_responses["danktool_runs"] = f"{red}⚠️{white}"
     elif task_id == 2:
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit() and tmp != "0": request_responses["chatroom_user_count"] = tmp
             else: request_responses["chatroom_user_count"] = "1"
-        except: request_responses["chatroom_user_count"] = "[bright_red]⚠️"
+        except: request_responses["chatroom_user_count"] = f"{red}⚠️{white}"
         
     # get last update time
     
