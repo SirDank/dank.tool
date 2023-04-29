@@ -14,6 +14,8 @@ def print_read_me():
 def main_one():
 
     global banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag, dir_name
+    
+    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
 
     # change dir and print banner
 
