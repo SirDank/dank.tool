@@ -146,21 +146,23 @@ while True:
 
     try:
     
-        if "Minecraft Server Builder" in choice: project, discord_rpc_state = "dank.minecraft-server-builder", "building a minecraft server"
-        elif "Minecraft Server Scanner" in choice: project, discord_rpc_state = "dank.minecraft-server-scanner", "scanning for minecraft servers"
-        elif "Fusion-Fall" in choice: project, discord_rpc_state = "dank.fusion-fall", "modding Fusion-Fall"
-        elif "SpotX" in choice: project, discord_rpc_state = "dank.spotify", "installing SpotX and Spicetify"
-        elif "Browser Backup" in choice: project, discord_rpc_state = "dank.browser-backup", "backing up a browser"
-        elif "Software Downloader" in choice: project, discord_rpc_state = "dank.downloader", "bulk downloading software"
-        elif "Auto Clicker" in choice: project, discord_rpc_state = "_dank.auto-clicker", "running auto-clicker"
-        elif "Chatroom" in choice: project, discord_rpc_state = "dank.chatroom", "messaging in the chatroom"
+        if "Minecraft Server Builder" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛", "dank.minecraft-server-builder", "building a minecraft server"
+        elif "Minecraft Server Scanner" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛", "dank.minecraft-server-scanner", "scanning for minecraft servers"
+        elif "Fusion-Fall" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕", "dank.fusion-fall", "modding fusion-fall"
+        elif "SpotX" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢", "dank.spotify", "installing spotx and spicetify"
+        elif "Browser Backup" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙", "dank.browser-backup", "backing up a browser"
+        elif "Software Downloader" in choice: _title, project, discord_rpc_state = "", "dank.downloader", "bulk downloading software"
+        elif "Auto Clicker" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛", "_dank.auto-clicker", "running auto-clicker"
+        elif "Chatroom" in choice: _title, project, discord_rpc_state = "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖", "dank.chatroom", "messaging in the chatroom"
         elif "Discord" in choice: os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
         # elif "Temp File Cleaner" in choice: project = "dank.temp-cleaner"
         # elif "Software Updater" in choice: project = "dank.software-updater"
-        else: project, discord_rpc_state = "404", "404"
+        else: _title, project, discord_rpc_state = "404", "404", "404"
+        
+        title(_title)
         
         # get src from github if not dev_ver else get src locally
 
