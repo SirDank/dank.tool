@@ -8,11 +8,17 @@ import pretty_errors
 from dankware import align, clr, cls, magenta, white, green, red, reset, err, rm_line, file_selector, title
 
 def setup():
+    
+    global imagemagick_installed
 
-    try: exec("from wand.image import Image")
+    try: exec("from wand.image import Image"); imagemagick_installed = True
     except ImportError:
+
+        imagemagick_installed = False
         cls(); print(clr("\n  > MagickWand shared library not found!",2))
+        
         if input(clr("\n  > Download ImageMagick? [y/n]: ") + magenta).lower() == "y":
+    
             while True:
                 try:
 
@@ -37,8 +43,9 @@ def setup():
             print(clr("\n  > Launching ImageMagick Installer..."))
             os.system(f'"{download_path}"')
             input(clr("\n  > Press [ENTER] after you have installed ImageMagick... "))
+            imagemagick_installed = True
              
-        else: raise RuntimeError("MagickWand shared library not found!")
+        else: imagemagick_installed = False
 
 setup()
 
@@ -489,7 +496,14 @@ def menu():
         else: rm_line()
 
 if __name__ == '__main__': 
-    log = ''; menu()
-    for _ in ['log', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
+
+    log = ''
+    
+    if imagemagick_installed:
+        menu()
+    else:
+        cls(); print(clr(f"\n  > Exiting since {white}ImageMagick{red} is not installed!\n",2)); time.sleep(5)
+        
+    for _ in ['log', 'imagemagick_installed', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
         try: del globals()[_]
         except: pass

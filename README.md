@@ -25,7 +25,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221379790-bf6673f1-f2c9-42d6-a6c7-c9320670d0bb.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235306892-5472e34a-1f2e-4dd5-adcc-2124def1e8bb.png"></p><br>
 
 ## ♦️ Note ♦️
 
@@ -90,7 +90,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192105201-fb164332-4af4-41db-99b6-65b2f6ef0a9f.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235307010-95336f52-87ef-4a96-8394-55332b5a310e.png"></p><br>
 
 <p>&nbsp;</p>
 
