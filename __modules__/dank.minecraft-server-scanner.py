@@ -124,7 +124,7 @@ def main():
     # get user input
 
     cls(); print(align(clr(banner,4)))
-    print(clr("\n  > The database files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete this file to reset scanned ips.\n\n  > Start with [ 100 threads ] just to see the performance impact on your computer.\n\n  > Should be smooth upto 500, you might notice some performance impact after this point!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The database file is only updated after the scan is complete."))
+    print(clr("\n  > The database files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete those file to reset the scanned ips.\n\n  > Start with [ 100 threads ] and note the performance impact.\n\n  > Generally should be smooth upto 500, you might notice some performance impact above this value!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The respective database file is only updated after the scan is complete."))
     
     print("")
     while True:
