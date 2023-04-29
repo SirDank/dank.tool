@@ -186,6 +186,11 @@ def main_one():
         to_download_urls.append(file_url)
         to_download_file_names.append(file_url.split('/')[-1])
         
+    # > FastAsyncWorldEdit
+    for file_url in github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']):
+        to_download_urls.append(file_url)
+        to_download_file_names.append(file_url.split('/')[-1])
+
     def file_downloader(url, file_name):
 
         while True:
