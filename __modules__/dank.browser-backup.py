@@ -46,10 +46,10 @@ def backup(browser, password, compression_level):
             else: break
 
         cls(); print(clr("\n  > Exporting registry keys..."))
-        export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs')
+        export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
         
         print(clr("\n  > Compressing... (this might take a few minutes)\n"))
-        source_files = ["export.reg"]
+        source_files = ["chrome.reg"]
         prefixes = [""]
 
         for root, dirs, files in os.walk(path_to_backup):
@@ -69,17 +69,17 @@ def backup(browser, password, compression_level):
         progress_table.add_row(Panel.fit(job_progress, title="[bright_red]Jobs", border_style="magenta1", padding=(1, 2)))
 
         with Live(progress_table, refresh_per_second=10):
-                while not job_progress.finished:
-                    time.sleep(0.1)
-                    pyminizip.compress_multiple(source_files, prefixes, zip_name, password, compression_level, lambda x: job_progress.update(overall_task, advance=1))
+            while not job_progress.finished:
+                time.sleep(0.1)
+                pyminizip.compress_multiple(source_files, prefixes, zip_name, password, compression_level, lambda x: job_progress.update(overall_task, advance=1))
 
         print(clr("\n  > Cleaning..."))
         #if os.path.exists("User Data"): shutil.rmtree("User Data", ignore_errors=True)
-        if os.path.exists("export.reg"): os.remove("export.reg")
+        if os.path.exists("chrome.reg"): os.remove("chrome.reg")
 
         os.system(f'explorer.exe "{os.getcwd()}"')
     
-        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [export.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
+        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
     
     #elif browser == "Firefox"
     #elif browser == "Opera":
@@ -100,11 +100,11 @@ def main():
     
     browsers = ['Chrome']
     to_print = "\n  > Supported Browsers: \n"
-    for _ in range(len(browsers)): to_print += f"\n  - [{_+1}] {browsers[_]}"
-    to_print += "\n"
+    for _, browser in enumerate(browsers): to_print += f"\n  - [{_+1}] {browser}"
     
     print(align(clr(banner,4)) + clr(to_print))
     
+    print("")
     while True:
         choice = input(clr("  > Enter choice: ") + magenta)
         if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(browsers)):
