@@ -13,7 +13,7 @@ def print_read_me():
 
 def main_one():
 
-    global banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag, dir_name
+    global banner, read_me, name, version, cracked, install_via, ram, motd_spaces, playit, extra_flag, dir_name
     
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
 
@@ -59,7 +59,14 @@ def main_one():
         cracked = input(clr("  > Allow Cracked Players [ y / n ]: ") + magenta).lower()
         if 'y' in cracked: cracked = True; break
         elif 'n' in cracked: cracked = False; break
-        else: rm_line() # BROKEN
+        else: rm_line()
+        
+    print("")
+    while True:
+        install_via = input(clr("  > Download ViaVersion & ViaBackwards [ y / n ]: ") + magenta).lower()
+        if 'y' in install_via: install_via = True; break
+        elif 'n' in install_via: install_via = False; break
+        else: rm_line()
         
     # setting extra flags
 
@@ -161,6 +168,10 @@ def main_one():
     
     if playit:
         spigot_plugins["playit-gg"] = 105566
+        
+    if install_via:
+        spigot_plugins["ViaVersion"] = 19254
+        spigot_plugins["ViaBackwards"] = 27448
 
     for plugin in spigot_plugins:
         to_download_urls.append(f"https://api.spiget.org/v2/resources/{spigot_plugins[plugin]}/download")
@@ -546,6 +557,6 @@ def main_two():
 main_two()
 
 if __name__ == "__main__":
-    for _ in [banner, read_me, name, version, cracked, ram, motd_spaces, playit, extra_flag, dir_name, configs, print_banner, print_read_me, main_one, main_two]:
+    for _ in [banner, read_me, name, version, cracked, install_via, ram, motd_spaces, playit, extra_flag, dir_name, configs, print_banner, print_read_me, main_one, main_two]:
         try: del _
         except: pass

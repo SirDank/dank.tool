@@ -78,10 +78,10 @@
 ## ♦️ To Do ♦️
 
 - [x] Add Iris Dimensions ( newhorizons / theend )
+- [x] Add ViaVersion / ViaBackwards / ViaRewind
 - [ ] Add datapacks ( based on mc version )
 - [ ] Add GeyserMC / Floodgate Options
 - [ ] Add Magma / Mohist Options
-- [ ] Add ViaVersion / ViaBackwards / ViaRewind
 - [ ] Maybe add a super simple web panel to only display stats
 
 ## ♦️ History ♦️
@@ -112,7 +112,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/194150907-d9836588-055f-41a4-8776-4d96d2233d16.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235353344-fa79f3fe-6f01-4506-abd2-7aaf8b0d03c8.png"></p><br>
 
 ## ♦️ Also check out dank.resourcepack! ♦️
 
@@ -176,7 +176,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/206840952-513f2ded-09c0-4202-8fad-f191933acd3c.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235353475-b55e54a2-43f7-40b4-a6a0-c7b10bf3cbec.png"></p><br>
 
 <p>&nbsp;</p>
 
