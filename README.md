@@ -152,15 +152,20 @@
 
 # 🚨 SpotX + Spicetify Installer 🚨
 
+## ♦️ System Requirements ♦️
+
+- OS: Windows 7-11
+- Spotify: latest official [versions](https://cutt.ly/8EH6NuH)
+- For Windows Desktop only (Microsoft store version is not suitable).
+- PowerShell: version 5 and above recommended
+
 ## ♦️ SpotX Features ♦️
 
-- Full credits to [amd64fox](https://github.com/SpotX-CLI/SpotX-Win)
 - Blocks all banner, video and audio ads in the client
-- Unlocks the skip function of any track
 - Hiding podcasts, episodes and audiobooks from the homepage (optional)
 - Block Spotify automatic updates (optional)
-- Automatic clearing of [audio cache](https://github.com/SpotX-CLI/SpotX-Win/discussions/2) (optional)
-- More experimental features have been activated ([see the full list](https://github.com/SpotX-CLI/SpotX-Win/discussions/50))
+- Automatic clearing of [audio cache](https://github.com/amd64fox/SpotX/discussions/2) (optional)
+- More experimental features have been activated ([see the full list](https://github.com/amd64fox/SpotX/discussions/50))
 - Disabled Sentry (Prevented Sentry from sending console log/error/warning to Spotify developers)
 - Disabled logging (Stopped various elements to log user interaction)
 - Removed RTL rules (Removed all right-to-left CSS rules to simplify CSS files)

@@ -11,7 +11,7 @@ from dankware import title, cls, clr, err, align, magenta, rm_line, is_admin, ex
 from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
-from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn
+from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn, TimeElapsedColumn
 
 def chrome_installed():
     try:
@@ -61,9 +61,9 @@ def backup(browser, password, compression_level):
 
         now = datetime.datetime.now()
         zip_name = f'chrome_[{now.strftime("%d-%m-%Y")}]_[{now.strftime("%I-%M-%S-%p")}].zip'
-        
+
         width = os.get_terminal_size().columns
-        job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[deep_pink1][progress.percentage][bright_cyan]{task.percentage:>3.0f}%"), TimeRemainingColumn())
+        job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[deep_pink1][progress.percentage][bright_cyan]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
         overall_task = job_progress.add_task("[bright_green]Compressing", total=int(len(source_files)))
         progress_table = Table.grid()
         progress_table.add_row(Panel.fit(job_progress, title="[bright_red]Jobs", border_style="magenta1", padding=(1, 2)))
