@@ -216,8 +216,7 @@ def main_one():
 
     # disabled due to repeated error reports
 
-    '''
-    print_read_me(); input(clr("\n  > Try not to use [COPY] or [PASTE] when the download process is running!\n\n  > Press [ ENTER ] to start the download process... "))
+    print_read_me(); input(clr("\n  > Try not to use [COPY] or [PASTE] when the download process is running!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
 
     # begin multithreaded downloader | threads = 2
     
@@ -231,9 +230,9 @@ def main_one():
             multithread(file_downloader, 2, to_download_urls, to_download_file_names, False)
             time_taken = int(time.time()-start_time)
             break
-        except KeyboardInterrupt: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); cls() # rm_line()
+        except: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); cls()    
+  
     '''
-
     # begin single threaded downloader
     
     print(clr("\n  > Downloading... [ this might take a few minutes ]"))
@@ -242,6 +241,8 @@ def main_one():
     #for url, file_name in zip(to_download_urls, to_download_file_names):
     #    file_downloader(url, file_name)
     multithread(file_downloader, 1, to_download_urls, to_download_file_names) # single threaded with progress bar
+    '''
+    
     time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
@@ -427,6 +428,16 @@ plugins:
     spigot-id: 26016
   ntdLuckyBlock: 
     spigot-id: 92026
+  Multiverse-Core:
+    spigot-id: 390
+    alternatives: 
+      github: 
+        repo-name: Multiverse/Multiverse-Core
+        asset-name: multiverse-core
+  ViaVersion:
+    spigot-id: 19254
+  ViaBackwards:
+    spigot-id: 27448
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
@@ -515,7 +526,7 @@ configs = {
 
 def main_two():
 
-    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".stop both\" to stop the server and autoplug\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to begin configuration... "))
+    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".stop both\" to stop the server and autoplug\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to apply custom configuration... "))
 
     def config_updater(path):
         config_data = open(path, 'r', encoding='utf-8').read()
