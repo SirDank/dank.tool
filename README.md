@@ -43,7 +43,7 @@
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
 - [ ] Add dank.hwid-spoofer
-- [ ] Add Linux Support ( Far Future )
+- [ ] Add Linux Support For Installer.exe
 
 ## ♦️ Support ♦️
 
