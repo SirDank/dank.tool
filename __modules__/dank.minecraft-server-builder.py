@@ -219,20 +219,18 @@ def main_one():
     print_read_me(); input(clr("\n  > Try not to use [COPY] or [PASTE] when the download process is running!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
 
     # begin multithreaded downloader | threads = 2
-    
-    # func
 
     print(clr("\n  > Starting Multiple Downloads... [ this might take a few minutes ]"))
 
-    while True:
+    '''while True:
         try:
             start_time = time.time()
             multithread(file_downloader, 2, to_download_urls, to_download_file_names, False)
             time_taken = int(time.time()-start_time)
             break
-        except: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); cls()    
+        except: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); cls()    '''
   
-    '''
+
     # begin single threaded downloader
     
     print(clr("\n  > Downloading... [ this might take a few minutes ]"))
@@ -241,7 +239,6 @@ def main_one():
     #for url, file_name in zip(to_download_urls, to_download_file_names):
     #    file_downloader(url, file_name)
     multithread(file_downloader, 1, to_download_urls, to_download_file_names) # single threaded with progress bar
-    '''
     
     time_taken = int(time.time()-start_time)
 
