@@ -305,7 +305,7 @@ def main():
     while True:    
         key = input(clr(f'  > TableData Key: ') + green)
         try:
-            #key = int(key)
+            key = int(key)
             xdtdata = tabledata.objects[key].contents
             print(clr(logger(f"  > xdtdata = tabledata.objects[{key}].contents")))
             break
