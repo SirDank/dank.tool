@@ -303,8 +303,9 @@ def main():
         print(clr("  > Suggested Key: 1375"))
 
     while True:    
-        key = int(input(clr(f'  > TableData Key: ') + green))
+        key = input(clr(f'  > TableData Key: ') + green)
         try:
+            #key = int(key)
             xdtdata = tabledata.objects[key].contents
             print(clr(logger(f"  > xdtdata = tabledata.objects[{key}].contents")))
             break
