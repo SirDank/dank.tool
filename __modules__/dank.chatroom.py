@@ -173,7 +173,7 @@ if __name__ == "__main__":
     last_msg_id = 0
     printed_msg_id = 0
     session = requests.Session()
-    headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'gzip', 'Content-Type': 'application/json'}
+    headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
     uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
 
     running = True
