@@ -4,7 +4,7 @@ import json
 import requests
 import subprocess
 import tkinter as tk
-from gzip import compress, decompress
+from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, align, rm_line, green, red, white, title
 
