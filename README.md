@@ -37,6 +37,8 @@
 
 - When the tool is running and performing a task, if you click inside the console window, a white rectangle appears and the task is paused. To continue performing the task, press the down arrow key.
 
+- Documentation for developers can be found [here](https://github.com/SirDank/dank.tool/blob/main/__src__/documentation.md)
+
 ## ♦️ To Do ♦️
 
 - [ ] Add offline mode for offline scripts ( High Priority )
