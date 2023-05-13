@@ -44,10 +44,16 @@
 
 ## ⭕ Build Process ⭕
 
-- dank.tool is built using [nuitka](https://github.com/Nuitka/Nuitka) and [innosetup](https://jrsoftware.org/isinfo.php) by a custom python executable builder designed by me which is not available to the public. ( It is an advanced tool that automates the entire build process for any executable that I produce )
-- in short the dank.init.py script is added on top of the executor.py script and then the entire thing is compiled into a executable with multiple c code source files using nuitka ( standalone mode not onefile mode ), after which the final dank.tool installer is built using innosetup which is a single executable.
+- dank.tool is built using [nuitka](https://github.com/Nuitka/Nuitka) and [inno-setup](https://jrsoftware.org/isinfo.php) by a custom python executable builder designed by me which is not available to the public. ( It is an advanced tool that automates the entire build process for any executable that I produce )
+- in short the dank.init.py script is added on top of the executor.py script and then the entire thing is compiled into a executable with multiple c code source files using nuitka ( standalone mode not onefile mode ), after which the final dank.tool installer is built using inno-setup which is a single executable.
 
 ## ⭕ dank.init.py ⭕
+
+- this script is added on top of every script that I build into an executable with my (private) custom python executable builder. In short it performs the following:
+  - saves runs.txt to %LOCALAPPDATA%\\Dankware ( saves the amount of times the executable has been run )
+  - scans the temp folder for any dankware files ( from my portable software ) and deletes them if they are not running
+  - sends a get request to [countapi.xyz](countapi.xyz) to increase the online run counter by 1 ( this is displayed on the main menu as "dankware global runs" )
+  - once in every 10 runs it displays the dankware animation and plays the dankware.wav file ( checks runs.txt )
 
 ## ⭕ executor.py ⭕
 
