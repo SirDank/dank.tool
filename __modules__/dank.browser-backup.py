@@ -1,10 +1,8 @@
 import os
 import sys
-import time
-import shutil
 import winreg
+import zipfile
 import datetime
-import pyminizip
 from psutil import process_iter
 from dankware import title, cls, clr, err, align, magenta, rm_line, is_admin, export_registry_keys
 
@@ -49,8 +47,8 @@ def backup(browser, password, compression_level):
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
         
         print(clr("\n  > Compressing... (this might take a few minutes)\n"))
-        source_files = ["chrome.reg"]
-        prefixes = [""]
+        source_files = []
+        prefixes = []
 
         for root, dirs, files in os.walk(path_to_backup):
             for file in files:
@@ -60,23 +58,27 @@ def backup(browser, password, compression_level):
                 prefixes.append(prefix)
 
         now = datetime.datetime.now()
-        zip_name = f'chrome_[{now.strftime("%d-%m-%Y")}]_[{now.strftime("%I-%M-%S-%p")}].zip'
+        zip_name = f'chrome_{now.strftime("%d-%m-%Y")}_{now.strftime("%I-%M-%S-%p")}.zip'
 
         width = os.get_terminal_size().columns
         job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[deep_pink1][progress.percentage][bright_cyan]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
         overall_task = job_progress.add_task("[bright_green]Compressing", total=int(len(source_files)))
         progress_table = Table.grid()
         progress_table.add_row(Panel.fit(job_progress, title="[bright_red]Jobs", border_style="magenta1", padding=(1, 2)))
-
+                
         with Live(progress_table, refresh_per_second=10):
-            while not job_progress.finished:
-                time.sleep(0.1)
-                pyminizip.compress_multiple(source_files, prefixes, zip_name, password, compression_level, lambda x: job_progress.update(overall_task, advance=1))
+            with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level) as zf:
+                for i, filepath in enumerate(source_files):
+                    prefix = prefixes[i]
+                    relpath = os.path.relpath(filepath, path_to_backup)
+                    zip_path = os.path.join(prefix, relpath)
+                    zf.write(filepath, zip_path)
+                    job_progress.update(overall_task, advance=1)
+                zf.write("chrome.reg", "chrome.reg")
+                zf.setpassword(password.encode('utf-8'))
 
         print(clr("\n  > Cleaning..."))
-        #if os.path.exists("User Data"): shutil.rmtree("User Data", ignore_errors=True)
         if os.path.exists("chrome.reg"): os.remove("chrome.reg")
-
         os.system(f'explorer.exe "{os.getcwd()}"')
     
         cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
@@ -123,7 +125,7 @@ def main():
         if compression_level in ['1', 'fast']:
             compression_level = 0; break
         elif compression_level in ['2', 'best']:
-            compression_level = 10; break
+            compression_level = 9; break
         else: rm_line()
 
     backup(choice, password, compression_level)
