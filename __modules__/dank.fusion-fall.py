@@ -71,8 +71,10 @@ def open_workspace():
     os.chdir(dankff_path)
     
     banner()
+    
+    folders = [_ for _ in os.listdir() if os.path.isdir(_)]
 
-    if len(os.listdir()) == 0:
+    if len(folders) == 0:
         
         print(clr("\n  > No workspaces found!",2))
         workspace = input(clr("\n  > New workspace name: ") + magenta)
@@ -82,13 +84,13 @@ def open_workspace():
     else:
         
         print(clr("\n  - Workspaces:\n\n    0 > Create New Workspace"))
-        for i, workspace in enumerate(os.listdir()):
+        for i, workspace in enumerate(folders):
             print(clr(f"    {i+1} > {workspace}"))
         
         print()
         while True:
             _ = input(clr("  > Select workspace [num/name]: ") + magenta)
-            if _.isdigit() and int(_) >= 0 and int(_) <= len(os.listdir()):
+            if _.isdigit() and int(_) >= 0 and int(_) <= len(folders):
                 if int(_) == 0:
                     print()
                     while True:
@@ -97,8 +99,8 @@ def open_workspace():
                             os.mkdir(workspace); break
                         else: rm_line()
                     break
-                else: workspace = os.listdir()[int(_)-1]; break
-            elif _ in os.listdir(): workspace = _; break
+                else: workspace = folders[int(_)-1]; break
+            elif _ in folders: workspace = _; break
             else: rm_line()
             
         os.chdir(workspace)
