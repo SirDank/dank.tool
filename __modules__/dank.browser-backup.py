@@ -20,7 +20,7 @@ def chrome_installed():
     except FileNotFoundError:
         return False
 
-def backup(browser, password, compression_level):
+def backup(browser, compression_level):
 
     if browser == "Chrome":
         
@@ -75,13 +75,14 @@ def backup(browser, password, compression_level):
                     zf.write(filepath, zip_path)
                     job_progress.update(overall_task, advance=1)
                 zf.write("chrome.reg", "chrome.reg")
-                zf.setpassword(password.encode('utf-8'))
+                #zf.setpassword(bytes(password, 'utf-8'))
 
         print(clr("\n  > Cleaning..."))
         if os.path.exists("chrome.reg"): os.remove("chrome.reg")
         os.system(f'explorer.exe "{os.getcwd()}"')
     
-        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Unzip with the password "{password}"\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
+        # - Unzip with the password "{password}"
+        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
     
     #elif browser == "Firefox"
     #elif browser == "Opera":
@@ -113,11 +114,11 @@ def main():
             choice = browsers[int(choice)-1]; break
         else: rm_line()
     
-    print("")
-    while True:
-        password = input(clr("  > Enter backup password: ") + magenta)
-        if password: break
-        else: rm_line()
+    #print("")
+    #while True:
+    #    password = input(clr("  > Enter backup password: ") + magenta)
+    #    if password: break
+    #    else: rm_line()
         
     print("")
     while True:
@@ -128,7 +129,7 @@ def main():
             compression_level = 9; break
         else: rm_line()
 
-    backup(choice, password, compression_level)
+    backup(choice, compression_level)
 
 if __name__ == "__main__":
     main()
