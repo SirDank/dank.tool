@@ -4,7 +4,7 @@
 </p>
 
 <p align="center"><a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png"></a></p><br>
-<p align="center"><a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/raw/main/__wallpapers___/dankware-classsic2.png"></a></p><br>
+<p align="center"><a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/1.png"></a></p><br>
 
 # 🚨 SirDank's dank.tool 🚨
 
