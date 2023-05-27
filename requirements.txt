@@ -1,0 +1,13 @@
+dankware
+mcstatus
+packaging
+playsound
+psutil
+pyminizip
+pynput
+pypresence
+python-dateutil
+requests
+rich
+unitypackff
+win10toast

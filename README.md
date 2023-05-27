@@ -225,6 +225,28 @@
 
 ---  
 
+# 🚨 Wallpapers 🚨
+
+## ♦️ Style 1 ♦️
+
+<br><p align="center"><img width="800" alt="image" src="__wallpapers__/1.png"></p><br>
+
+## ♦️ Style 2 ♦️
+
+<br><p align="center"><img width="800" alt="image" src="__wallpapers__/2.jpg"></p><br>
+
+## ♦️ Style 3 ♦️
+
+<br><p align="center"><img width="800" alt="image" src="__wallpapers__/3.png"></p><br>
+
+## ♦️ Style 4 ♦️
+
+<br><p align="center"><img width="800" alt="image" src="__wallpapers__/4.png"></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
 # 🚨 Stats 🚨
 
 <br><p align="center"><img width="800" alt="image" src="https://repobeats.axiom.co/api/embed/42c9b248a6c2f5a3c5709d6a205b8c3735486a9b.svg"></p><br>
