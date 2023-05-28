@@ -78,7 +78,7 @@ def backup(browser, compression_level):
                 #zf.setpassword(bytes(password, 'utf-8'))
 
         print(clr("\n  > Cleaning..."))
-        if os.path.exists("chrome.reg"): os.remove("chrome.reg")
+        if os.path.isfile("chrome.reg"): os.remove("chrome.reg")
         os.system(f'explorer.exe "{os.getcwd()}"')
     
         # - Unzip with the password "{password}"
