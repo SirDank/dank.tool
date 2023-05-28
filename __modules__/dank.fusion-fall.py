@@ -76,10 +76,16 @@ def open_workspace():
 
     if len(folders) == 0:
         
-        print(clr("\n  > No workspaces found!",2))
-        workspace = input(clr("\n  > New workspace name: ") + magenta)
-        os.mkdir(workspace)
-        os.chdir(workspace)
+        print(clr("\n  > No workspaces found!\n",2))
+        while True:
+            try:
+                workspace = input(clr("  > New workspace name: ") + magenta)
+                os.mkdir(workspace)
+                os.chdir(workspace)
+                break
+            except:
+                rm_line()
+                print(clr(f"  > Failed to make directory: {workspace}",2))       
     
     else:
         
@@ -94,10 +100,15 @@ def open_workspace():
                 if int(_) == 0:
                     print()
                     while True:
-                        workspace = input(clr("  > New workspace name: ") + magenta)
-                        if not os.path.exists(workspace):
-                            os.mkdir(workspace); break
-                        else: rm_line()
+                        try:
+                            workspace = input(clr("  > New workspace name: ") + magenta)
+                            if not os.path.isdir(workspace):
+                                os.mkdir(workspace); break
+                            else:
+                                rm_line()
+                        except:
+                            rm_line()
+                            print(clr(f"  > Failed to make directory: {workspace}",2))   
                     break
                 else: workspace = folders[int(_)-1]; break
             elif _ in folders: workspace = _; break
