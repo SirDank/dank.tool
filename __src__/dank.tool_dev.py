@@ -95,6 +95,7 @@ def download_offline_scripts(project):
 
 request_responses = {}
 offline_modules = {'Fusion-Fall Modding Tool':'', 'Browser Backup':''}
+offline_scripts = ["dank.fusion-fall", "dank.browser-backup"]
 
 if ONLINE_MODE:
 
@@ -104,7 +105,7 @@ if ONLINE_MODE:
 
     while True:
         try:
-            multithread(download_offline_scripts, 50, [_ for _ in offline_modules], progress_bar=False)
+            multithread(download_offline_scripts, 50, [_ for _ in offline_scripts], progress_bar=False)
             break
         except KeyboardInterrupt:
             input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
