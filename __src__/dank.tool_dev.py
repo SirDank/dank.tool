@@ -16,16 +16,13 @@ from win10toast import ToastNotifier
 from dateutil.tz import tzlocal, tzutc
 from dankware import align, cls, clr, magenta, white, green, red, title, get_duration, multithread, err, rm_line
 
+# get env vars
+
 DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
 DEV_MODE = int(os.environ['DANK_TOOL_DEV'])
-
-# send toast notification
-
 os.chdir(os.path.dirname(__file__))
 headers = {"User-Agent": "dank.tool"}
-toast = ToastNotifier()
-toast.show_toast("SirDank:", "Thank you for using my tool ❤️\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
 
 # print randomly coloured and aligned banner
 
@@ -128,9 +125,12 @@ if ONLINE_MODE:
 
 # main
 
+toast = ToastNotifier()
+toast.show_toast("SirDank:", "Thank you for using my tool ❤️\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
+
 while True:
 
-    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴" if not ONLINE_MODE else '') # version defined in executor.py
+    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # version defined in executor.py
     os.environ['DISCORD_RPC'] = "on the main menu"
     os.chdir(os.path.dirname(__file__))
 
