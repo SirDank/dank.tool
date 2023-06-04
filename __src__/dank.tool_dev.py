@@ -21,8 +21,8 @@ from dankware import align, cls, clr, magenta, white, green, red, title, get_dur
 DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
 DEV_MODE = int(os.environ['DANK_TOOL_DEV'])
-os.chdir(os.path.dirname(__file__))
 headers = {"User-Agent": "dank.tool"}
+os.chdir(os.path.dirname(__file__))
 
 # print randomly coloured and aligned banner
 
@@ -268,7 +268,6 @@ while True:
                     requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
                     break
                 except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-            input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
-        else:
-            input(clr("\n  > Press [ENTER] to EXIT... "))
+            print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
+        input(clr("\n  > Press [ENTER] to EXIT... "))
 
