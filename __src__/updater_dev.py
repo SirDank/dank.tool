@@ -14,7 +14,8 @@ except: exec("DANK_TOOL_VERSION = current_version") # current_version defined in
 try:
     response = session.get("https://api.github.com/repos/SirDank/dank.tool/releases", headers = {"User-Agent": "dank.tool", "Accept": "application/vnd.github.v3+json"})
 
-    if response.status_code == 200 and f"v{DANK_TOOL_VERSION}" in [release["tag_name"] for release in response.json()]:
+                                                                # REMOVE THIS IN THE FUTURE!
+    if response.status_code == 200 and not DANK_TOOL_VERSION in ["2.3.1", "2.3.2", "2.4"] and f"v{DANK_TOOL_VERSION}" in [release["tag_name"] for release in response.json()]:
         print(clr(f"\n  > Release Notes:"))
         for release in response.json():
             if DANK_TOOL_VERSION in release["tag_name"]:
@@ -52,4 +53,4 @@ except:
 print(clr("\n  > Starting installer in 5s..."))
 time.sleep(5)
 sys_open("dank.tool-[installer].exe")
-os.system("taskkill /f /im dank.tool.exe") # current_version defined in executor.py
+os.system("taskkill /f /im dank.tool.exe")
