@@ -3,6 +3,7 @@ import sys
 import time
 import shutil
 import requests
+import subprocess
 from dankware import title, rm_line, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
 
 def print_banner():
@@ -21,7 +22,9 @@ def main_one():
 
     #exec_mode = "script"; exec(chdir(exec_mode))
     try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Desktop'))
-    except: os.chdir("C:\\")
+    except:
+        try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents')) 
+        except: os.chdir("C:\\")
     banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
     read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
 
@@ -269,18 +272,19 @@ cls(); print(clr("\n  > Creating local files..."))
 
 open('eula.txt','w').write('eula=true')
 
-open('start_server.cmd', 'w').write(f'''@echo off
-COLOR 0F
+open('start_server.cmd', 'w').write(f'''
+@echo off
 title Minecraft Server Console [ {name} - {version} ]
 java -jar AutoPlug-Client.jar
+pause
 ''')
 
-open('start_server.sh', 'wb').write(f'''#!/bin/sh
+open('start_server.sh', 'wb').write(f'''
+#!/bin/sh
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
 open('anti-malware.cmd', 'w').write(f'''@echo off
-COLOR 0F
 title Minecraft Anti-Malware [ {name} - {version} ]
 java -jar MCAntiMalware.jar
 pause
