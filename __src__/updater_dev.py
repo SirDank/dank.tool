@@ -3,7 +3,7 @@ import sys
 import time
 import requests
 import pyminizip
-from dankware import cls, clr, sys_open, green
+from dankware import cls, clr, green
 
 session = requests.Session()
 try: DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
@@ -13,8 +13,7 @@ except: exec("DANK_TOOL_VERSION = current_version") # current_version defined in
 
 try:
     response = session.get("https://api.github.com/repos/SirDank/dank.tool/releases", headers = {"User-Agent": "dank.tool", "Accept": "application/vnd.github.v3+json"})
-
-                                                                # REMOVE THIS IN THE FUTURE!
+                                                                # REMOVE THE BELOW CHECK IN THE FAR FUTURE!
     if response.status_code == 200 and not DANK_TOOL_VERSION in ["2.3.1", "2.3.2", "2.4"] and f"v{DANK_TOOL_VERSION}" in [release["tag_name"] for release in response.json()]:
         print(clr(f"\n  > Release Notes:"))
         for release in response.json():
@@ -25,9 +24,9 @@ except: pass
 
 # change directory
 
-try: os.chdir(os.path.join(os.environ['USERPROFILE'], 'Downloads'))
+try: os.chdir(os.path.join(os.environ['USERPROFILE'], 'Downloads')) # do not use get_path() here
 except: 
-    try: os.chdir(os.environ['TEMP'])
+    try: os.chdir(os.environ['TEMP']) # do not use get_path() here
     except: os.chdir("C:\\")
 
 # download update
@@ -52,5 +51,5 @@ except:
 
 print(clr("\n  > Starting installer in 5s..."))
 time.sleep(5)
-sys_open("dank.tool-[installer].exe")
+os.system("start dank.tool-[installer].exe")
 os.system("taskkill /f /im dank.tool.exe")
