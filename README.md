@@ -6,6 +6,11 @@
 <p align="center"><a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png"></a></p><br>
 <p align="center"><a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/1.png"></a></p><br>
 
+# 🚨 [ SNEAK PEEK ] dank.tool v3.0 🚨
+
+<p align="center"><a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/red.png"></a></p><br>
+<p align="center"><a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/e59fabe2-bdcb-4e90-ae78-5afabfbd9700"></a></p><br>
+
 # 🚨 SirDank's dank.tool 🚨
 
 - An all-in-one, installable windows program with a wide variety of features built with python!
