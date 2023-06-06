@@ -136,7 +136,7 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'mcMMO.jar', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.6.2 | mcMMO 2.1.217 |
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.6.2 | mcMMO 2.1.217 |
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
@@ -197,6 +197,11 @@ def main_one():
         
     # > FastAsyncWorldEdit
     for file_url in github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']):
+        to_download_urls.append(file_url)
+        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
+        
+    # > mcMMO
+    for file_url in github_file_selector("MediumCraft/mcMMO", "remove", ['original']):
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
