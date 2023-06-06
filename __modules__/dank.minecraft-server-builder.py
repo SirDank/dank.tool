@@ -32,9 +32,9 @@ def main_one():
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr("\n  > Java is not installed!\n  > Install Java? [y/n]: ")).lower() == 'y':
+        if input(clr("\n  > Java is not installed!\n\n  > Install Adoptium JDK 17? [ y / n ]: ") + magenta).lower() == 'y':
             print()
-            os.system("winget install Oracle.JavaRuntimeEnvironment")  
+            os.system("winget install EclipseAdoptium.Temurin.17.JDK")
     
     print_banner()
 
@@ -194,6 +194,11 @@ def main_one():
     for file_url in github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']):
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
+        
+    # > FastAsyncWorldEdit
+    for file_url in github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']):
+        to_download_urls.append(file_url)
+        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
     # > AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
@@ -207,11 +212,6 @@ def main_one():
     for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
         to_download_urls.append(file_url)
         to_download_file_names.append(file_url.split('/')[-1])
-        
-    # > FastAsyncWorldEdit
-    for file_url in github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']):
-        to_download_urls.append(file_url)
-        to_download_file_names.append(file_url.split('/')[-1])
 
     def file_downloader(url, file_name):
 
@@ -223,7 +223,9 @@ def main_one():
                 except: size = "?"
                 open(file_name,"wb").write(data)
                 print(clr(f"  > Downloaded [ {file_name} ] [ {size} MB ]\n")); break
-            except: input(clr(f"  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
+            except:
+                input(clr(f"  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
+                rm_line(); rm_line()
 
     # disabled due to repeated error reports
 
@@ -283,7 +285,7 @@ open('eula.txt','w').write('eula=true')
 open('start_server.cmd', 'w').write(f'''
 @echo off
 title Minecraft Server Console [ {name} - {version} ]
-java -jar AutoPlug-Client.jar
+java -Dfile.encoding=UTF-8 -jar AutoPlug-Client.jar
 pause
 ''')
 
@@ -294,7 +296,7 @@ java -jar AutoPlug-Client.jar
 
 open('anti-malware.cmd', 'w').write(f'''@echo off
 title Minecraft Anti-Malware [ {name} - {version} ]
-java -jar MCAntiMalware.jar
+java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
 
