@@ -14,10 +14,12 @@ from rich.columns import Columns
 from rich.console import Console
 from win10toast import ToastNotifier
 from dateutil.tz import tzlocal, tzutc
-from dankware import align, cls, clr, magenta, white, green, red, title, get_duration, multithread, err, rm_line
+from dankware import magenta, white, white_normal, white_dim, green, red, red_normal, red_dim
+from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
 
 # get env vars
 
+DEV_MODE_ONLINE = int(os.environ['DANK_TOOL_DEV_ONLINE'])
 DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
 DEV_MODE = int(os.environ['DANK_TOOL_DEV'])
@@ -29,7 +31,7 @@ os.chdir(os.path.dirname(__file__))
 def print_banner():
     
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'    
-    cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}💕\n"))
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k 💕\n"))
     
 # get commit date & time
 
@@ -116,8 +118,8 @@ if ONLINE_MODE:
 
     while True:
         try:
-            req_keys = ["dankware_runs", "danktool_runs", "chatroom_user_count", "SpotX-Win", "Spicetify", "dank.minecraft-server-builder", "dank.minecraft-server-scanner", "dank.auto-clicker", "dank.browser-backup", "dank.fusion-fall"]
-            multithread(get_request_responses, 50, [_ for _ in range(len(req_keys))], [_ for _ in req_keys], progress_bar=False)
+            request_keys = ["dankware_runs", "danktool_runs", "chatroom_user_count", "SpotX-Win", "Spicetify", "dank.minecraft-server-builder", "dank.minecraft-server-scanner", "dank.auto-clicker", "dank.browser-backup", "dank.fusion-fall"]
+            multithread(get_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
             break
         except KeyboardInterrupt:
             input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
@@ -147,7 +149,7 @@ while True:
         f'Fusion-Fall Modding Tool': request_responses["dank.fusion-fall"],
         f'SpotX + Spicetify Installer': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
         f'Browser Backup': request_responses["dank.browser-backup"],
-        f'Auto Clicker [bright_magenta][[bright_red]WIP[bright_magenta]]': request_responses["dank.auto-clicker"],
+        f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
         f'Chatroom': f'[bright_white]{request_responses["chatroom_user_count"]} [bright_green]online',
         f'Discord Server': 'Join Now!',
     }
@@ -157,14 +159,14 @@ while True:
     def print_modules():
         
         print_banner()
-        print(clr(f"\n  - Modules:{stats}{red + ' OFFLINE' if not ONLINE_MODE else ''}{red + ' DEBUG' if DEV_MODE else ''}\n"))
+        print(clr(f"\n  - Modules:{stats}{red}{' OFFLINE' if not ONLINE_MODE else ''}{' DEBUG' if DEV_MODE else ''}{' ONLINE DEBUG' if DEV_MODE_ONLINE else ''}\n"))
         user_renderables = []
         console = Console()
         counter = 1
         
         for _title, renderable in modules.items():
-            user_renderables.append(Panel(title=f"[bright_white]{counter} [bright_magenta]> [bright_white][b]{_title}[/b]", title_align="left",
-                                    renderable=f"       [bright_green]{renderable}" if renderable else "", style="bright_magenta", expand=True))
+            user_renderables.append(Panel(title=f"[bright_white]{counter} [bright_red]> [bright_white][b]{_title}[/b]", title_align="left",
+                                    renderable=f"       [bright_green]{renderable}" if renderable else "", style="bright_red", expand=True))
             counter += 1
         console.print(Columns(user_renderables, expand=True))
         
@@ -174,7 +176,7 @@ while True:
     
     while True:
         
-        choice = input(clr("  - Choice: ") + magenta)
+        choice = input(clr("  - Choice: ") + red)
         if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
             choice = list(modules.keys())[int(choice)-1]; break
         
@@ -264,7 +266,6 @@ while True:
                 try:
                     #if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
                     #else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > Message: {user_message}```"
-                    # > updated to custom url to prevent webhook spamming
                     requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
                     break
                 except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
