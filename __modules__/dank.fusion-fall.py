@@ -8,9 +8,13 @@ import pretty_errors
 from dankware import align, clr, cls, magenta, white, green, red, reset, err, rm_line, file_selector, title
 
 def setup():
+    
+    global magickwand_installed
 
-    try: exec("from wand.image import Image")
+    try: exec("from wand.image import Image"); magickwand_installed = True
     except ImportError:
+        
+        magickwand_installed = False
 
         cls(); print(clr("\n  > MagickWand shared library not found!",2))
         
@@ -40,17 +44,17 @@ def setup():
             print(clr("\n  > Launching ImageMagick Installer..."))
             os.system(f'"{download_path}"')
             input(clr("\n  > Press [ENTER] after you have installed ImageMagick... "))
-             
-        else:
-            sys.exit("MagickWand shared library not found!")
+            magickwand_installed = True
 
 setup()
 
-from wand.image import Image
-from unitypackff.asset import Asset
-from unitypackff.export import OBJMesh
-from unitypackff.object import FFOrderedDict, ObjectPointer
-from unitypackff.modding import import_texture, import_mesh, import_audio
+if magickwand_installed:
+
+    from wand.image import Image
+    from unitypackff.asset import Asset
+    from unitypackff.export import OBJMesh
+    from unitypackff.object import FFOrderedDict, ObjectPointer
+    from unitypackff.modding import import_texture, import_mesh, import_audio
 
 def banner():
     
@@ -510,7 +514,11 @@ if __name__ == '__main__':
 
     log = ''
     
-    menu()
+    if magickwand_installed:
+        menu()
+    else:
+        print(clr("\n  > Please install ImageMagick and then run the module!\n",2))
+        input(clr("  > Press [ENTER] to exit..."))
         
     for _ in ['log', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
         try: del globals()[_]
