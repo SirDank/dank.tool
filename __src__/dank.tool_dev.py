@@ -19,10 +19,10 @@ from dankware import align, cls, clr, title, get_duration, multithread, err, rm_
 
 # get env vars
 
-DEV_MODE_ONLINE = int(os.environ['DANK_TOOL_DEV_ONLINE'])
+OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
+ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
 DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
-DEV_MODE = int(os.environ['DANK_TOOL_DEV'])
 headers = {"User-Agent": "dank.tool"}
 os.chdir(os.path.dirname(__file__))
 
@@ -159,7 +159,7 @@ while True:
     def print_modules():
         
         print_banner()
-        print(clr(f"\n  - Modules:{stats}") + red + (' OFFLINE' if not ONLINE_MODE else '') + (' DEBUG' if DEV_MODE else '') + (' ONLINE DEBUG' if DEV_MODE_ONLINE else '') + "\n")
+        print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_DEV else ' DEBUG') + ('' if not ONLINE_DEV else ' ONLINE DEBUG') + "\n")
         user_renderables = []
         console = Console()
         counter = 1
@@ -218,9 +218,6 @@ while True:
         elif "Browser Backup" in choice:
             set_vals("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙", "dank.browser-backup", "backing up a browser")
         
-        elif "Software Downloader" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚍𝚘𝚠𝚗𝚕𝚘𝚊𝚍𝚎𝚛", "dank.downloader", "bulk downloading software")
-        
         elif "Auto Clicker" in choice:
             set_vals("𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛", "_dank.auto-clicker", "running auto-clicker")
         
@@ -229,7 +226,9 @@ while True:
         
         elif "Discord" in choice:
             os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
-        
+            
+        # elif "Software Downloader" in choice:
+        #    set_vals("𝚍𝚊𝚗𝚔.𝚍𝚘𝚠𝚗𝚕𝚘𝚊𝚍𝚎𝚛", "dank.downloader", "bulk downloading software") 
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
@@ -240,7 +239,7 @@ while True:
         
         # get src from github if not debug mode else get src locally
 
-        if not DEV_MODE and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # DEV_MODE defined in executor.py
+        if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
             while True:
                 try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py", headers=headers).content.decode(); break
                 except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
