@@ -49,7 +49,6 @@ except:
     cls(); input(clr(f"\n  > Failed to extract!\n  > Please manually extract and install from \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\"\n  > Press [ENTER] to EXIT... ",2))
     sys.exit("Failed to extract file!")
 
-print(clr("\n  > Starting installer in 5s..."))
-time.sleep(5)
+input(clr("\n  > Press [ENTER] to install the latest version of dank.tool... "))
 os.system("start dank.tool-[installer].exe")
 os.system("taskkill /f /im dank.tool.exe")
