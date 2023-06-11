@@ -299,6 +299,12 @@
 
 ## ⭕ dank.tool.py ⭕
 
+## ⭕ error reporting system ⭕
+
+- every error is sent to a discord webhook which allows me to quickly fix them
+
+<br><p align="center"><img width="400" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/9e004b12-517f-422c-b158-6ead3080c89d"></p><br>
+
 <p>&nbsp;</p>
 
 ---  
@@ -307,19 +313,19 @@
 
 ## ♦️ Style 1 ♦️
 
-<br><p align="center"><img width="800" alt="image" src="__wallpapers__/1.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://raw.githubusercontent.com/SirDank/dank.tool/main/__wallpapers__/1.png"></p><br>
 
 ## ♦️ Style 2 ♦️
 
-<br><p align="center"><img width="800" alt="image" src="__wallpapers__/2.jpg"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://raw.githubusercontent.com/SirDank/dank.tool/main/__wallpapers__/2.jpg"></p><br>
 
 ## ♦️ Style 3 ♦️
 
-<br><p align="center"><img width="800" alt="image" src="__wallpapers__/3.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://raw.githubusercontent.com/SirDank/dank.tool/main/__wallpapers__/3.png"></p><br>
 
 ## ♦️ Style 4 ♦️
 
-<br><p align="center"><img width="800" alt="image" src="__wallpapers__/4.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://raw.githubusercontent.com/SirDank/dank.tool/main/__wallpapers__/4.png"></p><br>
 
 <p>&nbsp;</p>
 
