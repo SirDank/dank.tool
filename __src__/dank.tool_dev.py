@@ -156,7 +156,7 @@ while True:
     
     # print modules with index and get choice
     
-    def print_modules():
+    '''def print_modules():
         
         print_banner()
         print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_DEV else ' DEBUG') + ('' if not ONLINE_DEV else ' ONLINE DEBUG') + "\n")
@@ -170,6 +170,20 @@ while True:
             counter += 1
         console.print(Columns(user_renderables, expand=True))
         
+        print()'''
+    
+    def print_modules():
+        
+        print_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_DEV else ' DEBUG') + ('' if not ONLINE_DEV else ' ONLINE DEBUG') + "\n")
+        user_renderables = []
+        console = Console()
+        counter = 1
+        
+        for _title, update_time in modules.items():
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {update_time}")
+            counter += 1
+
+        console.print(Panel(title=f"[bright_white][b]M O D U L E S[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
         print()
 
     print_modules()
