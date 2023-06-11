@@ -48,7 +48,7 @@ def updated_on(url, dankware_module = True):
             time = time.replace("Z","").split(":")
             date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
-        return f"[bright_green]🔄 {get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')}"
+        return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
     except: return "[bright_red]⚠️"
 
 # multithread requests
@@ -150,8 +150,8 @@ while True:
         f'SpotX + Spicetify Installer': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
         f'Browser Backup': request_responses["dank.browser-backup"],
         f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
-        f'Chatroom': f'[bright_white]{request_responses["chatroom_user_count"]} [bright_green]online',
-        f'Discord Server': 'Join Now!',
+        f'Chatroom': f'[bright_green]{request_responses["chatroom_user_count"]} online',
+        f'Discord Server': '[bright_green]Join Now!',
     }
     
     # print modules with index and get choice
@@ -183,7 +183,7 @@ while True:
             user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {update_time}")
             counter += 1
 
-        console.print(Panel(title=f"[bright_white][b]M O D U L E S[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+        console.print(Panel(title=f"[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
         print()
 
     print_modules()
