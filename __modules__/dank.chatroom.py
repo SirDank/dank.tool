@@ -101,11 +101,13 @@ def chatroom_output():
             if f"[{username}]" in '\n'.join(chat):
                 
                 for _ in range(len(chat)):
-                    if f"[{username}]" in chat[_]:
-                        chat[_] = clr(chat[_], colour_one=white_normal)
-                    else:
+                    if chat[_].startswith("[SirDank]"):
+                        chat[_] = clr(chat[_]).replace("[SirDank]",f"[{green}SirDank{white}]")
+                    if chat[_].startswith(f"[{username}]"):
                         chat[_] = clr(chat[_])
-                print('\n'.join(chat).replace("[SirDank]",f"[{green}SirDank{white}]"))
+                    else:
+                        chat[_] = clr(chat[_], colour_one=white_normal)
+                print('\n'.join(chat))
             
             else:
             
