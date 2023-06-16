@@ -6,7 +6,7 @@ import subprocess
 import tkinter as tk
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, align, rm_line, green, red, white, title
+from dankware import cls, clr, align, rm_line, green, red, white, white_normal, title
 
 def chatroom_login():
     
@@ -96,8 +96,23 @@ def chatroom_output():
     while running:
 
         if printed_msg_id < last_msg_id and len(chat) > 0:
-            print(clr('\n'.join(chat).replace("[SirDank]",f"[{green}SirDank{white}]")))
+            
+            
+            if f"[{username}]" in '\n'.join(chat):
+                
+                for _ in range(len(chat)):
+                    if f"[{username}]" in chat[_]:
+                        chat[_] = clr(chat[_], colour_one=white_normal)
+                    else:
+                        chat[_] = clr(chat[_])
+                print('\n'.join(chat).replace("[SirDank]",f"[{green}SirDank{white}]"))
+            
+            else:
+            
+                print(clr('\n'.join(chat).replace("[SirDank]",f"[{green}SirDank{white}]")))
+            
             printed_msg_id = last_msg_id
+
         time.sleep(1)
 
 def chatroom_input():
@@ -153,7 +168,7 @@ def chatroom_input():
     root.bind("<B1-Motion>", move_window)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
-    root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF00FF", borderwidth=1)
+    root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF0000", borderwidth=1) # hot-pink > #FF00FF
 
     entry = tk.Entry(root, bg="#3A3A3A", fg="white", font=("Consolas", 12))
     entry.bind("<Return>", handle_msg)
