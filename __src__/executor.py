@@ -10,12 +10,12 @@
 - executor.py is meant to be executed only as an executable, not as a python script!
 - the below imports are not required by executor.py but is required by the __modules__ run by dank.tool.py
 - they are here to be imported by the installable / portable executable
-- [ exec_mode = "script" ] is used for testing, to be run as a script | It is automatically changed to [ exec_mode = "exe" ] to be run as an executable
 '''
 
 import os
 import sys
 import time
+import json
 import shutil
 import ctypes
 import winreg
@@ -31,7 +31,8 @@ from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
-from dankware import cls, err, multithread, align, magenta, white, red, reset, github_downloads, github_file_selector, rm_line, random_ip, get_duration, chdir, sys_open, is_admin, export_registry_keys, file_selector
+from dankware import cls, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, file_selector, folder_selector, get_path
+from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
 
 # required imports for dank.fusion-fall.py
 
@@ -42,58 +43,46 @@ from unitypackff.modding import import_texture, import_mesh, import_audio
 
 # required imports for executor.py
 
-import json
 import requests
-#from hashlib import sha1
 from pypresence import Presence
+from dankware import clr, title
 from packaging.version import parse
-from dankware import clr, title, green
 from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
+DANK_TOOL_VERSION = "3.0"
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
+os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
 
-current_version = "2.4"
+os.chdir(os.path.dirname(__file__))
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
-print(clr(f"\n  > Version: {current_version}"))
+print(clr(f"\n  > Version: {DANK_TOOL_VERSION}"))
+
+# debug env variables
+
+os.environ['DANK_TOOL_OFFLINE_DEV'] = ("1" if os.path.isfile('debug') else "0")
+os.environ['DANK_TOOL_ONLINE_DEV'] = ("1" if os.path.isfile('debug-online') else "0")
+OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
 
 # get latest version number
 
 def latest_dank_tool_version():
-
-    while True:
-        try:
-            latest_version = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version.txt", headers=headers).content.decode()
-            #checksums = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/checksums.txt").content.decode()
-            if "Not Found" in latest_version: latest_version = "0"
-            break
-        except:
-            if "debug" in input(clr("\n  > Failed to check for an update! Make sure you are connected to the internet! Press [ENTER] to try again... ",2)):
-                latest_version = "0"; break
-    return latest_version #, checksums
-
-latest_version = latest_dank_tool_version()
-
-'''
-# check if executable checksum exists in valid list
-
-def check_file_integrity():
-
-    global current_version
-
-    if file_name.endswith('.exe'):
-        checksum = sha1(open(file_name,'rb').read()).hexdigest()
-        if not checksum in checksums:
-            warning_banner = '\n\n\n\n888       888        d8888 8888888b.  888b    888 8888888 888b    888  .d8888b.  888 \n888   o   888       d88888 888   Y88b 8888b   888   888   8888b   888 d88P  Y88b 888 \n888  d8b  888      d88P888 888    888 88888b  888   888   88888b  888 888    888 888 \n888 d888b 888     d88P 888 888   d88P 888Y88b 888   888   888Y88b 888 888        888 \n888d88888b888    d88P  888 8888888P"  888 Y88b888   888   888 Y88b888 888  88888 888 \n88888P Y88888   d88P   888 888 T88b   888  Y88888   888   888  Y88888 888    888 Y8P \n8888P   Y8888  d8888888888 888  T88b  888   Y8888   888   888   Y8888 Y88b  d88P  "  \n888P     Y888 d88P     888 888   T88b 888    Y888 8888888 888    Y888  "Y8888P88 888 \n\n\n'
-            cls(); print(clr(align(warning_banner) + "\n  > Integrity check failure! This may indicate that the software has been tampered with.\n\n  > As a precaution, I recommend that you check your system for malware.", 2))
-            if 'debug' not in input(clr("\n  > Press [ ENTER ] to force update dank.tool... ")): current_version = "0"
-            cls()
     
-check_file_integrity()
-'''
+    try:
+        LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/executor_version{'' if not ONLINE_DEV else '_dev'}.txt", headers=headers).content.decode()
+        os.environ['DANK_TOOL_ONLINE'] = "1"
+    except:
+        LATEST_VERSION = "0"
+        os.environ['DANK_TOOL_ONLINE'] = "0"
+        os.environ['DANK_TOOL_ONLINE_DEV'] = "0"
+    return LATEST_VERSION
+
+LATEST_VERSION = latest_dank_tool_version()
+ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
+ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
 
 # version checker / updater
 
@@ -101,38 +90,51 @@ def dank_tool_installer():
 
     while True:
         try:
-            release_notes = json.loads(requests.get("https://api.github.com/repos/SirDank/dank.tool/releases/latest").content.decode())["body"]
-            code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater.py", headers=headers).content.decode()
-            print(clr(f"\n  > Release Notes:\n\n") + clr(release_notes, colour_two=green))
+            code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/updater{'' if not ONLINE_DEV else '_dev'}.py", headers=headers).content.decode()
             break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+    
     try: exec(code)
     except:
         err_message = err(sys.exc_info())
-        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
+        try: session.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
         except: pass
-        print(clr(err_message, 2))
-        input(clr("\n  > Press [ENTER] to EXIT... ",2))
-        sys.exit(1)
+        input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
+        sys.exit(err_message)
+    
     sys.exit("Updated!")
 
-if os.path.exists('debug'): development_version = True
-else: development_version = False
-if parse(latest_version) > parse(current_version):
-    print(clr(f"\n  > Update Found: {latest_version}")); dank_tool_installer()
-elif latest_version == current_version: print(clr(f"\n  > Latest Version!"))
-else: print(clr("\n  > Development Version!")); development_version = True
+# update environment variables
 
-# get main code from github if development_version = False else locally
+if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or os.path.isfile('force-update'):
+    print(clr(f"\n  > Update Found: {LATEST_VERSION}" + ("" if not os.path.isfile('force-update') else " [ FORCED ]")))
+    dank_tool_installer()
+elif LATEST_VERSION == DANK_TOOL_VERSION:
+    if not ONLINE_DEV:
+        print(clr(f"\n  > Latest Version!"))
+    else:
+        print(clr(f"\n  > Online Development Mode!"))
+elif LATEST_VERSION == "0":
+    print(clr("\n  > Offline Mode!"))
+else: # LATEST VERSION IS LESS THAN CURRENT VERSION
+    print(clr("\n  > Development Mode!"))
+    os.environ['DANK_TOOL_OFFLINE_DEV'] = "1"
+    OFFLINE_DEV = 1
 
-if development_version:
+# get and save dank.tool.py
+
+if not os.path.exists('__src__'): os.mkdir('__src__')
+if not os.path.exists('__modules__'): os.mkdir('__modules__')
+
+if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists('__src__/dank.tool.py') ):
+    while True:
+        try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool{'' if not ONLINE_DEV else '_dev'}.py", headers=headers).content.decode(); break
+        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+    open('__src__/dank.tool.py', 'w', encoding='utf-8').write(code)
+else:
     while True:
         try: code = open('__src__/dank.tool.py', 'r', encoding='utf-8').read(); break
         except: input(clr("\n  > Failed to get code! Unable to read '__src__/dank.tool.py'! Press [ENTER] to try again... ",2))
-else:
-    while True:
-        try: code = session.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/dank.tool.py", headers=headers).content.decode(); break
-        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
 # start discord rpc
 
@@ -143,29 +145,33 @@ def dank_tool_discord_rpc():
         try:
             RPC.update(
                 large_image = "dankware",
-                large_text = "dank.tool",
-                details = "running dank.tool",
-                state = discord_rpc_state,
+                large_text = "dankware",
+                details = f"[ dank.tool {DANK_TOOL_VERSION} ]",
+                state = os.environ['DISCORD_RPC'],
                 start = start,
                 buttons = [{"label": "Download", "url": "https://github.com/SirDank/dank.tool"}, {"label": "Discord", "url": "https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god"}]
             )
             time.sleep(15)
         except: break
 
-try:
-    RPC = Presence("1028269752386326538")
-    RPC.connect(); discord_rpc_state = "on the main menu"
-    executor.submit(dank_tool_discord_rpc)
-except: pass
+if ONLINE_MODE:
+    try:
+        RPC = Presence("1028269752386326538")
+        RPC.connect(); os.environ['DISCORD_RPC'] = "on the main menu"
+        executor.submit(dank_tool_discord_rpc)
+    except: pass
 
 # update counter
 
 def dank_tool_runs_counter():
+    session = requests.Session()
     while True:
-        try: requests.get("https://api.countapi.xyz/hit/dank.tool2", headers=headers); break
+        try: session.get("https://api.countapi.xyz/hit/dank.tool2", headers=headers); break
         except: pass
         time.sleep(240)
-executor.submit(dank_tool_runs_counter)
+        
+if ONLINE_MODE:
+    executor.submit(dank_tool_runs_counter)
 
 # chatroom user validator
 
@@ -175,29 +181,34 @@ def dank_tool_chatroom():
         try: session.post("https://dank-site.onrender.com/chatroom-users", headers=headers)
         except: pass
         time.sleep(240)
-executor.submit(dank_tool_chatroom)
+
+if ONLINE_MODE:
+    executor.submit(dank_tool_chatroom)
 
 # execute, catch errors if any
 
-title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [{current_version}]"); cls()
+title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}")
 
 try: exec(code)
 except:
 
-    cls(); latest_version = latest_dank_tool_version()
-    if not latest_version == current_version:
-        print(clr(f"\n  > An error occured! Updating to the latest version...\n\n  > Update Found: {latest_version}")); dank_tool_installer()
+    cls()
+    err_message = err(sys.exc_info())
+    print(clr(err_message, 2))
+    LATEST_VERSION = latest_dank_tool_version()
+    if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
+        print(clr(f"\n  > Updating to the latest version...\n\n  > Update Found: {LATEST_VERSION}"))
+        dank_tool_installer()
     else:
-        err_message = err(sys.exc_info())
-        print(clr(err_message, 2))
-        #user_message = input(clr("\n  > Briefly explain what you were doing when this error occurred [ sent to the developer ]: ",2) + white)
-        while True:
-            try:
-                #if user_message == "": content = f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"
-                #else: content = f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}\n\n  > Message: {user_message}```"
-                # > updated to custom url to prevent webhook spamming
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Version: {current_version}\n\n{err_message}```"})
-                break
-            except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-        input(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!\n\n  > Press [ENTER] to EXIT... "))
+        if ONLINE_MODE:
+            #user_message = input(clr("\n  > Briefly explain what you were doing when this error occurred [ sent to the developer ]: ",2) + white)
+            while True:
+                try:
+                    #if user_message == "": content = f"```<--- 🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"
+                    #else: content = f"```<--- 🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}\n\n  > Message: {user_message}```"
+                    session.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+                    break
+                except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+            print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
+        input(clr("\n  > Press [ENTER] to EXIT... "))
 

@@ -4,13 +4,14 @@ import time
 import shutil
 import requests
 import subprocess
-from dankware import title, rm_line, align, cls, clr, white, magenta, red, reset, github_file_selector, multithread, sys_open, err
+from dankware import white, white_normal, red, red_normal, red_dim, red, reset
+from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err
 
 def print_banner():
-    cls(); print(align(clr(banner,4) + f"\n{white}s i r {magenta}. {white}d a n k {magenta}<3\n\n"))
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k {red}💕\n\n"))
 
 def print_read_me():
-    cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{magenta}#")))
+    cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{red}#")))
 
 def main_one():
 
@@ -32,7 +33,7 @@ def main_one():
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr("\n  > Java is not installed!\n\n  > Install Adoptium JDK 17? [ y / n ]: ") + magenta).lower() == 'y':
+        if input(clr("\n  > Java is not installed!\n\n  > Install Adoptium JDK 17? [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system("winget install EclipseAdoptium.Temurin.17.JDK")
     
@@ -52,14 +53,14 @@ def main_one():
     used_motd_len = 10
     print("")
     while True:
-        name = input(clr("  > Server Name: ") + magenta)
+        name = input(clr("  > Server Name: ") + red)
         if not len(name) > (max_motd_len - used_motd_len): break
         else: rm_line()
     motd_spaces = ' '*int((max_motd_len - used_motd_len - len(name))/4)
 
     print("")
     while True:
-        version = input(clr("  > Version: ") + magenta)
+        version = input(clr("  > Version: ") + red)
         if version in version_list: break
         else: rm_line()
 
@@ -67,14 +68,14 @@ def main_one():
 
     print("")
     while True:
-        cracked = input(clr("  > Allow Cracked Players [ y / n ]: ") + magenta).lower()
+        cracked = input(clr("  > Allow Cracked Players [ y / n ]: ") + red).lower()
         if 'y' in cracked: cracked = True; break
         elif 'n' in cracked: cracked = False; break
         else: rm_line()
         
     print("")
     while True:
-        install_via = input(clr("  > Download ViaVersion & ViaBackwards [ y / n ]: ") + magenta).lower()
+        install_via = input(clr("  > Download ViaVersion & ViaBackwards [ y / n ]: ") + red).lower()
         if 'y' in install_via: install_via = True; break
         elif 'n' in install_via: install_via = False; break
         else: rm_line()
@@ -91,18 +92,18 @@ def main_one():
     print_read_me(); print(clr("\n  > When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or \"OOMKiller\" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you can't afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns."))
     print("")
     while True:
-        ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + magenta)
+        ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + red)
         if ram.isdigit(): ram = int(ram); break
         else: rm_line()
     if ram < 256: ram = 256
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {magenta}host{white} for your mc server!\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's plugin without port-forwarding\n  - Choose {magenta}Option 1\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods\n  - Choose {magenta}Option 2"))
+    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {red}host{white} for your mc server!\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's plugin without port-forwarding\n  - Choose {red}Option 1\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods\n  - Choose {red}Option 2"))
 
     print("")
     while True:
-        playit = input(clr("  > Choice [ 1 / 2 ]: ") + magenta)
+        playit = input(clr("  > Choice [ 1 / 2 ]: ") + red)
         if playit in ["1","2"]:
             if playit == "1": playit = True
             else: playit = False
@@ -259,7 +260,7 @@ def main_one():
     
     time_taken = int(time.time()-start_time)
 
-    print(clr(f"\n  > Finished downloads in {magenta}{time_taken}{white} seconds! Sleeping {magenta}3{white} seconds...")); time.sleep(3)
+    print(clr(f"\n  > Finished downloads in {red}{time_taken}{white} seconds! Sleeping {red}3{white} seconds...")); time.sleep(3)
 
     # unpacking downloaded archives
 
@@ -568,7 +569,7 @@ def main_two():
         print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message... "))  
     else:
         print_read_me(); print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
-        if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + magenta).lower() == "y":
+        if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + red).lower() == "y":
             sys_open('https://youtu.be/X75GbRaGzu8')
 
     print_read_me(); input(clr(f'\n  > If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{dir_name}\\autoplug\\updater.yml"\n\n  > After you move the folder to a linux system, run "sudo chmod -R 777 server_folder_name"\n\n  > Run start_server.sh and then install jdk with ".check java"\n\n  > Press [ ENTER ] after you have read the message... '))

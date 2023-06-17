@@ -1,11 +1,11 @@
 import os
 import time
-import json
 import socket
 import sqlite3
 import requests
 from mcstatus import JavaServer, BedrockServer
-from dankware import multithread, clr, cls, title, align, magenta, rm_line, random_ip
+from dankware import white, white_normal, red, red_normal, red_dim, red
+from dankware import multithread, clr, cls, title, align, rm_line, random_ip
 
 '''
 
@@ -123,12 +123,12 @@ def main():
 
     # get user input
 
-    cls(); print(align(clr(banner,4)))
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     print(clr("\n  > The database files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete those file to reset the scanned ips.\n\n  > Start with [ 100 threads ] and note the performance impact.\n\n  > Generally should be smooth upto 500, you might notice some performance impact above this value!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The respective database file is only updated after the scan is complete."))
     
     print("")
     while True:
-        server_type = input(clr("  > Server Type [java/bedrock]: ") + magenta)
+        server_type = input(clr("  > Server Type [java/bedrock]: ") + red)
         if server_type == "java":
             conn = sqlite3.connect('java_scanned_ips.db')
             #scanned = open('java_scanned.txt','r').read().splitlines()
@@ -147,13 +147,13 @@ def main():
         
     print("")
     while True:
-        threads = input(clr("  > Threads: ") + magenta)
+        threads = input(clr("  > Threads: ") + red)
         if threads.isdigit(): threads = int(threads); break
         else: rm_line()
         
     print("")
     while True:
-        ips_amt = input(clr("  > Amount of IPs to scan: ") + magenta)
+        ips_amt = input(clr("  > Amount of IPs to scan: ") + red)
         if ips_amt.isdigit(): ips_amt = int(ips_amt); break
         else: rm_line()
         
