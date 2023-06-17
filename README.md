@@ -247,10 +247,10 @@
 
 ```
 📁 dank.tool/
-├─📄 dank.tool.exe                       [ direct download to the latest dank.tool installer ]
-├─📄 dank.tool.zip                       [ direct download to the latest dank.tool installer inside a zip protected by the password "dankware" ]
+├─📄 dank.tool.exe                [ direct download to the latest dank.tool installer ]
+├─📄 dank.tool.zip                [ direct download to the latest dank.tool installer inside a zip protected by the password "dankware" ]
 ├─📄 README.md
-├─📁 __assets__/                         [ assets used by dank.tool's modules ]
+├─📁 __assets__/                  [ assets used by dank.tool's modules ]
 │ ├─📁 example_module_1/
 │ │ ├─📄 example_file_1.mp3
 │ │ └─📄 example_file_2.mp3
@@ -261,25 +261,25 @@
 │   ├─📄 example_file_1.jar
 │   ├─📄 example_file_2.xml
 │   └─📄 example_file_3.png
-├─📁 __modules__/                        [ src for dank.tool's modules ]
+├─📁 __modules__/                 [ src for dank.tool's modules ]
 │ ├─📄 example_module_1.py
 │ ├─📄 example_module_2.py
 │ ├─📄 example_module_3.py
-│ └─📁 __wip__/                          [ modules that are still being worked on ]
+│ └─📁 __wip__/                   [ modules that are still being worked on ]
 │   └─📄 example_module_1.py
 ├─📁 __src__/
-│ ├─📄 checksums.txt                     [ checksums for different versions of the dank.tool ( not being used / updated anymore ) ]
-│ ├─📄 dank.tool.py                      [ dank.tool's interface + module executor ]
-│ ├─📄 dank.tool_dev.py                  [ dank.tool's interface + module executor executed when DEV_MODE_ONLINE = 1 ]
+│ ├─📄 checksums.txt              [ checksums for different versions of the dank.tool ( not being used / updated anymore ) ]
+│ ├─📄 dank.tool.py               [ dank.tool's interface + module executor ]
+│ ├─📄 dank.tool_dev.py           [ dank.tool's interface + module executor executed when DEV_MODE_ONLINE = 1 ]
 │ ├─📄 documentation.md
-│ ├─📄 executor.py                       [ dank.tool's main src ( imports, update checker ( executes updater.py ), discord rpc, online run counter, chatroom user validator, executes dank.tool.py ) ]
-│ ├─📄 executor_version.txt              [ dank.tool's latest version ( used for update checks ) ]
-│ ├─📄 executor_version_dev.txt          [ dank.tool's unreleased development version ( used for testing updates ) ]
-│ ├─📄 requirements.txt                  [ python packages required to build dank.tool.exe ]
-│ └─📄 updater.py                        [ dank.tool's updater ]
-│ └─📄 updater_dev.py                    [ dank.tool's updater used for testing executed when DEV_MODE_ONLINE = 1 ]
+│ ├─📄 executor.py                [ dank.tool's main src (imports, update checker (executes updater.py), discord rpc, online run counter, chatroom user validator, executes dank.tool.py) ]
+│ ├─📄 executor_version.txt       [ dank.tool's latest version ( used for update checks ) ]
+│ ├─📄 executor_version_dev.txt   [ dank.tool's unreleased development version ( used for testing updates ) ]
+│ ├─📄 requirements.txt           [ python packages required to build dank.tool.exe ]
+│ ├─📄 updater.py                 [ dank.tool's updater ]
+│ └─📄 updater_dev.py             [ dank.tool's updater used for testing executed when DEV_MODE_ONLINE = 1 ]
 └─📁 __tools__/
-  └─📄 package-updater.cmd               [ script I use to quickly update all packages used by the dank.tool before I build the latest version ]
+  └─📄 package-updater.cmd        [ script I use to quickly update all packages used by the dank.tool before I build the latest version ]
 ```
 
 ## ⭕ Build Process ⭕
