@@ -5,7 +5,8 @@ import time
 import shutil
 import requests
 import pretty_errors
-from dankware import align, clr, cls, magenta, white, green, red, reset, err, rm_line, file_selector, title
+from dankware import align, clr, cls, err, rm_line, file_selector, title
+from dankware import white, white_normal, red, red_normal, red_dim, green, reset
 
 def setup():
     
@@ -18,7 +19,7 @@ def setup():
 
         cls(); print(clr("\n  > MagickWand shared library not found!",2))
         
-        if input(clr("\n  > Download ImageMagick? [y/n]: ") + magenta).lower() == "y":
+        if input(clr("\n  > Download ImageMagick? [y/n]: ") + red).lower() == "y":
     
             while True:
                 try:
@@ -60,7 +61,7 @@ def banner():
     
     banner = '\n\n ____  _____ _____ _____   _____ _____    ___ \n|    \\|  _  |   | |  |  | |   __|   __|  |_  |\n|  |  |     | | | |    -|_|   __|   __|  |  _|\n|____/|__|__|_|___|__|__|_|__|  |__|     |___|\n\nx\n\n'
     x = clr(f"by sir.dank | {green}nuclearff.{green}com")
-    cls(); print(align(clr(banner,4).replace('x',x)))
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]).replace('x',x)))
 
 def open_workspace():
     
@@ -80,7 +81,7 @@ def open_workspace():
         print(clr("\n  > No workspaces found!\n",2))
         while True:
             try:
-                workspace = input(clr("  > New workspace name: ") + magenta)
+                workspace = input(clr("  > New workspace name: ") + red)
                 os.mkdir(workspace)
                 os.chdir(workspace)
                 break
@@ -96,13 +97,13 @@ def open_workspace():
         
         print()
         while True:
-            _ = input(clr("  > Select workspace [num/name]: ") + magenta)
+            _ = input(clr("  > Select workspace [num/name]: ") + red)
             if _.isdigit() and int(_) >= 0 and int(_) <= len(folders):
                 if int(_) == 0:
                     print()
                     while True:
                         try:
-                            workspace = input(clr("  > New workspace name: ") + magenta)
+                            workspace = input(clr("  > New workspace name: ") + red)
                             if not os.path.isdir(workspace):
                                 os.mkdir(workspace); break
                             else:
@@ -117,7 +118,7 @@ def open_workspace():
             
         os.chdir(workspace)
         workspace = os.getcwd()
-        if "y" in input(clr("\n  > Open workspace in explorer? [y/n]: ") + magenta).lower():
+        if "y" in input(clr("\n  > Open workspace in explorer? [y/n]: ") + red).lower():
             os.system(f'explorer.exe "{workspace}"')
 
 def logger(string: str) -> str:
@@ -362,7 +363,7 @@ def main():
 
     while True:
         try:
-            cmd = logger(input(f"  {magenta}> {green}"))
+            cmd = logger(input(f"  {red}> {green}"))
             print(reset, end='')
             cmd_lower = cmd.lower()
 

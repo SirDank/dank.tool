@@ -4,7 +4,8 @@ import winreg
 import zipfile
 import datetime
 from psutil import process_iter
-from dankware import title, cls, clr, err, align, magenta, rm_line, is_admin, export_registry_keys
+from dankware import white, white_normal, red, red_normal, red_dim
+from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys
 
 from rich.live import Live
 from rich.panel import Panel
@@ -61,10 +62,10 @@ def backup(browser, compression_level):
         zip_name = f'chrome_{now.strftime("%d-%m-%Y")}_{now.strftime("%I-%M-%S-%p")}.zip'
 
         width = os.get_terminal_size().columns
-        job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[deep_pink1][progress.percentage][bright_cyan]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
+        job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
         overall_task = job_progress.add_task("[bright_green]Compressing", total=int(len(source_files)))
         progress_table = Table.grid()
-        progress_table.add_row(Panel.fit(job_progress, title="[bright_red]Jobs", border_style="magenta1", padding=(1, 2)))
+        progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="bright_red", padding=(1, 2)))
                 
         with Live(progress_table, refresh_per_second=10):
             with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level) as zf:
@@ -104,25 +105,25 @@ def main():
     browsers = ['Chrome']
     to_print = "\n  > Supported Browsers: \n"
     for _, browser in enumerate(browsers): to_print += f"\n  - [{_+1}] {browser}"
-    
-    print(align(clr(banner,4)) + clr(to_print))
+
+    print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim] + clr(to_print))))
     
     print("")
     while True:
-        choice = input(clr("  > Enter choice: ") + magenta)
+        choice = input(clr("  > Enter choice: ") + red)
         if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(browsers)):
             choice = browsers[int(choice)-1]; break
         else: rm_line()
     
     #print("")
     #while True:
-    #    password = input(clr("  > Enter backup password: ") + magenta)
+    #    password = input(clr("  > Enter backup password: ") + red)
     #    if password: break
     #    else: rm_line()
         
     print("")
     while True:
-        compression_level = input(clr("  > Compression level (Fast/Best) [1/2]: ") + magenta).lower()
+        compression_level = input(clr("  > Compression level (Fast/Best) [1/2]: ") + red).lower()
         if compression_level in ['1', 'fast']:
             compression_level = 0; break
         elif compression_level in ['2', 'best']:
