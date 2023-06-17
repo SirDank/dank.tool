@@ -65,6 +65,7 @@ print(clr(f"\n  > Version: {DANK_TOOL_VERSION}"))
 
 os.environ['DANK_TOOL_OFFLINE_DEV'] = ("1" if os.path.isfile('debug') else "0")
 os.environ['DANK_TOOL_ONLINE_DEV'] = ("1" if os.path.isfile('debug-online') else "0")
+ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
 OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
 
 # get latest version number
