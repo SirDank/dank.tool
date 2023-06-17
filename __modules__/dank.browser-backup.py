@@ -106,7 +106,7 @@ def main():
     to_print = "\n  > Supported Browsers: \n"
     for _, browser in enumerate(browsers): to_print += f"\n  - [{_+1}] {browser}"
 
-    print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim] + clr(to_print))))
+    print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + clr(to_print)))
     
     print("")
     while True:
