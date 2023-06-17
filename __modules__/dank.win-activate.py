@@ -15,10 +15,10 @@ def main():
     while True:
         cls()
         try:
-            #os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
-            data = requests.get("https://raw.githubusercontent.com/massgravel/Microsoft-Activation-Scripts/master/MAS/All-In-One-Version/MAS_AIO.cmd").content.decode()
-            open("MAS_AIO.cmd", "w").write(data)
-            os.system("MAS_AIO.cmd")
+            os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
+            #data = requests.get("https://raw.githubusercontent.com/massgravel/Microsoft-Activation-Scripts/master/MAS/All-In-One-Version/MAS_AIO.cmd").content.decode()
+            #open("MAS_AIO.cmd", "w").write(data)
+            #os.system("MAS_AIO.cmd")
             break
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     time.sleep(5)
