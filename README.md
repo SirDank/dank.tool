@@ -35,7 +35,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235306892-5472e34a-1f2e-4dd5-adcc-2124def1e8bb.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/64b4fa5c-ada6-4970-9970-4c032fe03755"></p><br>
 
 ## ♦️ Note ♦️
 
