@@ -76,13 +76,14 @@ def get_request_responses(task_id, req_key):
         
     # get last update time
     
-    elif task_id in (3, 4):
+    elif task_id in (3, 4, 5):
         
         if task_id == 3: url = "https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1"
         elif task_id == 4: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
+        elif task_id == 5: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
         request_responses[req_key] = updated_on(url,False)
         
-    elif task_id > 4:
+    elif task_id > 5:
         
         request_responses[req_key] = updated_on(req_key)
 
@@ -118,7 +119,8 @@ if ONLINE_MODE:
 
     while True:
         try:
-            request_keys = ["dankware_runs", "danktool_runs", "chatroom_user_count", "SpotX-Win", "Spicetify", "dank.minecraft-server-builder", "dank.minecraft-server-scanner", "dank.auto-clicker", "dank.browser-backup", "dank.fusion-fall"]
+            # KEEP request_keys IN ORDER!
+            request_keys = ["dankware_runs", "danktool_runs", "chatroom_user_count", "SpotX-Win", "Spicetify", "dank.minecraft-server-builder", "dank.minecraft-server-scanner", "dank.auto-clicker", "dank.browser-backup", "dank.fusion-fall", "dank.win-activate"]
             multithread(get_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
             break
         except KeyboardInterrupt:
@@ -144,14 +146,15 @@ while True:
     # available modules
 
     modules = offline_modules if not ONLINE_MODE else {
-        f'Minecraft Server Builder': request_responses["dank.minecraft-server-builder"],
-        f'Minecraft Server Scanner': request_responses["dank.minecraft-server-scanner"],
-        f'Fusion-Fall Modding Tool': request_responses["dank.fusion-fall"],
-        f'SpotX + Spicetify Installer': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
-        f'Browser Backup': request_responses["dank.browser-backup"],
-        f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
-        f'Chatroom': f'[bright_green]{request_responses["chatroom_user_count"]} online',
-        f'Discord Server': '[bright_green]Join Now!',
+        'Minecraft Server Builder': request_responses["dank.minecraft-server-builder"],
+        'Minecraft Server Scanner': request_responses["dank.minecraft-server-scanner"],
+        'Fusion-Fall Modding Tool': request_responses["dank.fusion-fall"],
+        'SpotX + Spicetify Installer': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
+        'Browser Backup': request_responses["dank.browser-backup"],
+        'Windows / Office Activator': request_responses["dank.win-activate"],
+        #f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
+        'Chatroom': f'[bright_green]{request_responses["chatroom_user_count"]} online',
+        'Discord Server': '[bright_green]Join Now!',
     }
     
     # print modules with index and get choice
@@ -215,9 +218,9 @@ while True:
         
         elif "Browser Backup" in choice:
             set_vals("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙", "dank.browser-backup", "backing up a browser")
-        
-        elif "Auto Clicker" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛", "_dank.auto-clicker", "running auto-clicker")
+            
+        elif "Activator" in choice:
+            set_vals("𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎", "dank.win-activate", "activating windows / office")
         
         elif "Chatroom" in choice:
             set_vals("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖", "dank.chatroom", "messaging in the chatroom")
@@ -225,8 +228,12 @@ while True:
         elif "Discord" in choice:
             os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
             
+        #elif "Auto Clicker" in choice:
+        #    set_vals("𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛", "dank.auto-clicker", "running auto-clicker")
+            
         # elif "Software Downloader" in choice:
-        #    set_vals("𝚍𝚊𝚗𝚔.𝚍𝚘𝚠𝚗𝚕𝚘𝚊𝚍𝚎𝚛", "dank.downloader", "bulk downloading software") 
+        #    set_vals("𝚍𝚊𝚗𝚔.𝚍𝚘𝚠𝚗𝚕𝚘𝚊𝚍𝚎𝚛", "dank.downloader", "bulk downloading software")
+
         # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
         # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
         # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
@@ -241,10 +248,12 @@ while True:
             while True:
                 try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py", headers=headers).content.decode(); break
                 except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+                rm_line(); rm_line()
         else:
             while True:
                 try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
                 except: input(clr(f"\n  > Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again... ",2))
+                rm_line(); rm_line()
 
         # execute src
         
