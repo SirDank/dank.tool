@@ -72,7 +72,8 @@ def get_request_responses(task_id, req_key):
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit() and tmp != "0": request_responses[req_key] = tmp
             else: request_responses[req_key] = "1"
-        except: request_responses[req_key] = f"{red}⚠️"
+            request_responses[req_key] = f"[bright_green]{request_responses[req_key]} online"
+        except: request_responses[req_key] = f"[bright_red]⚠️"
         
     # get last update time
     
@@ -153,7 +154,7 @@ while True:
         'Browser Backup': request_responses["dank.browser-backup"],
         'Windows / Office Activator': request_responses["dank.win-activate"],
         #f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
-        'Chatroom': f'[bright_green]{request_responses["chatroom_user_count"]} online',
+        'Chatroom': request_responses["chatroom_user_count"],
         'Discord Server': '[bright_green]Join Now!',
     }
     
