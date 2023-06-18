@@ -1,6 +1,4 @@
 import os
-import time
-import requests
 from dankware import title, cls, clr, align
 from dankware import white, white_normal, red, red_normal, red_dim
 
@@ -21,7 +19,6 @@ def main():
             #os.system("MAS_AIO.cmd")
             break
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-    time.sleep(5)
 
 if __name__ == "__main__":
     main()
