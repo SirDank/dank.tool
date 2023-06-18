@@ -8,6 +8,8 @@ import pretty_errors
 from dankware import align, clr, cls, err, rm_line, file_selector, title
 from dankware import white, white_normal, red, red_normal, red_dim, green, reset
 
+title("𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕")
+
 def setup():
     
     global magickwand_installed
@@ -495,7 +497,6 @@ def main():
 def menu():
     
     sys.setrecursionlimit(10000)
-    title("𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕")
     open_workspace()
     
     while True:
@@ -511,7 +512,7 @@ def menu():
         elif choice == "6": break
         else: rm_line()
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
 
     log = ''
     
