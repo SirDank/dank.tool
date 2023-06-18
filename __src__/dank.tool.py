@@ -72,7 +72,7 @@ def get_request_responses(task_id, req_key):
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit() and tmp != "0": request_responses[req_key] = tmp
             else: request_responses[req_key] = "1"
-            request_responses[req_key] = f"[bright_green]{request_responses[req_key]} online"
+            request_responses[req_key] = f"[bright_green]{request_responses[req_key]} online{' (you)' if request_responses[req_key] == '1' else ''}"
         except: request_responses[req_key] = f"[bright_red]⚠️"
         
     # get last update time
