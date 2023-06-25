@@ -8,11 +8,8 @@
 <a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/1.png"></a><br>
 </p>
 
-# 🚨 [ SNEAK PEEK ] dank.tool v3.0 🚨
-
 <p align="center">
 <a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="__wallpapers__/red.png"></a><br>
-<a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/e59fabe2-bdcb-4e90-ae78-5afabfbd9700"></a><br>
 </p>
 
 # 🚨 SirDank's dank.tool 🚨
@@ -80,7 +77,7 @@
 - Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating jdk / plugins / server jar and much more!
 - Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
 - Downloads [purpur](https://github.com/PurpurMC/Purpur) of the selected minecraft version
-- Downloads several plugins from [spigot](https://github.com/SirDank/dank.tool/search?q=%23+spigot+plugins) / [github](https://github.com/SirDank/dank.tool/search?q=%23+github+server-builder+files+and+plugins)
+- Downloads several plugins from [spigot](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22%23+spigot+plugins%22&type=code) / [github](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22%23+github+server-builder+files+and+plugins%22&type=code)
 - Downloads [minecraft anti-malware](https://www.spigotmc.org/resources/spigot-anti-malware.64982/)
 - Applies [Log4j](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition) exploit patches automatically
 - Creates startup scripts for starting the server / tunnel to be run on Windows / Linux with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags)
@@ -111,11 +108,8 @@
 # 🚨 Minecraft Server Scanner 🚨
 
 - A super-fast Minecraft server scanner to find random servers around the world! [ 493/s ~ 500 threads ~ 100K IPs ~ 3 minutes 35 seconds ~ Ryzen 7 5800H Mobile ]
-
 - Generates the specified amount of IPs and scans the default Minecraft server port 25565 / 19132
-
 - IPs are crafted in such a way that it is unique and avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
-
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description
 
 ## ♦️ To Do ♦️
@@ -164,6 +158,8 @@
 ---  
 
 # 🚨 SpotX + Spicetify Installer 🚨
+
+- Full credits to [amd64fox](https://github.com/amd64fox/SpotX) and [khanhas](https://github.com/spicetify/spicetify-cli) for their amazing work!
 
 ## ♦️ System Requirements ♦️
 
@@ -219,12 +215,37 @@
 
 ---  
 
+# 🚨 Windows / Office Activator 🚨
+
+- Full credits to [massgravel](https://github.com/massgravel/Microsoft-Activation-Scripts) for their amazing work!
+- A Windows and Office activator using HWID / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="400" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/48b12916-9b58-4f79-b8ea-998fd41c2c1a"></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
+# 🚨 Custom Chatroom 🚨
+
+- A custom chatroom that can be used to chat with other users of the dank.tool
+- The chatroom is hosted on a server and is accessible to all users of the dank.tool
+- The chatroom is not moderated and thus may contain NSFW content
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/c88d3e09-8ac1-49ad-bc19-84ac7b7b8875"></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
 # 🚨 Auto-Clicker 🚨
 
 - Set your own click speed!
-
 - Shortcuts for [ start / stop / exit ]
-
 - Cool sounds and notifications!
 
 ## ♦️ Preview ♦️
