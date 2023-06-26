@@ -14,7 +14,7 @@ from rich.columns import Columns
 from rich.console import Console
 from win10toast import ToastNotifier
 from dateutil.tz import tzlocal, tzutc
-from dankware import magenta, white, white_normal, white_dim, green, red, red_normal, red_dim
+from dankware import white, white_normal, green, red, red_normal, red_dim
 from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
 
 # get env vars
@@ -23,6 +23,7 @@ OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
 ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
 DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
+branch = ("main" if not ONLINE_DEV else "dev")
 headers = {"User-Agent": "dank.tool"}
 os.chdir(os.path.dirname(__file__))
 
@@ -93,7 +94,7 @@ def get_request_responses(task_id, req_key):
 
 def download_offline_scripts(project):
     
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py", headers=headers).content.decode()
+    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
 
 # multithread requests & download offline scripts
@@ -248,7 +249,7 @@ while True:
 
         if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
             while True:
-                try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/main/__modules__/{project}.py", headers=headers).content.decode(); break
+                try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
                 except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
                 rm_line(); rm_line()
         else:
