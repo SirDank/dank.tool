@@ -256,6 +256,24 @@
 
 ---  
 
+# ⭕ dank.tool's history ⭕
+
+## ♦️ 1.0 ♦️
+
+<br><p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/52797753/189164838-db15e03c-2122-4d5d-a6de-f55f5b3bba7c.png"></p><br>
+
+## ♦️ 2.1 ♦️
+
+<br><p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/52797753/221379790-bf6673f1-f2c9-42d6-a6c7-c9320670d0bb.png"></p><br>
+
+## ♦️ 2.4 ♦️
+
+<br><p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/52797753/235306892-5472e34a-1f2e-4dd5-adcc-2124def1e8bb.png"></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
 # ⭕ dank.tool documentation ( for devs ) ⭕
 
 ## ⭕ Introduction ⭕
