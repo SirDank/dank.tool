@@ -275,8 +275,8 @@ while True:
                 while True:
                     try:
                         if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
-                        else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > Message: {user_message}```"
-                        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"})
+                        else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > User Message: {user_message}```"
+                        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": content})
                         break
                     except:
                         input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
