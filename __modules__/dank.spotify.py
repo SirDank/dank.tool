@@ -10,15 +10,23 @@ def main():
     banner2 = '\n\nMP""""""`MM          oo                     dP   oo .8888b          \nM  mmmmm..M                                 88      88   "          \nM.      `YM 88d888b. dP .d8888b. .d8888b. d8888P dP 88aaa  dP    dP \nMMMMMMM.  M 88\'  `88 88 88\'  `"" 88ooood8   88   88 88     88    88 \nM. .MMM\'  M 88.  .88 88 88.  ... 88.  ...   88   88 88     88.  .88 \nMb.     .dM 88Y888P\' dP `88888P\' `88888P\'   dP   dP dP     `8888P88 \nMMMMMMMMMMM 88                                                  .88 \n            dP                                              d8888P  \n'
     
     cls(); print(align(clr(banner1,4,colours=[white, white_normal, green, green_normal, green_dim]) + align(clr('+')) + align(clr(banner2,4,colours=[white, white_normal, yellow, yellow_normal, yellow_dim]))))
-    print(clr("\n  > NOTE: If you have never installed Spotify before, this will install it for you but you will need to sign in manually. In only this case you will need to re-run this module to complete the spicetify installation",2))
+    print(clr("\n  > NOTE: If you have never installed Spotify before, this will install it for you but you will need to sign in manually. In only this case you will need to re-run this module to complete the spicetify installation."))
     input(clr("\n  > Hit [ ENTER ] to begin installation... "))
     while True:
         cls()
         try:
-            os.system('start cmd.exe @cmd /k "spicetify restore && timeout 5 && exit"')
-            time.sleep(3)
-            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify; Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex; iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
-            os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"') # restore
+            print(clr("\n  > terminating Spotify..."))
+            os.system('taskkill /f /im spotify.exe')
+            print(clr("\n  > restoring Spotify..."))
+            os.system('spicetify restore')
+            print(clr("\n  > installing SpotX..."))
+            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"')
+            print(clr("\n  > installing Spicetify-CLI..."))
+            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
+            print(clr("\n  > installing Spicetify-Marketplace..."))
+            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
+            print(clr("\n  > applying Spicetify..."))
+            #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
             break
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     time.sleep(5)
