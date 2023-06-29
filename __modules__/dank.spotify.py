@@ -26,6 +26,7 @@ def main():
             print(clr("\n  > installing Spicetify-Marketplace..."))
             os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
             print(clr("\n  > applying Spicetify..."))
+            os.system('spicetify backup apply')
             #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
             break
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
