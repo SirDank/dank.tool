@@ -272,15 +272,13 @@ while True:
         if ONLINE_MODE:
             if "Error Type: KeyboardInterrupt" in err_message:
                 user_message = input(clr("\n  > Briefly explain what you were doing when this error occurred [ this will be sent to the developer ]: ",2) + white)
-                while True:
-                    try:
-                        if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
-                        else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > User Message: {user_message}```"
-                        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": content})
-                        break
-                    except:
-                        input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-                        rm_line(); rm_line()
+                if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
+                else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > User Message: {user_message}```"
+            while True:
+                try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": content}); break
+                except:
+                    input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+                    rm_line(); rm_line()
             print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
         input(clr("\n  > Press [ENTER] to EXIT... "))
 
