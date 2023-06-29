@@ -21,6 +21,7 @@ def main():
             os.system('spicetify restore')
             print(clr("\n  > installing SpotX...\n"))
             os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"')
+            input(clr("\n  > Hit [ ENTER ] if you are signed in to Spotify... "))
             print(clr("\n  > installing Spicetify-CLI...\n"))
             os.system('powershell -Command "& Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
             print(clr("\n  > installing Spicetify-Marketplace...\n"))
@@ -36,6 +37,3 @@ def main():
 if __name__ == "__main__":
     main()
     del main
-
-
-os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify; Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex; iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
