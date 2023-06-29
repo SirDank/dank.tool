@@ -15,18 +15,19 @@ def main():
     while True:
         cls()
         try:
-            print(clr("\n  > terminating Spotify..."))
+            print(clr("\n  > terminating Spotify...\n"))
             os.system('taskkill /f /im spotify.exe')
-            print(clr("\n  > restoring Spotify..."))
+            print(clr("\n  > restoring Spotify...\n"))
             os.system('spicetify restore')
-            print(clr("\n  > installing SpotX..."))
+            print(clr("\n  > installing SpotX...\n"))
             os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"')
-            print(clr("\n  > installing Spicetify-CLI..."))
-            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
-            print(clr("\n  > installing Spicetify-Marketplace..."))
-            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
-            print(clr("\n  > applying Spicetify..."))
+            print(clr("\n  > installing Spicetify-CLI...\n"))
+            os.system('powershell -Command "& Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
+            print(clr("\n  > installing Spicetify-Marketplace...\n"))
+            os.system('powershell -Command "& iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
+            print(clr("\n  > applying Spicetify...\n"))
             os.system('spicetify backup apply')
+            time.sleep(5)
             #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
             break
         except: input(clr(f"\n  > Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
@@ -35,3 +36,6 @@ def main():
 if __name__ == "__main__":
     main()
     del main
+
+
+os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify; Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex; iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
