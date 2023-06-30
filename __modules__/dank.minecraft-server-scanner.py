@@ -171,7 +171,8 @@ def main():
         
         ips = {}
         generated = 0
-        if not gen_rem >= gen_amt: gen_amt = gen_rem
+        if not gen_rem >= gen_amt:
+            gen_amt = gen_rem
         
         # multithreaded generator
         
@@ -209,7 +210,10 @@ def main():
         time.sleep(5)
         
         gen_rem -= gen_amt
-    
+        
+        if gen_rem > 0:
+            print(clr(f"\n  > {gen_rem} IPs remaining..."))
+
 if __name__ == "__main__": 
     main()
     for _ in [ips, server_type, port, check_java, check_bedrock, save_server, generate_ip, main]:
