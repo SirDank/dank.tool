@@ -67,7 +67,7 @@ def save_server(ip):
         exc = str(exc)
         err_found = False
         
-        for err in ["timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe"]:
+        for err in ["WinError 10054", "WinError 10061", "WinError 10053", "timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe", "fermé", "refusée", "abandonnée"]:
             if err in exc:
                 err_found = True; break
         
