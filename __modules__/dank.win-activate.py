@@ -13,6 +13,7 @@ def main():
     while True:
         cls()
         try:
+            print(clr("\n  > Exit inside the MAS window to return to the menu..."))
             os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
             #data = requests.get("https://raw.githubusercontent.com/massgravel/Microsoft-Activation-Scripts/master/MAS/All-In-One-Version/MAS_AIO.cmd").content.decode()
             #open("MAS_AIO.cmd", "w").write(data)
