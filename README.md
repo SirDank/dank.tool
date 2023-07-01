@@ -236,7 +236,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/c88d3e09-8ac1-49ad-bc19-84ac7b7b8875"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/4ea5389c-e6db-497e-a5cf-9578a403ebe3"></p><br>
 
 <p>&nbsp;</p>
 
