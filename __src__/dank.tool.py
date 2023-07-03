@@ -226,7 +226,7 @@ while True:
             set_vals("𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎", "dank.win-activate", "activating windows / office")
         
         elif "Chatroom" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖", "dank.chatroom", "messaging in the chatroom")
+            set_vals("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖", "dank.chatroom", "chatting in the chatroom")
         
         elif "Discord" in choice:
             os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
