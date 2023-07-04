@@ -34,7 +34,7 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/64b4fa5c-ada6-4970-9970-4c032fe03755"></p><br>
 
-## ♦️ Note ♦️
+## ♦️ Notes ♦️
 
 - The executable does not have a verified certificate. Thus, windows defender may show a warning about it being from an unknown source (false positive).
 
@@ -43,6 +43,8 @@
 - Try not to spam the [ ENTER ] key on the exe's terminal as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
 
 - When the tool is running and performing a task, if you click inside the console window, a white rectangle appears and the task is paused. To continue performing the task, press the down arrow key.
+
+- When on the main menu, you can resize the window to your preferred size and then enter "refresh" as input to re-align the UI.
 
 - Documentation for developers can be found at the bottom.
 
