@@ -185,7 +185,7 @@ while True:
             choice = list(modules.keys())[int(choice)-1]; break
         
         elif choice == 'refresh':
-            print_modules(); break
+            print_modules()
         
         elif choice == 'debug': # debug menu
             cls()
