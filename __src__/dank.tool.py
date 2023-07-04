@@ -184,6 +184,9 @@ while True:
         if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
             choice = list(modules.keys())[int(choice)-1]; break
         
+        elif choice == 'refresh':
+            print_modules(); break
+        
         elif choice == 'debug': # debug menu
             cls()
             while True:
