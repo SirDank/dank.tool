@@ -156,8 +156,7 @@ while True:
         'Browser Backup': request_responses["dank.browser-backup"],
         'Windows / Office Activator': request_responses["dank.win-activate"],
         #f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
-        # request_responses["chatroom_user_count"]
-        'Chatroom': '[red1]temp-disabled', 
+        'Chatroom': request_responses["chatroom_user_count"],
         'Discord Server': '[bright_green]Join Now!',
     }
     
