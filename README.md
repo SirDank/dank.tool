@@ -291,7 +291,7 @@
 ├─📄 dank.tool.exe                [ direct download to the latest dank.tool installer ]
 ├─📄 dank.tool.zip                [ direct download to the latest dank.tool installer inside a zip protected by the password "dankware" ]
 ├─📄 README.md
-├─📁 __assets__/                  [ assets used by dank.tool's modules ]
+├─📁 __assets__/                  [ assets used by dank.tool's modules ] branches: main, dev
 │ ├─📁 example_module_1/
 │ │ ├─📄 example_file_1.mp3
 │ │ └─📄 example_file_2.mp3
@@ -310,15 +310,12 @@
 │   └─📄 example_module_1.py
 ├─📁 __src__/
 │ ├─📄 checksums.txt              [ checksums for different versions of the dank.tool ( not being used / updated anymore ) ]
-│ ├─📄 dank.tool.py               [ dank.tool's interface + module executor ]
-│ ├─📄 dank.tool_dev.py           [ dank.tool's interface + module executor executed when DEV_MODE_ONLINE = 1 ]
+│ ├─📄 dank.tool.py               [ dank.tool's interface + module executor ] branches: main, dev
 │ ├─📄 documentation.md
-│ ├─📄 executor.py                [ dank.tool's main src (imports, update checker (executes updater.py), discord rpc, online run counter, chatroom user validator, executes dank.tool.py) ]
-│ ├─📄 executor_version.txt       [ dank.tool's latest version ( used for update checks ) ]
-│ ├─📄 executor_version_dev.txt   [ dank.tool's unreleased development version ( used for testing updates ) ]
+│ ├─📄 executor.py                [ dank.tool's main src (all imports used by every module, update checker (executes updater.py), discord rpc, online run counter, chatroom user validator, executes dank.tool.py) ]
+│ ├─📄 executor_version.txt       [ dank.tool's latest version number ( used for update checks ) ] branches: main, dev
 │ ├─📄 requirements.txt           [ python packages required to build dank.tool.exe ]
-│ ├─📄 updater.py                 [ dank.tool's updater ]
-│ └─📄 updater_dev.py             [ dank.tool's updater used for testing executed when DEV_MODE_ONLINE = 1 ]
+│ └─📄 updater.py                 [ dank.tool's updater ] branches: main, dev
 └─📁 __tools__/
   └─📄 package-updater.cmd        [ script I use to quickly update all packages used by the dank.tool before I build the latest version ]
 ```
