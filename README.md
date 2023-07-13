@@ -24,7 +24,7 @@
 
 - Direct Download: https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip
 
-- ZIP Password: "dankware"
+- ZIP Password: `dankware`
 
 ## ♦️ Short URL ♦️
 
@@ -44,7 +44,7 @@
 
 - When the tool is running and performing a task, if you click inside the console window, a white rectangle appears and the task is paused. To continue performing the task, press the down arrow key.
 
-- When on the main menu, you can resize the window to your preferred size and then enter "refresh" as input to re-align the UI.
+- When on the main menu, you can resize the window to your preferred size and then enter `refresh` as input to re-align the UI.
 
 - If you want the startup animation and music to be played on every run, create a file called `force-audio` inside the install directory.
 
@@ -330,10 +330,10 @@
 ## ⭕ dank.init.py ⭕
 
 - this script is added on top of every script that I build into an executable with my (private) custom python executable builder. In short it performs the following:
-  - saves runs.txt to %LOCALAPPDATA%\\Dankware ( saves the amount of times the executable has been run )
+  - saves `runs.txt` to `%LOCALAPPDATA%\\Dankware` ( saves the amount of times the executable has been run )
   - scans the temp folder for any dankware files ( from my portable software ) and deletes them if they are not running ( cleanup )
-  - sends a get request to [countapi.xyz](countapi.xyz) to increase the online run counter by 1 ( this is displayed on the main menu as "dankware global runs" )
-  - once in every 10 runs it displays the dankware animation and plays the dankware.wav file ( checks runs.txt )
+  - sends a get request to [countapi.xyz](countapi.xyz) to increase the online run counter by 1 ( this is displayed on the main menu as `dankware global runs` )
+  - once in every 10 runs it displays the dankware animation and plays the dankware.wav file ( checks `runs.txt` )
 
 ## ⭕ executor.py ⭕
 
@@ -342,6 +342,7 @@
 ## ⭕ execute custom modules ⭕
 
 - dank.tool can execute custom user-made modules ( python scripts inside the `__local_modules__` folder ) that are not included in the main dank.tool executable
+- note: the packages that can be used by these modules are limited to the ones that are already included in the [executor.py](https://github.com/SirDank/dank.tool/blob/main/__src__/executor.py) script
 
 ## ⭕ error reporting system ⭕
 
