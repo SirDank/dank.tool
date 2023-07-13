@@ -100,7 +100,23 @@ def download_offline_scripts(project):
 # multithread requests & download offline scripts
 
 request_responses = {}
-offline_modules = {'Fusion-Fall Modding Tool':'', 'Browser Backup':''}
+offline_modules = {
+
+    'Fusion-Fall Modding Tool': {
+        'req_resp': '',
+        'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
+        'project': "dank.fusion-fall",
+        'rpc': "modding fusion-fall"
+    },
+    
+    'Browser Backup': {
+        'req_resp': '',
+        'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
+        'project': "dank.browser-backup",
+        'rpc': "backing up a browser"
+    }
+}
+
 offline_scripts = ["dank.fusion-fall", "dank.browser-backup"]
 
 if ONLINE_MODE:
@@ -147,18 +163,82 @@ while True:
     stats = "" if not ONLINE_MODE else f" [ dankware runs: {green}{request_responses['dankware_runs']} | dank.tool runs: {green}{request_responses['danktool_runs']} ]"
         
     # available modules
-
+    
     modules = offline_modules if not ONLINE_MODE else {
-        'Minecraft Server Builder': request_responses["dank.minecraft-server-builder"],
-        'Minecraft Server Scanner': request_responses["dank.minecraft-server-scanner"],
-        'Fusion-Fall Modding Tool': request_responses["dank.fusion-fall"],
-        'SpotX + Spicetify Installer': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
-        'Browser Backup': request_responses["dank.browser-backup"],
-        'Windows / Office Activator': request_responses["dank.win-activate"],
-        #f'Auto Clicker [bright_red][[red1]WIP[bright_red]]': request_responses["dank.auto-clicker"],
-        'Chatroom': request_responses["chatroom_user_count"],
-        'Discord Server': '[bright_green]Join Now!',
+
+        'Minecraft Server Builder': {
+            'req_resp': request_responses["dank.minecraft-server-builder"],
+            'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
+            'project': "dank.minecraft-server-builder",
+            'rpc': "building a minecraft server"
+        },
+
+        'Minecraft Server Scanner': {
+            'req_resp': request_responses["dank.minecraft-server-scanner"],
+            'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
+            'project': "dank.minecraft-server-scanner",
+            'rpc': "scanning for minecraft servers"
+        },
+
+        'Fusion-Fall Modding Tool': {
+            'req_resp': request_responses["dank.fusion-fall"],
+            'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
+            'project': "dank.fusion-fall",
+            'rpc': "modding fusion-fall"
+        },
+
+        'SpotX + Spicetify Installer': {
+            'req_resp': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
+            'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
+            'project': "dank.spotify",
+            'rpc': "installing spotx and spicetify"
+        },
+
+        'Browser Backup': {
+            'req_resp': request_responses["dank.browser-backup"],
+            'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
+            'project': "dank.browser-backup",
+            'rpc': "backing up a browser"
+        },
+
+        'Windows / Office Activator': {
+            'req_resp': request_responses["dank.win-activate"],
+            'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
+            'project': "dank.win-activate",
+            'rpc': "activating windows / office"
+        },
+
+        #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
+        #    'req_resp': request_responses["dank.auto-clicker"],
+        #    'title': "𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛",
+        #    'project': "dank.auto-clicker",
+        #    'rpc': "running auto-clicker"
+        #},
+
+        'Chatroom': {
+            'req_resp': request_responses["chatroom_user_count"],
+            'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
+            'project': "dank.chatroom",
+            'rpc': "chatting in the chatroom"
+        },
+    
+        'Discord Server': {
+            'req_resp': '[bright_green]Join Now!',
+            'project': "Dank.Bois Discord Server",
+        }
     }
+    
+    local_modules = {}
+    
+    if not os.path.exists('__local_modules__'):
+        os.mkdir('__local_modules__')
+    for module in os.listdir("__local_modules__"):
+        if module.endswith(".py") and os.path.isfile(f"__local_modules__/{module}"):
+            name = module.replace('.py','')
+            local_modules[name] = {
+                'title': name,
+                'project': name,
+                'rpc': f'running "{module}"'}
     
     # print modules with index and get choice
     
@@ -169,8 +249,12 @@ while True:
         console = Console()
         counter = 1
         
-        for _title, update_time in modules.items():
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {update_time}")
+        for _title, module in modules.items():
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['req_resp']}")
+            counter += 1
+            
+        for _title in local_modules.keys():
+            user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{_title}[/b]")
             counter += 1
 
         console.print(Panel(title=f"[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
@@ -181,8 +265,14 @@ while True:
     while True:
         
         choice = input(clr("  - Choice: ") + red)
-        if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules)):
-            choice = list(modules.keys())[int(choice)-1]; break
+        if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
+            if int(choice) <= len(modules):
+                choice = modules[list(modules.keys())[int(choice) - 1]]
+                LOCAL_MODULE = False
+            else:
+                choice = local_modules[list(local_modules.keys())[int(choice) - len(modules) - 1]]
+                LOCAL_MODULE = True
+            break
         
         elif choice == 'refresh':
             print_modules()
@@ -203,67 +293,42 @@ while True:
 
     try:
         
-        def set_vals(_title, _project, rpc):
-            
-            global project
-            title(_title)
-            project = _project
-            os.environ['DISCORD_RPC'] = rpc
-    
-        if "Minecraft Server Builder" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛", "dank.minecraft-server-builder", "building a minecraft server")
-        
-        elif "Minecraft Server Scanner" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛", "dank.minecraft-server-scanner", "scanning for minecraft servers")
-        
-        elif "Fusion-Fall" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕", "dank.fusion-fall", "modding fusion-fall")
-        
-        elif "SpotX" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢", "dank.spotify", "installing spotx and spicetify")
-        
-        elif "Browser Backup" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙", "dank.browser-backup", "backing up a browser")
-            
-        elif "Activator" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎", "dank.win-activate", "activating windows / office")
-        
-        elif "Chatroom" in choice:
-            set_vals("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖", "dank.chatroom", "chatting in the chatroom")
-        
-        elif "Discord" in choice:
+        if "Discord" in choice['project']:
             os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
-            
-        #elif "Auto Clicker" in choice:
-        #    set_vals("𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛", "dank.auto-clicker", "running auto-clicker")
-            
-        # elif "Software Downloader" in choice:
-        #    set_vals("𝚍𝚊𝚗𝚔.𝚍𝚘𝚠𝚗𝚕𝚘𝚊𝚍𝚎𝚛", "dank.downloader", "bulk downloading software")
-
-        # elif "Analyze suspicious file" in choice: project = "dank.virus-total"
-        # elif "Sussy Optimiser" in choice: project = "dank.sussy-optimiser"
-        # elif "HWID Spoofer" in choice: project = "dank.hwid-spoofer"
-        # elif "Temp File Cleaner" in choice: project = "dank.temp-cleaner"
-        # elif "Software Updater" in choice: project = "dank.software-updater"
         
-        else: set_vals("404", "404", "404")
-        
-        # get src from github if not debug mode else get src locally
-
-        if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
-            while True:
-                try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
-                except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-                rm_line(); rm_line()
         else:
+            title(choice['title'])
+            project = choice['project']
+            os.environ['DISCORD_RPC'] = choice['rpc']
+            
+        if LOCAL_MODULE:
+            
+            # get src from local_module
+            
             while True:
-                try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
-                except: input(clr(f"\n  > Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again... ",2))
+                try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
+                except: input(clr(f"\n  > Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again... ",2))
                 rm_line(); rm_line()
+            
+        else:
+
+            # get src from github if not debug mode else get src locally
+
+            if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
+                while True:
+                    try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
+                    except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+                    rm_line(); rm_line()
+            else:
+                while True:
+                    try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
+                    except: input(clr(f"\n  > Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again... ",2))
+                    rm_line(); rm_line()
 
         # execute src
         
-        if code == "404: Not Found": print(clr(f"\n  > {project} has not been released yet! Returning to menu in 5s...",2)); time.sleep(5)
+        if code == "404: Not Found":
+            print(clr(f"\n  > {project} has not been released yet! Returning to menu in 5s...",2)); time.sleep(5)
         else:
             cls(); exec(code)
             cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
@@ -284,4 +349,5 @@ while True:
                     rm_line(); rm_line()
             print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
         input(clr("\n  > Press [ENTER] to EXIT... "))
+        os.system("taskkill /f /im dank.tool.exe")
 
