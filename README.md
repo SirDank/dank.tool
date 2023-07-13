@@ -46,6 +46,8 @@
 
 - When on the main menu, you can resize the window to your preferred size and then enter "refresh" as input to re-align the UI.
 
+- If you want the startup animation and music to be played on every run, create a file called `force-audio` inside the install directory.
+
 - Documentation for developers can be found at the bottom.
 
 ## ♦️ To Do ♦️
@@ -340,6 +342,10 @@
 ## ⭕ error reporting system ⭕
 
 - every error is sent to a discord webhook which allows me to quickly fix them
+
+## ⭕ execute custom modules ⭕
+
+- dank.tool can execute custom user-made modules ( python scripts inside the `__local_modules__` folder ) that are not included in the main dank.tool executable
 
 <br><p align="center"><img width="400" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/9e004b12-517f-422c-b158-6ead3080c89d"></p><br>
 
