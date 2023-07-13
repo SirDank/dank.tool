@@ -339,13 +339,13 @@
 
 ## ⭕ dank.tool.py ⭕
 
-## ⭕ error reporting system ⭕
-
-- every error is sent to a discord webhook which allows me to quickly fix them
-
 ## ⭕ execute custom modules ⭕
 
 - dank.tool can execute custom user-made modules ( python scripts inside the `__local_modules__` folder ) that are not included in the main dank.tool executable
+
+## ⭕ error reporting system ⭕
+
+- every error is sent to a discord webhook which allows me to quickly fix them
 
 <br><p align="center"><img width="400" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/9e004b12-517f-422c-b158-6ead3080c89d"></p><br>
 
