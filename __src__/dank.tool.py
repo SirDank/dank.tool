@@ -63,9 +63,9 @@ def get_request_responses(task_id, req_key):
     
     if task_id in (0, 1):
 
-        if task_id == 0: url = "https://api.countapi.xyz/get/dankware"
-        elif task_id == 1: url = "https://api.countapi.xyz/get/dank.tool"
-        try: request_responses[req_key] = requests.get(url, headers=headers, timeout=3).json()['value']
+        if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
+        elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
+        try: request_responses[req_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
         except: request_responses[req_key] = f"{red}⚠️"
 
     elif task_id == 2:
