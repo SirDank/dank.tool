@@ -340,8 +340,8 @@ while True:
         if ONLINE_MODE:
             if "Error Type: KeyboardInterrupt" in err_message:
                 user_message = input(clr("\n  > Briefly explain what you were doing when this error occurred [ this will be sent to the developer ]: ",2) + white)
-                if user_message == "": content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}```"
-                else: content = f"```<--- 🚨 ---> Module: {choice}\n\n{err_message}\n\n  > User Message: {user_message}```"
+                if user_message == "": content = f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"
+                else: content = f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}\n\n  > User Message: {user_message}```"
             while True:
                 try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": content}); break
                 except:
