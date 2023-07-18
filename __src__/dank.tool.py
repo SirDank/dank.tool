@@ -27,11 +27,17 @@ branch = ("main" if not ONLINE_DEV else "dev")
 headers = {"User-Agent": "dank.tool"}
 os.chdir(os.path.dirname(__file__))
 
+# handle KeyboardInterrupt
+
+def print_warning_symbol():
+    
+    warning_symbol = f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'
+    cls(); print(align(warning_symbol))
+
 # print randomly coloured and aligned banner
 
 def print_banner():
     
-    global banner
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'    
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k {red}💕"))
     
@@ -129,8 +135,6 @@ if ONLINE_MODE:
         try:
             multithread(download_offline_scripts, 50, [_ for _ in offline_scripts], progress_bar=False)
             break
-        except KeyboardInterrupt:
-            input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
         except:
             input(clr(f"\n  > Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
@@ -142,8 +146,6 @@ if ONLINE_MODE:
             request_keys = ["dankware_runs", "danktool_runs", "chatroom_user_count", "SpotX-Win", "Spicetify", "dank.win-activate", "dank.minecraft-server-builder", "dank.minecraft-server-scanner", "dank.auto-clicker", "dank.browser-backup", "dank.fusion-fall"]
             multithread(get_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
             break
-        except KeyboardInterrupt:
-            input(clr(f"\n  > Failed to get request responses! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2))
         except:
             input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
@@ -232,6 +234,7 @@ while True:
     
     if not os.path.exists('__local_modules__'):
         os.mkdir('__local_modules__')
+
     for module in os.listdir("__local_modules__"):
         if module.endswith(".py") and os.path.isfile(f"__local_modules__/{module}"):
             name = module.replace('.py','')
@@ -337,17 +340,20 @@ while True:
 
         err_message = err(sys.exc_info())
         print(clr(err_message, 2))
-        if ONLINE_MODE:
-            if "Error Type: KeyboardInterrupt" in err_message:
-                user_message = input(clr("\n  > Briefly explain what you were doing when this error occurred [ this will be sent to the developer ]: ",2) + white)
-                if user_message == "": content = f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"
-                else: content = f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}\n\n  > User Message: {user_message}```"
+    
+        if "Error Type: KeyboardInterrupt" in err_message:
+            
+            print_warning_symbol()
+            print(clr("\n  > Please do not use [ CTRL + C ] when running the dank.tool!"))
+            
+        elif ONLINE_MODE:
             while True:
-                try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": content}); break
+                try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
                 except:
                     input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
                     rm_line(); rm_line()
             print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
+        
         input(clr("\n  > Press [ENTER] to EXIT... "))
         os.system("taskkill /f /im dank.tool.exe")
 

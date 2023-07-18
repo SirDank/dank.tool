@@ -38,11 +38,13 @@
 
 - The executable does not have a verified certificate. Thus, windows defender may show a warning about it being from an unknown source (false positive).
 
-- If you would like to run the python scripts instead of the installer, there might be small changes you have to make for it to execute properly.
+- If you would like to run the python scripts instead of the installer, there might be small changes you have to make for it to execute properly. (ex. paths)
 
 - Try not to spam the [ ENTER ] key on the exe's terminal as it can cause the program to take in the wrong input, if this has occurred, close the exe and relaunch it.
 
 - When the tool is running and performing a task, if you click inside the console window, a white rectangle appears and the task is paused. To continue performing the task, press the down arrow key.
+
+- When the tool is selected, do not press [ Ctrl + C ] as it will raise the `KeyboardInterrupt` exception and close the program.
 
 - When on the main menu, you can resize the window to your preferred size and then enter `refresh` as input to re-align the UI.
 
@@ -53,6 +55,7 @@
 ## ♦️ To Do ♦️
 
 - [x] Add offline mode for offline scripts ( High Priority )
+- [ ] Add google translate for dank.tool
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
 - [ ] Add dank.hwid-spoofer
@@ -342,7 +345,7 @@
 ## ⭕ execute custom modules ⭕
 
 - dank.tool can execute custom user-made modules ( python scripts inside the `__local_modules__` folder ) that are not included in the main dank.tool executable
-- note: the packages that can be used by these modules are limited to the ones that are already included in the [executor.py](https://github.com/SirDank/dank.tool/blob/main/__src__/executor.py) script
+- the packages that can be used by these modules are limited to the ones that are already included in the [executor.py](https://github.com/SirDank/dank.tool/blob/main/__src__/executor.py) script
 
 ## ⭕ error reporting system ⭕
 

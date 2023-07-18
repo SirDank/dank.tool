@@ -159,7 +159,7 @@ def main():
         
     # disclaimer
  
-    cls(); input(clr("\n  [IMPORTANT]\n\n  > Try not to use [COPY] or [PASTE] when the scanner is running!\n\n  > All the servers are saved to servers.txt!\n\n  > Press [ ENTER ] to start the multithreaded scanner..."))
+    cls(); input(clr("\n  [IMPORTANT]\n\n  > Do not use [ Ctrl + C ]!\n\n  > All the servers are saved to servers.txt!\n\n  > Press [ ENTER ] to start the multithreaded scanner..."))
     cls()
 
     # generate and check ips on multiple threads in batches
@@ -186,7 +186,7 @@ def main():
                     else:
                         multithread(generate_ip, gen_amt, progress_bar=False); generated += gen_amt
                     break
-                except: input(clr(f"\n  > Failed to generate ips! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); rm_line()
+                except: input(clr(f"\n  > Failed to generate ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); rm_line()
                 
         # multithreaded checker
 
@@ -196,7 +196,7 @@ def main():
                 print(clr(f"\n  > Checking {len(ips)} unique ips...\n"))
                 if server_type == "java": multithread(check_java, threads, list(ips.keys())); break
                 else: multithread(check_bedrock, threads, list(ips.keys())); break
-            except: input(clr(f"\n  > Failed to check ips! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); rm_line()
+            except: input(clr(f"\n  > Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); rm_line()
         
         # saving scanned ips
     
