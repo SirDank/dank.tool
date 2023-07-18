@@ -235,7 +235,7 @@ def main_one():
 
     # disabled due to repeated error reports
 
-    '''print_read_me(); input(clr("\n  > Try not to use [COPY] or [PASTE] when the download process is running!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
+    '''print_read_me(); input(clr("\n  > Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
 
     # begin multithreaded downloader | threads = 2
 
@@ -247,7 +247,7 @@ def main_one():
             multithread(file_downloader, 2, to_download_urls, to_download_file_names)
             time_taken = int(time.time()-start_time)
             break
-        except: input(clr(f"\n  > Failed to download files! Try not to use [COPY] or [PASTE]! Press [ENTER] to try again... ",2)); cls()'''
+        except: input(clr(f"\n  > Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); cls()'''
 
     # begin single threaded downloader
     
