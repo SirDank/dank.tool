@@ -97,7 +97,6 @@ def chatroom_output():
 
         if printed_msg_id < last_msg_id and len(chat) > 0:
             
-            
             if f"[{username}]" in '\n'.join(chat):
                 
                 for _ in range(len(chat)):

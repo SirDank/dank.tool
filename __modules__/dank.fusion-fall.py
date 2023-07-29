@@ -286,6 +286,23 @@ def add_npc():
     print(clr("  > xdtdata['m_pNpcTable']['m_pNpcStringData'].append(data)"))
     xdtdata['m_pNpcTable']['m_pNpcStringData'].append(data)
 
+def print_bundle():
+    
+    container = tabledata.objects[1].read()['m_Container']
+    print(clr('asset\t\tindex\tsize\tpath'))
+    for path, mtdt in container:
+        print(clr('{}\t{}\t{}\t{}'.format(mtdt['asset'].path_id, mtdt['preloadIndex'], mtdt['preloadSize'], path)))
+
+def print_content():
+    
+    print(clr('id\t\ttype_id\ttype\t\tname'))
+    for id, obj in tabledata.objects.items():
+        name = ''
+        if hasattr(obj.read(), 'name'):
+            name = obj.read().name
+        try: print(clr('{}\t{}\t{}\t{}'.format(id, obj.type_id, obj.type, name)))
+        except Exception as exc: print(clr('ERROR: ' + str(exc))) 
+
 # main
 
 def main():
@@ -327,7 +344,7 @@ def main():
             print(clr(logger(f"  > xdtdata = tabledata.objects[{key}].contents")))
             break
         except: print(clr(logger(f"  > Invalid Key: {key}"),2))
-    print(clr("\n  > Pre-defined commands: dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, exit\n"))
+    print(clr("\n  > Pre-defined commands: print-bundle, print-content, dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, clear, exit\n"))
     
     help_msg = """  > Available Shortcuts With Examples:\n
  - aimport sound.wav, 22.5, sound  >  new_audio = tabledata.add_object(83); import_audio(new_audio.contents,'sound.wav',22.5,'sound'); tabledata.add2ab('sound.wav',new_audio.path_id)
@@ -370,9 +387,12 @@ def main():
             cmd_lower = cmd.lower()
 
             if cmd_lower == "help": print(clr(help_msg))
+            elif cmd_lower == "clear": cls()
             elif cmd_lower == "exit": break
             elif cmd_lower == "fix-bundles": fix_bundles()
             elif cmd_lower == "add-npc": add_npc()
+            elif cmd_lower == "print-bundle": print_bundle()
+            elif cmd_lower == "print-content": print_content()
             elif cmd_lower == "log": open("log.txt","w+").write(log)
             
             elif cmd_lower == "dump-xdt": 
