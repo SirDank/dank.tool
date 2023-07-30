@@ -289,18 +289,18 @@ def add_npc():
 def print_bundle():
     
     container = tabledata.objects[1].read()['m_Container']
-    print(clr('asset\t\tindex\tsize\tpath'))
+    print(clr(logger('asset\t\tindex\tsize\tpath')))
     for path, mtdt in container:
-        print(clr('{}\t{}\t{}\t{}'.format(mtdt['asset'].path_id, mtdt['preloadIndex'], mtdt['preloadSize'], path)))
+        print(clr(logger('{}\t{}\t{}\t{}'.format(mtdt['asset'].path_id, mtdt['preloadIndex'], mtdt['preloadSize'], path))))
 
 def print_content():
     
-    print(clr('id\t\ttype_id\ttype\t\tname'))
+    print(clr(logger('id\t\ttype_id\ttype\t\tname')))
     for id, obj in tabledata.objects.items():
         name = ''
         if hasattr(obj.read(), 'name'):
             name = obj.read().name
-        try: print(clr('{}\t{}\t{}\t{}'.format(id, obj.type_id, obj.type, name)))
+        try: print(clr(logger('{}\t{}\t{}\t{}'.format(id, obj.type_id, obj.type, name))))
         except Exception as exc: print(clr('ERROR: ' + str(exc))) 
 
 # main
