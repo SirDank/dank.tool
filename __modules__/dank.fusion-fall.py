@@ -308,20 +308,28 @@ def print_content():
 def main():
     
     global tabledata, xdtdata, cab_name
-
-    print(clr("  > Select Custom Asset Bundle..."))
-    cab_path = ''
-    while not cab_path:
-        if "PYTHONHOME" in os.environ:
-            cab_path = file_selector("Select Custom Asset Bundle", os.path.join(os.path.dirname(__file__), "dankware.ico")).replace('/','\\').replace('"','')
-        else: #cab_path = input(clr("  > Drag and Drop Custom Asset Bundle: ")).replace('/','\\').replace('"','')
-            cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
-    rm_line()
     
-    print(clr(logger(f'  > cab_path = "{cab_path}"')))
-    cab_name = str(cab_path.split('\\')[-1])
-    print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
-    tabledata = Asset.from_file(open(cab_path, 'rb'))
+    while True:
+
+        banner()
+        print(clr("  > Select Custom Asset Bundle..."))
+        
+        cab_path = ''
+        while not cab_path:
+            if "PYTHONHOME" in os.environ:
+                cab_path = file_selector("Select Custom Asset Bundle", os.path.join(os.path.dirname(__file__), "dankware.ico")).replace('/','\\').replace('"','')
+            else: #cab_path = input(clr("  > Drag and Drop Custom Asset Bundle: ")).replace('/','\\').replace('"','')
+                cab_path = file_selector("Select Custom Asset Bundle").replace('/','\\').replace('"','')
+        rm_line()
+        
+        print(clr(logger(f'  > cab_path = "{cab_path}"')))
+        cab_name = str(cab_path.split('\\')[-1])
+        print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
+        try: tabledata = Asset.from_file(open(cab_path, 'rb')); break
+        except:
+            print(clr(err(sys.exc_info()), 2))
+            print(clr("  > Sleeping 10s..."))
+            time.sleep(10)
     
     tabledata_keys = [str(_) for _ in tabledata.objects.keys()]
     if input(clr(f"\n  > Print {len(tabledata.objects)} Available TableData Keys? [y/n]: ") + green).lower() == 'y':
@@ -524,7 +532,7 @@ def menu():
         banner(); print(clr(f"\n  1 > CAB Explorer / Editor\n  2 > Fix Bundles\n  3 > Mission Builder (coming soon)\n  4 > Change workspace [{os.path.basename(os.getcwd())}]\n  5 > Visit {green}nuclearff.{green}com{white}\n  6 > Exit\n"))
         
         choice = input(clr("  > Choice: ") + green)
-        if choice == "1": banner(); main()
+        if choice == "1": main()
         elif choice == "2": banner(); fix_bundles()
         #elif choice == "3": banner(); mission_builder()
         elif choice == "4": open_workspace()
