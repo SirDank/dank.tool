@@ -6,7 +6,7 @@ import shutil
 import requests
 import pretty_errors
 from dankware import align, clr, cls, err, rm_line, file_selector, title
-from dankware import white, white_normal, red, red_normal, red_dim, green, reset
+from dankware import white, white_normal, red, red_normal, red_dim, green, reset, Style
 
 title("𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕")
 
@@ -62,7 +62,7 @@ if magickwand_installed:
 def banner():
     
     banner = '\n\n ____  _____ _____ _____   _____ _____    ___ \n|    \\|  _  |   | |  |  | |   __|   __|  |_  |\n|  |  |     | | | |    -|_|   __|   __|  |  _|\n|____/|__|__|_|___|__|__|_|__|  |__|     |___|\n\nx\n\n'
-    x = clr(f"by sir.dank | {green}nuclearff.{green}com")
+    x = Style.BRIGHT + clr(f"by sir.dank | {green}nuclearff.{green}com")
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]).replace('x',x)))
 
 def open_workspace():
@@ -325,13 +325,15 @@ def main():
         print(clr(logger(f'  > cab_path = "{cab_path}"')))
         cab_name = str(cab_path.split('\\')[-1])
         print(clr(logger(f"  > tabledata = Asset.from_file(open('{cab_path}', 'rb'))")))
-        try: tabledata = Asset.from_file(open(cab_path, 'rb')); break
+        try:
+            tabledata = Asset.from_file(open(cab_path, 'rb'))
+            tabledata_keys = [str(_) for _ in tabledata.objects.keys()]
+            break
         except:
             print(clr(err(sys.exc_info()), 2))
             print(clr("  > Sleeping 10s..."))
             time.sleep(10)
-    
-    tabledata_keys = [str(_) for _ in tabledata.objects.keys()]
+
     if input(clr(f"\n  > Print {len(tabledata.objects)} Available TableData Keys? [y/n]: ") + green).lower() == 'y':
         print(clr(logger("  > Available TableData Keys: \n\n" + '\n'.join(tabledata_keys) + "\n")))
 
