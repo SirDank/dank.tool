@@ -81,7 +81,7 @@ def get_request_responses(task_id, req_key):
             if tmp.isdigit() and tmp != "0": request_responses[req_key] = tmp
             else: request_responses[req_key] = "1"
             request_responses[req_key] = f"[bright_green]{request_responses[req_key]} online{' (you)' if request_responses[req_key] == '1' else ''}"
-        except: request_responses[req_key] = f"[bright_red]⚠️"
+        except: request_responses[req_key] = "" # [bright_red]⚠️
         
     # get last update time
     
@@ -190,7 +190,7 @@ while True:
         },
 
         'SpotX + Spicetify Installer': {
-            'req_resp': f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}',
+            'req_resp': (f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}' if request_responses["Spicetify"] and request_responses["SpotX-Win"] else ""),
             'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
             'project': "dank.spotify",
             'rpc': "installing spotx and spicetify"
