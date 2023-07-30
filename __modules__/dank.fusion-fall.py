@@ -378,7 +378,7 @@ def main():
  - tswap texture.png texture 1  >  import_texture(xdtdata,'texture.png','texture','dxt1')
  - tswap texture.png texture 5  >  import_texture(xdtdata,'texture.png','texture','dxt5')
  - tswap-mass 1  >  mass import_texture (fmt='dxt1')
- - tswap-mass 5  >  mass import_texture (fmt='dxt5')\n"""
+ - tswap-mass 5  >  mass import_texture (fmt='dxt5')"""
 
     while True:
         try:
