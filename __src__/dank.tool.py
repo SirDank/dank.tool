@@ -292,6 +292,9 @@ while True:
                 try: exec(cmd_to_be_executed)
                 except: print(clr("\n" + err(sys.exc_info()), 2))
         
+        elif choice == 'exit':
+            os.system("taskkill /f /im dank.tool.exe")
+        
         else: rm_line()
 
     try:
