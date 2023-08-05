@@ -52,12 +52,15 @@ def setup():
 setup()
 
 if magickwand_installed:
-
-    from wand.image import Image
-    from unitypackff.asset import Asset
-    from unitypackff.export import OBJMesh
-    from unitypackff.object import FFOrderedDict, ObjectPointer
-    from unitypackff.modding import import_texture, import_mesh, import_audio
+    
+    try:
+        from wand.image import Image
+        from unitypackff.asset import Asset
+        from unitypackff.export import OBJMesh
+        from unitypackff.object import FFOrderedDict, ObjectPointer
+        from unitypackff.modding import import_texture, import_mesh, import_audio
+    except:
+        setup()    
 
 def banner():
     
