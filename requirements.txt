@@ -10,4 +10,4 @@ python-dateutil
 requests
 rich
 unitypackff
-win10toast
+win11toast
