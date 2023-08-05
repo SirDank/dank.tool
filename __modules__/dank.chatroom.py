@@ -96,23 +96,17 @@ def chatroom_output():
     while running:
 
         if printed_msg_id < last_msg_id and len(chat) > 0:
-            
-            if f"[{username}]" in '\n'.join(chat):
-                
-                for _ in range(len(chat)):
-                    if chat[_].startswith("[dank.server]"):
-                        chat[_] = clr(chat[_], colour_two=green)
-                    elif chat[_].startswith("[SirDank]"):
-                        chat[_] = clr(chat[_].replace("[SirDank]",f"[{green}SirDank{red}]"))
-                    elif chat[_].startswith(f"[{username}]"):
-                        chat[_] = clr(chat[_])
-                    else:
-                        chat[_] = clr(chat[_], colour_one=white_normal)
-                print('\n'.join(chat))
-            
-            else:
-            
-                print(clr('\n'.join(chat).replace("[SirDank]",f"[{green}SirDank{red}]")))
+
+            for _ in range(len(chat)):
+                if chat[_].startswith("[dank.server]"):
+                    chat[_] = clr(chat[_], colour_two=green)
+                elif chat[_].startswith("[SirDank]"):
+                    chat[_] = clr(chat[_].replace("[SirDank]",f"[{green}SirDank{red}]"))
+                elif chat[_].startswith(f"[{username}]"):
+                    chat[_] = clr(chat[_])
+                else:
+                    chat[_] = clr(chat[_], colour_one=white_normal)
+            print('\n'.join(chat))
             
             printed_msg_id = last_msg_id
 
