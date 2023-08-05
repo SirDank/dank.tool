@@ -9,11 +9,12 @@ import sys
 import time
 import requests
 from rich.panel import Panel
+from win11toast import notify
 from datetime import datetime
 from rich.columns import Columns
 from rich.console import Console
-from win10toast import ToastNotifier
 from dateutil.tz import tzlocal, tzutc
+from concurrent.futures import ThreadPoolExecutor
 from dankware import white, white_normal, green, red, red_normal, red_dim
 from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
 
@@ -151,8 +152,11 @@ if ONLINE_MODE:
 
 # main
 
-toast = ToastNotifier()
-toast.show_toast("SirDank:", "Thank you for using my tool ❤️\nShare it with your friends!", duration = 10, icon_path = f"{os.path.dirname(__file__)}\\dankware.ico", threaded = True)
+executor = ThreadPoolExecutor(10)
+executor.submit(notify, '[ SirDank ]',
+    'Thank you for using my tool ❤️\nShare it with your friends!',
+    icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
+    image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None)
 
 while True:
 
