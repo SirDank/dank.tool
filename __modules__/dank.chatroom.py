@@ -87,6 +87,7 @@ def chat_grabber():
         except:
             if len(chat) > 0 and chat[-1] != offline_msg:
                 chat.append(offline_msg)
+                print(offline_msg)
         time.sleep(5)
         
 def chatroom_output():
