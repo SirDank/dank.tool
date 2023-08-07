@@ -15,7 +15,7 @@ def print_read_me():
 
 def main_one():
 
-    global banner, read_me, name, version, cracked, install_via, ram, motd_spaces, playit, extra_flag, dir_name
+    global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name
     
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
 
@@ -75,9 +75,9 @@ def main_one():
         
     print("")
     while True:
-        install_via = input(clr("  > Download ViaVersion & ViaBackwards [ y / n ]: ") + red).lower()
-        if 'y' in install_via: install_via = True; break
-        elif 'n' in install_via: install_via = False; break
+        install_Via = input(clr("  > Download ViaVersion & ViaBackwards [ y / n ]: ") + red).lower()
+        if 'y' in install_Via: install_Via = True; break
+        elif 'n' in install_Via: install_Via = False; break
         else: rm_line()
         
     # setting extra flags
@@ -162,7 +162,6 @@ def main_one():
         "ChestSort": 59773,
         #"Chunky": 81534,
         "Corpses": 96774,
-        "Log4JExploitFix": 98243,
         "NeoPerformance": 103183,
         "PLayerNPC": 93625,
         "ProtocolLib": 1997,
@@ -178,10 +177,13 @@ def main_one():
         "BetterRTP": 36081,
     }
     
+    if version in ["1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"]:
+        spigot_plugins["Log4JExploitFix"] = 98243
+
     if playit:
         spigot_plugins["playit-gg"] = 105566
         
-    if install_via:
+    if install_Via:
         spigot_plugins["ViaVersion"] = 19254
         spigot_plugins["ViaBackwards"] = 27448
 
@@ -584,6 +586,6 @@ def main_two():
 main_two()
 
 if __name__ == "__main__":
-    for _ in [banner, read_me, name, version, cracked, install_via, ram, motd_spaces, playit, extra_flag, dir_name, configs, print_banner, print_read_me, main_one, main_two]:
+    for _ in [banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, print_banner, print_read_me, main_one, main_two]:
         try: del _
         except: pass

@@ -293,6 +293,7 @@ while True:
                 elif cmd_to_be_executed == 'env':
                     print()
                     for key, val in os.environ.items(): print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
+                    continue
                 try: exec(cmd_to_be_executed)
                 except: print(clr("\n" + err(sys.exc_info()), 2))
         
