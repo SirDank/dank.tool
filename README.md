@@ -241,6 +241,10 @@
 - The chatroom is hosted on a server and is accessible to all users of the dank.tool
 - The chatroom is not moderated and thus may contain NSFW content
 
+## ♦️ To Do ♦️
+
+- [ ] Add emoji keyboard
+
 ## ♦️ Preview ♦️
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/4ea5389c-e6db-497e-a5cf-9578a403ebe3"></p><br>
@@ -249,11 +253,15 @@
 
 ---  
 
-# 🚨 Auto-Clicker 🚨
+# 🚨 Auto-Clicker 🚨 [ DISABLED FOR NOW ]
 
 - Set your own click speed!
 - Shortcuts for [ start / stop / exit ]
 - Cool sounds and notifications!
+
+## ♦️ To Do ♦️
+
+- [ ] Full rework
 
 ## ♦️ Preview ♦️
 
