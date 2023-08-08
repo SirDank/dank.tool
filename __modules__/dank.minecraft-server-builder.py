@@ -101,8 +101,11 @@ def main_one():
       for _ in ["1.7", "1.8", "1.9", "1.10", "1.11"]:
           if version.startswith(_):
               extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
+              patched = True
               break
-    else: extra_flag = ""
+    
+    if not patched:
+        extra_flag = ""
 
     # setting max ram
 
