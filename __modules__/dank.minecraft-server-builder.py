@@ -81,10 +81,27 @@ def main_one():
         else: rm_line()
         
     # setting extra flags
-
-    if version in ["1.17", "1.18"]: extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
-    elif version in ["1.12", "1.13", "1.14", "1.15", "1.16"]: extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
-    elif version in ["1.7", "1.8", "1.9", "1.10", "1.11"]: extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
+    
+    patched = False
+    
+    for _ in ["1.17", "1.18"]:
+        if version.startswith(_):
+            extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
+            patched = True
+            break
+    
+    if not patched:
+      for _ in ["1.12", "1.13", "1.14", "1.15", "1.16"]:
+          if version.startswith(_):
+              extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
+              patched = True
+              break
+    
+    if not patched: 
+      for _ in ["1.7", "1.8", "1.9", "1.10", "1.11"]:
+          if version.startswith(_):
+              extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
+              break
     else: extra_flag = ""
 
     # setting max ram
