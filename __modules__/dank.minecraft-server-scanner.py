@@ -23,14 +23,12 @@ https://github.com/Footsiefat/Minecraft-Server-Scanner
 
 '''
 
-executor = ThreadPoolExecutor(1000)
-
 # checks if ip has a server running on the specified port
 
 def check_java(ip):
 
     if socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex((ip,port)) == 0:
-        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-java-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip})
+        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-java-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip}) # for an upcoming website
         except: pass
         save_server(ip)
     
@@ -40,7 +38,7 @@ def check_bedrock(ip):
 
     try:
         socket.socket(socket.AF_INET, socket.SOCK_DGRAM).sendto(b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx\x00\x00\x00\x00\x00\x00\x00\x00', (ip, port))
-        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-bedrock-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip})
+        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-bedrock-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip}) # for an upcoming website
         except: pass
         save_server(ip)
     except: pass
@@ -203,7 +201,6 @@ def main():
     
         #cls()
         print(clr(f"\n  > Saving {server_type}_scanned_ips.db..."))
-        #open(f'{server_type}_scanned.txt','a').write('\n' + '\n'.join(sorted(list(set(ips)))))
         cursor.executemany('''INSERT INTO ips (ip) VALUES (?)''', [(ip,) for ip in sorted(list(set(ips.keys())))])
         conn.commit()
         cursor.execute('''SELECT COUNT(*) FROM ips''')
@@ -216,7 +213,9 @@ def main():
             print(clr(f"\n  > {gen_rem} IPs remaining..."))
 
 if __name__ == "__main__": 
+    executor = ThreadPoolExecutor(1000)
     main()
-    for _ in [ips, server_type, port, check_java, check_bedrock, save_server, generate_ip, main]:
+    executor.shutdown(wait=True)
+    for _ in [ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main]:
         try: del _
         except: pass
