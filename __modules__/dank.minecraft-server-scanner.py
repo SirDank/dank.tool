@@ -23,7 +23,7 @@ https://github.com/Footsiefat/Minecraft-Server-Scanner
 
 '''
 
-executor = ThreadPoolExecutor(100)
+executor = ThreadPoolExecutor(1000)
 
 # checks if ip has a server running on the specified port
 
