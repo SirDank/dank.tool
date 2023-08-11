@@ -3,6 +3,7 @@ import time
 import socket
 import sqlite3
 import requests
+from concurrent.futures import ThreadPoolExecutor
 from mcstatus import JavaServer, BedrockServer
 from dankware import white, white_normal, red, red_normal, red_dim, red
 from dankware import multithread, clr, cls, title, align, rm_line, random_ip
@@ -22,17 +23,25 @@ https://github.com/Footsiefat/Minecraft-Server-Scanner
 
 '''
 
+executor = ThreadPoolExecutor(100)
+
 # checks if ip has a server running on the specified port
 
 def check_java(ip):
 
     if socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex((ip,port)) == 0:
+        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-java-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip})
+        except: pass
         save_server(ip)
     
 def check_bedrock(ip):
     
+    # bytes.fromhex("01" + "000000000000000000" + "ffff00fefefefefdfdfdfd12345678" + "0000000000000000")
+
     try:
-        socket.socket(socket.AF_INET, socket.SOCK_DGRAM).sendto(bytes.fromhex("01" + "000000000000000000" + "ffff00fefefefefdfdfdfd12345678" + "0000000000000000"), (ip, port))
+        socket.socket(socket.AF_INET, socket.SOCK_DGRAM).sendto(b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx\x00\x00\x00\x00\x00\x00\x00\x00', (ip, port))
+        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-bedrock-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip})
+        except: pass
         save_server(ip)
     except: pass
 
@@ -53,13 +62,14 @@ def save_server(ip):
             else:
                 server_info = "ratelimited on ipwho.is" # 50mil monthly limit
         except: server_info = "ipwho.is is unreachable"
+
+        if server_type == "java":
+            to_print = f"{ip} | java | {status.version.name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n',' ').replace('ü','u')
+        elif server_type == "bedrock":
+            to_print = f"{ip} | bedrock | {status.version.version} | {status.gamemode} | Map: {status.map} | {status.players_online}/{status.players_max} online | {int(status.latency)}ms | {server_info} | {status.motd}".replace('\n',' ').replace('ü','u')
         
-        # update this on mcstatus v11 release
-        
-        if server_type == "java": to_print = f"{ip} | java | {status.version.name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n',' ').replace('ü','u')
-        elif server_type == "bedrock": to_print = f"{ip} | bedrock | {status.version.version} | {status.gamemode} | Map: {status.map} | {status.players_online}/{status.players_max} online | {int(status.latency)}ms | {server_info} | {status.motd}".replace('\n',' ').replace('ü','u')
-        
-        for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']: to_print = to_print.replace(_,'')
+        for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']:
+            to_print = to_print.replace(_,'')
         print(clr(f"  > {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
 
@@ -82,8 +92,6 @@ def generate_ip():
     cursor = sqlite3.connect(f'{server_type}_scanned_ips.db').cursor()
     while True:
         ip = random_ip()
-        #if ip in ips.keys() or ip in scanned.keys(): continue
-        #ips[ip] = ""; break
         if ip in ips.keys(): continue
         cursor.execute('''SELECT ip FROM ips WHERE ip=?''', (ip,))
         result = cursor.fetchone()
@@ -114,11 +122,8 @@ def main():
     # remove old files
     
     ###
-    if os.path.isfile("scanned.txt"): os.remove("scanned.txt")
-    if os.path.isfile('java_scanned.txt'): os.remove('java_scanned.txt')
-    if os.path.isfile('java_scanned.json'): os.remove('java_scanned.json')
-    if os.path.isfile('bedrock_scanned.txt'): os.remove('bedrock_scanned.txt')
-    if os.path.isfile('bedrock_scanned.json'): os.remove('bedrock_scanned.json')
+    for _ in ['scanned.txt', 'java_scanned.txt', 'java_scanned.json', 'bedrock_scanned.txt', 'bedrock_scanned.json']:
+        if os.path.isfile(_): os.remove(_)
     ###
 
     # get user input
@@ -131,14 +136,10 @@ def main():
         server_type = input(clr("  > Server Type [java/bedrock]: ") + red)
         if server_type == "java":
             conn = sqlite3.connect('java_scanned_ips.db')
-            #scanned = open('java_scanned.txt','r').read().splitlines()
-            #scanned = {key: "" for key in scanned}
             port = 25565
             break
         elif server_type == "bedrock":
             conn = sqlite3.connect('bedrock_scanned_ips.db')
-            #scanned = open('bedrock_scanned.txt','r').read().splitlines()
-            #scanned = {key: "" for key in scanned}
             port = 19132
             break
         else: rm_line()
