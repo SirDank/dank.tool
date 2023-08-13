@@ -28,7 +28,8 @@ https://github.com/Footsiefat/Minecraft-Server-Scanner
 def check_java(ip):
 
     if socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex((ip,port)) == 0:
-        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-java-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip}) # for an upcoming website
+        # for https://dashboard.render.com/minecraft-java-servers
+        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-java-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip})
         except: pass
         save_server(ip)
     
@@ -38,7 +39,8 @@ def check_bedrock(ip):
 
     try:
         socket.socket(socket.AF_INET, socket.SOCK_DGRAM).sendto(b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx\x00\x00\x00\x00\x00\x00\x00\x00', (ip, port))
-        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-bedrock-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip}) # for an upcoming website
+        # for https://dashboard.render.com/minecraft-bedrock-servers
+        try: executor.submit(requests.post, "https://dank-site.onrender.com/minecraft-bedrock-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip})
         except: pass
         save_server(ip)
     except: pass
