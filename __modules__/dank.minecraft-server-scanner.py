@@ -66,7 +66,7 @@ def save_server(ip):
         if server_type == "java":
             to_print = f"{ip} | java | {status.version.name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n',' ').replace('ü','u')
         elif server_type == "bedrock":
-            to_print = f"{ip} | bedrock | {status.version.version} | {status.gamemode} | Map: {status.map} | {status.players_online}/{status.players_max} online | {int(status.latency)}ms | {server_info} | {status.motd}".replace('\n',' ').replace('ü','u')
+            to_print = f"{ip} | bedrock | {status.version.name} | {status.gamemode} | Map: {status.map_name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.motd.raw}".replace('\n',' ')
         
         for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']:
             to_print = to_print.replace(_,'')
