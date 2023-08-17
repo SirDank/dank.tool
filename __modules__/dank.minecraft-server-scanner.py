@@ -73,16 +73,18 @@ def save_server(ip):
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
 
     except Exception as exc:
-        exc = str(exc)
-        err_found = False
+        pass
+
+        #exc = str(exc)
+        #err_found = False
         
-        for err in ["WinError 10054", "WinError 10061", "WinError 10053", "Not enough data to read", "timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe", "fermé", "refusée", "abandonnée"]:
-            if err in exc:
-                err_found = True; break
+        #for err in ["WinError 10054", "WinError 10061", "WinError 10053", "Not enough data to read", "timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe", "reset", "fermé", "refusée", "abandonnée"]:
+        #    if err in exc:
+        #        err_found = True; break
         
-        if not err_found:
-            open('servers.txt','a',encoding='utf-8').write(f"\n{ip} | {exc}")
-            print(f"{ip} | {exc}\n")
+        #if not err_found:
+        #    open('servers.txt','a',encoding='utf-8').write(f"\n{ip} | {exc}")
+        #    print(f"{ip} | {exc}\n")
 
 # generates random valid ip
 
