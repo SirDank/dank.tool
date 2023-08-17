@@ -76,7 +76,7 @@ def save_server(ip):
         exc = str(exc)
         err_found = False
         
-        for err in ["WinError 10054", "WinError 10061", "WinError 10053", "Not enough data to read", "timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe", "fermé", "refusée", "abandonnée", "Not enough data to read"]:
+        for err in ["WinError 10054", "WinError 10061", "WinError 10053", "Not enough data to read", "timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe", "fermé", "refusée", "abandonnée"]:
             if err in exc:
                 err_found = True; break
         
@@ -164,7 +164,7 @@ def main():
 
     # generate and check ips on multiple threads in batches
     
-    gen_rate = 5000 # threads to generate at | higher = faster
+    gen_rate = 1000 # threads to generate at | higher = faster
     gen_amt = 50000 # max generate / check amount
     gen_rem = ips_amt
     while gen_rem > 0:
