@@ -72,7 +72,7 @@ def save_server(ip):
         print(clr(f"  > {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
 
-    except Exception as exc:
+    except: # Exception as exc
         pass
 
         #exc = str(exc)

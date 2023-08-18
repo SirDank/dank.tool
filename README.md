@@ -58,7 +58,6 @@
 - [ ] Add google translate for dank.tool
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
-- [ ] Add dank.hwid-spoofer
 - [ ] Add Linux Support
 
 ## ♦️ Support ♦️
@@ -302,7 +301,7 @@
 
 ```
 📁 dank.tool/
-├─📄 dank.tool.exe                [ direct download to the latest dank.tool installer ]
+├─📄 dank.tool.exe                [ direct download to the latest dank.tool installer ( still used to support oudated update method ) ]
 ├─📄 dank.tool.zip                [ direct download to the latest dank.tool installer inside a zip protected by the password "dankware" ]
 ├─📄 README.md
 ├─📁 __assets__/                  [ assets used by dank.tool's modules ] branches: main, dev

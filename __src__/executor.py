@@ -135,8 +135,6 @@ elif LATEST_VERSION == "0":
 
 else: # LATEST VERSION IS LESS THAN CURRENT VERSION
     print(clr("\n  > Development Version!"))
-    #os.environ['DANK_TOOL_OFFLINE_DEV'] = "1"
-    #OFFLINE_DEV = 1
 
 # get and save dank.tool.py
 
