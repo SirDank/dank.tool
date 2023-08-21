@@ -24,7 +24,7 @@ def main():
             input(clr("  > Hit [ ENTER ] if you are signed in to Spotify... "))
             print(clr("\n  > terminating Spotify...\n"))
             os.system('taskkill /f /im spotify.exe >nul 2>&1')
-            print(clr("\n  > installing Spicetify-CLI...\n"))
+            print(clr("\n  > installing Spicetify-CLI... ('N' to start installation)\n"))
             os.system('powershell -Command "& Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
             print(clr("\n  > installing Spicetify-Marketplace...\n"))
             os.system('powershell -Command "& iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
