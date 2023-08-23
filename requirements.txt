@@ -11,3 +11,4 @@ requests
 rich
 unitypackff
 win11toast
+translatepy
