@@ -23,10 +23,12 @@ import sqlite3
 import pyminizip
 import subprocess
 import tkinter as tk
+from locale import getlocale
 from win11toast import notify
 from psutil import process_iter
 from playsound import playsound
 from mcstatus import JavaServer
+from translatepy import Translator
 from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
 from pynput.keyboard import Key, Listener
@@ -51,7 +53,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.0.1"
+DANK_TOOL_VERSION = "3.1"
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -135,6 +137,40 @@ elif LATEST_VERSION == "0":
 
 else: # LATEST VERSION IS LESS THAN CURRENT VERSION
     print(clr("\n  > Development Version!"))
+
+# check windows language
+
+def check_windows_language():
+    
+    locale_name = getlocale()[0]
+    if '-' in locale_name and not '_' in locale_name:
+        locale_name = locale_name.split('-')[0]
+    elif '_' in locale_name and not '-' in locale_name:
+        locale_name = locale_name.split('_')[0]
+    else:
+        for _ in locale_name:
+            if _ == '-':
+                locale_name = locale_name.split('-')[0]
+                break
+            elif _ == '_':
+                locale_name = locale_name.split('_')[0]
+                break
+    
+    if not locale_name.lower().startswith('en'):
+        translator = Translator()
+        result = translator.translate("Would you like to enable the translate feature?", source_language='en', destination_language=locale_name)
+        print(clr(f"\n  > Your windows language is set to '{cyan}{locale_name}'!"))
+        if input(clr(f"\n  > {result} [y/n]:", colour_one=cyan)).lower() == 'y':
+            os.environ['DANK_TOOL_LANG'] = locale_name
+        else:
+            os.environ['DANK_TOOL_LANG'] = "en"
+    else:
+        os.environ['DANK_TOOL_LANG'] = "en" 
+
+if ONLINE_MODE:
+    check_windows_language()
+else:
+    os.environ['DANK_TOOL_LANG'] = "en"
 
 # get and save dank.tool.py
 
@@ -225,7 +261,7 @@ except:
     
     if "Error Type: KeyboardInterrupt" in err_message:
         print_warning_symbol()
-        print(clr("\n  > Please do not use [ CTRL + C ] when running the dank.tool!"))
+        print(clr("\n  > Please select text first and then use [ CTRL + C ]!"))
     
     elif parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
         print(clr(f"\n  > Updating to the latest version...\n\n  > Update Found: {LATEST_VERSION}"))
