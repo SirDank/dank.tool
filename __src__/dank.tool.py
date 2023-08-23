@@ -13,20 +13,20 @@ from win11toast import notify
 from datetime import datetime
 from rich.columns import Columns
 from rich.console import Console
+from translatepy import Translator
 from dateutil.tz import tzlocal, tzutc
 from concurrent.futures import ThreadPoolExecutor
 from dankware import white, white_normal, green, red, red_normal, red_dim
 from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
 
-# get env vars
-
-OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
-ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
-DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
-ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
-branch = ("main" if not ONLINE_DEV else "dev")
-headers = {"User-Agent": "dank.tool"}
 os.chdir(os.path.dirname(__file__))
+
+# print randomly coloured and aligned banner
+
+def print_banner():
+    
+    banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'    
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red, red, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k {red}💕"))
 
 # handle KeyboardInterrupt
 
@@ -35,13 +35,6 @@ def print_warning_symbol():
     warning_symbol = f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'
     cls(); print(align(warning_symbol))
 
-# print randomly coloured and aligned banner
-
-def print_banner():
-    
-    banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'    
-    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k {red}💕"))
-    
 # get commit date & time
 
 def updated_on(url, dankware_module = True):
@@ -62,9 +55,11 @@ def updated_on(url, dankware_module = True):
 
 # multithread requests
 
-def get_request_responses(task_id, req_key):
+def get_menu_request_responses(task_id, req_key):
     
-    global request_responses
+    global menu_request_responses, menu_request_responses_backup
+    
+    menu_request_responses = {}
     
     # get global runs
     
@@ -72,17 +67,17 @@ def get_request_responses(task_id, req_key):
 
         if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
         elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
-        try: request_responses[req_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
-        except: request_responses[req_key] = f"{red}⚠️"
+        try: menu_request_responses[req_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
+        except: menu_request_responses[req_key] = f"{red}⚠️"
 
     elif task_id == 2:
 
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
-            if tmp.isdigit() and tmp != "0": request_responses[req_key] = tmp
-            else: request_responses[req_key] = "1"
-            request_responses[req_key] = f"[bright_green]{request_responses[req_key]} online{' (you)' if request_responses[req_key] == '1' else ''}"
-        except: request_responses[req_key] = "" # [bright_red]⚠️
+            if tmp.isdigit() and tmp != "0": menu_request_responses[req_key] = tmp
+            else: menu_request_responses[req_key] = "1"
+            menu_request_responses[req_key] = f"[bright_green]{menu_request_responses[req_key]} online{' (you)' if menu_request_responses[req_key] == '1' else ''}"
+        except: menu_request_responses[req_key] = "" # [bright_red]⚠️
         
     # get last update time
     
@@ -91,11 +86,13 @@ def get_request_responses(task_id, req_key):
         if task_id == 3: url = "https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1"
         elif task_id == 4: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
         elif task_id == 5: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
-        request_responses[req_key] = updated_on(url,False)
+        menu_request_responses[req_key] = updated_on(url,False)
         
     elif task_id > 5:
         
-        request_responses[req_key] = updated_on(req_key)
+        menu_request_responses[req_key] = updated_on(req_key)
+        
+    menu_request_responses_backup = menu_request_responses
 
 # multithreaded script downloader
 
@@ -104,264 +101,343 @@ def download_offline_scripts(project):
     code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
 
-# multithread requests & download offline scripts
+# print modules with index and get choice
 
-request_responses = {}
-offline_modules = {
-
-    'Fusion-Fall Modding Tool': {
-        'req_resp': '',
-        'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
-        'project': "dank.fusion-fall",
-        'rpc': "modding fusion-fall"
-    },
+def print_modules():
     
-    'Browser Backup': {
-        'req_resp': '',
-        'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
-        'project': "dank.browser-backup",
-        'rpc': "backing up a browser"
-    }
-}
-
-offline_scripts = ["dank.fusion-fall", "dank.browser-backup"]
-
-if ONLINE_MODE:
-
-    if not os.path.isdir("__modules__"): os.mkdir("__modules__")
+    print_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_DEV else ' DEBUG') + ('' if not ONLINE_DEV else ' ONLINE DEBUG') + "\n")
+    user_renderables = []
+    console = Console()
+    counter = 1
     
-    print(clr("\n  > Downloading scripts..."))
-
-    while True:
-        try:
-            multithread(download_offline_scripts, 50, [_ for _ in offline_scripts], progress_bar=False)
-            break
-        except:
-            input(clr(f"\n  > Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-
-    print(clr("\n  > Getting request responses..."))
-
-    while True:
-        try:
-            # KEEP request_keys IN ORDER!
-            request_keys = ["dankware_runs", "danktool_runs", "chatroom_user_count", "SpotX-Win", "Spicetify", "dank.win-activate", "dank.minecraft-server-builder", "dank.minecraft-server-scanner", "dank.auto-clicker", "dank.browser-backup", "dank.fusion-fall"]
-            multithread(get_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
-            break
-        except:
-            input(clr(f"\n  > Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-
-# main
-
-executor = ThreadPoolExecutor(10)
-executor.submit(notify, '[ SirDank ]',
-    'Thank you for using my tool ❤️\nShare it with your friends!',
-    icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
-    image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None)
-
-while True:
-
-    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # version defined in executor.py
-    os.environ['DISCORD_RPC'] = "on the main menu"
-    os.chdir(os.path.dirname(__file__))
-
-    # global runs
-    
-    stats = "" if not ONLINE_MODE else f" [ dankware runs: {green}{request_responses['dankware_runs']} | dank.tool runs: {green}{request_responses['danktool_runs']} ]"
+    for _title, module in modules.items():
+        user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['req_resp']}")
+        counter += 1
         
-    # available modules
+    for _title in local_modules.keys():
+        user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{_title}[/b]")
+        counter += 1
+
+    console.print(Panel(title=f"[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+    print()
+
+# set globals
+
+def set_globals_one():
     
-    modules = offline_modules if not ONLINE_MODE else {
+    global ONLINE_MODE, OFFLINE_DEV, ONLINE_DEV, DANK_TOOL_VERSION, DANK_TOOL_LANG, TRANSLATOR_ENABLED, branch, headers
 
-        'Minecraft Server Builder': {
-            'req_resp': request_responses["dank.minecraft-server-builder"],
-            'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
-            'project': "dank.minecraft-server-builder",
-            'rpc': "building a minecraft server"
-        },
+    OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
+    ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
+    DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
+    ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
+    DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
+    branch = ("main" if not ONLINE_DEV else "dev")
+    headers = {"User-Agent": "dank.tool"}
+    
+    if DANK_TOOL_LANG == "en":
+        TRANSLATOR_ENABLED = False
+    else:
+        TRANSLATOR_ENABLED = True
 
-        'Minecraft Server Scanner': {
-            'req_resp': request_responses["dank.minecraft-server-scanner"],
-            'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
-            'project': "dank.minecraft-server-scanner",
-            'rpc': "scanning for minecraft servers"
-        },
+def set_globals_two():
+    
+    global offline_modules, offline_scripts, request_keys
+    
+    offline_modules = {
 
         'Fusion-Fall Modding Tool': {
-            'req_resp': request_responses["dank.fusion-fall"],
+            'req_resp': '',
             'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
             'project': "dank.fusion-fall",
             'rpc': "modding fusion-fall"
         },
-
-        'SpotX + Spicetify Installer': {
-            'req_resp': (f'{request_responses["Spicetify"]}, {request_responses["SpotX-Win"]}' if request_responses["Spicetify"] and request_responses["SpotX-Win"] else ""),
-            'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
-            'project': "dank.spotify",
-            'rpc': "installing spotx and spicetify"
-        },
-
+        
         'Browser Backup': {
-            'req_resp': request_responses["dank.browser-backup"],
+            'req_resp': '',
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
             'project': "dank.browser-backup",
             'rpc': "backing up a browser"
-        },
-
-        'Windows / Office Activator': {
-            'req_resp': request_responses["dank.win-activate"],
-            'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
-            'project': "dank.win-activate",
-            'rpc': "activating windows / office"
-        },
-
-        #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
-        #    'req_resp': request_responses["dank.auto-clicker"],
-        #    'title': "𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛",
-        #    'project': "dank.auto-clicker",
-        #    'rpc': "running auto-clicker"
-        #},
-
-        'Chatroom': {
-            'req_resp': request_responses["chatroom_user_count"],
-            'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
-            'project': "dank.chatroom",
-            'rpc': "chatting in the chatroom"
-        },
-    
-        'Discord Server': {
-            'req_resp': '[bright_green]Join Now!',
-            'project': "Dank.Bois Discord Server",
         }
     }
-    
-    local_modules = {}
-    
-    if not os.path.exists('__local_modules__'):
-        os.mkdir('__local_modules__')
 
-    for module in os.listdir("__local_modules__"):
-        if module.endswith(".py") and os.path.isfile(f"__local_modules__/{module}"):
-            name = module.replace('.py','')
-            local_modules[name] = {
-                'title': name,
-                'project': name,
-                'rpc': f'running "{module}"'}
+    offline_scripts = ["dank.fusion-fall", "dank.browser-backup"]
     
-    # print modules with index and get choice
+    # KEEP request_keys IN ORDER!
     
-    def print_modules():
+    request_keys = [
+        "dankware_runs",
+        "danktool_runs",
+        "chatroom_user_count",
+        "SpotX-Win",
+        "Spicetify",
+        "dank.win-activate",
+        "dank.minecraft-server-builder",
+        "dank.minecraft-server-scanner",
+        "dank.auto-clicker",
+        "dank.browser-backup",
+        "dank.fusion-fall"
+    ]
+
+def set_globals_three():
+    
+    global stats
+    
+    if ONLINE_MODE:
         
-        print_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_DEV else ' DEBUG') + ('' if not ONLINE_DEV else ' ONLINE DEBUG') + "\n")
-        user_renderables = []
-        console = Console()
-        counter = 1
+        global menu_request_responses, online_modules
+    
+        menu_request_responses = menu_request_responses_backup
         
-        for _title, module in modules.items():
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['req_resp']}")
-            counter += 1
+        # global runs
             
-        for _title in local_modules.keys():
-            user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{_title}[/b]")
-            counter += 1
+        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} ]"
+        
+        online_modules = {
 
-        console.print(Panel(title=f"[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
-        print()
+            translate('Minecraft Server Builder'): {
+                'req_resp': menu_request_responses["dank.minecraft-server-builder"],
+                'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
+                'project': "dank.minecraft-server-builder",
+                'rpc': "building a minecraft server"
+            },
 
-    print_modules()
+            translate('Minecraft Server Scanner'): {
+                'req_resp': menu_request_responses["dank.minecraft-server-scanner"],
+                'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
+                'project': "dank.minecraft-server-scanner",
+                'rpc': "scanning for minecraft servers"
+            },
+
+            translate('Fusion-Fall Modding Tool'): {
+                'req_resp': menu_request_responses["dank.fusion-fall"],
+                'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
+                'project': "dank.fusion-fall",
+                'rpc': "modding fusion-fall"
+            },
+
+            translate('SpotX + Spicetify Installer'): {
+                'req_resp': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
+                'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
+                'project': "dank.spotify",
+                'rpc': "installing spotx and spicetify"
+            },
+
+            translate('Browser Backup'): {
+                'req_resp': menu_request_responses["dank.browser-backup"],
+                'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
+                'project': "dank.browser-backup",
+                'rpc': "backing up a browser"
+            },
+
+            translate('Windows / Office Activator'): {
+                'req_resp': menu_request_responses["dank.win-activate"],
+                'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
+                'project': "dank.win-activate",
+                'rpc': "activating windows / office"
+            },
+
+            #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
+            #    'req_resp': menu_request_responses["dank.auto-clicker"],
+            #    'title': "𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛",
+            #    'project': "dank.auto-clicker",
+            #    'rpc': "running auto-clicker"
+            #},
+
+            'Chatroom': {
+                'req_resp': menu_request_responses["chatroom_user_count"],
+                'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
+                'project': "dank.chatroom",
+                'rpc': "chatting in the chatroom"
+            },
+
+            'Discord Server': {
+                'req_resp': '[bright_green]Join Now!',
+                'project': "Dank.Bois Discord Server",
+            }
+        }
     
+    else:
+
+        stats = ""
+
+# translator
+
+def translate(text):
+
+    if ONLINE_MODE and TRANSLATOR_ENABLED:
+        try:
+            result = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+            return result
+        except:
+            pass
+
+    return text
+
+if __name__ == "__main__":
+    
+    set_globals_one()
+    set_globals_two()
+    translator = Translator()
+
+    # multithread requests & download offline scripts
+
+    if ONLINE_MODE:
+
+        if not os.path.isdir("__modules__"): os.mkdir("__modules__")
+        
+        print(clr(f"\n  > {translate('Downloading scripts')}..."))
+
+        while True:
+            try:
+                multithread(download_offline_scripts, 50, [_ for _ in offline_scripts], progress_bar=False)
+                break
+            except:
+                input(clr(f"\n  > {translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+
+        print(clr(f"\n  > {translate('Getting request responses')}..."))
+
+        while True:
+            try:
+                multithread(get_menu_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
+                break
+            except:
+                input(clr(f"\n  > {translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+
+    # main
+
+    executor = ThreadPoolExecutor(10)
+    executor.submit(notify, '[ SirDank ]',
+        translate('Thank you for using my tool ❤️\nShare it with your friends!'),
+        icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
+        image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
+    )
+
     while True:
         
-        choice = input(clr("  - Choice: ") + red)
-        if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
-            if int(choice) <= len(modules):
-                choice = modules[list(modules.keys())[int(choice) - 1]]
-                LOCAL_MODULE = False
+        set_globals_one()
+        set_globals_two()
+        set_globals_three()
+
+        title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # version defined in executor.py
+        os.environ['DISCORD_RPC'] = "on the main menu"
+        os.chdir(os.path.dirname(__file__))
+            
+        # available modules
+        
+        modules = offline_modules if not ONLINE_MODE else online_modules
+        
+        local_modules = {}
+        
+        if not os.path.exists('__local_modules__'):
+            os.mkdir('__local_modules__')
+
+        for module in os.listdir("__local_modules__"):
+            if module.endswith(".py") and os.path.isfile(f"__local_modules__/{module}"):
+                name = module.replace('.py','')
+                local_modules[name] = {
+                    'title': name,
+                    'project': name,
+                    'rpc': f'running "{module}"'}
+
+        print_modules()
+        
+        while True:
+            
+            choice = input(clr("  - Choice: ") + red)
+            if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
+                if int(choice) <= len(modules):
+                    choice = modules[list(modules.keys())[int(choice) - 1]]
+                    LOCAL_MODULE = False
+                else:
+                    choice = local_modules[list(local_modules.keys())[int(choice) - len(modules) - 1]]
+                    LOCAL_MODULE = True
+                break
+
+            elif choice == 'refresh':
+                print_modules()
+            
+            elif choice == 'debug': # debug menu
+                cls()
+                while True:
+                    # this variable is long to prevent it from being changed!
+                    cmd_to_be_executed = input(clr("\n  > ") + white)
+                    if cmd_to_be_executed == 'exit': print_modules(); break
+                    elif cmd_to_be_executed == 'env':
+                        print()
+                        for key, val in os.environ.items(): print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
+                        continue
+                    try: exec(cmd_to_be_executed)
+                    except: print(clr("\n" + err(sys.exc_info()), 2))
+            
+            elif choice == 'exit':
+                os.system("taskkill /f /im dank.tool.exe")
+            
+            else: rm_line()
+
+        try:
+            
+            if "Discord" in choice['project']:
+                os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
+            
             else:
-                choice = local_modules[list(local_modules.keys())[int(choice) - len(modules) - 1]]
-                LOCAL_MODULE = True
-            break
+                title(choice['title'])
+                project = choice['project']
+                os.environ['DISCORD_RPC'] = choice['rpc']
+                
+            if LOCAL_MODULE:
+                
+                # get src from local_module
+                
+                while True:
+                    try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
+                    except:
+                        output = translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
+                        input(clr(f"\n  > {output}... ",2))
+                    rm_line(); rm_line()
+                
+            else:
+
+                # get src from github if not debug mode else get src locally
+
+                if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
+                    while True:
+                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
+                        except: input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        rm_line(); rm_line()
+                else:
+                    while True:
+                        try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
+                        except:
+                            output = translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
+                            input(clr(f"\n  > {output}... ",2))
+                        rm_line(); rm_line()
+
+            # execute src
+            
+            if code == "404: Not Found":
+                print(clr(f"\n  > {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2)); time.sleep(5)
+            else:
+                cls(); exec(code)
+                cls(); print(clr(f"\n  > {translate(f'{project} executed successfully! Returning to menu in 5 seconds')}...")); time.sleep(5)
+
+        except:
+
+            err_message = err(sys.exc_info())
+            print(clr(err_message, 2))
         
-        elif choice == 'refresh':
-            print_modules()
-        
-        elif choice == 'debug': # debug menu
-            cls()
-            while True:
-                # this variable is long to prevent it from being changed!
-                cmd_to_be_executed = input(clr("\n  > ") + white)
-                if cmd_to_be_executed == 'exit': print_modules(); break
-                elif cmd_to_be_executed == 'env':
-                    print()
-                    for key, val in os.environ.items(): print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
-                    continue
-                try: exec(cmd_to_be_executed)
-                except: print(clr("\n" + err(sys.exc_info()), 2))
-        
-        elif choice == 'exit':
+            if "Error Type: KeyboardInterrupt" in err_message:
+                
+                print_warning_symbol()
+                print(clr(f"\n  > {translate('Please select text first and then use [ CTRL + C ]')}!"))
+                
+            elif ONLINE_MODE:
+                while True:
+                    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
+                    except:
+                        input(clr(f"\n  > {translate('Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        rm_line(); rm_line()
+                print(clr(f"\n  > {translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {translate('If it is a logic error, it will be fixed soon!')}"))
+            
+            input(clr("\n  > Press [ENTER] to EXIT... "))
             os.system("taskkill /f /im dank.tool.exe")
-        
-        else: rm_line()
-
-    try:
-        
-        if "Discord" in choice['project']:
-            os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
-        
-        else:
-            title(choice['title'])
-            project = choice['project']
-            os.environ['DISCORD_RPC'] = choice['rpc']
-            
-        if LOCAL_MODULE:
-            
-            # get src from local_module
-            
-            while True:
-                try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
-                except: input(clr(f"\n  > Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again... ",2))
-                rm_line(); rm_line()
-            
-        else:
-
-            # get src from github if not debug mode else get src locally
-
-            if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
-                while True:
-                    try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
-                    except: input(clr(f"\n  > Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-                    rm_line(); rm_line()
-            else:
-                while True:
-                    try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
-                    except: input(clr(f"\n  > Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again... ",2))
-                    rm_line(); rm_line()
-
-        # execute src
-        
-        if code == "404: Not Found":
-            print(clr(f"\n  > {project} has not been released yet! Returning to menu in 5s...",2)); time.sleep(5)
-        else:
-            cls(); exec(code)
-            cls(); print(clr(f"\n  > {project} executed successfully! Returning to menu in 5s...")); time.sleep(5)
-
-    except:
-
-        err_message = err(sys.exc_info())
-        print(clr(err_message, 2))
-    
-        if "Error Type: KeyboardInterrupt" in err_message:
-            
-            print_warning_symbol()
-            print(clr("\n  > Please do not use [ CTRL + C ] when running the dank.tool!"))
-            
-        elif ONLINE_MODE:
-            while True:
-                try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
-                except:
-                    input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-                    rm_line(); rm_line()
-            print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
-        
-        input(clr("\n  > Press [ENTER] to EXIT... "))
-        os.system("taskkill /f /im dank.tool.exe")
-
