@@ -58,6 +58,7 @@
 - [ ] Add google translate for dank.tool
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
+- [ ] Add Linux Wine Support
 - [ ] Add Linux Support
 
 ## ♦️ Support ♦️
