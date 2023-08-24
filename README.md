@@ -32,7 +32,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/64b4fa5c-ada6-4970-9970-4c032fe03755"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/ded02b28-8e3a-4a0b-aae0-1d09ba72e8e0"></p><br>
 
 ## ♦️ Notes ♦️
 
@@ -44,7 +44,7 @@
 
 - When the tool is running and performing a task, if you click inside the console window, a white rectangle appears and the task is paused. To continue performing the task, press the down arrow key.
 
-- When the tool is selected, do not press [ Ctrl + C ] as it will raise the `KeyboardInterrupt` exception and close the program.
+- When the tool is selected (but text is not), do not use [ Ctrl + C ] as it will raise the `KeyboardInterrupt` exception and close the program.
 
 - When on the main menu, you can resize the window to your preferred size and then enter `refresh` as input to re-align the UI.
 
@@ -55,7 +55,7 @@
 ## ♦️ To Do ♦️
 
 - [x] Add offline mode for offline scripts ( High Priority )
-- [ ] Add google translate for dank.tool
+- [x] Add translator
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
 - [ ] Add Linux Wine Support
@@ -106,7 +106,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235307010-95336f52-87ef-4a96-8394-55332b5a310e.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/60cd8cf0-8cc2-4252-a8e9-9a23c6af2d2c"></p><br>
 
 <p>&nbsp;</p>
 
@@ -127,7 +127,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235353344-fa79f3fe-6f01-4506-abd2-7aaf8b0d03c8.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/31cc714d-cf96-425d-9054-1992df773e75"></p><br>
 
 ## ♦️ Also check out dank.resourcepack! ♦️
 
@@ -159,7 +159,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/231504894-2089319e-eb46-4c72-9726-33b72e8aeff4.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/5fb484c6-e349-460d-ad27-226143473229"></p><br>
 
 <p>&nbsp;</p>
 
@@ -203,7 +203,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235353475-b55e54a2-43f7-40b4-a6a0-c7b10bf3cbec.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/d4830eb1-d606-4906-a2fb-9256eb7733fd"></p><br>
 
 <p>&nbsp;</p>
 
@@ -245,7 +245,7 @@
 
 - A custom chatroom that can be used to chat with other users of the dank.tool
 - The chatroom is hosted on a server and is accessible to all users of the dank.tool
-- The chatroom is not moderated and thus may contain NSFW content
+- Windows notifications are sent when a new message is received
 
 ## ♦️ To Do ♦️
 
