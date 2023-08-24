@@ -196,6 +196,11 @@
 - Inject Custom apps
 - Remove bloated components to improve performance
 
+## ♦️ Suggested Extensions / Themes ♦️
+
+- Beautiful Lyrics
+- Retroblur (dream)
+
 ## ♦️ Preview ♦️
 
 <br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/235353475-b55e54a2-43f7-40b4-a6a0-c7b10bf3cbec.png"></p><br>
