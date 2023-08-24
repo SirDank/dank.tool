@@ -265,7 +265,7 @@ def set_globals_three():
 
 def translate(text):
 
-    if ONLINE_MODE and TRANSLATOR_ENABLED:
+    if TRANSLATOR_ENABLED and ONLINE_MODE:
         try:
             result = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
             return result
