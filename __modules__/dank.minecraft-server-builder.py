@@ -4,8 +4,11 @@ import time
 import shutil
 import requests
 import subprocess
+from translatepy import Translator
 from dankware import white, white_normal, red, red_normal, red_dim, red, reset
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err
+
+# banners
 
 def print_banner():
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k {red}💕\n\n"))
@@ -13,27 +16,51 @@ def print_banner():
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{red}#")))
 
+# translator
+
+def translate(text):
+
+    if DANK_TOOL_LANG:
+        try:
+            result = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+            return result
+        except:
+            pass
+
+    return text
+
 def main_one():
 
-    global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name
+    global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, translator, DANK_TOOL_LANG
     
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
+    
+    banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
+    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
+
+    # check if translator is enabled (dank.tool.exe)
+
+    try:
+        DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
+        if DANK_TOOL_LANG == 'en':
+            DANK_TOOL_LANG = ''
+        else:
+            translator = Translator()
+    except:
+        DANK_TOOL_LANG = ''
 
     # change dir and print banner
 
-    #exec_mode = "script"; exec(chdir(exec_mode))
     try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Desktop'))
     except:
         try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents')) 
         except: os.chdir("C:\\")
-    banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
-    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
 
     try:
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr("\n  > Java is not installed!\n\n  > Install Adoptium JDK 17? [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  > {translate('Java is not installed!')}\n\n  > {translate('Install Adoptium JDK 17?')} [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system("winget install EclipseAdoptium.Temurin.17.JDK")
     
@@ -44,8 +71,8 @@ def main_one():
     while True:
         try:
             version_list = requests.get("https://api.purpurmc.org/v2/purpur").json()['versions']
-            print(clr(f'  > Available Purpur Versions: {", ".join(version_list)}')); break
-        except: input(clr("\n  > Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again... ",2))
+            print(clr(f'  > {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
+        except: input(clr(f"\n  > {translate('Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again')}... ",2))
 
     # user inputs [ name, version, ram, allow_cracked ]
 
@@ -53,14 +80,14 @@ def main_one():
     used_motd_len = 10
     print("")
     while True:
-        name = input(clr("  > Server Name: ") + red)
+        name = input(clr(f"  > {translate('Server Name')}: ") + red)
         if not len(name) > (max_motd_len - used_motd_len): break
         else: rm_line()
     motd_spaces = ' '*int((max_motd_len - used_motd_len - len(name))/4)
 
     print("")
     while True:
-        version = input(clr("  > Version: ") + red)
+        version = input(clr(f"  > {translate('Version')}: ") + red)
         if version in version_list: break
         else: rm_line()
 
@@ -68,14 +95,14 @@ def main_one():
 
     print("")
     while True:
-        cracked = input(clr("  > Allow Cracked Players [ y / n ]: ") + red).lower()
+        cracked = input(clr(f"  > {translate('Allow Cracked Players?')} [ y / n ]: ") + red).lower()
         if 'y' in cracked: cracked = True; break
         elif 'n' in cracked: cracked = False; break
         else: rm_line()
         
     print("")
     while True:
-        install_Via = input(clr("  > Download ViaVersion & ViaBackwards [ y / n ]: ") + red).lower()
+        install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
         if 'y' in install_Via: install_Via = True; break
         elif 'n' in install_Via: install_Via = False; break
         else: rm_line()
@@ -108,8 +135,9 @@ def main_one():
         extra_flag = ""
 
     # setting max ram
-
-    print_read_me(); print(clr("\n  > When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or \"OOMKiller\" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you can't afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns."))
+    
+    string = translate('When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or "OOMKiller" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you cannot afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns.')
+    print_read_me(); print(clr(f"\n  > {string}"))
     print("")
     while True:
         ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + red)
@@ -119,7 +147,7 @@ def main_one():
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  > Great! Now you need to pick a {red}host{white} for your mc server!\n\n  > If you are new to hosting and would like to quickly host a server with playit.gg's plugin without port-forwarding\n  - Choose {red}Option 1\n\n  > If you are experienced and would like to skip playit.gg and use port-forwarding / alternative hosting methods\n  - Choose {red}Option 2"))
+    print_read_me(); print(clr(f"\n  > {translate('Great! Now you need to pick a host for your mc server!')}\n\n  > {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  > {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
 
     print("")
     while True:
@@ -152,7 +180,7 @@ def main_one():
 
     # begin preparing downloads
 
-    cls(); print(clr("\n  > Preparing Downloads..."))
+    cls(); print(clr(f"\n  > {translate('Preparing Downloads')}..."))
     to_download_urls, to_download_file_names = [], []
 
     # github server-builder files and plugins
@@ -250,9 +278,9 @@ def main_one():
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
                 open(file_name,"wb").write(data)
-                print(clr(f"  > Downloaded [ {file_name} ] [ {size} MB ]\n")); break
+                print(clr(f"  > {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
-                input(clr(f"  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
+                input(clr(f"  > {translate('Failed')} [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
                 rm_line(); rm_line()
 
     # disabled due to repeated error reports
@@ -273,7 +301,7 @@ def main_one():
 
     # begin single threaded downloader
     
-    print(clr("\n  > Downloading... [ this might take a few minutes ]\n"))
+    print(clr(f"\n  > {translate('Downloading... [ this might take a few minutes ]')}\n"))
     
     start_time = time.time()
     #for url, file_name in zip(to_download_urls, to_download_file_names):
@@ -282,11 +310,11 @@ def main_one():
     
     time_taken = int(time.time()-start_time)
 
-    print(clr(f"\n  > Finished downloads in {red}{time_taken}{white} seconds! Sleeping {red}3{white} seconds...")); time.sleep(3)
+    print(clr(f"\n  > {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds')}...")); time.sleep(3)
 
     # unpacking downloaded archives
 
-    print(clr("\n  > Unpacking..."))
+    print(clr(f"\n  > {translate('Unpacking')}..."))
     
     for file in ['newhorizons', 'theend', 'overworld']:
 
@@ -298,7 +326,8 @@ def main_one():
         try: os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
         except:
             while os.path.exists(f'plugins/Iris/packs/{file}-{tmp_name}'):
-                input(clr(f'\n  > ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after doing the above... ',2))
+                string = translate(f'ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after this')
+                input(clr(f"\n  > {string}... ",2))
         try: os.remove(f'plugins/Iris/packs/{file}.zip')
         except: pass
 
@@ -306,7 +335,7 @@ main_one()
 
 # creating local files
 
-cls(); print(clr("\n  > Creating local files..."))
+cls(); print(clr(f"\n  > {translate('Creating local files')}..."))
 
 open('eula.txt','w').write('eula=true')
 
@@ -563,8 +592,25 @@ configs = {
 }
 
 def main_two():
+  
+    string = f'''
+  > {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}
+  
+  > {translate('Start your server once using "start_server.cmd" before continuing')}
+  
+  > {translate('If you do not have JDK installed, type ".check java" in the server console to download it')}
+  
+  > {translate('Type ".start" in the server console to start the server')}
+  
+  > {translate('Type ".stop" in the server console to stop the server')}
+  
+  > {translate('Type ".stop both" in the server console to stop the server and Autoplug')}
+  
+  > {translate('Type ".check plugins" to update configured plugins')}
+  
+  > {translate('After your server has stopped, press [ ENTER ] to apply custom configuration')}... '''
 
-    print_read_me(); input(clr("\n  > Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized\n\n  > Start your server once using start_server.cmd\n\n  > If you don't have JDK installed, type \".check java\" in the console window to download it\n\n  > Type \".start\" to start the server\n\n  > Type \".stop\" to stop the server\n\n  > Type \".stop both\" to stop the server and autoplug\n\n  > Type \".check plugins\" to update configured plugins\n\n  > After your server has stopped, press [ ENTER ] to apply custom configuration... "))
+    print_read_me(); input(clr(string))
 
     def config_updater(path):
         config_data = open(path, 'r', encoding='utf-8').read()
@@ -584,17 +630,44 @@ def main_two():
         while True:
             try: config_updater(path); break
             except:
-                choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > Press [ ENTER ] to retry or type \"skip\" to skip: ", 2) + white)
+                string = translate('Press [ ENTER ] to retry or type "skip" to skip')
+                choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > {string}: ", 2) + white)
                 if choice == "skip": break
 
     if playit:
-        print_read_me(); input(clr("\n  > It is extremely easy to setup playit.gg\n\n  > After server setup is complete, start your server.\n\n  > Click on the URL displayed on the console.\n\n  > Create an account and login if you haven't already to save the tunnel.\n\n  > Click \"Add Agent\"\n\n  > A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg\n\n  > Press [ ENTER ] after you have read the message... "))  
+
+        string = f'''
+  > {translate('It is extremely easy to setup playit.gg')}
+  
+  > {translate('After server setup is complete, start your server.')}
+  
+  > {translate('Click on the URL displayed on the console.')}
+  
+  > {translate("Create an account and login if you haven't already to save the tunnel.")}
+  
+  > {translate('Click "Add Agent"')}
+  
+  > {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
+  
+  > {translate('Press [ ENTER ] after you have read the message... ')}'''
+
+        print_read_me(); input(clr(string))  
     else:
-        print_read_me(); print(clr("\n  > As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, follow this tutorial on port-forwarding."))
-        if input(clr("\n  > Open port forwarding tutorial on youtube? [ y / n ]: ") + red).lower() == "y":
+        print_read_me(); print(clr(f"\n  > {translate('As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, you could follow this tutorial on port-forwarding.')}"))
+        if input(clr(f"\n  > {translate('Open port forwarding tutorial on youtube?')} [ y / n ]: ") + red).lower() == "y":
             sys_open('https://youtu.be/X75GbRaGzu8')
 
-    print_read_me(); input(clr(f'\n  > If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{dir_name}\\autoplug\\updater.yml"\n\n  > After you move the folder to a linux system, run "sudo chmod -R 777 server_folder_name"\n\n  > Run start_server.sh and then install jdk with ".check java"\n\n  > Press [ ENTER ] after you have read the message... '))
+    tmp_path = f'{dir_name}\\autoplug\\updater.yml'   
+    string = f'''
+  > {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
+
+  > {translate('After you move the folder to a linux system, run "sudo chmod -R 777 server_folder_name"')}
+
+  > {translate('Run start_server.sh and then install JDK with ".check java"')}
+
+  > {translate('Press [ ENTER ] after you have read the message... ')}'''
+
+    print_read_me(); input(clr(string))
 
     # done!
 
