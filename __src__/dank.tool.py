@@ -195,42 +195,42 @@ def set_globals_three():
         
         online_modules = {
 
-            translate('Minecraft Server Builder'): {
+            _translate('Minecraft Server Builder'): {
                 'req_resp': menu_request_responses["dank.minecraft-server-builder"],
                 'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
                 'project': "dank.minecraft-server-builder",
                 'rpc': "building a minecraft server"
             },
 
-            translate('Minecraft Server Scanner'): {
+            _translate('Minecraft Server Scanner'): {
                 'req_resp': menu_request_responses["dank.minecraft-server-scanner"],
                 'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
                 'project': "dank.minecraft-server-scanner",
                 'rpc': "scanning for minecraft servers"
             },
 
-            translate('Fusion-Fall Modding Tool'): {
+            _translate('Fusion-Fall Modding Tool'): {
                 'req_resp': menu_request_responses["dank.fusion-fall"],
                 'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
                 'project': "dank.fusion-fall",
                 'rpc': "modding fusion-fall"
             },
 
-            translate('SpotX + Spicetify Installer'): {
+            _translate('SpotX + Spicetify Installer'): {
                 'req_resp': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
                 'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                 'project': "dank.spotify",
                 'rpc': "installing spotx and spicetify"
             },
 
-            translate('Browser Backup'): {
+            _translate('Browser Backup'): {
                 'req_resp': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
                 'project': "dank.browser-backup",
                 'rpc': "backing up a browser"
             },
 
-            translate('Windows / Office Activator'): {
+            _translate('Windows / Office Activator'): {
                 'req_resp': menu_request_responses["dank.win-activate"],
                 'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                 'project': "dank.win-activate",
@@ -263,7 +263,7 @@ def set_globals_three():
 
 # translator
 
-def translate(text):
+def _translate(text):
 
     if TRANSLATOR_ENABLED and ONLINE_MODE:
         try:
@@ -286,29 +286,29 @@ if __name__ == "__main__":
 
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
         
-        print(clr(f"\n  > {translate('Downloading scripts')}..."))
+        print(clr(f"\n  > {_translate('Downloading scripts')}..."))
 
         while True:
             try:
                 multithread(download_offline_scripts, 50, [_ for _ in offline_scripts], progress_bar=False)
                 break
             except:
-                input(clr(f"\n  > {translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
 
-        print(clr(f"\n  > {translate('Getting request responses')}..."))
+        print(clr(f"\n  > {_translate('Getting request responses')}..."))
 
         while True:
             try:
                 multithread(get_menu_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
                 break
             except:
-                input(clr(f"\n  > {translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
 
     # main
 
     executor = ThreadPoolExecutor(10)
     executor.submit(notify, '[ SirDank ]',
-        translate('Thank you for using my tool ❤️\nShare it with your friends!'),
+        _translate('Thank you for using my tool ❤️\nShare it with your friends!'),
         icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
         image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
     )
@@ -392,7 +392,7 @@ if __name__ == "__main__":
                 while True:
                     try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
                     except:
-                        output = translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
+                        output = _translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
                         input(clr(f"\n  > {output}... ",2))
                     rm_line(); rm_line()
                 
@@ -403,23 +403,23 @@ if __name__ == "__main__":
                 if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
-                        except: input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        except: input(clr(f"\n  > {_translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
                 else:
                     while True:
                         try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
                         except:
-                            output = translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
+                            output = _translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
                             input(clr(f"\n  > {output}... ",2))
                         rm_line(); rm_line()
 
             # execute src
             
             if code == "404: Not Found":
-                print(clr(f"\n  > {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2)); time.sleep(5)
+                print(clr(f"\n  > {_translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2)); time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  > {translate(f'{project} executed successfully! Returning to menu in 5 seconds')}...")); time.sleep(5)
+                cls(); print(clr(f"\n  > {_translate(f'{project} executed successfully! Returning to menu in 5 seconds')}...")); time.sleep(5)
 
         except:
 
@@ -429,15 +429,15 @@ if __name__ == "__main__":
             if "Error Type: KeyboardInterrupt" in err_message:
                 
                 print_warning_symbol()
-                print(clr(f"\n  > {translate('Please select text first and then use [ CTRL + C ]')}!"))
+                print(clr(f"\n  > {_translate('Please select text first and then use [ CTRL + C ]')}!"))
                 
             elif ONLINE_MODE:
                 while True:
                     try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
                     except:
-                        input(clr(f"\n  > {translate('Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        input(clr(f"\n  > {_translate('Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
-                print(clr(f"\n  > {translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {translate('If it is a logic error, it will be fixed soon!')}"))
+                print(clr(f"\n  > {_translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {_translate('If it is a logic error, it will be fixed soon!')}"))
             
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             #os.system("taskkill /f /im dank.tool.exe")
