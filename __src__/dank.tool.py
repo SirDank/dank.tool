@@ -439,5 +439,5 @@ if __name__ == "__main__":
                         rm_line(); rm_line()
                 print(clr(f"\n  > {translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {translate('If it is a logic error, it will be fixed soon!')}"))
             
-            input(clr("\n  > Press [ENTER] to EXIT... "))
-            os.system("taskkill /f /im dank.tool.exe")
+            input(clr("\n  > Press [ENTER] to return to the menu... "))
+            #os.system("taskkill /f /im dank.tool.exe")
