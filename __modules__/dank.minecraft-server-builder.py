@@ -185,7 +185,7 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.6.2 | mcMMO 2.1.217 |
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.7.4
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
@@ -643,7 +643,7 @@ def main_two():
   
   > {translate('Click on the URL displayed on the console.')}
   
-  > {translate("Create an account and login if you haven't already to save the tunnel.")}
+  > {translate("Create an account and login if you haven't already to save the tunnel on playit.gg")}
   
   > {translate('Click "Add Agent"')}
   
