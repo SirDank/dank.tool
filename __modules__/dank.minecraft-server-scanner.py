@@ -219,6 +219,8 @@ if __name__ == "__main__":
     executor = ThreadPoolExecutor(1000)
     main()
     executor.shutdown(wait=True)
-    for _ in [ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main]:
-        try: del _
-        except: pass
+    
+    if "DANK_TOOL_VERSION" in os.environ:
+        for _ in [ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main]:
+            try: del _
+            except: pass
