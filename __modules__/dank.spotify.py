@@ -39,4 +39,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-    del main
+
+    if "DANK_TOOL_VERSION" in os.environ:
+        del main

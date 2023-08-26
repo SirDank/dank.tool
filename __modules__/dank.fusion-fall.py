@@ -554,7 +554,8 @@ if __name__ == '__main__':
     else:
         print(clr("\n  > Please install ImageMagick and then run the module!\n",2))
         input(clr("  > Press [ENTER] to exit..."))
-        
-    for _ in ['log', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
-        try: del globals()[_]
-        except: pass
+    
+    if "DANK_TOOL_VERSION" in os.environ:
+        for _ in ['log', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'main', 'menu']:
+            try: del globals()[_]
+            except: pass
