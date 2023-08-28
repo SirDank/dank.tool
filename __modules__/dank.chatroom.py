@@ -110,7 +110,7 @@ def chatroom_output():
                         icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
                     )
 
-                if chat[_].startswith("[dank.server]"):
+                if chat[_].startswith("[dank.server]") or chat[_].startswith("[MC-Server"):
                     chat[_] = clr(chat[_], colour_two=green)
                 elif chat[_].startswith("[SirDank]"):
                     chat[_] = clr(chat[_].replace("[SirDank]",f"[{green}SirDank{red}]"))
