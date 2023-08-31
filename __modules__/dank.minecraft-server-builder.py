@@ -8,6 +8,8 @@ from translatepy import Translator
 from dankware import white, white_normal, red, red_normal, red_dim, red, reset
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err
 
+headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
+
 # banners
 
 def print_banner():
@@ -70,7 +72,7 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur").json()['versions']
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers).json()['versions']
             print(clr(f'  > {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
         except: input(clr(f"\n  > {translate('Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again')}... ",2))
 
@@ -279,7 +281,7 @@ def main_one():
 
         while True:
             try:
-                response = requests.get(url, headers={'user-agent':'dank.tool'}, allow_redirects=True)
+                response = requests.get(url, headers=headers, allow_redirects=True)
                 data = response.content
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
@@ -401,12 +403,14 @@ general:
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 # BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 
+latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers).json()['available_releases'][-1]
+
 open('autoplug/updater.yml', 'w').write(f'''
 updater: 
   java-updater: 
     enable: true
     profile: AUTOMATIC
-    version: 17
+    version: {latest_java_version}
   server-updater: 
     enable: true
     profile: AUTOMATIC
