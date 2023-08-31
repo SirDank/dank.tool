@@ -185,7 +185,7 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.7.4 # 'dankchatroom.jar'
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.7.4
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
@@ -203,6 +203,7 @@ def main_one():
     # spigot plugins
 
     spigot_plugins = {
+        "dankchatroom": 112398,
         #"ActionHealth": 2661,
         "BetterSleeping": 60837,
         "BloodEffect": 90955,
@@ -525,7 +526,8 @@ plugins:
   ViaBackwards:
     spigot-id: 27448
   DankChatroom: 
-    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/dankchatroom.jar
+    spigot-id: 112398
+    custom-download-url: https://github.com/SirDank/dank.chatroom-plugin/raw/main/Visual%20Bukkit%20Project/Build/target/dankchatroom.jar
   VisualBukkit: 
     exclude: false
     alternatives: 
