@@ -215,7 +215,7 @@ def main_one():
         "ProtocolLib": 1997,
         "SkinRestorer": 2124,
         "Spark": 57242,
-        "TabTPS": 82528,
+        #"TabTPS": 82528, BROKEN on SPIGET
         "TreeAssist": 67436,
         "LevelledMobs": 74304,
         "PlayTime": 26016,
@@ -253,6 +253,11 @@ def main_one():
         
     # > mcMMO
     for file_url in github_file_selector("MediumCraft/mcMMO", "remove", ['original']):
+        to_download_urls.append(file_url)
+        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
+    
+    # > TabTPS
+    for file_url in github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']):
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
