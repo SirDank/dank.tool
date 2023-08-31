@@ -185,7 +185,7 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.7.4
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar', 'dankchatroom.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.7.4
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
@@ -363,6 +363,13 @@ java -jar MCAntiMalware.jar
 
 # creating autoplug configs
 
+open('autoplug/logger.yml', 'w').write(f'''
+logger: 
+  tasks: 
+    live-tasks: 
+      enable: true
+''')
+
 open('autoplug/general.yml', 'w').write(f'''
 general: 
   autoplug: 
@@ -372,6 +379,13 @@ general:
       enable: false
   server: 
     start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
+  directory-cleaner:
+    enabled: true
+    max-days: 3
+    list: 
+      - true ./autoplug/logs
+      - ./autoplug/downloads
+      - ./autoplug/backups
 ''')
 
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
@@ -411,25 +425,25 @@ plugins:
     spigot-id: 59773
   Essentials: 
     alternatives: 
-      github: 
-        repo-name: EssentialsX/Essentials
-        asset-name: EssentialsX
+      #github: 
+      #  repo-name: EssentialsX/Essentials
+      #  asset-name: EssentialsX
       jenkins: 
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsX
   EssentialsChat: 
     alternatives: 
-      github: 
-        repo-name: EssentialsX/Essentials
-        asset-name: EssentialsXChat
+      #github: 
+      #  repo-name: EssentialsX/Essentials
+      #  asset-name: EssentialsXChat
       jenkins: 
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXChat
   EssentialsSpawn: 
     alternatives: 
-      github: 
-        repo-name: EssentialsX/Essentials
-        asset-name: EssentialsXSpawn
+      #github: 
+      #  repo-name: EssentialsX/Essentials
+      #  asset-name: EssentialsXSpawn
       jenkins: 
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXSpawn
@@ -459,9 +473,9 @@ plugins:
   ProtocolLib: 
     spigot-id: 1997
     alternatives: 
-      github: 
-        repo-name: dmulloy2/ProtocolLib
-        asset-name: ProtocolLib
+      #github: 
+      #  repo-name: dmulloy2/ProtocolLib
+      #  asset-name: ProtocolLib
       jenkins: 
         project-url: https://ci.dmulloy2.net/job/ProtocolLib
         artifact-name: ProtocolLib
@@ -505,21 +519,19 @@ plugins:
     spigot-id: 19254
   ViaBackwards:
     spigot-id: 27448
+  DankChatroom: 
+    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/dankchatroom.jar
+  VisualBukkit: 
+    exclude: false
+    alternatives: 
+      github: 
+        repo-name: OfficialDonut/VisualBukkit
+        asset-name: VisualBukkitPlugin
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
 
 configs = {
-
-    # paper config
-
-    "config/paper-world-defaults.yml": {
-        "prevent-moving-into-unloaded-chunks: false": "prevent-moving-into-unloaded-chunks: true",
-        "alt-item-despawn-rate:\n      enabled: false\n      items:\n        cobblestone: 300": "alt-item-despawn-rate:\n      enabled: true\n      items:\n        cobblestone: 300\n        netherrack: 300\n        sand: 300\n        red_sand: 300\n        gravel: 300\n        dirt: 300\n        grass: 300\n        pumpkin: 300\n        melon_slice: 300\n        kelp: 300\n        bamboo: 300\n        sugar_cane: 300\n        twisting_vines: 300\n        weeping_vines: 300\n        oak_leaves: 300\n        spruce_leaves: 300\n        birch_leaves: 300\n        jungle_leaves: 300\n        acacia_leaves: 300\n        dark_oak_leaves: 300\n        mangrove_leaves: 300\n        cactus: 300\n        diorite: 300\n        granite: 300\n        andesite: 300\n        scaffolding: 600",
-        "redstone-implementation: VANILLA": "redstone-implementation: ALTERNATE_CURRENT",
-        "optimize-explosions: false": "optimize-explosions: true",
-        # "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
-    },
 
     # plugins
 
@@ -555,6 +567,14 @@ configs = {
 
     # server configs
 
+    "config/paper-world-defaults.yml": {
+        "prevent-moving-into-unloaded-chunks: false": "prevent-moving-into-unloaded-chunks: true",
+        "alt-item-despawn-rate:\n      enabled: false\n      items:\n        cobblestone: 300": "alt-item-despawn-rate:\n      enabled: true\n      items:\n        cobblestone: 300\n        netherrack: 300\n        sand: 300\n        red_sand: 300\n        gravel: 300\n        dirt: 300\n        grass: 300\n        pumpkin: 300\n        melon_slice: 300\n        kelp: 300\n        bamboo: 300\n        sugar_cane: 300\n        twisting_vines: 300\n        weeping_vines: 300\n        oak_leaves: 300\n        spruce_leaves: 300\n        birch_leaves: 300\n        jungle_leaves: 300\n        acacia_leaves: 300\n        dark_oak_leaves: 300\n        mangrove_leaves: 300\n        cactus: 300\n        diorite: 300\n        granite: 300\n        andesite: 300\n        scaffolding: 600",
+        "redstone-implementation: VANILLA": "redstone-implementation: ALTERNATE_CURRENT",
+        "optimize-explosions: false": "optimize-explosions: true",
+        # "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
+    },
+
     "pufferfish.yml": {
         "dab:\n  enabled: false": "dab:\n  enabled: true",
         "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
@@ -588,7 +608,7 @@ configs = {
         # "mob-spawn-range: 8": "mob-spawn-range: 2",
         # "entity-activation-range\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
     },
-
+    
 }
 
 def main_two():
