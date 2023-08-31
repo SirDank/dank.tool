@@ -5,6 +5,9 @@
 
 <p align="center">
 <a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png"></a><br>
+</p>
+
+<p align="center">
 <a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/1.png"></a><br>
 </p>
 
@@ -92,6 +95,7 @@
 - Creates startup scripts for starting the server / tunnel to be run on Windows / Linux with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags)
 - Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically (for the plugins downloaded by the server builder)
 - Applies most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically
+- Integrated with dank.tool's chatroom via the [dank.chatroom-plugin](https://github.com/SirDank/dank.chatroom-plugin)
 
 ## ♦️ To Do ♦️
 
