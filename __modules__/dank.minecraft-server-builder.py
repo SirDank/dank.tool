@@ -542,6 +542,12 @@ plugins:
       github: 
         repo-name: OfficialDonut/VisualBukkit
         asset-name: VisualBukkitPlugin
+  FastAsyncWorldEdit: 
+    spigot-id: 13932
+    alternatives: 
+      github: 
+        repo-name: IntellectualSites/FastAsyncWorldEdit
+        asset-name: FastAsyncWorldEdit-Bukkit
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
