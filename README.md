@@ -70,6 +70,10 @@
 
 - [Discord](https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god)
 
+## ♦️ Funding ♦️
+
+- I do not take any donations, but if you would like to support the growth of this tool, you can do so by sharing it with your friends!
+
 ## ♦️ Suggestions ♦️
 
 - [Give SirDank Ideas for Windows Tools!](https://dank-site.onrender.com/dank-tool-suggestions)
