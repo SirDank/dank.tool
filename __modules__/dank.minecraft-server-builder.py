@@ -582,8 +582,12 @@ configs = {
     #    "enabled: false": "enabled: true"
     #},
 
+    #"plugins/LevelledMobs/rules.yml": {
+    #    " | &f%displayname%": "",
+    #},
+    
     "plugins/LevelledMobs/rules.yml": {
-        " | &f%displayname%": "",
+        " | &f%displayname%": "&f%displayname%",
     },
 
     # server configs
