@@ -643,17 +643,19 @@ def main_two():
     string = f'''
   > {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}
   
-  > {translate('Start your server once using "start_server.cmd" before continuing')}
+  > start_server.cmd - {translate('Start your server once by running it before continuing')}
   
-  > {translate('If you do not have JDK installed, type ".check java" in the server console to download it')}
+  > ".check java" - {translate('Command to install Java VM')}
   
-  > {translate('Type ".start" in the server console to start the server')}
+  > ".start" - {translate('Command to start the server')}
   
-  > {translate('Type ".stop" in the server console to stop the server')}
+  > ".stop" - {translate('Command to stop the server')}
   
-  > {translate('Type ".stop both" in the server console to stop the server and Autoplug')}
+  > ".stop both" - {translate('Command to stop the server and Autoplug')}
   
-  > {translate('Type ".check plugins" to update configured plugins')}
+  > ".check plugins" - {translate('Command to update configured plugins')}
+  
+  > ".help" - {translate('Command to display all available commands')}
   
   > {translate('After your server has stopped, press [ ENTER ] to apply custom configuration')}... '''
 
