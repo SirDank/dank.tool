@@ -62,9 +62,9 @@ def main_one():
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr(f"\n  > {translate('Java is not installed!')}\n\n  > {translate('Install Adoptium JDK 17?')} [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  > {translate('Java is not installed!')}\n\n  > {translate('Install Adoptium JRE 8?')} [ y / n ]: ") + red).lower() == 'y':
             print()
-            os.system("winget install EclipseAdoptium.Temurin.17.JDK")
+            os.system("winget install EclipseAdoptium.Temurin.8.JRE")
     
     print_banner()
 
@@ -228,8 +228,10 @@ def main_one():
         "BetterRTP": 36081,
     }
     
-    if version in ["1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"]:
-        spigot_plugins["Log4JExploitFix"] = 98243
+    for _ in ["1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"]:
+        if version.startswith(_):
+            spigot_plugins["Log4JExploitFix"] = 98243
+            break
 
     if playit:
         spigot_plugins["playit-gg"] = 105566
@@ -359,13 +361,13 @@ open('start_server.sh', 'wb').write(f'''
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-open('anti-malware.cmd', 'w').write(f'''@echo off
+open('mc-anti-malware.cmd', 'w').write(f'''@echo off
 title Minecraft Anti-Malware [ {name} - {version} ]
 java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
 
-open('anti-malware.sh', 'wb').write(f'''#!/bin/sh
+open('mc-anti-malware.sh', 'wb').write(f'''#!/bin/sh
 java -jar MCAntiMalware.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
