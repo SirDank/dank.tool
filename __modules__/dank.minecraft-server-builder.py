@@ -589,7 +589,7 @@ configs = {
     #},
     
     "plugins/LevelledMobs/rules.yml": {
-        " | &f%displayname%": "&f%displayname%",
+        " | &f%displayname%": " &f%displayname%",
     },
 
     # server configs
