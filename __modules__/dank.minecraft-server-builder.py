@@ -576,16 +576,11 @@ configs = {
         "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
         "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
         "use-bukkit-permissions: true": "use-bukkit-permissions: false",
-        "  - playtime.check\n  - playtime.uptime\n  - afk": "  - afk", # to prevent multiple entries
         "  - afk": "  - playtime.check\n  - playtime.uptime\n  - afk",
     },
 
     #"plugins/Log4JExploitFix/config.yml": {
     #    "enabled: false": "enabled: true"
-    #},
-
-    #"plugins/LevelledMobs/rules.yml": {
-    #    " | &f%displayname%": "",
     #},
     
     "plugins/LevelledMobs/rules.yml": {
@@ -599,12 +594,18 @@ configs = {
         "alt-item-despawn-rate:\n      enabled: false\n      items:\n        cobblestone: 300": "alt-item-despawn-rate:\n      enabled: true\n      items:\n        cobblestone: 300\n        netherrack: 300\n        sand: 300\n        red_sand: 300\n        gravel: 300\n        dirt: 300\n        grass: 300\n        pumpkin: 300\n        melon_slice: 300\n        kelp: 300\n        bamboo: 300\n        sugar_cane: 300\n        twisting_vines: 300\n        weeping_vines: 300\n        oak_leaves: 300\n        spruce_leaves: 300\n        birch_leaves: 300\n        jungle_leaves: 300\n        acacia_leaves: 300\n        dark_oak_leaves: 300\n        mangrove_leaves: 300\n        cactus: 300\n        diorite: 300\n        granite: 300\n        andesite: 300\n        scaffolding: 600",
         "redstone-implementation: VANILLA": "redstone-implementation: ALTERNATE_CURRENT",
         "optimize-explosions: false": "optimize-explosions: true",
-        # "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
+        "max-auto-save-chunks-per-tick: 24": "max-auto-save-chunks-per-tick: 8",
+        "entity-per-chunk-save-limit:\n    arrow: -1\n    ender_pearl: -1\n    experience_orb: -1\n    fireball: -1\n    small_fireball: -1\n    snowball: -1": "entity-per-chunk-save-limit:\n    area_effect_cloud: 8\n    arrow: 16\n    dragon_fireball: 3\n    egg: 8\n    ender_pearl: 8\n    experience_bottle: 3\n    experience_orb: 16\n    eye_of_ender: 8\n    fireball: 8\n    firework_rocket: 8\n    llama_spit: 3\n    potion: 8\n    shulker_bullet: 8\n    small_fireball: 8\n    snowball: 8\n    spectral_arrow: 16\n    trident: 16\n    wither_skull: 4",
+        "despawn-ranges:\n      ambient:\n        hard: 128\n        soft: 32\n      axolotls:\n        hard: 128\n        soft: 32\n      creature:\n        hard: 128\n        soft: 32\n      misc:\n        hard: 128\n        soft: 32\n      monster:\n        hard: 128\n        soft: 32\n      underground_water_creature:\n        hard: 128\n        soft: 32\n      water_ambient:\n        hard: 64\n        soft: 32\n      water_creature:\n        hard: 128\n        soft: 32": "despawn-ranges:\n      ambient:\n        hard: 56\n        soft: 30\n      axolotls:\n        hard: 56\n        soft: 30\n      creature:\n        hard: 56\n        soft: 30\n      misc:\n        hard: 56\n        soft: 30\n      monster:\n        hard: 56\n        soft: 30\n      underground_water_creature:\n        hard: 56\n        soft: 30\n      water_ambient:\n        hard: 56\n        soft: 30\n      water_creature:\n        hard: 56\n        soft: 30",
+        "fix-climbing-bypassing-cramming-rule: false": "fix-climbing-bypassing-cramming-rule: true",
+        "non-player-arrow-despawn-rate: default": "non-player-arrow-despawn-rate: 20",
+        "creative-arrow-despawn-rate: default": "creative-arrow-despawn-rate: 20",
     },
 
     "pufferfish.yml": {
-        "dab:\n  enabled: false": "dab:\n  enabled: true",
+        "dab:\n  enabled: false\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 8": "dab:\n  enabled: true\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 7",
         "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
+        #"max-loads-per-projectile: 10": "max-loads-per-projectile: 8",
     },
 
     "purpur.yml": {
@@ -620,23 +621,29 @@ configs = {
         "motd=A Minecraft Server": f"motd={motd_spaces}\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
         "server-name=Unknown Server": f"server-name={name}",
         #"require-resource-pack=false": "require-resource-pack=true",
-        'resource-pack-prompt={"text":"github.com/SirDank/dank.resourcepack","color":"light_purple"}': 'resource-pack-prompt=', # to prevent multiple entries
-        'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resourcepack","color":"light_purple"}',
-        #"resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip": "resource-pack=", # to prevent multiple entries
+        'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
         #"resource-pack=": "resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip",
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
         # "view-distance=10": "view-distance=8",
-        # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f"
+        # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f",
+        #"spawn-protection=16": "spawn-protection=0",
     },
 
     "spigot.yml": {
         "merge-radius:\n      item: 2.5\n      exp: 3.0": "merge-radius:\n      item: 3.5\n      exp: 4.0",
         # "mob-spawn-range: 8": "mob-spawn-range: 2",
-        # "entity-activation-range\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
+        "entity-activation-range\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
+    },
+    
+    "bukkit.yml": {
+        "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 1\n  water-spawns: 1\n  water-ambient-spawns: 1\n  water-underground-creature-spawns: 1\n  axolotl-spawns: 1\n  ambient-spawns: 1": "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 10\n  water-spawns: 400\n  water-ambient-spawns: 400\n  water-underground-creature-spawns: 400\n  axolotl-spawns: 400\n  ambient-spawns: 400",
     },
     
 }
+
+if cracked:
+    configs["server.properties"]["online-mode=true"] = "online-mode=false"
 
 def main_two():
   
@@ -663,8 +670,10 @@ def main_two():
 
     def config_updater(path):
         config_data = open(path, 'r', encoding='utf-8').read()
-        for setting in configs[path]: config_data = config_data.replace(setting, configs[path][setting])
-        if path == "server.properties" and cracked: config_data = config_data.replace("online-mode=true","online-mode=false")
+        for setting in configs[path]:
+            if setting in config_data:
+                config_data = config_data.replace(configs[path][setting], setting)
+            config_data = config_data.replace(setting, configs[path][setting])
         open(path, 'w', encoding='utf-8').write(config_data)
 
     # [ updating configs ] try all and ignore errors
