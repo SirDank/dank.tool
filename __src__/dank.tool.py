@@ -57,7 +57,7 @@ def updated_on(url, dankware_module = True):
 
 def get_menu_request_responses(task_id, req_key):
     
-    global menu_request_responses, menu_request_responses_backup
+    global menu_request_responses
     
     menu_request_responses = {}
     
@@ -91,8 +91,6 @@ def get_menu_request_responses(task_id, req_key):
     elif task_id > 5:
         
         menu_request_responses[req_key] = updated_on(req_key)
-        
-    menu_request_responses_backup = menu_request_responses
 
 # multithreaded script downloader
 
@@ -276,6 +274,8 @@ def _translate(text):
 
 if __name__ == "__main__":
     
+    global menu_request_responses_backup
+    
     set_globals_one()
     set_globals_two()
     translator = Translator()
@@ -303,6 +303,8 @@ if __name__ == "__main__":
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+        
+        menu_request_responses_backup = menu_request_responses
 
     # main
 
