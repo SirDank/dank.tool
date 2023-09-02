@@ -141,7 +141,7 @@
 
 ## ♦️ Also check out dank.resourcepack! ♦️
 
-- https://github.com/SirDank/dank.resourcepack
+- https://github.com/SirDank/dank.resource-pack
 
 <p>&nbsp;</p>
 
