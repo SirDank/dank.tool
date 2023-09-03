@@ -620,14 +620,14 @@ configs = {
         "simulation-distance=10": "simulation-distance=4",
         "motd=A Minecraft Server": f"motd={motd_spaces}\\u00A7a---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
         "server-name=Unknown Server": f"server-name={name}",
-        #"require-resource-pack=false": "require-resource-pack=true",
+        #"require-resource-pack=false": "require-resource-pack=true", ###
         'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
-        #"resource-pack=": "resource-pack=https://github.com/SirDank/dank.resourcepack/raw/main/dank.resourcepack.zip",
+        "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resource-pack/raw/main/dank.resource-pack.zip", ###
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
         # "view-distance=10": "view-distance=8",
         # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f",
-        #"spawn-protection=16": "spawn-protection=0",
+        "spawn-protection=16": "spawn-protection=0",
     },
 
     "spigot.yml": {
