@@ -109,7 +109,6 @@ def main():
     
     # change directory
 
-    #exec_mode = "script"; exec(chdir(exec_mode))
     try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
     except: os.chdir("C:\\")
     try: os.mkdir('dank.mc-server-scanner')
@@ -128,10 +127,19 @@ def main():
     ###
 
     # get user input
+    
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
+    print(clr("\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > You can use the above links to get a list of servers that have been scanned by this tool."))
+    choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Continue\n\n  > Choice [1/2/ENTER]: ") + red)
+    
+    if choice == "1":
+        os.system("start https://dank-site.onrender.com/minecraft-java-servers")
+    elif choice == "2":
+        os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     print(clr("\n  > The database files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete those file to reset the scanned ips.\n\n  > Start with [ 100 threads ] and note the performance impact.\n\n  > Generally should be smooth upto 500, you might notice some performance impact above this value!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The respective database file is only updated after the scan is complete."))
-    
+
     print("")
     while True:
         server_type = input(clr("  > Server Type [java/bedrock]: ") + red)
