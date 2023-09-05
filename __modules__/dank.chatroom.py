@@ -209,6 +209,12 @@ def chatroom_input():
     root.destroy()
     running = False
 
+def enable_notifications():
+    
+    time.sleep(5)
+    global notifications
+    notifications = True
+
 if __name__ == "__main__":
 
     title("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖")
@@ -216,7 +222,7 @@ if __name__ == "__main__":
     chat = []
     last_msg_id = 0
     printed_msg_id = 0
-    notifications = True
+    notifications = False
     session = requests.Session()
     headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
     uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
@@ -226,6 +232,7 @@ if __name__ == "__main__":
     executor = ThreadPoolExecutor(50)
     executor.submit(chat_grabber)
     executor.submit(chatroom_output)
+    executor.submit(enable_notifications)
     chatroom_input()
     executor.shutdown(False)
     
