@@ -3,6 +3,7 @@ import time
 import socket
 import sqlite3
 import requests
+from translatepy import Translator
 from concurrent.futures import ThreadPoolExecutor
 from mcstatus import JavaServer, BedrockServer
 from dankware import white, white_normal, red, red_normal, red_dim, red
@@ -22,6 +23,17 @@ https://raw.githubusercontent.com/robertdavidgraham/masscan/master/data/exclude.
 https://github.com/Footsiefat/Minecraft-Server-Scanner
 
 '''
+
+def translate(text):
+
+    if DANK_TOOL_LANG:
+        try:
+            result = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+            return result
+        except:
+            pass
+
+    return text
 
 # checks if ip has a server running on the specified port
 
@@ -102,10 +114,21 @@ def generate_ip():
 
 def main():
     
-    global ips, server_type, port #, scanned
+    global ips, server_type, port, translator, DANK_TOOL_LANG
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
     socket.setdefaulttimeout(1)
+    
+    # check if translator is enabled (dank.tool.exe)
+
+    try:
+        DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
+        if DANK_TOOL_LANG == 'en':
+            DANK_TOOL_LANG = ''
+        else:
+            translator = Translator()
+    except:
+        DANK_TOOL_LANG = ''
     
     # change directory
 
@@ -129,7 +152,7 @@ def main():
     # get user input
     
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr("\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > You can use the above links to get a list of servers that have been scanned by this tool."))
+    print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
     choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Continue\n\n  > Choice [1/2/ENTER]: ") + red)
     
     if choice == "1":
@@ -138,7 +161,7 @@ def main():
         os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr("\n  > The database files store the ips that have been scanned, and thus will not be scanned again.\n\n  > Delete those file to reset the scanned ips.\n\n  > Start with [ 100 threads ] and note the performance impact.\n\n  > Generally should be smooth upto 500, you might notice some performance impact above this value!\n\n  > Start with 50000 IPs, will take a few seconds to generate.\n\n  > The respective database file is only updated after the scan is complete."))
+    print(clr(f"\n  > {translate('The database files store the ips that have been scanned, and thus will not be scanned again.')}\n\n  > {translate('Delete those file to reset the scanned ips.')}\n\n  > {translate('Start with 100 threads and note the performance impact.')}\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value!')}\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate.')}\n\n  > {translate('The respective database file is only updated after the scan is complete.')}\n\n  > {translate('You can delete the database files if they get too large.')}"))
 
     print("")
     while True:
@@ -169,7 +192,7 @@ def main():
         
     # disclaimer
  
-    cls(); input(clr("\n  [IMPORTANT]\n\n  > Do not use [ Ctrl + C ]!\n\n  > All the servers are saved to servers.txt!\n\n  > Press [ ENTER ] to start the multithreaded scanner..."))
+    cls(); input(clr(f"\n  [IMPORTANT]\n\n  > {translate('Do not use [ Ctrl + C ] without selecting text first!')}\n\n  > {translate('All the servers are saved to servers.txt!')}\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}..."))
     cls()
 
     # generate and check ips on multiple threads in batches
@@ -196,7 +219,7 @@ def main():
                     else:
                         multithread(generate_ip, gen_amt, progress_bar=False); generated += gen_amt
                     break
-                except: input(clr(f"\n  > Failed to generate ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); rm_line()
+                except: input(clr(f"\n  > {translate('Failed to generate ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
                 
         # multithreaded checker
 
@@ -206,7 +229,7 @@ def main():
                 print(clr(f"\n  > Checking {len(ips)} unique ips...\n"))
                 if server_type == "java": multithread(check_java, threads, list(ips.keys())); break
                 else: multithread(check_bedrock, threads, list(ips.keys())); break
-            except: input(clr(f"\n  > Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); rm_line()
+            except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
         
         # saving scanned ips
     
