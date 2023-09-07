@@ -24,8 +24,7 @@ def translate(text):
 
     if DANK_TOOL_LANG:
         try:
-            result = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
-            return result
+            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
         except:
             pass
 
