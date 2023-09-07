@@ -251,7 +251,7 @@ def set_globals_three():
 
             'Discord Server': {
                 'req_resp': '[bright_green]Join Now!',
-                'project': "Dank.Bois Discord Server",
+                'project': "Dankware Inc. Discord Server",
             }
         }
     
@@ -265,8 +265,7 @@ def _translate(text):
 
     if TRANSLATOR_ENABLED and ONLINE_MODE:
         try:
-            result = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
-            return result
+            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
         except:
             pass
 
