@@ -183,9 +183,7 @@ def set_globals_three():
     
     if ONLINE_MODE:
         
-        global menu_request_responses, online_modules
-    
-        menu_request_responses = menu_request_responses_backup
+        global online_modules
         
         # global runs
             
@@ -272,9 +270,7 @@ def _translate(text):
     return text
 
 if __name__ == "__main__":
-    
-    global menu_request_responses_backup
-    
+
     set_globals_one()
     set_globals_two()
     translator = Translator()
@@ -302,8 +298,6 @@ if __name__ == "__main__":
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
-        
-        menu_request_responses_backup = menu_request_responses
 
     # main
 
