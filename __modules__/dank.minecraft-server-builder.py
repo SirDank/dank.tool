@@ -223,7 +223,7 @@ def main_one():
         "PlayTime": 26016,
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
-        "Multiverse-Core": 390,
+        #"Multiverse-Core": 390,
         "BetterRTP": 36081,
     }
     
