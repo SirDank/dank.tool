@@ -175,7 +175,7 @@ def main_one():
 
     # create folders
 
-    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'datapacks_backup', 'autoplug']:
+    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'autoplug']: # 'datapacks_backup'
         try: os.makedirs(folder)
         except: pass
 
@@ -194,7 +194,7 @@ def main_one():
         
     # iris packs
 
-    for file in ['newhorizons', 'theend', 'overworld']:
+    for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
         
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
@@ -325,7 +325,7 @@ def main_one():
 
     print(clr(f"\n  > {translate('Unpacking')}..."))
     
-    for file in ['newhorizons', 'theend', 'overworld']:
+    for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
 
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
@@ -366,8 +366,22 @@ java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
 
-open('mc-anti-malware.sh', 'wb').write(f'''#!/bin/sh
+open('mc-anti-malware.sh', 'wb').write(f'''
+#!/bin/sh
 java -jar MCAntiMalware.jar
+'''.encode().replace(b'\r\n',b'\n'))
+
+open('quick_install_java.cmd', 'w').write(f'''@echo off
+title Java 8 Installer
+winget install EclipseAdoptium.Temurin.8.JRE
+pause
+''')
+
+open('quick_install_java.sh', 'wb').write(f'''
+#!/bin/sh
+sudo add-apt-repository ppa:openjdk-r/ppa
+sudo apt-get update
+sudo apt-get install openjdk-8-jre
 '''.encode().replace(b'\r\n',b'\n'))
 
 # creating autoplug configs
