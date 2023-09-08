@@ -23,6 +23,8 @@
 
 - Don't understand English? Don't worry! It even has a built-in translator that translates English to any language! (requires internet connection)
 
+- Uses [dankware](https://github.com/SirDank/dankware)
+
 ## ♦️ Download ♦️
 
 - Short Direct download: https://bit.ly/dank-tool-zip
