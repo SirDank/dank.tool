@@ -32,7 +32,7 @@ def translate(text):
 
 def main_one():
 
-    global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, translator, DANK_TOOL_LANG
+    global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, latest_java_version, translator, DANK_TOOL_LANG
     
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
     
@@ -56,14 +56,18 @@ def main_one():
     except:
         try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents')) 
         except: os.chdir("C:\\")
+        
+    # install java if not installed
+    
+    latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers).json()['available_releases'][-1]
 
     try:
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr(f"\n  > {translate('Java is not installed!')}\n\n  > {translate('Install Adoptium JRE 8?')} [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  > {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
             print()
-            os.system("winget install EclipseAdoptium.Temurin.8.JRE")
+            os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE")
     
     print_banner()
 
@@ -175,7 +179,7 @@ def main_one():
 
     # create folders
 
-    for folder in ['world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'autoplug']: # 'datapacks_backup'
+    for folder in ('world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'autoplug'): # 'datapacks_backup'
         try: os.makedirs(folder)
         except: pass
 
@@ -227,7 +231,7 @@ def main_one():
         "BetterRTP": 36081,
     }
     
-    for _ in ["1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"]:
+    for _ in ("1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"):
         if version.startswith(_):
             spigot_plugins["Log4JExploitFix"] = 98243
             break
@@ -372,17 +376,27 @@ java -jar MCAntiMalware.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
 open('quick_install_java.cmd', 'w').write(f'''@echo off
-title Java 8 Installer
-winget install EclipseAdoptium.Temurin.8.JRE
+title Java {latest_java_version} Installer
+winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE
 pause
 ''')
 
-open('quick_install_java.sh', 'wb').write(f'''
+open('quick_install_java.sh', 'wb').write(f"""
 #!/bin/sh
-sudo add-apt-repository ppa:openjdk-r/ppa
-sudo apt-get update
-sudo apt-get install openjdk-8-jre
-'''.encode().replace(b'\r\n',b'\n'))
+sudo apt install -y wget apt-transport-https
+sudo mkdir -p /etc/apt/keyrings
+sudo wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee /etc/apt/keyrings/adoptium.asc
+sudo echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{{print$2}}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
+sudo apt update
+sudo apt install temurin-{latest_java_version}-jre
+""".encode().replace(b'\r\n',b'\n'))
+
+open('quick_chmod.sh', 'wb').write(f"""
+#!/bin/sh
+sudo chmod +x start_server.sh
+sudo chmod +x mc-anti-malware.sh
+sudo chmod +x quick_install_java.sh
+""".encode().replace(b'\r\n',b'\n'))
 
 # creating autoplug configs
 
@@ -417,8 +431,6 @@ general:
 
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 # BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
-
-latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers).json()['available_releases'][-1]
 
 open('autoplug/updater.yml', 'w').write(f'''
 updater: 
@@ -750,6 +762,6 @@ def main_two():
 main_two()
 
 if __name__ == "__main__" and "DANK_TOOL_VERSION" in os.environ:
-    for _ in [banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, headers, latest_java_version, print_banner, print_read_me, main_one, main_two, translate]:
+    for _ in (banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, headers, latest_java_version, print_banner, print_read_me, main_one, main_two, translate):
         try: del _
         except: pass
