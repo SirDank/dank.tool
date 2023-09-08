@@ -141,7 +141,7 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/31cc714d-cf96-425d-9054-1992df773e75"></p><br>
 
-## ♦️ Also check out dank.resourcepack! ♦️
+## ♦️ Also check out dank.resource-pack! ♦️
 
 - https://github.com/SirDank/dank.resource-pack
 

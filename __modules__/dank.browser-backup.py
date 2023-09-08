@@ -125,9 +125,9 @@ def main():
     print("")
     while True:
         compression_level = input(clr("  > Compression level (Fast/Best) [1/2]: ") + red).lower()
-        if compression_level in ['1', 'fast']:
+        if compression_level in ('1', 'fast'):
             compression_level = 0; break
-        elif compression_level in ['2', 'best']:
+        elif compression_level in ('2', 'best'):
             compression_level = 9; break
         else: rm_line()
 
@@ -137,6 +137,6 @@ if __name__ == "__main__":
     main()
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in [chrome_installed, backup, main]:
+        for _ in (chrome_installed, backup, main):
             try: del _
             except: pass

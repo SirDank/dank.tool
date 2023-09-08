@@ -237,6 +237,6 @@ if __name__ == "__main__":
     executor.shutdown(False)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in [chat, last_msg_id, printed_msg_id, session, headers, uuid, running, chatroom_login, executor, chat_grabber, chatroom_output, chatroom_input]:
+        for _ in (chat, last_msg_id, printed_msg_id, session, headers, uuid, running, chatroom_login, executor, chat_grabber, chatroom_output, chatroom_input):
             try: del _
             except: pass
