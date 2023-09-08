@@ -14,7 +14,7 @@ except: exec("DANK_TOOL_VERSION = current_version") # current_version defined in
 try:
     response = session.get("https://api.github.com/repos/SirDank/dank.tool/releases", headers = {"User-Agent": "dank.tool", "Accept": "application/vnd.github.v3+json"})
                                                                 # REMOVE THE BELOW CHECK IN THE FAR FUTURE!
-    if response.status_code == 200 and not DANK_TOOL_VERSION in ["2.3.1", "2.3.2", "2.4"] and f"v{DANK_TOOL_VERSION}" in [release["tag_name"] for release in response.json()]:
+    if response.status_code == 200 and not DANK_TOOL_VERSION in ("2.3.1", "2.3.2", "2.4") and f"v{DANK_TOOL_VERSION}" in (release["tag_name"] for release in response.json()):
 
         tmp = []
         for release in response.json():

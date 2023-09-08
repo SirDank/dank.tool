@@ -78,7 +78,7 @@ def save_server(ip):
         elif server_type == "bedrock":
             to_print = f"{ip} | bedrock | {status.version.name} | {status.gamemode} | Map: {status.map_name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.motd.raw}".replace('\n',' ')
         
-        for _ in ['§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r']:
+        for _ in ('§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r'):
             to_print = to_print.replace(_,'')
         print(clr(f"  > {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
@@ -144,7 +144,7 @@ def main():
     # remove old files
     
     ###
-    for _ in ['scanned.txt', 'java_scanned.txt', 'java_scanned.json', 'bedrock_scanned.txt', 'bedrock_scanned.json']:
+    for _ in ('scanned.txt', 'java_scanned.txt', 'java_scanned.json', 'bedrock_scanned.txt', 'bedrock_scanned.json'):
         if os.path.isfile(_): os.remove(_)
     ###
 
@@ -251,6 +251,6 @@ if __name__ == "__main__":
     executor.shutdown(wait=True)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in [ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main, translate]:
+        for _ in (ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main, translate):
             try: del _
             except: pass
