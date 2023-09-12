@@ -76,7 +76,7 @@
 
 - I do not take any donations, but if you would like to support the growth of this tool, you can do so by sharing it with your friends!
 
-## ♦️ Suggestions ♦️
+## ♦️ Anonymous Suggestions ♦️
 
 - [Give SirDank Ideas for Windows Tools!](https://dank-site.onrender.com/dank-tool-suggestions)
 
@@ -372,15 +372,15 @@
 ## ⭕ executor.py ⭕
 
 - this script is used to build the dank.tool executable
-  - contains all the imports used by every module
-  - contains the update checker ( executes updater.py )
-  - sets environment variables
-  - checks windows language
-  - downloads dank.tool.py ( for offline mode )
-  - contains the discord rpc
-  - updates run counter ( global dank.tool runs )
-  - contains the chatroom user validator
-  - executes dank.tool.py
+- contains all the imports used by every module
+- contains the update checker ( executes updater.py )
+- sets environment variables
+- checks windows language
+- downloads dank.tool.py ( for offline mode )
+- contains the discord rpc
+- updates run counter ( global dank.tool runs )
+- contains the chatroom user validator
+- executes dank.tool.py
 
 ## ⭕ dank.tool.py ⭕
 
