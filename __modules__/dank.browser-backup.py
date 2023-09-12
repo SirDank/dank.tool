@@ -93,7 +93,7 @@ def main():
 
     cls(); title("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙"); banner = "\n\n                                                                             \n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     try:
-        if not is_admin(): raise RuntimeError(clr("Current user is not an administrator! Exporting browser data and registry keys requires admin privileges!"))
+        if not is_admin(): raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
     except: sys.exit(clr(err(sys.exc_info()),2))
     
     try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
