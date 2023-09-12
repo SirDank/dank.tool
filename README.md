@@ -258,6 +258,7 @@
 - A custom chatroom that can be used to chat with other users of the dank.tool
 - The chatroom is hosted on a server and is accessible to all users of the dank.tool
 - Windows notifications are sent when a new message is received
+- Integrate with minecraft server chat using this [custom plugin](https://www.spigotmc.org/resources/dank-chatroom.112398/)
 
 ## ♦️ To Do ♦️
 
@@ -266,6 +267,10 @@
 ## ♦️ Preview ♦️
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/4ea5389c-e6db-497e-a5cf-9578a403ebe3"></p><br>
+
+## ♦️ Minecraft Plugin ♦️
+
+<br><p align="center"><a href="https://github.com/SirDank/dank.chatroom-plugin"><img width="800" alt="image" src="https://github.com/SirDank/dank.chatroom-plugin/assets/52797753/bdc4ebc0-2028-4b13-8967-b09be943b9d9"></a></p><br>
 
 <p>&nbsp;</p>
 
@@ -361,12 +366,29 @@
 - this script is added on top of every script that I build into an executable with my (private) custom python executable builder. In short it performs the following:
   - saves `runs.txt` to `%LOCALAPPDATA%\\Dankware` ( saves the amount of times the executable has been run )
   - scans the temp folder for any dankware files ( from my portable software ) and deletes them if they are not running ( cleanup )
-  - sends a get request to [countapi.xyz](countapi.xyz) to increase the online run counter by 1 ( this is displayed on the main menu as `dankware global runs` )
+  - sends a get request to [api-ninjas.com](https://api-ninjas.com/profile) to increase the online run counter by 1 ( this is displayed on the main menu as `dankware global runs` )
   - once in every 10 runs it displays the dankware animation and plays the dankware.wav file ( checks `runs.txt` )
 
 ## ⭕ executor.py ⭕
 
+- this script is used to build the dank.tool executable
+  - contains all the imports used by every module
+  - contains the update checker ( executes updater.py )
+  - sets environment variables
+  - checks windows language
+  - downloads dank.tool.py ( for offline mode )
+  - contains the discord rpc
+  - updates run counter ( global dank.tool runs )
+  - contains the chatroom user validator
+  - executes dank.tool.py
+
 ## ⭕ dank.tool.py ⭕
+
+- main src. contains:
+  - main menu
+  - module downloader
+  - module executor
+  - translator
 
 ## ⭕ execute custom modules ⭕
 
