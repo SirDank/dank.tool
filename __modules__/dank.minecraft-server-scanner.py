@@ -134,7 +134,7 @@ def main():
     try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
     except: os.chdir("C:\\")
     try: os.mkdir('dank.mc-server-scanner')
-    except: pass
+    except FileExistsError: pass
     os.system(f'explorer.exe "dank.mc-server-scanner"')
     os.chdir('dank.mc-server-scanner')
     
