@@ -159,11 +159,11 @@ def set_globals_two():
         }
     }
 
-    offline_scripts = ["dank.fusion-fall", "dank.browser-backup"]
+    offline_scripts = ("dank.fusion-fall", "dank.browser-backup")
     
     # KEEP request_keys IN ORDER!
     
-    request_keys = [
+    request_keys = (
         "dankware_runs",
         "danktool_runs",
         "chatroom_user_count",
@@ -175,7 +175,7 @@ def set_globals_two():
         "dank.auto-clicker",
         "dank.browser-backup",
         "dank.fusion-fall"
-    ]
+    )
 
 def set_globals_three():
     
@@ -285,7 +285,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(download_offline_scripts, 50, [_ for _ in offline_scripts], progress_bar=False)
+                multithread(download_offline_scripts, 50, offline_scripts, progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
@@ -294,7 +294,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 50, [_ for _ in range(len(request_keys))], [_ for _ in request_keys], progress_bar=False)
+                multithread(get_menu_request_responses, 50, [_ for _ in range(len(request_keys))], request_keys, progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
@@ -426,7 +426,7 @@ if __name__ == "__main__":
                 print_warning_symbol()
                 print(clr(f"\n  > {_translate('Please select text first and then use [ CTRL + C ]')}!"))
                 
-            elif ONLINE_MODE:
+            elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
                     try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
                     except:
