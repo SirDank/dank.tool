@@ -190,7 +190,7 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'Iris.jar']: # 'PublicCrafters.jar' 4.13.5 | Iris 2.7.4
+    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml']: # 'PublicCrafters.jar' 4.13.5
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
@@ -248,24 +248,15 @@ def main_one():
         to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
+    # Iris, FastAsyncWorldEdit, EssentialsX, mcMMO, TabTPS
 
-    # > EssentialsX
-    for file_url in github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']):
-        to_download_urls.append(file_url)
-        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
-        
-    # > FastAsyncWorldEdit
-    for file_url in github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']):
-        to_download_urls.append(file_url)
-        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
-        
-    # > mcMMO
-    for file_url in github_file_selector("MediumCraft/mcMMO", "remove", ['original']):
-        to_download_urls.append(file_url)
-        to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
+    file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
+              + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
+              + github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
+              + github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
+              + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot'])
     
-    # > TabTPS
-    for file_url in github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']):
+    for file_url in file_urls:
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
