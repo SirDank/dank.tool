@@ -198,12 +198,12 @@ def main_one():
         
     # iris packs
 
-    for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
+    '''for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
         
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
         to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/{tmp_name}.zip")
-        to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")
+        to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")'''
 
     # spigot plugins
 
@@ -318,7 +318,7 @@ def main_one():
 
     # unpacking downloaded archives
 
-    print(clr(f"\n  > {translate('Unpacking')}..."))
+    '''print(clr(f"\n  > {translate('Unpacking')}..."))
     
     for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
 
@@ -333,7 +333,7 @@ def main_one():
                 string = translate(f'ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after this')
                 input(clr(f"\n  > {string}... ",2))
         try: os.remove(f'plugins/Iris/packs/{file}.zip')
-        except: pass
+        except: pass'''
 
 main_one()
 
@@ -481,13 +481,19 @@ plugins:
         artifact-name: EssentialsXSpawn
   Iris: 
     spigot-id: 84586
-    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/Iris.jar
+    alternatives: 
+      github: 
+        repo-name: SirDank/Iris-AutoCompile
+        asset-name: Iris
   Log4JExploitFix: 
     exclude: false
     spigot-id: 98243
   mcMMO: 
     spigot-id: 64348
-    custom-download-url: https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/mcMMO.jar
+    alternatives: 
+      github: 
+        repo-name: MediumCraft/mcMMO
+        asset-name: mcMMO
   PlayerNPC: 
     spigot-id: 93625
     alternatives: 
