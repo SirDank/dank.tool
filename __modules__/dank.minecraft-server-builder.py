@@ -666,21 +666,18 @@ def main_two():
     string = f'''
   > {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}
   
-  > start_server.cmd - {translate('Start your server once by running it before continuing')}
-  
+  > quick_chmod.sh - {translate('Script to make all .sh files executable')}
+  > quick_install_java.sh / quick_install_java.cmd - {translate('Script to install Temurin JRE')}
+  > mc-anti-malware.sh / mc-anti-malware.cmd - {translate('Script to start mc-anti-malware')}
+  > start_server.sh / start_server.cmd - {translate('Script to start your server')}
   > ".check java" - {translate('Command to install Java VM')}
-  
   > ".start" - {translate('Command to start the server')}
-  
   > ".stop" - {translate('Command to stop the server')}
-  
   > ".stop both" - {translate('Command to stop the server and Autoplug')}
-  
   > ".check plugins" - {translate('Command to update configured plugins')}
-  
   > ".help" - {translate('Command to display all available commands')}
   
-  > {translate('After your server has stopped, press [ ENTER ] to apply custom configuration')}... '''
+  > {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... '''
 
     print_read_me(); input(clr(string))
 
