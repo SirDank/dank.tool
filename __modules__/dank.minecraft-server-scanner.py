@@ -1,7 +1,7 @@
 import os
 import time
 import socket
-import sqlite3
+#import sqlite3
 import requests
 from translatepy import Translator
 from concurrent.futures import ThreadPoolExecutor
@@ -101,15 +101,15 @@ def save_server(ip):
 
 def generate_ip():
 
-    cursor = sqlite3.connect(f'{server_type}_scanned_ips.db').cursor()
+    #cursor = sqlite3.connect(f'{server_type}_scanned_ips.db').cursor()
     while True:
         ip = random_ip()
         if ip in ips.keys(): continue
-        cursor.execute('''SELECT ip FROM ips WHERE ip=?''', (ip,))
-        result = cursor.fetchone()
-        if result: continue
+        #cursor.execute('''SELECT ip FROM ips WHERE ip=?''', (ip,))
+        #result = cursor.fetchone()
+        #if result: continue
         ips[ip] = ""; break
-    cursor.close()
+    #cursor.close()
 
 def main():
     
@@ -138,15 +138,15 @@ def main():
     os.system(f'explorer.exe "dank.mc-server-scanner"')
     os.chdir('dank.mc-server-scanner')
     
+    if not os.path.isfile('scan_count.txt'):
+        open('scan_count.txt','w').write('0')
     try: open('servers.txt','x').close()
     except: pass
     
     # remove old files
-    
-    ###
-    for _ in ('scanned.txt', 'java_scanned.txt', 'java_scanned.json', 'bedrock_scanned.txt', 'bedrock_scanned.json'):
+
+    for _ in ('scanned.txt', 'java_scanned.txt', 'java_scanned.json', 'bedrock_scanned.txt', 'bedrock_scanned.json', 'java_scanned_ips.db', 'bedrock_scanned_ips.db'):
         if os.path.isfile(_): os.remove(_)
-    ###
 
     # get user input
     
@@ -160,22 +160,23 @@ def main():
         os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr(f"\n  > {translate('The database files store the ips that have been scanned, and thus will not be scanned again.')}\n\n  > {translate('Delete those file to reset the scanned ips.')}\n\n  > {translate('Start with 100 threads and note the performance impact.')}\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value!')}\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate.')}\n\n  > {translate('The respective database file is only updated after the scan is complete.')}\n\n  > {translate('You can delete the database files if they get too large.')}"))
+    # \n  > {translate('The database files store the ips that have been scanned, and thus will not be scanned again.')}\n\n  > {translate('Delete those file to reset the scanned ips.')}\n # \n\n  > {translate('The respective database file is only updated after the scan is complete.')}\n\n  > {translate('You can delete the database files if they get too large.')}
+    print(clr(f"\n  > {translate('Start with 100 threads and note the performance impact.')}\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value!')}\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate.')}"))
 
     print("")
     while True:
         server_type = input(clr("  > Server Type [java/bedrock]: ") + red)
         if server_type == "java":
-            conn = sqlite3.connect('java_scanned_ips.db')
+            #conn = sqlite3.connect('java_scanned_ips.db')
             port = 25565
             break
         elif server_type == "bedrock":
-            conn = sqlite3.connect('bedrock_scanned_ips.db')
+            #conn = sqlite3.connect('bedrock_scanned_ips.db')
             port = 19132
             break
         else: rm_line()
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS ips (ip TEXT UNIQUE PRIMARY KEY)''')
+    #cursor = conn.cursor()
+    #cursor.execute('''CREATE TABLE IF NOT EXISTS ips (ip TEXT UNIQUE PRIMARY KEY)''')
         
     print("")
     while True:
@@ -233,11 +234,15 @@ def main():
         # saving scanned ips
     
         #cls()
-        print(clr(f"\n  > Saving {server_type}_scanned_ips.db..."))
-        cursor.executemany('''INSERT INTO ips (ip) VALUES (?)''', [(ip,) for ip in sorted(list(set(ips.keys())))])
-        conn.commit()
-        cursor.execute('''SELECT COUNT(*) FROM ips''')
-        print(clr(f"\n  > Totally Scanned {cursor.fetchone()[0]} IPs!"))
+        #print(clr(f"\n  > Saving {server_type}_scanned_ips.db..."))
+        #cursor.executemany('''INSERT INTO ips (ip) VALUES (?)''', [(ip,) for ip in sorted(list(set(ips.keys())))])
+        #conn.commit()
+        #cursor.execute('''SELECT COUNT(*) FROM ips''')
+        scan_count = int(open('scan_count.txt','r',encoding='utf-8').read())
+        scan_count += len(ips)
+        open('scan_count.txt','w',encoding='utf-8').write(str(scan_count))
+        #print(clr(f"\n  > Totally Scanned {cursor.fetchone()[0]} IPs!"))
+        print(clr(f"\n  > Totally Scanned {scan_count} IPs!"))
         time.sleep(5)
         
         gen_rem -= gen_amt
