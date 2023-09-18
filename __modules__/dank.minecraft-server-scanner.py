@@ -129,6 +129,17 @@ def main():
     except:
         DANK_TOOL_LANG = ''
     
+    # get user input
+    
+    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
+    print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
+    choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Continue\n\n  > Choice [1/2/ENTER]: ") + red)
+    
+    if choice == "1":
+        os.system("start https://dank-site.onrender.com/minecraft-java-servers")
+    elif choice == "2":
+        os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
+    
     # change directory
 
     try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
@@ -149,15 +160,6 @@ def main():
         if os.path.isfile(_): os.remove(_)
 
     # get user input
-    
-    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
-    choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Continue\n\n  > Choice [1/2/ENTER]: ") + red)
-    
-    if choice == "1":
-        os.system("start https://dank-site.onrender.com/minecraft-java-servers")
-    elif choice == "2":
-        os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     # \n  > {translate('The database files store the ips that have been scanned, and thus will not be scanned again.')}\n\n  > {translate('Delete those file to reset the scanned ips.')}\n # \n\n  > {translate('The respective database file is only updated after the scan is complete.')}\n\n  > {translate('You can delete the database files if they get too large.')}
