@@ -211,7 +211,7 @@ def chatroom_input():
 
 def enable_notifications():
     
-    time.sleep(5)
+    time.sleep(10)
     global notifications
     notifications = True
 
