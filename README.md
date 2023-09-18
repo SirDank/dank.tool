@@ -288,7 +288,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><a href="https://github.com/SirDank/dank.chatroom-plugin"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></a></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></p><br>
 
 <p>&nbsp;</p>
 
