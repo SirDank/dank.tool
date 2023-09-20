@@ -480,7 +480,7 @@ plugins:
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXSpawn
   Iris: 
-    spigot-id: 84586
+    #spigot-id: 84586
     alternatives: 
       github: 
         repo-name: SirDank/Iris-AutoCompile
@@ -489,7 +489,7 @@ plugins:
     exclude: false
     spigot-id: 98243
   mcMMO: 
-    spigot-id: 64348
+    #spigot-id: 64348
     alternatives: 
       github: 
         repo-name: MediumCraft/mcMMO
