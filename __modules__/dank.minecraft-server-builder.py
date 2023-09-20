@@ -222,7 +222,8 @@ def main_one():
         "SkinRestorer": 2124,
         "Spark": 57242,
         #"TabTPS": 82528, BROKEN on SPIGET
-        "TreeAssist": 67436,
+        #"TreeAssist": 67436,
+        "SmoothTimber": 39965,
         "LevelledMobs": 74304,
         "PlayTime": 26016,
         "PlaceholderAPI": 6245,
