@@ -223,13 +223,14 @@ def main_one():
         "Spark": 57242,
         #"TabTPS": 82528, BROKEN on SPIGET
         #"TreeAssist": 67436,
-        "SmoothTimber": 39965,
+        #"SmoothTimber": 39965,
         "LevelledMobs": 74304,
         "PlayTime": 26016,
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
         #"Multiverse-Core": 390,
         "BetterRTP": 36081,
+        "ChatFeelings": 12987,
     }
     
     for _ in ("1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"):
@@ -249,13 +250,14 @@ def main_one():
         to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
-    # Iris, FastAsyncWorldEdit, EssentialsX, mcMMO, TabTPS
+    # Iris, FastAsyncWorldEdit, EssentialsX, mcMMO, TabTPS, PhysicsToGo
 
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
               + github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               + github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
-              + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot'])
+              + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
+              + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
     
     for file_url in file_urls:
         to_download_urls.append(file_url)
@@ -521,11 +523,13 @@ plugins:
   NeoPerformance: 
     spigot-id: 103183
   BetterSleeping4: 
+    spigot-id: 60837
     alternatives: 
       github: 
         repo-name: Nuytemans-Dieter/BetterSleeping
         asset-name: BetterSleeping
   TabTPS: 
+    spigot-id: 82528
     alternatives: 
       github: 
         repo-name: jpenilla/TabTPS
@@ -570,45 +574,19 @@ plugins:
   FastAsyncWorldEdit: 
     spigot-id: 13932
     alternatives: 
-      github: 
-        repo-name: IntellectualSites/FastAsyncWorldEdit
-        asset-name: FastAsyncWorldEdit-Bukkit
+      #github: 
+      #  repo-name: IntellectualSites/FastAsyncWorldEdit
+      #  asset-name: FastAsyncWorldEdit-Bukkit
+      jenkins: 
+        project-url: https://ci.athion.net/job/FastAsyncWorldEdit/
+        artifact-name: FastAsyncWorldEdit-Bukkit
+  SmoothTimber:
+    spigot-id: 39965
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
 
 configs = {
-
-    # plugins
-
-    "plugins/ChestSort/config.yml": {
-        "use-permissions: true": "use-permissions: false",
-        "sorting-enabled-by-default: false": "sorting-enabled-by-default: true",
-        "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
-    },
-
-    "plugins/Corpses/config.yml": {
-        "secondsToDisappear: 300": "secondsToDisappear: 3600",
-    },
-
-    "plugins/Essentials/config.yml": {
-        "nickname-prefix: '~'": "nickname-prefix: ''",
-        "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
-        'custom-join-message: "none"': 'custom-join-message: "&8&l[&a+&8&l]&a&l {PLAYER}"',
-        'custom-quit-message: "none"': 'custom-quit-message: "&8&l[&c-&8&l]&c&l {PLAYER}"',
-        "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
-        "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
-        "use-bukkit-permissions: true": "use-bukkit-permissions: false",
-        "  - afk": "  - playtime.check\n  - playtime.uptime\n  - afk",
-    },
-
-    #"plugins/Log4JExploitFix/config.yml": {
-    #    "enabled: false": "enabled: true"
-    #},
-    
-    "plugins/LevelledMobs/rules.yml": {
-        " | &f%displayname%": " &f%displayname%",
-    },
 
     # server configs
 
@@ -645,7 +623,7 @@ configs = {
         "server-name=Unknown Server": f"server-name={name}",
         #"require-resource-pack=false": "require-resource-pack=true", ###
         'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
-        "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resource-pack/raw/main/dank.resource-pack.zip", ###
+        "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resource-pack/raw/main/dank.resource-pack.zip",
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
         # "view-distance=10": "view-distance=8",
@@ -662,6 +640,59 @@ configs = {
     "bukkit.yml": {
         "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 1\n  water-spawns: 1\n  water-ambient-spawns: 1\n  water-underground-creature-spawns: 1\n  axolotl-spawns: 1\n  ambient-spawns: 1": "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 10\n  water-spawns: 400\n  water-ambient-spawns: 400\n  water-underground-creature-spawns: 400\n  axolotl-spawns: 400\n  ambient-spawns: 400",
     },
+    
+    # plugins
+
+    "plugins/ChestSort/config.yml": {
+        "use-permissions: true": "use-permissions: false",
+        "sorting-enabled-by-default: false": "sorting-enabled-by-default: true",
+        "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
+    },
+
+    "plugins/Corpses/config.yml": {
+        "secondsToDisappear: 300": "secondsToDisappear: 3600",
+    },
+
+    "plugins/Essentials/config.yml": {
+        "nickname-prefix: '~'": "nickname-prefix: ''",
+        "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
+        'custom-join-message: "none"': 'custom-join-message: "&8&l[&a+&8&l]&a&l {PLAYER}"',
+        'custom-quit-message: "none"': 'custom-quit-message: "&8&l[&c-&8&l]&c&l {PLAYER}"',
+        "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
+        "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
+        "use-bukkit-permissions: true": "use-bukkit-permissions: false",
+        "  - afk": "  - afk\n  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime",
+    },
+
+    #"plugins/Log4JExploitFix/config.yml": {
+    #    "enabled: false": "enabled: true"
+    #},
+    
+    "plugins/LevelledMobs/rules.yml": {
+        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%Lvl %mob-lvl%&8 &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator%",
+        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%Lvl %mob-lvl%&8 &f%entity-health-rounded%&8 %tiered%%heart_symbol%",
+        "- nametag_using_numbers": "#- nametag_using_numbers",
+        "#- nametag_using_indicator": "- nametag_using_indicator",
+        "- weighted_random_Levelling": "#- weighted_random_Levelling",
+        "#- ycoord_Levelling": "- ycoord_Levelling",
+    },
+    
+    "plugins/LevelledMobs/settings.yml": {
+        "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
+    },
+    
+    "plugins/NeoPerformance/performanceConfig.yml": {
+        "broadcastHalt: false": "broadcastHalt: true",
+    },
+    
+    "plugins/ntdLuckyBlock/config.yml": {
+        "break-permissions: true": "break-permissions: false",
+    },
+    
+    "plugins/PhysicsToGo/config.yml": {
+        "tree-regeneration: true": "tree-regeneration: false",
+        "explosive-regeneration: true": "explosive-regeneration: false"
+    }
     
 }
 
@@ -715,7 +746,7 @@ def main_two():
     if playit:
 
         string = f'''
-  > {translate('It is extremely easy to setup playit.gg')}
+  > {translate('It is extremely easy to setup the playit.gg plugin')}
   
   > {translate('After server setup is complete, start your server.')}
   
@@ -739,9 +770,9 @@ def main_two():
     string = f'''
   > {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 
-  > {translate('After you move the folder to a linux system, run "sudo chmod -R 777 server_folder_name"')}
+  > {translate(f'After you move the folder to a linux system, run "sudo chmod +x {tmp_path}/quick_chmod.sh" to make all .sh files executable')}
 
-  > {translate('Run start_server.sh and then install JDK with ".check java"')}
+  > {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
   > {translate('Press [ ENTER ] after you have read the message... ')}'''
 
