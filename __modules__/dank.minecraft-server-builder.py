@@ -488,6 +488,12 @@ plugins:
       github: 
         repo-name: SirDank/Iris-AutoCompile
         asset-name: Iris
+  Adapt: 
+    #spigot-id: 103790
+    alternatives: 
+      github: 
+        repo-name: SirDank/Adapt-AutoCompile
+        asset-name: Adapt
   Log4JExploitFix: 
     exclude: false
     spigot-id: 98243
