@@ -229,8 +229,8 @@ def main():
             try: 
                 #cls()
                 print(clr(f"\n  > Checking {len(ips)} unique ips...\n"))
-                if server_type == "java": multithread(check_java, threads, list(ips.keys())); break
-                else: multithread(check_bedrock, threads, list(ips.keys())); break
+                if server_type == "java": multithread(check_java, threads, tuple(ips.keys())); break
+                else: multithread(check_bedrock, threads, tuple(ips.keys())); break
             except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
         
         # saving scanned ips
