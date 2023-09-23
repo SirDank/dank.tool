@@ -1,7 +1,6 @@
 dankware
 mcstatus
 packaging
-playsound
 psutil
 pyminizip
 pynput
