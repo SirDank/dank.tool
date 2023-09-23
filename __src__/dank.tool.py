@@ -294,7 +294,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), (_ for _ in request_keys), progress_bar=False)
+                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), tuple(_ for _ in request_keys), progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
