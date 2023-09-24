@@ -746,7 +746,7 @@ def main_two():
             try: config_updater(path); break
             except:
                 string = translate('Press [ ENTER ] to retry or type "skip" to skip')
-                choice = input(clr(f"\n{err(sys.exc_info())}\n\n  > {string}: ", 2) + white)
+                choice = input(clr(f"\n{err(sys.exc_info(),'mini')}\n\n  > {string}: ", 2) + white)
                 if choice == "skip": break
 
     if playit:
