@@ -163,12 +163,12 @@ def set_globals_two():
         }
     }
 
-    offline_scripts = tuple(["dank.fusion-fall", "dank.browser-backup"])
+    offline_scripts = tuple(("dank.fusion-fall", "dank.browser-backup"))
     
     # KEEP request_keys IN ORDER!
     
     request_keys = tuple(
-        [
+        (
             "dankware_runs",
             "danktool_runs",
             "motd",
@@ -181,7 +181,7 @@ def set_globals_two():
             "dank.auto-clicker",
             "dank.browser-backup",
             "dank.fusion-fall"
-        ]
+        )
     )
 
 def set_globals_three():
