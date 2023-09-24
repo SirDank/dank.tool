@@ -73,7 +73,7 @@ def get_menu_request_responses(task_id, req_key):
     # get motd
     
     elif task_id == 2:
-        menu_request_responses[req_key] = requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode()
+        menu_request_responses[req_key] = clr(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
 
     # get chatroom user count
 
@@ -195,7 +195,7 @@ def set_globals_three():
         
         # global runs
             
-        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {green}{menu_request_responses['motd']} ]"
+        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
         
         online_modules = {
 
