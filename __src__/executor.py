@@ -26,6 +26,7 @@ import tkinter as tk
 from locale import getlocale
 from win11toast import notify
 from psutil import process_iter
+from playsound import playsound
 from mcstatus import JavaServer
 from translatepy import Translator
 from gzip import compress, decompress
@@ -52,7 +53,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.1.1"
+DANK_TOOL_VERSION = "3.1.2"
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
