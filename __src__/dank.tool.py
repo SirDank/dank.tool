@@ -6,6 +6,7 @@
 
 import os
 import sys
+import json
 import time
 import requests
 from rich.panel import Panel
@@ -139,11 +140,7 @@ def set_globals_one():
     DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
     branch = ("main" if not ONLINE_DEV else "dev")
     headers = {"User-Agent": "dank.tool"}
-    
-    if DANK_TOOL_LANG == "en":
-        TRANSLATOR_ENABLED = False
-    else:
-        TRANSLATOR_ENABLED = True
+    TRANSLATOR_ENABLED = (False if DANK_TOOL_LANG == "en" else True)
 
 def set_globals_two():
     
@@ -166,11 +163,11 @@ def set_globals_two():
         }
     }
 
-    offline_scripts = ("dank.fusion-fall", "dank.browser-backup")
+    offline_scripts = tuple("dank.fusion-fall", "dank.browser-backup")
     
     # KEEP request_keys IN ORDER!
     
-    request_keys = (
+    request_keys = tuple(
         "dankware_runs",
         "danktool_runs",
         "motd",
@@ -195,7 +192,12 @@ def set_globals_three():
         
         # global runs
             
-        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        except:
+            # temp debug
+            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
+            except: pass
+            stats = ""
         
         online_modules = {
 
@@ -293,7 +295,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(download_offline_scripts, 50, tuple(_ for _ in offline_scripts), progress_bar=False)
+                multithread(download_offline_scripts, 50, offline_scripts, progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
@@ -302,7 +304,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), tuple(_ for _ in request_keys), progress_bar=False)
+                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
@@ -328,7 +330,7 @@ if __name__ == "__main__":
             
         # available modules
         
-        modules = offline_modules if not ONLINE_MODE else online_modules
+        modules = (offline_modules if not ONLINE_MODE else online_modules)
         
         local_modules = {}
         
@@ -336,7 +338,7 @@ if __name__ == "__main__":
             os.mkdir('__local_modules__')
 
         for module in os.listdir("__local_modules__"):
-            if module.endswith(".py") and os.path.isfile(f"__local_modules__/{module}"):
+            if os.path.isfile(f"__local_modules__/{module}") and module.endswith(".py"):
                 name = module.replace('.py','')
                 local_modules[name] = {
                     'title': name,
@@ -357,7 +359,7 @@ if __name__ == "__main__":
                     LOCAL_MODULE = True
                 break
 
-            elif choice == 'refresh':
+            elif choice == 'refresh': # re-align ui
                 print_modules()
             
             elif choice == 'debug': # debug menu
@@ -403,7 +405,7 @@ if __name__ == "__main__":
 
                 # get src from github if not debug mode else get src locally
 
-                if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV defined in executor.py
+                if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV / ONLINE_MODE defined in executor.py
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
                         except: input(clr(f"\n  > {_translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
