@@ -69,8 +69,15 @@ def get_menu_request_responses(task_id, req_key):
         elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
         try: menu_request_responses[req_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
         except: menu_request_responses[req_key] = f"{red}⚠️"
-
+    
+    # get motd
+    
     elif task_id == 2:
+        menu_request_responses[req_key] = requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode()
+
+    # get chatroom user count
+
+    elif task_id == 3:
 
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
@@ -81,14 +88,14 @@ def get_menu_request_responses(task_id, req_key):
         
     # get last update time
     
-    elif task_id in (3, 4, 5):
+    elif task_id in (4, 5, 6):
         
-        if task_id == 3: url = "https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1"
-        elif task_id == 4: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
-        elif task_id == 5: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
+        if task_id == 4: url = "https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1"
+        elif task_id == 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
+        elif task_id == 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
         menu_request_responses[req_key] = updated_on(url,False)
         
-    elif task_id > 5:
+    elif task_id > 6:
         
         menu_request_responses[req_key] = updated_on(req_key)
 
@@ -166,6 +173,7 @@ def set_globals_two():
     request_keys = (
         "dankware_runs",
         "danktool_runs",
+        "motd",
         "chatroom_user_count",
         "SpotX-Win",
         "Spicetify",
@@ -187,7 +195,7 @@ def set_globals_three():
         
         # global runs
             
-        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} ]"
+        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {green}{menu_request_responses['motd']} ]"
         
         online_modules = {
 
