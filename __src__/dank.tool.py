@@ -111,7 +111,7 @@ def download_offline_scripts(project):
 
 def print_modules():
     
-    print_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_DEV else ' DEBUG') + ('' if not ONLINE_DEV else ' ONLINE DEBUG') + "\n")
+    print_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
     user_renderables = []
     console = Console()
     counter = 1
@@ -131,14 +131,14 @@ def print_modules():
 
 def set_globals_one():
     
-    global ONLINE_MODE, OFFLINE_DEV, ONLINE_DEV, DANK_TOOL_VERSION, DANK_TOOL_LANG, TRANSLATOR_ENABLED, branch, headers
+    global ONLINE_MODE, OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, DANK_TOOL_LANG, TRANSLATOR_ENABLED, branch, headers
 
-    OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
-    ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
+    OFFLINE_SRC = int(os.environ['DANK_TOOL_OFFLINE_SRC'])
+    DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
     DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
     ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
     DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
-    branch = ("main" if not ONLINE_DEV else "dev")
+    branch = ("main" if not DEV_BRANCH else "dev")
     headers = {"User-Agent": "dank.tool"}
     TRANSLATOR_ENABLED = (False if DANK_TOOL_LANG == "en" else True)
 
@@ -160,6 +160,13 @@ def set_globals_two():
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
             'project': "dank.browser-backup",
             'rpc': "backing up a browser"
+        },
+        
+        'Settings': {
+            'req_resp': '',
+            'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
+            'project': "dank.tool settings",
+            'rpc': "changing dank.tool settings"
         }
     }
 
@@ -262,6 +269,13 @@ def set_globals_three():
             'Discord Server': {
                 'req_resp': '[bright_green]Join Now!',
                 'project': "Dankware Inc. Discord Server",
+            },
+            
+            'Settings': {
+                'req_resp': '',
+                'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
+                'project': "dank.tool settings",
+                'rpc': "changing dank.tool settings"
             }
         }
     
@@ -310,6 +324,12 @@ if __name__ == "__main__":
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+    
+    else:
+        
+        del updated_on
+        del download_offline_scripts
+        del get_menu_request_responses
 
     # main
 
@@ -336,7 +356,7 @@ if __name__ == "__main__":
         
         local_modules = {}
         
-        if not os.path.exists('__local_modules__'):
+        if not os.path.isdir('__local_modules__'):
             os.mkdir('__local_modules__')
 
         for module in os.listdir("__local_modules__"):
@@ -386,11 +406,36 @@ if __name__ == "__main__":
             
             if "Discord" in choice['project']:
                 os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
-            
+
             else:
                 title(choice['title'])
                 project = choice['project']
                 os.environ['DISCORD_RPC'] = choice['rpc']
+                
+            if "dank.tool settings" in choice['project']:
+                
+                while True:
+                    
+                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n"))
+                    
+                    settings = json.loads(open("settings.json", "r", encoding="utf-8").read())
+                    
+                    counter = 1
+                    for name, value in settings.items():
+                        print(clr(f"  - [{counter}] {name}: {'True' if int(value) else 'False'}"))
+                        counter += 1
+                    
+                    choice = input(clr("\n  - Choice [num/exit]: ") + red).lower() 
+                    
+                    if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(settings)):
+                        settings = list(settings.items())
+                        settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
+                        settings = dict(settings)
+                        open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
+                    
+                    elif choice == 'exit': break
+
+                continue       
                 
             if LOCAL_MODULE:
                 
@@ -407,7 +452,7 @@ if __name__ == "__main__":
 
                 # get src from github if not debug mode else get src locally
 
-                if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV / ONLINE_MODE defined in executor.py
+                if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV / ONLINE_MODE defined in executor.py
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
                         except: input(clr(f"\n  > {_translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))

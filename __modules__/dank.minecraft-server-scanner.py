@@ -133,7 +133,7 @@ def main():
     
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
-    choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Continue\n\n  > Choice [1/2/ENTER]: ") + red)
+    choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red)
     
     if choice == "1":
         os.system("start https://dank-site.onrender.com/minecraft-java-servers")

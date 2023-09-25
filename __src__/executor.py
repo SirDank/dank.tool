@@ -53,7 +53,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.1.2"
+DANK_TOOL_VERSION = "3.1.3"
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -69,11 +69,40 @@ print(clr(f"\n  > Version: {DANK_TOOL_VERSION}"))
 
 # debug env variables
 
-os.environ['DANK_TOOL_OFFLINE_DEV'] = ("1" if os.path.isfile('debug') else "0")
-os.environ['DANK_TOOL_ONLINE_DEV'] = ("1" if os.path.isfile('debug-online') else "0")
-ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
-OFFLINE_DEV = int(os.environ['DANK_TOOL_OFFLINE_DEV'])
-branch = ("main" if not ONLINE_DEV else "dev")
+def settings_json():
+    
+    overwrite = False
+
+    default_settings = {
+            "offline-src": "0",
+            "offline-mode": "0",
+            "dev-branch": "0",
+            "force-update": "0",
+            "force-audio": "0",
+            "disable-audio": "0",
+        }
+
+    if not os.path.isfile('settings.json'):
+        overwrite = True
+    else:
+        _ = tuple(json.loads(open('settings.json', 'r', encoding='utf-8').read()).keys())
+        for key in default_settings:
+            if not key in _:
+                overwrite = True
+                break
+
+    if overwrite:
+        open('settings.json', 'w', encoding='utf-8').write(json.dumps(default_settings, indent=4))
+
+settings_json()
+del settings_json
+
+DANK_TOOL_SETTINGS = json.loads(open('settings.json', 'r', encoding='utf-8').read())
+os.environ['DANK_TOOL_OFFLINE_SRC'] = DANK_TOOL_SETTINGS['offline-src']
+os.environ['DANK_TOOL_DEV_BRANCH'] = DANK_TOOL_SETTINGS['dev-branch']
+OFFLINE_SRC = int(DANK_TOOL_SETTINGS['offline-src'])
+DEV_BRANCH = int(DANK_TOOL_SETTINGS['dev-branch'])
+BRANCH = ("main" if not DEV_BRANCH else "dev")
 
 # handle KeyboardInterrupt
 
@@ -86,19 +115,24 @@ def print_warning_symbol():
 
 def latest_dank_tool_version():
     
-    try:
-        LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__src__/executor_version.txt", headers=headers).content.decode()
-        os.environ['DANK_TOOL_ONLINE'] = "1"
-    except:
+    if int(DANK_TOOL_SETTINGS['offline-mode']):
         LATEST_VERSION = "0"
         os.environ['DANK_TOOL_ONLINE'] = "0"
-        os.environ['DANK_TOOL_ONLINE_DEV'] = "0"
+        os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
+    else:
+        try:
+            LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers).content.decode()
+            os.environ['DANK_TOOL_ONLINE'] = "1"
+        except:
+            LATEST_VERSION = "0"
+            os.environ['DANK_TOOL_ONLINE'] = "0"
+            os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
     return LATEST_VERSION
 
 LATEST_VERSION = latest_dank_tool_version()
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
-ONLINE_DEV = int(os.environ['DANK_TOOL_ONLINE_DEV'])
-branch = ("main" if not ONLINE_DEV else "dev")
+DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
+BRANCH = ("main" if not DEV_BRANCH else "dev")
 
 # version checker / updater
 
@@ -106,7 +140,7 @@ def dank_tool_installer():
 
     while True:
         try:
-            code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__src__/updater.py", headers=headers).content.decode()
+            code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers).content.decode()
             break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     
@@ -122,15 +156,15 @@ def dank_tool_installer():
 
 # update environment variables
 
-if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or os.path.isfile('force-update'):
-    print(clr(f"\n  > Update Found: {LATEST_VERSION}" + ("" if not os.path.isfile('force-update') else " [ FORCED ]")))
+if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or int(DANK_TOOL_SETTINGS['force-update']):
+    print(clr(f"\n  > Update Found: {LATEST_VERSION}" + ("" if not int(DANK_TOOL_SETTINGS['force-update']) else " [ FORCED ]")))
     dank_tool_installer()
 
 elif LATEST_VERSION == DANK_TOOL_VERSION:
-    if not ONLINE_DEV:
+    if not DEV_BRANCH:
         print(clr(f"\n  > Latest Version!"))
     else:
-        print(clr(f"\n  > Online Development Mode!"))
+        print(clr(f"\n  > Development Branch!"))
 
 elif LATEST_VERSION == "0":
     print(clr("\n  > Offline Mode!"))
@@ -174,13 +208,13 @@ else:
 
 # get and save dank.tool.py
 
-if not os.path.exists('__src__'): os.mkdir('__src__')
-if not os.path.exists('__modules__'): os.mkdir('__modules__')
-if not os.path.exists('__local_modules__'): os.mkdir('__local_modules__')
+if not os.path.isdir('__src__'): os.mkdir('__src__')
+if not os.path.isdir('__modules__'): os.mkdir('__modules__')
+if not os.path.isdir('__local_modules__'): os.mkdir('__local_modules__')
 
-if not OFFLINE_DEV and ( ONLINE_MODE or not os.path.exists('__src__/dank.tool.py') ):
+if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.isfile('__src__/dank.tool.py') ):
     while True:
-        try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__src__/dank.tool.py", headers=headers).content.decode(); break
+        try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/dank.tool.py", headers=headers).content.decode(); break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
     open('__src__/dank.tool.py', 'w', encoding='utf-8').write(code)
 else:
@@ -213,6 +247,8 @@ if ONLINE_MODE:
         RPC.connect()
         executor.submit(dank_tool_discord_rpc)
     except: pass
+else:
+    del dank_tool_discord_rpc
 
 # update counter
 
@@ -228,6 +264,8 @@ def dank_tool_runs_counter():
         
 if ONLINE_MODE:
     executor.submit(dank_tool_runs_counter)
+else:
+    del dank_tool_runs_counter
 
 # chatroom user validator
 
@@ -243,13 +281,15 @@ def dank_tool_chatroom():
 
 if ONLINE_MODE:
     executor.submit(dank_tool_chatroom)
+else:
+    del dank_tool_chatroom
 
 # execute, catch errors if any
 
 title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}")
 
 if not ONLINE_MODE:
-    time.sleep(5)
+    time.sleep(4)
 
 try: exec(code)
 except:
@@ -270,7 +310,7 @@ except:
     elif ONLINE_MODE:
         while True:
             try:
-                session.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
                 break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
         print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
