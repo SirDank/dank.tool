@@ -425,7 +425,7 @@ if __name__ == "__main__":
                         print(clr(f"  - [{counter}] {name}: {'True' if int(value) else 'False'}"))
                         counter += 1
                     
-                    choice = input(clr("\n  - Choice [num/exit]: ") + red) 
+                    choice = input(clr("\n  - Choice [num/exit]: ") + red).lower() 
                     
                     if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(settings)):
                         settings = list(settings.items())
