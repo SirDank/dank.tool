@@ -324,6 +324,12 @@ if __name__ == "__main__":
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+    
+    else:
+        
+        del updated_on
+        del download_offline_scripts
+        del get_menu_request_responses
 
     # main
 
@@ -350,7 +356,7 @@ if __name__ == "__main__":
         
         local_modules = {}
         
-        if not os.path.exists('__local_modules__'):
+        if not os.path.isdir('__local_modules__'):
             os.mkdir('__local_modules__')
 
         for module in os.listdir("__local_modules__"):

@@ -69,16 +69,33 @@ print(clr(f"\n  > Version: {DANK_TOOL_VERSION}"))
 
 # debug env variables
 
-if not os.path.isfile('settings.json'):
-    open('settings.json', 'w', encoding='utf-8').write(json.dumps(
-        {
+def settings_json():
+    
+    overwrite = False
+
+    default_settings = {
             "offline-src": "0",
             "offline-mode": "0",
             "dev-branch": "0",
             "force-update": "0",
             "force-audio": "0",
             "disable-audio": "0",
-        }, indent=4))
+        }
+
+    if not os.path.isfile('settings.json'):
+        overwrite = True
+    else:
+        _ = tuple(json.loads(open('settings.json', 'r', encoding='utf-8').read()).keys())
+        for key in default_settings:
+            if not key in _:
+                overwrite = True
+                break
+
+    if overwrite:
+        open('settings.json', 'w', encoding='utf-8').write(json.dumps(default_settings, indent=4))
+
+settings_json()
+del settings_json
 
 DANK_TOOL_SETTINGS = json.loads(open('settings.json', 'r', encoding='utf-8').read())
 os.environ['DANK_TOOL_OFFLINE_SRC'] = DANK_TOOL_SETTINGS['offline-src']
@@ -230,6 +247,8 @@ if ONLINE_MODE:
         RPC.connect()
         executor.submit(dank_tool_discord_rpc)
     except: pass
+else:
+    del dank_tool_discord_rpc
 
 # update counter
 
@@ -245,6 +264,8 @@ def dank_tool_runs_counter():
         
 if ONLINE_MODE:
     executor.submit(dank_tool_runs_counter)
+else:
+    del dank_tool_runs_counter
 
 # chatroom user validator
 
@@ -260,6 +281,8 @@ def dank_tool_chatroom():
 
 if ONLINE_MODE:
     executor.submit(dank_tool_chatroom)
+else:
+    del dank_tool_chatroom
 
 # execute, catch errors if any
 
