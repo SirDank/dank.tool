@@ -420,6 +420,13 @@ if __name__ == "__main__":
                     
                     settings = json.loads(open("settings.json", "r", encoding="utf-8").read())
                     
+                    if os.path.isfile("force-audio") and not int(settings["force-audio"]):
+                        settings["force-audio"] = "1"
+                        open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
+                    if os.path.isfile("disable-audio") and not int(settings["disable-audio"]):
+                        settings["disable-audio"] = "1"
+                        open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
+                    
                     counter = 1
                     for name, value in settings.items():
                         print(clr(f"  - [{counter}] {name}: {'True' if int(value) else 'False'}"))
@@ -431,6 +438,20 @@ if __name__ == "__main__":
                         settings = list(settings.items())
                         settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
                         settings = dict(settings)
+                        
+                        if int(settings["force-audio"]):
+                            if not os.path.isfile("force-audio"):
+                                open("force-audio", "w", encoding="utf-8").write("")
+                        else:
+                            if os.path.isfile("force-audio"):
+                                os.remove("force-audio")
+                        if int(settings["disable-audio"]):
+                            if not os.path.isfile("disable-audio"):
+                                open("disable-audio", "w", encoding="utf-8").write("")
+                        else:
+                            if os.path.isfile("disable-audio"):
+                                os.remove("disable-audio")
+                        
                         open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
                     
                     elif choice == 'exit': break
