@@ -55,7 +55,7 @@
 
 - When on the main menu, you can resize the window to your preferred size and then enter `refresh` as input to re-align the UI.
 
-- If you want the startup animation and music to be played on every run, create a file called `force-audio` inside the install directory.
+- If you want the startup animation and music to be played on every run, enable `force-audio` in settings.
 
 - Documentation for developers can be found at the bottom.
 
