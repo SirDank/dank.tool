@@ -419,12 +419,26 @@ if __name__ == "__main__":
                     cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n"))
                     
                     settings = json.loads(open("settings.json", "r", encoding="utf-8").read())
+                    settings_changed = False
                     
-                    if os.path.isfile("force-audio") and not int(settings["force-audio"]):
-                        settings["force-audio"] = "1"
-                        open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
-                    if os.path.isfile("disable-audio") and not int(settings["disable-audio"]):
-                        settings["disable-audio"] = "1"
+                    if os.path.isfile("force-audio"):
+                        if not int(settings["force-audio"]):
+                            settings["force-audio"] = "1"
+                            settings_changed = True
+                    else:
+                        if int(settings["force-audio"]):
+                            settings["force-audio"] = "0"
+                            settings_changed = True
+                    if os.path.isfile("disable-audio"):
+                        if not int(settings["disable-audio"]):
+                            settings["disable-audio"] = "1"
+                            settings_changed = True
+                    else:
+                        if int(settings["disable-audio"]):
+                            settings["disable-audio"] = "0"
+                            settings_changed = True
+                    
+                    if settings_changed:
                         open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
                     
                     counter = 1
