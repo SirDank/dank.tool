@@ -51,7 +51,7 @@ def updated_on(url, dankware_module = True):
             time = time.replace("Z","").split(":")
             date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
-        return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')} 🔄" # 🔄
+        return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
     except: return "" # [bright_red]⚠️
 
 # multithread requests
@@ -83,7 +83,7 @@ def get_menu_request_responses(task_id, req_key):
             menu_request_responses[req_key] = f"[bright_green]{menu_request_responses[req_key]} online{' (you)' if menu_request_responses[req_key] == '1' else ''}"
         except: menu_request_responses[req_key] = "" # [bright_red]⚠️
         
-    # get last update time
+    # get last update time for modules based on external repos
     
     elif task_id in (4, 5, 6):
         
@@ -91,6 +91,8 @@ def get_menu_request_responses(task_id, req_key):
         elif task_id == 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
         elif task_id == 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
         menu_request_responses[req_key] = updated_on(url,False)
+        
+    # get last update time for modules
         
     elif task_id > 6:
         
@@ -197,12 +199,7 @@ def set_globals_three():
         
         # global runs
             
-        try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
-        except:
-            # temp debug
-            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
-            except: pass
-            stats = ""
+        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
         
         online_modules = {
 
