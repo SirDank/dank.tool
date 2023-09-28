@@ -51,7 +51,7 @@ def updated_on(url, dankware_module = True):
             time = time.replace("Z","").split(":")
             date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
-        return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')} ago" # 🔄
+        return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')} 🔄" # 🔄
     except: return "" # [bright_red]⚠️
 
 # multithread requests
