@@ -43,7 +43,7 @@ def updated_on(url, dankware_module = True):
     if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
     try:
 
-        response = requests.get(url, headers=headers, timeout=5).json()
+        response = requests.get(url, headers=headers, timeout=3).json()
         if response == []: return f"[ unreleased ]"
         else:
             date, time = response[0]["commit"]["author"]["date"].split("T")
@@ -58,30 +58,26 @@ def updated_on(url, dankware_module = True):
 
 def get_menu_request_responses(task_id, req_key):
     
-    global menu_request_responses
-    
-    menu_request_responses = {}
-    
     # get global runs
     
     if task_id in (0, 1):
 
         if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
         elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
-        try: menu_request_responses[req_key] = requests.get(url, headers=headers, timeout=5).content.decode().replace('<pre>','').replace('</pre>','')
+        try: menu_request_responses[req_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
         except: menu_request_responses[req_key] = f"{red}⚠️"
     
     # get motd
     
     elif task_id == 2:
-        menu_request_responses[req_key] = clr(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=5).content.decode(), colour_one=green)
+        menu_request_responses[req_key] = clr(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
 
     # get chatroom user count
 
     elif task_id == 3:
 
         try:
-            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=5).content.decode()
+            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit() and tmp != "0": menu_request_responses[req_key] = tmp
             else: menu_request_responses[req_key] = "1"
             menu_request_responses[req_key] = f"[bright_green]{menu_request_responses[req_key]} online{' (you)' if menu_request_responses[req_key] == '1' else ''}"
@@ -104,7 +100,7 @@ def get_menu_request_responses(task_id, req_key):
 
 def download_offline_scripts(project):
     
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode()
+    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
 
 # print modules with index and get choice
@@ -317,6 +313,9 @@ if __name__ == "__main__":
                 input(clr(f"\n  > {_translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
 
         print(clr(f"\n  > {_translate('Getting request responses')}..."))
+        
+        global menu_request_responses
+        menu_request_responses = {}
 
         while True:
             try:
