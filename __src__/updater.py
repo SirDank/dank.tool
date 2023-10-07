@@ -60,6 +60,7 @@ except: pass
 try: os.remove("dank.tool.zip")
 except: pass
 
-input(clr("\n  > Press [ENTER] to install the latest version of dank.tool... "))
+try: input(clr("\n  > Press [ENTER] to install the latest version of dank.tool... "))
+except EOFError: pass
 os.system("start dank.tool-[installer].exe")
 os.system("taskkill /f /im dank.tool.exe")
