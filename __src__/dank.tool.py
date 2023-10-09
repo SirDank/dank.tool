@@ -102,7 +102,7 @@ def get_menu_request_responses(task_id, req_key):
 
 def download_offline_scripts(project):
     
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
+    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
 
 # print modules with index and get choice
@@ -199,7 +199,12 @@ def set_globals_three():
         
         # global runs
             
-        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        except:
+            # temp debug
+            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
+            except: pass
+            stats = ""
         
         online_modules = {
 
@@ -282,7 +287,7 @@ def _translate(text):
 
     if TRANSLATOR_ENABLED and ONLINE_MODE:
         try:
-            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+            text = _translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
         except:
             pass
 
@@ -292,7 +297,7 @@ if __name__ == "__main__":
 
     set_globals_one()
     set_globals_two()
-    translator = Translator()
+    _translator = Translator()
 
     # multithread requests & download offline scripts
 
@@ -316,7 +321,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 1, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=False)
+                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
@@ -417,21 +422,21 @@ if __name__ == "__main__":
                     settings = json.loads(open("settings.json", "r", encoding="utf-8").read())
                     update_settings = False
                     
-                    if os.path.isfile("force-audio"):
-                        if not int(settings["force-audio"]):
-                            settings["force-audio"] = "1"
+                    if os.path.isfile("force-startup-audio"):
+                        if not int(settings["force-startup-audio"]):
+                            settings["force-startup-audio"] = "1"
                             update_settings = True
                     else:
-                        if int(settings["force-audio"]):
-                            settings["force-audio"] = "0"
+                        if int(settings["force-startup-audio"]):
+                            settings["force-startup-audio"] = "0"
                             update_settings = True
-                    if os.path.isfile("disable-audio"):
-                        if not int(settings["disable-audio"]):
-                            settings["disable-audio"] = "1"
+                    if os.path.isfile("disable-startup-audio"):
+                        if not int(settings["disable-startup-audio"]):
+                            settings["disable-startup-audio"] = "1"
                             update_settings = True
                     else:
-                        if int(settings["disable-audio"]):
-                            settings["disable-audio"] = "0"
+                        if int(settings["disable-startup-audio"]):
+                            settings["disable-startup-audio"] = "0"
                             update_settings = True
                     
                     if update_settings:
@@ -449,18 +454,18 @@ if __name__ == "__main__":
                         settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
                         settings = dict(settings)
                         
-                        if int(settings["force-audio"]):
-                            if not os.path.isfile("force-audio"):
-                                open("force-audio", "w", encoding="utf-8").write("")
+                        if int(settings["force-startup-audio"]):
+                            if not os.path.isfile("force-startup-audio"):
+                                open("force-startup-audio", "w", encoding="utf-8").write("")
                         else:
-                            if os.path.isfile("force-audio"):
-                                os.remove("force-audio")
-                        if int(settings["disable-audio"]):
-                            if not os.path.isfile("disable-audio"):
-                                open("disable-audio", "w", encoding="utf-8").write("")
+                            if os.path.isfile("force-startup-audio"):
+                                os.remove("force-startup-audio")
+                        if int(settings["disable-startup-audio"]):
+                            if not os.path.isfile("disable-startup-audio"):
+                                open("disable-startup-audio", "w", encoding="utf-8").write("")
                         else:
-                            if os.path.isfile("disable-audio"):
-                                os.remove("disable-audio")
+                            if os.path.isfile("disable-startup-audio"):
+                                os.remove("disable-startup-audio")
                         
                         open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
                     
