@@ -98,9 +98,9 @@ def get_menu_request_responses(task_id, req_key):
         
         menu_request_responses[req_key] = updated_on(req_key)
 
-# multithreaded script downloader
+# multithreaded module downloader
 
-def download_offline_scripts(project):
+def download_offline_modules(project):
     
     code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
@@ -114,9 +114,13 @@ def print_modules():
     console = Console()
     counter = 1
     
+    # online modules
+    
     for _title, module in modules.items():
         user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['req_resp']}")
         counter += 1
+        
+    # local modules
         
     for _title in local_modules.keys():
         user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{_title}[/b]")
@@ -139,8 +143,6 @@ def set_globals_one():
     branch = ("main" if not DEV_BRANCH else "dev")
     headers = {"User-Agent": "dank.tool"}
     TRANSLATOR_ENABLED = (False if DANK_TOOL_LANG == "en" else True)
-
-def set_globals_two():
     
     global offline_modules, offline_scripts, request_keys
     
@@ -189,22 +191,20 @@ def set_globals_two():
         )
     )
 
-def set_globals_three():
+def set_globals_two():
     
     global stats
     
     if ONLINE_MODE:
-        
-        global online_modules
-        
-        # global runs
-            
+
         try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
         except:
             # temp debug
             try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
             except: pass
             stats = ""
+            
+        global online_modules
         
         online_modules = {
 
@@ -296,7 +296,6 @@ def _translate(text):
 if __name__ == "__main__":
 
     set_globals_one()
-    set_globals_two()
     _translator = Translator()
 
     # multithread requests & download offline scripts
@@ -305,14 +304,14 @@ if __name__ == "__main__":
 
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
         
-        print(clr(f"\n  > {_translate('Downloading scripts')}..."))
+        print(clr(f"\n  > {_translate('Downloading offline modules')}..."))
 
         while True:
             try:
-                multithread(download_offline_scripts, 50, offline_scripts, progress_bar=False)
+                multithread(download_offline_modules, 50, offline_scripts, progress_bar=False)
                 break
             except:
-                input(clr(f"\n  > {_translate('Failed to download scripts! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
 
         print(clr(f"\n  > {_translate('Getting request responses')}..."))
         
@@ -325,12 +324,10 @@ if __name__ == "__main__":
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
-    
-    else:
-        
-        del updated_on
-        del download_offline_scripts
-        del get_menu_request_responses
+
+    del updated_on
+    del download_offline_modules
+    del get_menu_request_responses
 
     # main
 
@@ -345,7 +342,6 @@ if __name__ == "__main__":
         
         set_globals_one()
         set_globals_two()
-        set_globals_three()
 
         title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # version defined in executor.py
         os.environ['DISCORD_RPC'] = "on the main menu"
@@ -371,6 +367,8 @@ if __name__ == "__main__":
         print_modules()
         
         while True:
+            
+            # user input
             
             choice = input(clr("  - Choice: ") + red)
             if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
@@ -412,6 +410,8 @@ if __name__ == "__main__":
                 title(choice['title'])
                 project = choice['project']
                 os.environ['DISCORD_RPC'] = choice['rpc']
+                
+            # settings menu
                 
             if "dank.tool settings" in choice['project']:
                 
