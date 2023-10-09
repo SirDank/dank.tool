@@ -87,7 +87,7 @@ def get_menu_request_responses(task_id, req_key):
     
     elif task_id in (4, 5, 6):
         
-        if task_id == 4: url = "https://api.github.com/repos/amd64fox/SpotX/commits?path=Install.ps1&page=1&per_page=1"
+        if task_id == 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=run.ps1&page=1&per_page=1"
         elif task_id == 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
         elif task_id == 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
         menu_request_responses[req_key] = updated_on(url,False)

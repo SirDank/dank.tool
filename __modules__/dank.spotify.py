@@ -44,7 +44,7 @@ def main():
             print(clr(f"\n  > {translate('restoring Spotify')}...\n"))
             os.system('spicetify restore')
             print(clr("\n  > installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Enable Auto-Clear Cache (30d)\n  - Block Updates"))
-            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"')
+            os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"')
             input(clr(f"  > {translate('Hit [ ENTER ] if you are signed in to Spotify')}... "))
             print(clr(f"\n  > {translate('terminating Spotify')}...\n"))
             os.system('taskkill /f /im spotify.exe >nul 2>&1')
