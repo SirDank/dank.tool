@@ -258,6 +258,6 @@ if __name__ == "__main__":
     executor.shutdown(wait=True)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in (ips, server_type, port, executor, translator, check_java, check_bedrock, save_server, generate_ip, main, translate):
+        for _ in (ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main):
             try: del _
             except: pass
