@@ -53,7 +53,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.1.3"
+DANK_TOOL_VERSION = "3.1.4"
 session = requests.Session()
 executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -78,8 +78,8 @@ def settings_json():
             "offline-mode": "0",
             "dev-branch": "0",
             "force-update": "0",
-            "force-audio": "0",
-            "disable-audio": "0",
+            "force-startup-audio": "0",
+            "disable-startup-audio": "0",
         }
 
     if not os.path.isfile('settings.json'):
@@ -156,8 +156,12 @@ def dank_tool_installer():
 
 # update environment variables
 
-if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or int(DANK_TOOL_SETTINGS['force-update']):
+if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or (ONLINE_MODE and int(DANK_TOOL_SETTINGS['force-update'])):
     print(clr(f"\n  > Update Found: {LATEST_VERSION}" + ("" if not int(DANK_TOOL_SETTINGS['force-update']) else " [ FORCED ]")))
+    if int(DANK_TOOL_SETTINGS['force-update']):
+        settings = json.loads(open('settings.json', 'r', encoding='utf-8').read())
+        settings['force-update'] = "0"
+        open('settings.json', 'w', encoding='utf-8').write(json.dumps(settings, indent=4))
     dank_tool_installer()
 
 elif LATEST_VERSION == DANK_TOOL_VERSION:
@@ -205,6 +209,7 @@ if ONLINE_MODE:
     check_windows_language()
 else:
     os.environ['DANK_TOOL_LANG'] = "en"
+del check_windows_language
 
 # get and save dank.tool.py
 
@@ -241,12 +246,14 @@ def dank_tool_discord_rpc():
         except: break
 
 if ONLINE_MODE:
+    print(clr("\n  > Trying to set discord rpc... (if this freezes, restart discord)"))
     try:
         os.environ['DISCORD_RPC'] = "on the main menu"
         RPC = Presence("1028269752386326538")
         RPC.connect()
         executor.submit(dank_tool_discord_rpc)
     except: pass
+    rm_line(); rm_line()
 else:
     del dank_tool_discord_rpc
 
@@ -289,7 +296,7 @@ else:
 title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}")
 
 if not ONLINE_MODE:
-    time.sleep(4)
+    time.sleep(3)
 
 try: exec(code)
 except:
