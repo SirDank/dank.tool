@@ -132,7 +132,7 @@ def main():
     # get user input
     
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
+    print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool')}!"))
     choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red)
     
     if choice == "1":
@@ -163,7 +163,7 @@ def main():
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     # \n  > {translate('The database files store the ips that have been scanned, and thus will not be scanned again.')}\n\n  > {translate('Delete those file to reset the scanned ips.')}\n # \n\n  > {translate('The respective database file is only updated after the scan is complete.')}\n\n  > {translate('You can delete the database files if they get too large.')}
-    print(clr(f"\n  > {translate('Start with 100 threads and note the performance impact.')}\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value!')}\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate.')}"))
+    print(clr(f"\n  > {translate('Start with 100 threads and note the performance impact')}.\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value')}!\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate')}."))
 
     print("")
     while True:
@@ -194,7 +194,7 @@ def main():
         
     # disclaimer
  
-    cls(); input(clr(f"\n  [IMPORTANT]\n\n  > {translate('Do not use [ Ctrl + C ] without selecting text first!')}\n\n  > {translate('All the servers are saved to servers.txt!')}\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}..."))
+    cls(); input(clr(f"\n  [IMPORTANT]\n\n  > {translate('Do not use [ Ctrl + C ] without selecting text first')}!\n\n  > {translate('All the servers are saved to servers.txt')}!\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}... "))
     cls()
 
     # generate and check ips on multiple threads in batches
@@ -258,6 +258,6 @@ if __name__ == "__main__":
     executor.shutdown(wait=True)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in (ips, server_type, port, executor, check_java, check_bedrock, save_server, generate_ip, main, translate):
+        for _ in (ips, server_type, port, executor, translator, check_java, check_bedrock, save_server, generate_ip, main, translate):
             try: del _
             except: pass

@@ -65,7 +65,7 @@ def main_one():
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr(f"\n  > {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  > {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE")
     
@@ -764,7 +764,7 @@ def main_two():
   
   > {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
   
-  > {translate('Press [ ENTER ] after you have read the message... ')}'''
+  > {translate('Press [ ENTER ] after you have read the message')}... '''
 
         print_read_me(); input(clr(string))  
     else:
@@ -780,7 +780,7 @@ def main_two():
 
   > {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
-  > {translate('Press [ ENTER ] after you have read the message... ')}'''
+  > {translate('Press [ ENTER ] after you have read the message')}... '''
 
     print_read_me(); input(clr(string))
 
@@ -794,6 +794,6 @@ def main_two():
 main_two()
 
 if __name__ == "__main__" and "DANK_TOOL_VERSION" in os.environ:
-    for _ in (banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, headers, latest_java_version, print_banner, print_read_me, main_one, main_two, translate):
+    for _ in (banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, headers, latest_java_version, translator, print_banner, print_read_me, main_one, main_two, translate):
         try: del _
         except: pass
