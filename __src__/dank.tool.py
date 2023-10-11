@@ -239,7 +239,7 @@ def set_globals_two():
             translate('Browser Backup'): {
                 'req_resp': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
-                'project': "dank.browser-backup",
+                'project': "_dank.browser-backup",
                 'rpc': "backing up a browser"
             },
 
