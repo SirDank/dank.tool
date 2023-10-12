@@ -56,6 +56,8 @@ def backup(browser, compression_level):
 
         now = datetime.datetime.now()
         zip_name = f'chrome_{now.strftime("%d-%m-%Y")}_{now.strftime("%I-%M-%S-%p")}.zip'
+        instructions = f'\n  > [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!'
+        open('instructions.txt', 'w').write(instructions)
 
         width = os.get_terminal_size().columns
         job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
@@ -72,13 +74,15 @@ def backup(browser, compression_level):
                         zipf.write(file_path, os.path.join("User Data", rel_path))
                         job_progress.update(overall_task, advance=1)
                 zipf.write("chrome.reg", "chrome.reg")
+                zipf.write("instructions.txt", "instructions.txt")
 
         print(clr("\n  > Cleaning..."))
-        if os.path.isfile("chrome.reg"): os.remove("chrome.reg")
+        os.remove("chrome.reg")
+        os.remove("instructions.txt")
         os.system(f'explorer.exe "{os.getcwd()}"')
     
         # - Unzip with the password "{password}"
-        cls(); input(clr(f'\n  > [STEPS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!\n\n  > Press [ENTER] once you have read the steps... '))
+        cls(); input(clr(instructions + '\n\n  > Press [ENTER] once you have read the steps... '))
     
     #elif browser == "Firefox"
     #elif browser == "Opera":
