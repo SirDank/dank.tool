@@ -48,35 +48,30 @@ def backup(browser, compression_level):
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
         
         print(clr("\n  > Compressing... (this might take a few minutes)\n"))
-        source_files = []
-        prefixes = []
-
+        
+        num_source_files = 0
         for root, dirs, files in os.walk(path_to_backup):
             for file in files:
-                filepath = os.path.join(root, file)
-                prefix = str("User Data" + filepath.split("User Data")[1]).replace(f"\\{file}",'')
-                source_files.append(filepath)
-                prefixes.append(prefix)
+                num_source_files += 1
 
         now = datetime.datetime.now()
         zip_name = f'chrome_{now.strftime("%d-%m-%Y")}_{now.strftime("%I-%M-%S-%p")}.zip'
 
         width = os.get_terminal_size().columns
         job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
-        overall_task = job_progress.add_task("[bright_green]Compressing", total=int(len(source_files)))
+        overall_task = job_progress.add_task("[bright_green]Compressing", total=num_source_files)
         progress_table = Table.grid()
         progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="bright_red", padding=(1, 2)))
                 
         with Live(progress_table, refresh_per_second=10):
-            with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level) as zf:
-                for i, filepath in enumerate(source_files):
-                    prefix = prefixes[i]
-                    relpath = os.path.relpath(filepath, path_to_backup)
-                    zip_path = os.path.join(prefix, relpath)
-                    zf.write(filepath, zip_path)
-                    job_progress.update(overall_task, advance=1)
-                zf.write("chrome.reg", "chrome.reg")
-                #zf.setpassword(bytes(password, 'utf-8'))
+            with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level) as zipf:
+                for root, dirs, files in os.walk(path_to_backup):
+                    for file in files:
+                        file_path = os.path.join(root, file)
+                        rel_path = os.path.relpath(file_path, path_to_backup)
+                        zipf.write(file_path, os.path.join("User Data", rel_path))
+                        job_progress.update(overall_task, advance=1)
+                zipf.write("chrome.reg", "chrome.reg")
 
         print(clr("\n  > Cleaning..."))
         if os.path.isfile("chrome.reg"): os.remove("chrome.reg")
@@ -104,7 +99,8 @@ def main():
     
     browsers = ['Chrome']
     to_print = "  > Supported Browsers: \n"
-    for _, browser in enumerate(browsers): to_print += f"\n  - [{_+1}] {browser}"
+    for _, browser in enumerate(browsers):
+        to_print += f"\n  - [{_+1}] {browser}"
 
     print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     print(clr(to_print))

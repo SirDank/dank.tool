@@ -239,7 +239,7 @@ def set_globals_two():
             translate('Browser Backup'): {
                 'req_resp': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
-                'project': "_dank.browser-backup",
+                'project': "dank.browser-backup",
                 'rpc': "backing up a browser"
             },
 
@@ -504,7 +504,11 @@ if __name__ == "__main__":
             # execute src
             
             if code == "404: Not Found":
-                print(clr(f"\n  > {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2)); time.sleep(5)
+                if project.startswith('_'):
+                    print(clr(f"\n  > {translate(f'{project[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
+                else:
+                    print(clr(f"\n  > {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2))
+                time.sleep(5)
             else:
                 cls(); exec(code)
                 cls(); print(clr(f"\n  > {translate(f'{project} executed successfully! Returning to menu in 5 seconds')}...")); time.sleep(5)
