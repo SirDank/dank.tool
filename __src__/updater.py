@@ -52,7 +52,7 @@ except:
 print(clr("\n  > Extracting..."))
 try: pyminizip.uncompress("dank.tool.zip", "dankware", None, True)
 except: 
-    cls(); input(clr(f"\n  > Failed to extract!\n  > Please manually extract and install from \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\"\n  > Press [ENTER] to EXIT... ",2))
+    cls(); input(clr(f"\n  > Failed to extract!\n  > Please manually extract and install from \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\" using the password \"dankware\"\n  > Press [ENTER] to EXIT... ",2))
     sys.exit("Failed to extract file!")
     
 try: os.remove("password = dankware")
