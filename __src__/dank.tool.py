@@ -52,57 +52,54 @@ def updated_on(url, dankware_module = True):
             date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         
         return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
+
     except: return "" # [bright_red]⚠️
 
 # multithread requests
 
-def get_menu_request_responses(task_id, req_key):
+def get_menu_request_responses(task_id, request_key):
     
     # get global runs
     
     if task_id in (0, 1):
-
         if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
         elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
-        try: menu_request_responses[req_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
-        except: menu_request_responses[req_key] = f"{red}⚠️"
+        try: menu_request_responses[request_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
+        except: menu_request_responses[request_key] = f"{red}⚠️"
     
     # get motd
     
     elif task_id == 2:
-        menu_request_responses[req_key] = clr(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
+        menu_request_responses[request_key] = clr(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
 
     # get chatroom user count
 
     elif task_id == 3:
-
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
-            if tmp.isdigit() and tmp != "0": menu_request_responses[req_key] = tmp
-            else: menu_request_responses[req_key] = "1"
-            menu_request_responses[req_key] = f"[bright_green]{menu_request_responses[req_key]} online{' (you)' if menu_request_responses[req_key] == '1' else ''}"
-        except: menu_request_responses[req_key] = "" # [bright_red]⚠️
+            if tmp.isdigit() and tmp != "0": menu_request_responses[request_key] = tmp
+            else: menu_request_responses[request_key] = "1"
+            menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
+        except: menu_request_responses[request_key] = "" # [bright_red]⚠️
         
     # get last update time for modules based on external repos
     
     elif task_id in (4, 5, 6):
-        
         if task_id == 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=run.ps1&page=1&per_page=1"
         elif task_id == 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
         elif task_id == 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
-        menu_request_responses[req_key] = updated_on(url,False)
+        menu_request_responses[request_key] = updated_on(url,False)
         
     # get last update time for modules
         
     elif task_id > 6:
-        
-        menu_request_responses[req_key] = updated_on(req_key)
+        menu_request_responses[request_key] = updated_on(request_key)
 
 # multithreaded module downloader
 
 def download_offline_modules(project):
     
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode()
+    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
 
 # print modules with index and get choice
@@ -117,7 +114,7 @@ def print_modules():
     # online modules
     
     for _title, module in modules.items():
-        user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['req_resp']}")
+        user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['info']}")
         counter += 1
         
     # local modules
@@ -133,14 +130,14 @@ def print_modules():
 
 def set_globals_one():
     
-    global ONLINE_MODE, OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, DANK_TOOL_LANG, TRANSLATOR_ENABLED, branch, headers
+    global ONLINE_MODE, OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, DANK_TOOL_LANG, TRANSLATOR_ENABLED, BRANCH, headers
 
     OFFLINE_SRC = int(os.environ['DANK_TOOL_OFFLINE_SRC'])
     DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
     DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
     ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
     DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
-    branch = ("main" if not DEV_BRANCH else "dev")
+    BRANCH = ("main" if not DEV_BRANCH else "dev")
     headers = {"User-Agent": "dank.tool"}
     TRANSLATOR_ENABLED = (False if DANK_TOOL_LANG == "en" else True)
     
@@ -149,21 +146,21 @@ def set_globals_one():
     offline_modules = {
 
         'Fusion-Fall Modding Tool': {
-            'req_resp': '',
+            'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
             'project': "dank.fusion-fall",
             'rpc': "modding fusion-fall"
         },
         
         'Browser Backup': {
-            'req_resp': '',
+            'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
             'project': "dank.browser-backup",
             'rpc': "backing up a browser"
         },
         
         'Settings': {
-            'req_resp': '',
+            'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
             'project': "dank.tool settings",
             'rpc': "changing dank.tool settings"
@@ -209,77 +206,75 @@ def set_globals_two():
         online_modules = {
 
             translate('Minecraft Server Builder'): {
-                'req_resp': menu_request_responses["dank.minecraft-server-builder"],
+                'info': menu_request_responses["dank.minecraft-server-builder"],
                 'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
                 'project': "dank.minecraft-server-builder",
                 'rpc': "building a minecraft server"
             },
 
             translate('Minecraft Server Scanner'): {
-                'req_resp': menu_request_responses["dank.minecraft-server-scanner"],
+                'info': menu_request_responses["dank.minecraft-server-scanner"],
                 'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
                 'project': "dank.minecraft-server-scanner",
                 'rpc': "scanning for minecraft servers"
             },
 
             translate('Fusion-Fall Modding Tool'): {
-                'req_resp': menu_request_responses["dank.fusion-fall"],
+                'info': menu_request_responses["dank.fusion-fall"],
                 'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
                 'project': "dank.fusion-fall",
                 'rpc': "modding fusion-fall"
             },
 
             translate('SpotX + Spicetify Installer'): {
-                'req_resp': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
+                'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
                 'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                 'project': "dank.spotify",
                 'rpc': "installing spotx and spicetify"
             },
 
             translate('Browser Backup'): {
-                'req_resp': menu_request_responses["dank.browser-backup"],
+                'info': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
                 'project': "dank.browser-backup",
                 'rpc': "backing up a browser"
             },
 
             translate('Windows / Office Activator'): {
-                'req_resp': menu_request_responses["dank.win-activate"],
+                'info': menu_request_responses["dank.win-activate"],
                 'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                 'project': "dank.win-activate",
                 'rpc': "activating windows / office"
             },
 
             #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
-            #    'req_resp': menu_request_responses["dank.auto-clicker"],
+            #    'info': menu_request_responses["dank.auto-clicker"],
             #    'title': "𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛",
             #    'project': "dank.auto-clicker",
             #    'rpc': "running auto-clicker"
             #},
 
             'Chatroom': {
-                'req_resp': menu_request_responses["chatroom_user_count"],
+                'info': menu_request_responses["chatroom_user_count"],
                 'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
                 'project': "dank.chatroom",
                 'rpc': "chatting in the chatroom"
             },
 
             'Discord Server': {
-                'req_resp': '[bright_green]Join Now!',
+                'info': '[bright_green]Join Now!',
                 'project': "Dankware Inc. Discord Server",
             },
             
             'Settings': {
-                'req_resp': '',
+                'info': '',
                 'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
                 'project': "dank.tool settings",
                 'rpc': "changing dank.tool settings"
             }
         }
     
-    else:
-
-        stats = ""
+    else: stats = ""
 
 # translator
 
@@ -290,7 +285,6 @@ def translate(text):
             text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
         except:
             pass
-
     return text
 
 if __name__ == "__main__":
@@ -304,7 +298,7 @@ if __name__ == "__main__":
 
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
         
-        print(clr(f"\n  > {translate('Downloading offline modules')}..."))
+        print(clr(f"\n  > {translate('Downloading modules')}..."))
 
         while True:
             try:
@@ -340,6 +334,8 @@ if __name__ == "__main__":
 
     while True:
         
+        # reset
+        
         set_globals_one()
         set_globals_two()
 
@@ -347,10 +343,9 @@ if __name__ == "__main__":
         os.environ['DISCORD_RPC'] = "on the main menu"
         os.chdir(os.path.dirname(__file__))
             
-        # available modules
+        # print available modules
         
         modules = (offline_modules if not ONLINE_MODE else online_modules)
-        
         local_modules = {}
         
         if not os.path.isdir('__local_modules__'):
@@ -402,7 +397,7 @@ if __name__ == "__main__":
             else: rm_line()
 
         try:
-            
+
             if "Discord" in choice['project']:
                 os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
 
@@ -490,7 +485,7 @@ if __name__ == "__main__":
 
                 if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV / ONLINE_MODE defined in executor.py
                     while True:
-                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{branch}/__modules__/{project}.py", headers=headers).content.decode(); break
+                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers).content.decode(); break
                         except: input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
                 else:
