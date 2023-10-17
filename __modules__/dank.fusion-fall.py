@@ -5,7 +5,7 @@ import time
 import shutil
 import requests
 import pretty_errors
-from dankware import align, clr, cls, err, rm_line, file_selector, title
+from dankware import align, clr, cls, err, rm_line, file_selector, title, get_path
 from dankware import white, white_normal, red, red_normal, red_dim, green, reset, Style
 
 title("𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕")
@@ -70,7 +70,7 @@ def banner():
 
 def open_workspace():
     
-    dankff_path = os.path.join(os.environ['USERPROFILE'], 'Documents')
+    dankff_path = get_path('Documents')
     if not os.path.exists(dankff_path):
         dankff_path = "C:\\"
     dankff_path = os.path.join(dankff_path, "dank.fusion-fall")

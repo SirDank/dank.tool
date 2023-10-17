@@ -6,7 +6,7 @@ import datetime
 from psutil import process_iter
 from translatepy import Translator
 from dankware import white, white_normal, red, red_normal, red_dim
-from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys
+from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys, get_path
 
 from rich.live import Live
 from rich.panel import Panel
@@ -118,7 +118,7 @@ def main():
         if not is_admin(): raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
     except: sys.exit(clr(err(sys.exc_info()),2))
     
-    try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
     try: os.mkdir('dank.browser-backup')
     except: pass

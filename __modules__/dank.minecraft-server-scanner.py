@@ -6,7 +6,7 @@ from translatepy import Translator
 from concurrent.futures import ThreadPoolExecutor
 from mcstatus import JavaServer, BedrockServer
 from dankware import white, white_normal, red, red_normal, red_dim, red
-from dankware import multithread, clr, cls, title, align, rm_line, random_ip
+from dankware import multithread, clr, cls, title, align, rm_line, random_ip, get_path
 
 '''
 
@@ -90,9 +90,6 @@ def generate_ip():
 def main():
     
     global ips, server_type, port, translator, DANK_TOOL_LANG
-
-    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
-    socket.setdefaulttimeout(1)
     
     # check if translator is enabled (dank.tool.exe)
 
@@ -104,6 +101,9 @@ def main():
             translator = Translator()
     except:
         DANK_TOOL_LANG = ''
+
+    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
+    socket.setdefaulttimeout(1)
     
     # get user input
     
@@ -115,7 +115,7 @@ def main():
     
     # change directory
 
-    try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    try: get_path('Documents')
     except: os.chdir("C:\\")
     try: os.mkdir('dank.mc-server-scanner')
     except FileExistsError: pass
