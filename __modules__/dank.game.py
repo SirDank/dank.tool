@@ -7,20 +7,20 @@ from ursina.shaders import texture_blend_shader
 from concurrent.futures import ThreadPoolExecutor
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(os.path.dirname(__file__))
 title("𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎")
 cls()
 
 input(clr("""\n  [ DISCLAIMER ]
 
   - This game is in early development, expect bugs!
-  - Updates might be slow!
+  - Game updates might be slow!
 
   [ CONTROLS ]
   
   - WASD to move
   - SPACE to jump
-  - ESC to quit
+  - ESC to quit (will not return to menu)
   
   > Press [ENTER] to start... 
 """))
@@ -218,7 +218,7 @@ def input(key):
     if key == 'escape':
         global running
         running = False
-        executor.shutdown(wait=False, cancel_futures=True)
+        executor.shutdown(wait=True, cancel_futures=True)
         application.quit()
 
 running = True
