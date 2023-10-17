@@ -71,7 +71,7 @@ def get_menu_request_responses(task_id, request_key):
     # get motd
     
     elif task_id == 2:
-        menu_request_responses[request_key] = clr(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
+        menu_request_responses[request_key] = clr(requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
 
     # get chatroom user count
 
@@ -313,7 +313,7 @@ if __name__ == "__main__":
         if not os.path.isfile("textures/texture_version.txt"): open("textures/texture_version.txt", "w").write("0")
         
         while True:
-            try: latest_asset_version = int(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__assets__/dank.game/textures/texture_version.txt", headers=headers).content.decode()); break
+            try: latest_asset_version = int(requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/textures/texture_version.txt", headers=headers).content.decode()); break
             except:
                 input(clr(f"\n  > {translate('Failed to get latest asset version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
@@ -327,7 +327,7 @@ if __name__ == "__main__":
 
             while True:
                 
-                try: response = requests.get("https://api.github.com/repos/SirDank/dank.tool/contents/__assets__/dank.game/textures", headers=headers)
+                try: response = requests.get(F"https://api.github.com/repos/SirDank/dank.tool/contents/__assets__/dank.game/textures{'' if not DEV_BRANCH else '?ref=dev'}", headers=headers)
                 except:
                     input(clr(f"\n  > {translate('Failed to contact github! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                     rm_line(); rm_line()
