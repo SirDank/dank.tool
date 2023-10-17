@@ -8,6 +8,7 @@ import os
 import sys
 import json
 import time
+import shutil
 import requests
 from rich.panel import Panel
 from win11toast import notify
@@ -40,7 +41,7 @@ def print_warning_symbol():
 
 def updated_on(url, dankware_module = True):
 
-    if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1"
+    if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1" + ('' if not DEV_BRANCH else '&sha=dev')
     try:
 
         response = requests.get(url, headers=headers, timeout=3).json()
@@ -95,12 +96,17 @@ def get_menu_request_responses(task_id, request_key):
     elif task_id > 6:
         menu_request_responses[request_key] = updated_on(request_key)
 
-# multithreaded module downloader
+# multithreaded module / asset downloader
 
 def download_offline_modules(project):
     
     code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers).content.decode()
     open(f'__modules__/{project}.py', 'w', encoding='utf-8').write(code)
+
+def download_assets(url, file_name):
+
+    data = requests.get(url, headers=headers).content
+    open(file_name, 'wb').write(data)
 
 # print modules with index and get choice
 
@@ -130,18 +136,18 @@ def print_modules():
 
 def set_globals_one():
     
-    global ONLINE_MODE, OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, DANK_TOOL_LANG, TRANSLATOR_ENABLED, BRANCH, headers
+    global ONLINE_MODE, OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, DANK_TOOL_LANG, BRANCH, headers
 
     OFFLINE_SRC = int(os.environ['DANK_TOOL_OFFLINE_SRC'])
     DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
     DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
     ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
     DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
+    DANK_TOOL_LANG = ('' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG)
     BRANCH = ("main" if not DEV_BRANCH else "dev")
     headers = {"User-Agent": "dank.tool"}
-    TRANSLATOR_ENABLED = (False if DANK_TOOL_LANG == "en" else True)
     
-    global offline_modules, offline_scripts, request_keys
+    global offline_modules, offline_scripts
     
     offline_modules = {
 
@@ -159,6 +165,13 @@ def set_globals_one():
             'rpc': "backing up a browser"
         },
         
+        'World Exploration Game': {
+            'info': '',
+            'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
+            'project': "dank.game",
+            'rpc': "playing a world exploration game"
+        },
+        
         'Settings': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
@@ -167,26 +180,7 @@ def set_globals_one():
         }
     }
 
-    offline_scripts = tuple(("dank.fusion-fall", "dank.browser-backup"))
-    
-    # KEEP request_keys IN ORDER!
-    
-    request_keys = tuple(
-        (
-            "dankware_runs",
-            "danktool_runs",
-            "motd",
-            "chatroom_user_count",
-            "SpotX-Win",
-            "Spicetify",
-            "dank.win-activate",
-            "dank.minecraft-server-builder",
-            "dank.minecraft-server-scanner",
-            "dank.auto-clicker",
-            "dank.browser-backup",
-            "dank.fusion-fall"
-        )
-    )
+    offline_scripts = tuple(("dank.fusion-fall", "dank.browser-backup", "dank.game"))
 
 def set_globals_two():
     
@@ -246,6 +240,13 @@ def set_globals_two():
                 'project': "dank.win-activate",
                 'rpc': "activating windows / office"
             },
+            
+            translate('World Exploration Game'): {
+                'info': menu_request_responses["dank.game"],
+                'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
+                'project': "dank.game",
+                'rpc': "playing a world exploration game"
+            },
 
             #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
             #    'info': menu_request_responses["dank.auto-clicker"],
@@ -280,11 +281,9 @@ def set_globals_two():
 
 def translate(text):
 
-    if TRANSLATOR_ENABLED and ONLINE_MODE:
-        try:
-            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
-        except:
-            pass
+    if DANK_TOOL_LANG and ONLINE_MODE:
+        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        except: pass
     return text
 
 if __name__ == "__main__":
@@ -292,13 +291,13 @@ if __name__ == "__main__":
     set_globals_one()
     translator = Translator()
 
-    # multithread requests & download offline scripts
+    # multithreaded requests responses, download modules / assets
 
     if ONLINE_MODE:
 
-        if not os.path.isdir("__modules__"): os.mkdir("__modules__")
-        
         print(clr(f"\n  > {translate('Downloading modules')}..."))
+        
+        if not os.path.isdir("__modules__"): os.mkdir("__modules__")
 
         while True:
             try:
@@ -306,20 +305,89 @@ if __name__ == "__main__":
                 break
             except:
                 input(clr(f"\n  > {translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                rm_line(); rm_line()
+                
+        # download assets
+        
+        if not os.path.isdir("textures"): os.mkdir("textures")
+        if not os.path.isfile("textures/texture_version.txt"): open("textures/texture_version.txt", "w").write("0")
+        
+        while True:
+            try: latest_asset_version = int(requests.get("https://raw.githubusercontent.com/SirDank/dank.tool/main/__assets__/dank.game/textures/texture_version.txt", headers=headers).content.decode()); break
+            except:
+                input(clr(f"\n  > {translate('Failed to get latest asset version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                rm_line(); rm_line()
+        
+        if int(open("textures/texture_version.txt", "r").read()) < latest_asset_version:
+            
+            print(clr(f"\n  > {translate('Downloading game assets')}..."))
+            del latest_asset_version
+            shutil.rmtree("textures")
+            os.mkdir("textures")
+
+            while True:
+                
+                try: response = requests.get("https://api.github.com/repos/SirDank/dank.tool/contents/__assets__/dank.game/textures", headers=headers)
+                except:
+                    input(clr(f"\n  > {translate('Failed to contact github! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                    rm_line(); rm_line()
+                    continue
+
+                if response.status_code == 200:
+                    response = response.json()
+                    asset_urls = [item["download_url"] for item in response if item["type"] == "file"]
+                    file_names = [('textures/' + item["name"]) for item in response if item["type"] == "file"]
+                    del response
+                    break
+                else:
+                    print(clr(f"\n  > {translate(f'Github response status code: {response.status_code}! Press [ENTER] to continue')}...",2))
+                    rm_line(); rm_line()
+            
+            while True:
+                try:
+                    multithread(download_assets, 50, asset_urls, file_names, progress_bar=False)
+                    del asset_urls, file_names
+                    break
+                except:
+                    input(clr(f"\n  > {translate('Failed to download assets! Press [ENTER] to try again')}... ",2))
+                    rm_line(); rm_line()
 
         print(clr(f"\n  > {translate('Getting request responses')}..."))
         
         global menu_request_responses
         menu_request_responses = {}
+        
+        # KEEP request_keys IN ORDER!
+
+        request_keys = tuple(
+            (
+                "dankware_runs",
+                "danktool_runs",
+                "motd",
+                "chatroom_user_count",
+                "SpotX-Win",
+                "Spicetify",
+                "dank.win-activate",
+                "dank.minecraft-server-builder",
+                "dank.minecraft-server-scanner",
+                "dank.auto-clicker",
+                "dank.browser-backup",
+                "dank.fusion-fall"
+                "dank.game"
+            )
+        )
 
         while True:
             try:
                 multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=False)
+                del request_keys
                 break
             except:
                 input(clr(f"\n  > {translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                rm_line(); rm_line()
 
     del updated_on
+    del download_assets
     del download_offline_modules
     del get_menu_request_responses
 
@@ -339,7 +407,7 @@ if __name__ == "__main__":
         set_globals_one()
         set_globals_two()
 
-        title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # version defined in executor.py
+        title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # DANK_TOOL_VERSION defined in executor.py
         os.environ['DISCORD_RPC'] = "on the main menu"
         os.chdir(os.path.dirname(__file__))
             
@@ -475,9 +543,9 @@ if __name__ == "__main__":
                 while True:
                     try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
                     except:
-                        output = translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
-                        input(clr(f"\n  > {output}... ",2))
-                    rm_line(); rm_line()
+                        translation = translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
+                        input(clr(f"\n  > {translation}... ",2))
+                        rm_line(); rm_line()
                 
             else:
 
@@ -486,15 +554,16 @@ if __name__ == "__main__":
                 if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV / ONLINE_MODE defined in executor.py
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers).content.decode(); break
-                        except: input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
-                        rm_line(); rm_line()
+                        except:
+                            input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                            rm_line(); rm_line()
                 else:
                     while True:
                         try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
                         except:
-                            output = translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
-                            input(clr(f"\n  > {output}... ",2))
-                        rm_line(); rm_line()
+                            translation = translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
+                            input(clr(f"\n  > {translation}... ",2))
+                            rm_line(); rm_line()
 
             # execute src
             
