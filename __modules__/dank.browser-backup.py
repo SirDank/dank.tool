@@ -16,10 +16,8 @@ from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRe
 def translate(text):
 
     if DANK_TOOL_LANG:
-        try:
-            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
-        except:
-            pass
+        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        except: pass
     return text
 
 def chrome_installed():
