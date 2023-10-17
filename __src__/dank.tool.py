@@ -322,8 +322,6 @@ if __name__ == "__main__":
             
             print(clr(f"\n  > {translate('Downloading game assets')}..."))
             del latest_asset_version
-            shutil.rmtree("textures")
-            os.mkdir("textures")
 
             while True:
                 
@@ -372,7 +370,7 @@ if __name__ == "__main__":
                 "dank.minecraft-server-scanner",
                 "dank.auto-clicker",
                 "dank.browser-backup",
-                "dank.fusion-fall"
+                "dank.fusion-fall",
                 "dank.game"
             )
         )
