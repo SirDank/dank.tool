@@ -216,10 +216,11 @@ def unload():
 
 def input(key):
     if key == 'escape':
-        global running
-        running = False
-        executor.shutdown(wait=True, cancel_futures=True)
-        application.quit()
+        #global running
+        #running = False
+        #executor.shutdown(wait=True, cancel_futures=True)
+        #application.quit()
+        os.system("taskkill /f /im dank.tool.exe")
 
 running = True
 rendered_chunks = []
