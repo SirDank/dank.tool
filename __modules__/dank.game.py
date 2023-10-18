@@ -29,7 +29,7 @@ input(clr("""\n  [ DISCLAIMER ]
 
 app = Ursina(
     title='𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎',
-    borderless=False,
+    borderless=True,
     fullscreen=True,
     vsync=True,
     show_ursina_splash=True
