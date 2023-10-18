@@ -281,6 +281,7 @@
 
 - This game is in early development, expect bugs!
 - Game updates might be slow!
+- Built using [Ursina Engine](https://github.com/pokepetter/ursina)!
 
 ## ♦️ Preview ♦️
 

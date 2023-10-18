@@ -1,20 +1,29 @@
 import os
 from ursina import *
-from numpy.random import choice
-from numpy.random import randint
 from dankware import cls, clr, title
+from numpy.random import choice, randint
 from ursina.shaders import texture_blend_shader
 from concurrent.futures import ThreadPoolExecutor
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-os.chdir(os.path.join(os.path.dirname(__file__), "ursina"))
-title("𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎")
 cls()
+title("𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎")
+
+try:
+    os.environ['DANK_TOOL_VERSION']
+except:
+    os.chdir(os.path.dirname(__file__))
+    os.chdir("..")
+    #os.chdir("ursina")
+    #application.package_folder = os.getcwd()
+    # this does not work for some reason!
+    application.asset_folder = os.path.join(os.getcwd(), "ursina")
 
 input(clr("""\n  [ DISCLAIMER ]
 
   - This game is in early development, expect bugs!
   - Game updates might be slow!
+  - Built with Ursina Engine!
 
   [ CONTROLS ]
   
@@ -29,10 +38,11 @@ input(clr("""\n  [ DISCLAIMER ]
 
 app = Ursina(
     title='𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎',
-    borderless=True,
+    borderless=False,
     fullscreen=True,
     vsync=True,
-    show_ursina_splash=True
+    development_mode=False,
+    #show_ursina_splash=True
 )
 
 #player = EditorCamera()
@@ -59,9 +69,9 @@ def enable_lighting():
     scene.fog_color = color.black
     player_light = PointLight(color=color.white, parent=player, position=(0, 2, 0))
 
-# terrain vertices generation
-
 enable_lighting()
+
+# terrain vertices generation
 
 start_time = time.time()
 print(clr("\n  > Generating terrain vertices..."))
@@ -112,6 +122,7 @@ terrain = {}
 for x in range(-world_size, world_size):
     for z in range(-world_size, world_size):
         terrain[(x, z)] = gen_vertices(x, z)
+del gen_vertices
 terrain_keys = terrain.keys()
 
 print(clr(f"\n  > Generated {len(terrain_keys)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
@@ -122,20 +133,28 @@ del start_time
 def create_entity(x, z, vertices):
 
     terrain[(x, z)] = []
+    
     mesh = Mesh(vertices=vertices, triangles=[[0,1,2,3]], uvs=[(0,0),(1,0),(1,1),(0,1)])
     mesh.generate_normals(smooth=True)
-    executor.submit(terrain[(x, z)].append(Entity(model=mesh, collider="mesh", texture=choice(textures, p=weights), ignore=True)))
+    entity = Entity(model=mesh, collider="mesh", texture=choice(textures, p=weights), ignore=True)
+    entity.collision = False
+    terrain[(x, z)].append(entity)
     
     if choice([0, 1], p=[0.99, 0.01]):
+        
         vertices[0][1] += 0.01
         vertices[1][1] += 0.01
         vertices[2][1] += 0.01
         vertices[3][1] += 0.01
+        
         mesh = Mesh(vertices=vertices, triangles=[[0,1,2,3]], uvs=[(0,0),(1,0),(1,1),(0,1)])
         mesh.generate_normals(smooth=True)
-        executor.submit(terrain[(x, z)].append(Entity(model=mesh, collider="mesh", texture=choice(["mangrove_leaves_inventory", "azalea_leaves", "flowering_azalea_leaves"]), ignore=True)))
+        entity = Entity(model=mesh, collider="mesh", texture=choice(["mangrove_leaves_inventory", "azalea_leaves", "flowering_azalea_leaves"]), ignore=True)
+        entity.collision = False
+        terrain[(x, z)].append(entity)
     
     if choice([0, 1], p=[0.98, 0.02]):
+       
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
         z_rot = randint(-5, +5)
@@ -146,6 +165,7 @@ def create_entity(x, z, vertices):
         for _ in range(render_dist):
             
             entity = Entity(model="cube", collider="box", texture="acacia_log", position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+            entity.collision = False
             terrain[(x, z)].append(entity)
             
             if _ > leaves_level_start:
@@ -157,10 +177,14 @@ def create_entity(x, z, vertices):
 
                 if leaves_level_current == 1:
                     for pos in [back_2 + left_2, entity.back + left_2, left_2, entity.forward + left_2, forward_2 + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, back_2 + right_2, entity.back + right_2, right_2, entity.forward + right_2, forward_2 + right_2]:
-                        executor.submit(terrain[(x, z)].append(Entity(model="cube", texture="azalea_leaves", position=next_pos + pos, rotation=(x_rot,y_rot,z_rot), ignore=True)))
+                        entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+                        entity.collision = False
+                        terrain[(x, z)].append(entity)
                 if leaves_level_current == 2:
                     for pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
-                        executor.submit(terrain[(x, z)].append(Entity(model="cube", texture="azalea_leaves", position=next_pos + pos, rotation=(x_rot,y_rot,z_rot), ignore=True)))
+                        entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+                        entity.collision = False
+                        terrain[(x, z)].append(entity)
                 
                 leaves_level_current += 1
                     
@@ -191,7 +215,7 @@ def render():
                 pos = (x, z)
                 render_view_global[pos] = ''
                 render_view_local[pos] = ''
-                if pos not in rendered_chunks and pos in terrain_keys:
+                if not pos in rendered_chunks and pos in terrain_keys:
                     if type(terrain[pos]) == tuple:
                         create_entity(x, z, terrain[pos])
                     else:
@@ -201,32 +225,49 @@ def render():
         render_view_global = render_view_local
         time.sleep(0.1)
 
-def disable_entity(entity):
-    entity.enabled = False
+def enable_collision():
+    
+    collision_dist = 1
+    lower_lim = collision_dist
+    upper_lim = collision_dist + 1
+    
+    while running:
+        for x in range(int(player.x) - lower_lim, int(player.x) + upper_lim):
+            for z in range(int(player.z) - lower_lim, int(player.z) + upper_lim):
+                pos = (x, z)
+                if pos in rendered_chunks:
+                    for entity in terrain[pos]:
+                        entity.collision = True
+        time.sleep(0.1)
 
 def unload():
-    time.sleep(3)
     while running:
         for pos in rendered_chunks:
-            if pos not in render_view_global.keys():
+            if not pos in render_view_global.keys():
                 for entity in terrain[pos]:
-                    executor.submit(disable_entity, entity)
+                    entity.collision = False
+                    entity.enabled = False
+                    #executor.submit(scene.entities.remove(entity)) # crashes the game!
                 rendered_chunks.remove(pos)
         time.sleep(0.1)
 
 def input(key):
     if key == 'escape':
-        #global running
-        #running = False
-        #executor.shutdown(wait=True, cancel_futures=True)
-        #application.quit()
-        os.system("taskkill /f /im dank.tool.exe")
+        global running
+        running = False
+        executor.shutdown(wait=True, cancel_futures=True)
+        try:
+            os.environ['DANK_TOOL_VERSION']
+            os.system("taskkill /f /im dank.tool.exe")
+        except:
+            application.quit()
 
 running = True
 rendered_chunks = []
 player.position = (0, 20, 0)
-executor = ThreadPoolExecutor(max_workers=500)
+executor = ThreadPoolExecutor(max_workers=100)
 executor.submit(check_player_pos)
 executor.submit(render)
+executor.submit(enable_collision)
 executor.submit(unload)
 app.run()
