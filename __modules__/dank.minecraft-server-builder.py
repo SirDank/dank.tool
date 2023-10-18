@@ -6,7 +6,7 @@ import requests
 import subprocess
 from translatepy import Translator
 from dankware import white, white_normal, red, red_normal, red_dim, red, reset
-from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err
+from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
 
 headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
 
@@ -23,22 +23,14 @@ def print_read_me():
 def translate(text):
 
     if DANK_TOOL_LANG:
-        try:
-            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
-        except:
-            pass
-
+        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        except: pass
     return text
 
 def main_one():
 
     global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, latest_java_version, translator, DANK_TOOL_LANG
     
-    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
-    
-    banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
-    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
-
     # check if translator is enabled (dank.tool.exe)
 
     try:
@@ -49,12 +41,17 @@ def main_one():
             translator = Translator()
     except:
         DANK_TOOL_LANG = ''
+    
+    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
+    
+    banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
+    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
 
     # change dir and print banner
 
-    try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Desktop'))
+    try: get_path('Desktop')
     except:
-        try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents')) 
+        try: get_path('Documents')
         except: os.chdir("C:\\")
         
     # install java if not installed

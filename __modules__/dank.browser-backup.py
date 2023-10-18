@@ -4,13 +4,21 @@ import winreg
 import zipfile
 import datetime
 from psutil import process_iter
+from translatepy import Translator
 from dankware import white, white_normal, red, red_normal, red_dim
-from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys
+from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys, get_path
 
 from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn, TimeElapsedColumn
+
+def translate(text):
+
+    if DANK_TOOL_LANG:
+        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        except: pass
+    return text
 
 def chrome_installed():
     try:
@@ -28,12 +36,12 @@ def backup(browser, compression_level):
         path_to_backup = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data")
         
         if not chrome_installed():
-            cls(); print(clr("\n  > Chrome possibly not installed!",2))
+            cls(); print(clr(f"\n  > {translate('Chrome possibly not installed')}!",2))
         
         if not os.path.exists(path_to_backup):
-            print(clr(f"\n  > Invalid Path: {path_to_backup}\n",2))
+            print(clr(f"\n  > {translate('Invalid Path')}: {path_to_backup}\n",2))
             while True:
-                path_to_backup = input(clr("  > Input user data folder path: ")); rm_line()
+                path_to_backup = input(clr(f"  > {translate('Input user data folder path')}: ")); rm_line()
                 if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup: break
         
         while True:
@@ -44,10 +52,10 @@ def backup(browser, compression_level):
             if chrome_running: input(clr("\n  > Chrome is running! Terminate it and press [ENTER]... ",2))
             else: break
 
-        cls(); print(clr("\n  > Exporting registry keys..."))
+        cls(); print(clr(f"\n  > {translate('Exporting registry keys')}..."))
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
         
-        print(clr("\n  > Compressing... (this might take a few minutes)\n"))
+        print(clr(f"\n  > {translate('Compressing... (this might take a few minutes)')}\n"))
         
         num_source_files = 0
         for root, dirs, files in os.walk(path_to_backup):
@@ -89,13 +97,26 @@ def backup(browser, compression_level):
     #elif browser == "Brave":  
 
 def main():
+    
+    global DANK_TOOL_LANG, translator
+    
+    # check if translator is enabled (dank.tool.exe)
+
+    try:
+        DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
+        if DANK_TOOL_LANG == 'en':
+            DANK_TOOL_LANG = ''
+        else:
+            translator = Translator()
+    except:
+        DANK_TOOL_LANG = ''
 
     cls(); title("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙"); banner = "\n\n                                                                             \n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     try:
         if not is_admin(): raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
     except: sys.exit(clr(err(sys.exc_info()),2))
     
-    try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
     try: os.mkdir('dank.browser-backup')
     except: pass
@@ -124,7 +145,7 @@ def main():
         
     print("")
     while True:
-        compression_level = input(clr("  > Compression level (Fast/Best) [1/2]: ") + red).lower()
+        compression_level = input(clr(f"  > {translate('Compression level (Fast/Best)')} [1/2]: ") + red).lower()
         if compression_level in ('1', 'fast'):
             compression_level = 0; break
         elif compression_level in ('2', 'best'):
