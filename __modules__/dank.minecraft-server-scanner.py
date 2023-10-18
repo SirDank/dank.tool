@@ -1,13 +1,12 @@
 import os
 import time
 import socket
-#import sqlite3
 import requests
 from translatepy import Translator
 from concurrent.futures import ThreadPoolExecutor
 from mcstatus import JavaServer, BedrockServer
 from dankware import white, white_normal, red, red_normal, red_dim, red
-from dankware import multithread, clr, cls, title, align, rm_line, random_ip
+from dankware import multithread, clr, cls, title, align, rm_line, random_ip, get_path
 
 '''
 
@@ -25,26 +24,18 @@ https://github.com/Footsiefat/Minecraft-Server-Scanner
 '''
 
 def translate(text):
-
     if DANK_TOOL_LANG:
-        try:
-            text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
-        except:
-            pass
-
+        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        except: pass
     return text
 
 # checks if ip has a server running on the specified port
 
 def check_java(ip):
-
     if socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect_ex((ip,port)) == 0:
         save_server(ip)
     
 def check_bedrock(ip):
-    
-    # bytes.fromhex("01" + "000000000000000000" + "ffff00fefefefefdfdfdfd12345678" + "0000000000000000")
-
     try:
         socket.socket(socket.AF_INET, socket.SOCK_DGRAM).sendto(b'\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x124Vx\x00\x00\x00\x00\x00\x00\x00\x00', (ip, port))
         save_server(ip)
@@ -83,40 +74,20 @@ def save_server(ip):
         print(clr(f"  > {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
 
-    except: # Exception as exc
+    except:
         pass
-
-        #exc = str(exc)
-        #err_found = False
-        
-        #for err in ["WinError 10054", "WinError 10061", "WinError 10053", "Not enough data to read", "timed out", "unreachable", "refused", "not valid", "invalid", "closed", "did not", "aborted", "failed", "no route", "No route", "Broken pipe", "reset", "fermé", "refusée", "abandonnée"]:
-        #    if err in exc:
-        #        err_found = True; break
-        
-        #if not err_found:
-        #    open('servers.txt','a',encoding='utf-8').write(f"\n{ip} | {exc}")
-        #    print(f"{ip} | {exc}\n")
 
 # generates random valid ip
 
 def generate_ip():
-
-    #cursor = sqlite3.connect(f'{server_type}_scanned_ips.db').cursor()
     while True:
         ip = random_ip()
         if ip in ips.keys(): continue
-        #cursor.execute('''SELECT ip FROM ips WHERE ip=?''', (ip,))
-        #result = cursor.fetchone()
-        #if result: continue
         ips[ip] = ""; break
-    #cursor.close()
 
 def main():
     
     global ips, server_type, port, translator, DANK_TOOL_LANG
-
-    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
-    socket.setdefaulttimeout(1)
     
     # check if translator is enabled (dank.tool.exe)
 
@@ -128,21 +99,21 @@ def main():
             translator = Translator()
     except:
         DANK_TOOL_LANG = ''
+
+    title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
+    socket.setdefaulttimeout(1)
     
     # get user input
     
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
     print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool')}!"))
     choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red)
-    
-    if choice == "1":
-        os.system("start https://dank-site.onrender.com/minecraft-java-servers")
-    elif choice == "2":
-        os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
+    if choice == "1": os.system("start https://dank-site.onrender.com/minecraft-java-servers")
+    elif choice == "2": os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
     
     # change directory
 
-    try: os.chdir(os.path.join(os.environ['USERPROFILE'],'Documents'))
+    try: get_path('Documents')
     except: os.chdir("C:\\")
     try: os.mkdir('dank.mc-server-scanner')
     except FileExistsError: pass
@@ -162,24 +133,19 @@ def main():
     # get user input
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    # \n  > {translate('The database files store the ips that have been scanned, and thus will not be scanned again.')}\n\n  > {translate('Delete those file to reset the scanned ips.')}\n # \n\n  > {translate('The respective database file is only updated after the scan is complete.')}\n\n  > {translate('You can delete the database files if they get too large.')}
     print(clr(f"\n  > {translate('Start with 100 threads and note the performance impact')}.\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value')}!\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate')}."))
 
     print("")
     while True:
         server_type = input(clr("  > Server Type [java/bedrock]: ") + red)
         if server_type == "java":
-            #conn = sqlite3.connect('java_scanned_ips.db')
             port = 25565
             break
         elif server_type == "bedrock":
-            #conn = sqlite3.connect('bedrock_scanned_ips.db')
             port = 19132
             break
         else: rm_line()
-    #cursor = conn.cursor()
-    #cursor.execute('''CREATE TABLE IF NOT EXISTS ips (ip TEXT UNIQUE PRIMARY KEY)''')
-        
+     
     print("")
     while True:
         threads = input(clr("  > Threads: ") + red)
@@ -234,16 +200,10 @@ def main():
             except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
         
         # saving scanned ips
-    
-        #cls()
-        #print(clr(f"\n  > Saving {server_type}_scanned_ips.db..."))
-        #cursor.executemany('''INSERT INTO ips (ip) VALUES (?)''', [(ip,) for ip in sorted(list(set(ips.keys())))])
-        #conn.commit()
-        #cursor.execute('''SELECT COUNT(*) FROM ips''')
+
         scan_count = int(open('scan_count.txt','r',encoding='utf-8').read())
         scan_count += len(ips)
         open('scan_count.txt','w',encoding='utf-8').write(str(scan_count))
-        #print(clr(f"\n  > Totally Scanned {cursor.fetchone()[0]} IPs!"))
         print(clr(f"\n  > Totally Scanned {scan_count} IPs!"))
         time.sleep(5)
         
@@ -253,6 +213,7 @@ def main():
             print(clr(f"\n  > {gen_rem} IPs remaining..."))
 
 if __name__ == "__main__": 
+
     executor = ThreadPoolExecutor(1000)
     main()
     executor.shutdown(wait=True)

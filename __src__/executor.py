@@ -27,12 +27,12 @@ from locale import getlocale
 from win11toast import notify
 from psutil import process_iter
 from playsound import playsound
-from mcstatus import JavaServer
 from translatepy import Translator
 from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
+from mcstatus import JavaServer, BedrockServer
 from dankware import cls, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, file_selector, folder_selector, get_path
 from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
 
@@ -42,6 +42,14 @@ from unitypackff.asset import Asset
 from unitypackff.export import OBJMesh
 from unitypackff.object import FFOrderedDict, ObjectPointer
 from unitypackff.modding import import_texture, import_mesh, import_audio
+
+# required packages for dank.game.py
+
+import numpy
+from ursina import *
+from ursina.shaders import *
+from ursina.shaders import texture_blend_shader
+from ursina.prefabs.first_person_controller import FirstPersonController
 
 # required packages for executor.py
 
@@ -53,9 +61,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.1.4"
+DANK_TOOL_VERSION = "3.2"
 session = requests.Session()
-executor = ThreadPoolExecutor(10)
+_executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
 os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
 
@@ -72,7 +80,6 @@ print(clr(f"\n  > Version: {DANK_TOOL_VERSION}"))
 def settings_json():
     
     overwrite = False
-
     default_settings = {
             "offline-src": "0",
             "offline-mode": "0",
@@ -85,9 +92,9 @@ def settings_json():
     if not os.path.isfile('settings.json'):
         overwrite = True
     else:
-        _ = tuple(json.loads(open('settings.json', 'r', encoding='utf-8').read()).keys())
+        keys = json.loads(open('settings.json', 'r', encoding='utf-8').read()).keys()
         for key in default_settings:
-            if not key in _:
+            if not key in keys:
                 overwrite = True
                 break
 
@@ -121,7 +128,14 @@ def latest_dank_tool_version():
         os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
     else:
         try:
-            LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers).content.decode()
+            while True:
+                LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers).content.decode()
+                if 'Not Found' in LATEST_VERSION:
+                    print(clr("\n  > Please do not use the dev-branch, it is meant for testing/debugging only!",2))
+                    global BRANCH; BRANCH = "main"
+                    os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
+                else:
+                    break
             os.environ['DANK_TOOL_ONLINE'] = "1"
         except:
             LATEST_VERSION = "0"
@@ -251,7 +265,7 @@ if ONLINE_MODE:
         os.environ['DISCORD_RPC'] = "on the main menu"
         RPC = Presence("1028269752386326538")
         RPC.connect()
-        executor.submit(dank_tool_discord_rpc)
+        _executor.submit(dank_tool_discord_rpc)
     except: pass
     rm_line(); rm_line()
 else:
@@ -270,7 +284,7 @@ def dank_tool_runs_counter():
         time.sleep(60)
         
 if ONLINE_MODE:
-    executor.submit(dank_tool_runs_counter)
+    _executor.submit(dank_tool_runs_counter)
 else:
     del dank_tool_runs_counter
 
@@ -287,7 +301,7 @@ def dank_tool_chatroom():
         time.sleep(240)
 
 if ONLINE_MODE:
-    executor.submit(dank_tool_chatroom)
+    _executor.submit(dank_tool_chatroom)
 else:
     del dank_tool_chatroom
 
