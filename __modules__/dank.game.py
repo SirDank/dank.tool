@@ -32,7 +32,7 @@ app = Ursina(
     borderless=False,
     fullscreen=True,
     vsync=True,
-    #show_ursina_splash=True
+    show_ursina_splash=True
 )
 
 #player = EditorCamera()
