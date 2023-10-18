@@ -98,7 +98,8 @@
 - Downloads several plugins from [spigot](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22%23+spigot+plugins%22&type=code) / [github](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22%23+github+server-builder+files+and+plugins%22&type=code)
 - Downloads [minecraft anti-malware](https://www.spigotmc.org/resources/spigot-anti-malware.64982/)
 - Applies [Log4j](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition) exploit patches automatically
-- Creates startup scripts for starting the server / tunnel to be run on Windows / Linux with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags)
+- Creates scripts for starting the server with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags)
+- Creates scripts to quickly install java, perform malware scan
 - Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically (for the plugins downloaded by the server builder)
 - Applies most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically
 - Integrated with dank.tool's chatroom via the [dank.chatroom-plugin](https://github.com/SirDank/dank.chatroom-plugin)
@@ -271,6 +272,19 @@
 ## ♦️ Minecraft Plugin ♦️
 
 <br><p align="center"><a href="https://github.com/SirDank/dank.chatroom-plugin"><img width="800" alt="image" src="https://github.com/SirDank/dank.chatroom-plugin/assets/52797753/bdc4ebc0-2028-4b13-8967-b09be943b9d9"></a></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
+# 🚨 World Exploration Game 🚨 [ WIP ]
+
+- This game is in early development, expect bugs!
+- Game updates might be slow!
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/1565fc29-4544-48ce-a6b4-2a8ba4208522"></p><br>
 
 <p>&nbsp;</p>
 
