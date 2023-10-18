@@ -8,7 +8,6 @@ import os
 import sys
 import json
 import time
-import shutil
 import requests
 from rich.panel import Panel
 from win11toast import notify
@@ -309,8 +308,8 @@ if __name__ == "__main__":
                 
         # download assets
         
-        if not os.path.isdir("textures"): os.mkdir("textures")
-        if not os.path.isfile("textures/texture_version.txt"): open("textures/texture_version.txt", "w").write("0")
+        if not os.path.isdir("ursina/textures"): os.makedirs("ursina/textures")
+        if not os.path.isfile("ursina/textures/texture_version.txt"): open("ursina/textures/texture_version.txt", "w").write("0")
         
         while True:
             try: latest_asset_version = int(requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/textures/texture_version.txt", headers=headers).content.decode()); break
@@ -318,7 +317,7 @@ if __name__ == "__main__":
                 input(clr(f"\n  > {translate('Failed to get latest asset version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
         
-        if int(open("textures/texture_version.txt", "r").read()) < latest_asset_version:
+        if int(open("ursina/textures/texture_version.txt", "r").read()) < latest_asset_version:
             
             print(clr(f"\n  > {translate('Downloading game assets')}..."))
             del latest_asset_version
@@ -334,7 +333,7 @@ if __name__ == "__main__":
                 if response.status_code == 200:
                     response = response.json()
                     asset_urls = [item["download_url"] for item in response if item["type"] == "file"]
-                    file_names = [('textures/' + item["name"]) for item in response if item["type"] == "file"]
+                    file_names = [('ursina/textures/' + item["name"]) for item in response if item["type"] == "file"]
                     del response
                     break
                 else:

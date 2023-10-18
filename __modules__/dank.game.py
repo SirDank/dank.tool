@@ -7,7 +7,7 @@ from ursina.shaders import texture_blend_shader
 from concurrent.futures import ThreadPoolExecutor
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-os.chdir(os.path.dirname(__file__))
+os.chdir(os.path.join(os.path.dirname(__file__)), "ursina")
 title("𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎")
 cls()
 
