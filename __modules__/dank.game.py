@@ -176,7 +176,8 @@ def create_entity(x, z, vertices):
                 right_2 = entity.right + entity.right
 
                 if leaves_level_current == 1:
-                    for pos in [back_2 + left_2, entity.back + left_2, left_2, entity.forward + left_2, forward_2 + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, back_2 + right_2, entity.back + right_2, right_2, entity.forward + right_2, forward_2 + right_2]:
+                    # [back_2 + left_2, entity.back + left_2, left_2, entity.forward + left_2, forward_2 + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, back_2 + right_2, entity.back + right_2, right_2, entity.forward + right_2, forward_2 + right_2]
+                    for pos in [entity.back + left_2, left_2, entity.forward + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, entity.back + right_2, right_2, entity.forward + right_2]:
                         entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
                         terrain[(x, z)].append(entity)
@@ -203,18 +204,16 @@ def check_player_pos():
 
 def render():
     
-    global render_view_global
-    render_view_global = {}
+    global render_grid
+    render_grid = {}
     lower_lim = render_dist
     upper_lim = render_dist + 1
 
     while running:
-        render_view_local = {}
+        render_grid_local = {}
         for x in range(int(player.x) - lower_lim, int(player.x) + upper_lim):
             for z in range(int(player.z) - lower_lim, int(player.z) + upper_lim):
                 pos = (x, z)
-                render_view_global[pos] = ''
-                render_view_local[pos] = ''
                 if not pos in rendered_chunks and pos in terrain_keys:
                     if type(terrain[pos]) == tuple:
                         create_entity(x, z, terrain[pos])
@@ -222,32 +221,41 @@ def render():
                         for entity in terrain[pos]:
                             entity.enabled = True
                     rendered_chunks.append(pos)
-        render_view_global = render_view_local
+                render_grid[pos] = ''
+                render_grid_local[pos] = ''
+        render_grid = render_grid_local
         time.sleep(0.1)
 
 def enable_collision():
     
-    collision_dist = 1
+    global collision_grid
+    collision_grid = {}
+    collision_dist = 2
     lower_lim = collision_dist
     upper_lim = collision_dist + 1
     
     while running:
+        collision_grid_local = {}
         for x in range(int(player.x) - lower_lim, int(player.x) + upper_lim):
             for z in range(int(player.z) - lower_lim, int(player.z) + upper_lim):
                 pos = (x, z)
                 if pos in rendered_chunks:
                     for entity in terrain[pos]:
                         entity.collision = True
+                collision_grid[pos] = ''
+                collision_grid_local[pos] = ''
+        collision_grid = collision_grid_local
         time.sleep(0.1)
 
 def unload():
     while running:
         for pos in rendered_chunks:
-            if not pos in render_view_global.keys():
+            if not pos in collision_grid.keys():
                 for entity in terrain[pos]:
                     entity.collision = False
+            if not pos in render_grid.keys():
+                for entity in terrain[pos]:
                     entity.enabled = False
-                    #executor.submit(scene.entities.remove(entity)) # crashes the game!
                 rendered_chunks.remove(pos)
         time.sleep(0.1)
 
