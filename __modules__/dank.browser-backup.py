@@ -74,7 +74,7 @@ def backup(browser, compression_level):
         progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="bright_red", padding=(1, 2)))
                 
         with Live(progress_table, refresh_per_second=10):
-            with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level) as zipf:
+            with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level, strict_timestamps=False) as zipf:
                 for root, dirs, files in os.walk(path_to_backup):
                     for file in files:
                         file_path = os.path.join(root, file)
