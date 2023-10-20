@@ -3,7 +3,6 @@ from ursina import *
 from dankware import cls, clr, title
 from numpy.random import choice, randint
 from ursina.shaders import texture_blend_shader
-from concurrent.futures import ThreadPoolExecutor
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
@@ -207,75 +206,61 @@ def create_entity(x, z, vertices):
             z_rot = randint(z_rot-5, z_rot+5)
             next_pos += entity.up
 
-def check_player_pos():
-    while running:
-        if player.y < lowest_y:
-            player.position = (0, highest_y, 0)
-        time.sleep(1)
-
 # load / unload entities
 
-def load_and_unload():
-
-    rendered_chunks = {}
-    r_lower_limit = render_dist
-    r_upper_limit = render_dist + 1
-
-    collision_dist = 2
-    c_lower_limit = collision_dist
-    c_upper_limit = collision_dist + 1
-
-    while running:
-
-        render_grid = {}
-        for x in range(int(player.x) - r_lower_limit, int(player.x) + r_upper_limit):
-            for z in range(int(player.z) - r_lower_limit, int(player.z) + r_upper_limit):
-                pos = (x, z)
-                if not pos in rendered_chunks.keys() and pos in terrain_keys:
-                    if type(terrain[pos]) == tuple:
-                        create_entity(x, z, terrain[pos])
-                    else:
-                        for entity in terrain[pos]:
-                            entity.enabled = True
-                    rendered_chunks[pos] = ''
-                render_grid[pos] = ''
-        
-        collision_grid = {}
-        for x in range(int(player.x) - c_lower_limit, int(player.x) + c_upper_limit):
-            for z in range(int(player.z) - c_lower_limit, int(player.z) + c_upper_limit):
-                pos = (x, z)
-                if pos in rendered_chunks.keys():
+def update():
+    
+    if player.y < lowest_y:
+        player.position = (0, highest_y, 0)
+    
+    render_grid = {}
+    for x in range(int(player.x) - r_lower_limit, int(player.x) + r_upper_limit):
+        for z in range(int(player.z) - r_lower_limit, int(player.z) + r_upper_limit):
+            pos = (x, z)
+            if not pos in rendered_chunks.keys() and pos in terrain_keys:
+                if type(terrain[pos]) == tuple:
+                    create_entity(x, z, terrain[pos])
+                else:
                     for entity in terrain[pos]:
-                        entity.collision = True
-                collision_grid[pos] = ''
-        
-        for pos in [_ for _ in rendered_chunks.keys()]:
-            if not pos in collision_grid.keys():
+                        entity.enabled = True
+                rendered_chunks[pos] = ''
+            render_grid[pos] = ''
+    
+    collision_grid = {}
+    for x in range(int(player.x) - c_lower_limit, int(player.x) + c_upper_limit):
+        for z in range(int(player.z) - c_lower_limit, int(player.z) + c_upper_limit):
+            pos = (x, z)
+            if pos in rendered_chunks.keys():
                 for entity in terrain[pos]:
-                    entity.collision = False
-            if not pos in render_grid.keys():
-                for _ in range(len(terrain[pos])):
-                    #terrain[pos][_].enabled = False
-                    terrain[pos][_] = destroy(terrain[pos][_])
-                terrain[pos] = terrain_backup[pos]
-                del rendered_chunks[pos]
-        
-        time.sleep(0.1)
+                    entity.collision = True
+            collision_grid[pos] = ''
+    
+    for pos in [_ for _ in rendered_chunks.keys()]:
+        if not pos in collision_grid.keys():
+            for entity in terrain[pos]:
+                entity.collision = False
+        if not pos in render_grid.keys():
+            for _ in range(len(terrain[pos])):
+                terrain[pos][_] = destroy(terrain[pos][_])
+            terrain[pos] = terrain_backup[pos]
+            del rendered_chunks[pos]
 
 def input(key):
     if key == 'escape':
-        global running
-        running = False
-        executor.shutdown(wait=True, cancel_futures=True)
         try:
             os.environ['DANK_TOOL_VERSION']
             os.system("taskkill /f /im dank.tool.exe")
         except:
             application.quit()
 
-running = True
-player.position = (0, 20, 0)
-executor = ThreadPoolExecutor(max_workers=5)
-executor.submit(check_player_pos)
-executor.submit(load_and_unload)
+rendered_chunks = {}
+r_lower_limit = render_dist
+r_upper_limit = render_dist + 1
+
+collision_dist = 2
+c_lower_limit = collision_dist
+c_upper_limit = collision_dist + 1
+
+player.position = (0, 100, 0)
+
 app.run()
