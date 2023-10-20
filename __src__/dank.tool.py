@@ -164,7 +164,7 @@ def set_globals_one():
             'rpc': "backing up a browser"
         },
         
-        'World Exploration Game': {
+        'World Exploration Game [bright_red][[red1]BETA[bright_red]]': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
             'project': "dank.game",
@@ -240,7 +240,7 @@ def set_globals_two():
                 'rpc': "activating windows / office"
             },
             
-            translate('World Exploration Game'): {
+            translate('World Exploration Game [bright_red][[red1]BETA[bright_red]]'): {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
