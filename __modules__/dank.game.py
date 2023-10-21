@@ -49,8 +49,9 @@ player = FirstPersonController()
 sky = Sky(texture='sky.png')
 Entity.default_shader = texture_blend_shader
 
-world_size = 250 # n*2 x n*2
-render_dist = 10 # nxn
+world_size = 350 # n*2 x n*2
+render_dist = 15 # nxn
+tree_height = 10
 textures = {
     "grass1": 0.445,
     "grass2": 0.445,
@@ -173,10 +174,10 @@ def create_entity(x, z, vertices):
         x_rot = randint(-5, +5)
         z_rot = randint(-5, +5)
         leaves_level_current = 1
-        leaves_level_start = (render_dist)-3
+        leaves_level_start = (tree_height)-3
         next_pos = Vec3(x, min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), z)
 
-        for _ in range(render_dist):
+        for _ in range(tree_height):
             
             entity = Entity(model="cube", collider="box", texture="acacia_log", position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
             entity.collision = False
