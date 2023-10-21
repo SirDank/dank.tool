@@ -572,7 +572,7 @@ if __name__ == "__main__":
                 time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  > {translate(f'{project} executed successfully! Returning to menu in 5 seconds')}...")); time.sleep(5)
+                cls(); print(clr(f"\n  > {translate(f'{project} executed successfully! Returning to menu in 3 seconds')}...")); time.sleep(3)
 
         except:
 
