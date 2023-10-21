@@ -151,6 +151,7 @@ def create_entity(x, z, vertices):
     entity = Entity(model=mesh, collider="mesh", texture=choice(textures, p=weights), ignore=True)
     entity.collision = False
     terrain[pos].append(entity)
+    Wait(0.25)
     
     if choice([0, 1], p=[0.99, 0.01]):
         
@@ -164,6 +165,7 @@ def create_entity(x, z, vertices):
         entity = Entity(model=mesh, collider="mesh", texture=choice(["mangrove_leaves_inventory", "azalea_leaves", "flowering_azalea_leaves"]), ignore=True)
         entity.collision = False
         terrain[pos].append(entity)
+        Wait(0.25)
     
     if choice([0, 1], p=[0.98, 0.02]):
        
@@ -179,6 +181,7 @@ def create_entity(x, z, vertices):
             entity = Entity(model="cube", collider="box", texture="acacia_log", position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
             entity.collision = False
             terrain[pos].append(entity)
+            Wait(0.25)
             
             if _ > leaves_level_start:
 
@@ -193,11 +196,14 @@ def create_entity(x, z, vertices):
                         entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
                         terrain[pos].append(entity)
+                        Wait(0.25)
+                
                 if leaves_level_current == 2:
                     for _pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
                         entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
                         terrain[pos].append(entity)
+                        Wait(0.25)
                 
                 leaves_level_current += 1
                     
@@ -223,8 +229,10 @@ def update():
                 else:
                     for entity in terrain[pos]:
                         entity.enabled = True
+                        Wait(0.25)
                 rendered_chunks[pos] = ''
             render_grid[pos] = ''
+            Wait(0.1)
     
     collision_grid = {}
     for x in range(int(player.x) - c_lower_limit, int(player.x) + c_upper_limit):
@@ -233,17 +241,22 @@ def update():
             if pos in rendered_chunks.keys():
                 for entity in terrain[pos]:
                     entity.collision = True
+                    Wait(0.25)
             collision_grid[pos] = ''
+            Wait(0.1)
     
     for pos in [_ for _ in rendered_chunks.keys()]:
         if not pos in collision_grid.keys():
             for entity in terrain[pos]:
                 entity.collision = False
+                Wait(0.25)
         if not pos in render_grid.keys():
             for _ in range(len(terrain[pos])):
                 terrain[pos][_] = destroy(terrain[pos][_])
+                Wait(0.25)
             terrain[pos] = terrain_backup[pos]
             del rendered_chunks[pos]
+        Wait(0.1)
 
 def input(key):
     if key == 'escape':
