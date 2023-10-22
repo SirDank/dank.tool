@@ -65,9 +65,12 @@ textures = tuple(textures.keys())
 # lighting
 
 def enable_lighting():
-    scene.fog_density = 0.3
+
+    global torch_light
+    
+    scene.fog_density = 0.2
     scene.fog_color = color.black
-    player_light = PointLight(color=color.white, parent=player, position=(0, 2, 0))
+    torch_light = SpotLight(color=color.white, parent=camera, position=(0.5, 1, -5), rotation=(0, 0, 0))
 
 enable_lighting()
 
@@ -213,6 +216,10 @@ def create_entity(x, z, vertices):
             z_rot = randint(z_rot-5, z_rot+5)
             next_pos += entity.up
 
+def check_player_y():
+    if player.y < lowest_y:
+        player.position = (0, highest_y, 0)
+
 # load / unload entities
 
 def update():
@@ -276,5 +283,8 @@ c_lower_limit = collision_dist
 c_upper_limit = collision_dist + 1
 
 player.position = (0, 100, 0)
+
+sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
+sequence_1.start()
 
 app.run()
