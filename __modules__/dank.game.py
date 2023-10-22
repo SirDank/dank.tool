@@ -223,10 +223,7 @@ def check_player_y():
 # load / unload entities
 
 def update():
-    
-    if player.y < lowest_y:
-        player.position = (0, highest_y, 0)
-    
+
     render_grid = {}
     for x in range(int(player.x) - r_lower_limit, int(player.x) + r_upper_limit):
         for z in range(int(player.z) - r_lower_limit, int(player.z) + r_upper_limit):
