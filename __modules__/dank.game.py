@@ -195,7 +195,6 @@ def create_entity(x, z, vertices):
                 right_2 = entity.right + entity.right
 
                 if leaves_level_current == 1:
-                    # [back_2 + left_2, entity.back + left_2, left_2, entity.forward + left_2, forward_2 + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, back_2 + right_2, entity.back + right_2, right_2, entity.forward + right_2, forward_2 + right_2]
                     for _pos in [entity.back + left_2, left_2, entity.forward + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, entity.back + right_2, right_2, entity.forward + right_2]:
                         entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
@@ -216,13 +215,9 @@ def create_entity(x, z, vertices):
             z_rot = randint(z_rot-5, z_rot+5)
             next_pos += entity.up
 
-def check_player_y():
-    if player.y < lowest_y:
-        player.position = (0, highest_y, 0)
-
 # load / unload entities
 
-def update():
+def world():
 
     render_grid = {}
     for x in range(int(player.x) - r_lower_limit, int(player.x) + r_upper_limit):
@@ -263,6 +258,12 @@ def update():
             del rendered_chunks[pos]
         Wait(0.1)
 
+# other stuff
+
+def check_player_y():
+    if player.y < lowest_y:
+        player.position = (0, highest_y, 0)
+
 def input(key):
     if key == 'escape':
         try:
@@ -282,6 +283,8 @@ c_upper_limit = collision_dist + 1
 player.position = (0, 100, 0)
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
+sequence_2 = Sequence(Func(world), loop=True)
 sequence_1.start()
+sequence_2.start()
 
 app.run()
