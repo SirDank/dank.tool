@@ -113,7 +113,7 @@ def main():
     
     # change directory
 
-    try: get_path('Documents')
+    try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
     try: os.mkdir('dank.mc-server-scanner')
     except FileExistsError: pass

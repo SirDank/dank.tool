@@ -49,9 +49,9 @@ def main_one():
 
     # change dir and print banner
 
-    try: get_path('Desktop')
+    try: os.chdir(get_path('Desktop'))
     except:
-        try: get_path('Documents')
+        try: os.chdir(get_path('Documents'))
         except: os.chdir("C:\\")
         
     # install java if not installed
@@ -391,14 +391,14 @@ sudo chmod +x quick_install_java.sh
 
 # creating autoplug configs
 
-open('autoplug/logger.yml', 'w').write(f'''
+open('autoplug/logger.yml', 'w').write('''
 logger: 
   tasks: 
     live-tasks: 
       enable: true
 ''')
 
-open('autoplug/backup.yml', 'w').write(f'''
+open('autoplug/backup.yml', 'w').write('''
 backup: 
   enable: false
 ''')
