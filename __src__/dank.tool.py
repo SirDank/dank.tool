@@ -404,7 +404,7 @@ if __name__ == "__main__":
         set_globals_one()
         set_globals_two()
 
-        title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " | 𝙾𝙵𝙵𝙻𝙸𝙽𝙴")) # DANK_TOOL_VERSION defined in executor.py
+        title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
         os.environ['DISCORD_RPC'] = "on the main menu"
         os.chdir(os.path.dirname(__file__))
             
