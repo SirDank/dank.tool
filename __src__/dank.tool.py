@@ -337,7 +337,7 @@ if __name__ == "__main__":
                     del response
                     break
                 else:
-                    print(clr(f"\n  > {translate(f'Github response status code: {response.status_code}! Press [ENTER] to continue')}...",2))
+                    input(clr(f"\n  > {translate(f'Github response status code: {response.status_code}! Press [ENTER] to continue')}...",2))
                     rm_line(); rm_line()
             
             while True:
