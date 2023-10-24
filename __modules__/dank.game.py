@@ -51,7 +51,8 @@ Entity.default_shader = texture_blend_shader
 
 world_size = 350 # n*2 x n*2
 render_dist = 15 # nxn
-tree_height = 10
+tree_heights = 10
+tree_heights = [_ for _ in range(tree_heights-3, tree_heights+4)]
 textures = {
     "grass1": 0.445,
     "grass2": 0.445,
@@ -176,8 +177,9 @@ def create_entity(x, z, vertices):
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
         z_rot = randint(-5, +5)
+        tree_height = choice(tree_heights)
         leaves_level_current = 1
-        leaves_level_start = (tree_height)-3
+        leaves_level_start = tree_height-3
         next_pos = Vec3(x, min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), z)
 
         for _ in range(tree_height):
