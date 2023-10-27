@@ -127,7 +127,7 @@ def generate_vertices(x, z):
     lowest_y = min(lowest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1])
     highest_y = max(highest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1])
 
-    return tuple(new_vertices)
+    return new_vertices
 
 lowest_y = 0
 highest_y = 0
@@ -164,12 +164,13 @@ def create_entity(x, z, vertices):
     
     if choice([0, 1], p=[0.99, 0.01]):
         
-        vertices[0][1] += 0.01
-        vertices[1][1] += 0.01
-        vertices[2][1] += 0.01
-        vertices[3][1] += 0.01
+        _vertices = vertices
+        _vertices[0][1] += 0.01
+        _vertices[1][1] += 0.01
+        _vertices[2][1] += 0.01
+        _vertices[3][1] += 0.01
         
-        mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs)
+        mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
         mesh.generate_normals(smooth=True)
         entity = Entity(model=mesh, collider="mesh", texture=choice(["mangrove_leaves_inventory", "azalea_leaves", "flowering_azalea_leaves"]), ignore=True)
         entity.collision = False
