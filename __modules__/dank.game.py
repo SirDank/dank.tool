@@ -164,7 +164,7 @@ def create_entity(x, z, vertices):
     
     if choice([0, 1], p=[0.99, 0.01]):
         
-        _vertices = vertices
+        _vertices = vertices.copy()
         _vertices[0][1] += 0.01
         _vertices[1][1] += 0.01
         _vertices[2][1] += 0.01
@@ -280,7 +280,7 @@ c_upper_limit = collision_dist + 1
 player.position = (0, 100, 0)
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
-sequence_2 = Sequence(Func(world), loop=True)
+sequence_2 = Sequence(Func(world), Wait(0.025), loop=True)
 sequence_1.start()
 sequence_2.start()
 
