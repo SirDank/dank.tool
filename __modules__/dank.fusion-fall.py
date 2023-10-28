@@ -72,9 +72,11 @@ def open_workspace():
     
     dankff_path = get_path('Documents')
     if not os.path.exists(dankff_path):
-        dankff_path = "C:\\"
+        dankff_path = get_path('Desktop')
+        if not os.path.exists(dankff_path):
+            dankff_path = "C:\\"
     dankff_path = os.path.join(dankff_path, "dank.fusion-fall")
-    if not os.path.exists(dankff_path): os.mkdir(dankff_path)
+    if not os.path.exists(dankff_path): os.makedirs(dankff_path)
     os.chdir(dankff_path)
     
     banner()
