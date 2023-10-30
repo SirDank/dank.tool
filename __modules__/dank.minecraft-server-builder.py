@@ -163,12 +163,12 @@ def main_one():
     # create and go to workspace
 
     dir_name = name
-    try: os.mkdir(dir_name)
+    try: os.makedirs(dir_name)
     except:
         counter = 1
         while True:
             dir_name = name + f"_{counter}"
-            try: os.mkdir(dir_name); break
+            try: os.makedirs(dir_name); break
             except: counter += 1
 
     os.system(f'explorer.exe "{dir_name}"')

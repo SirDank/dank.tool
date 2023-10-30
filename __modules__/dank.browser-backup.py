@@ -118,7 +118,7 @@ def main():
     
     try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
-    try: os.mkdir('dank.browser-backup')
+    try: os.makedirs('dank.browser-backup')
     except: pass
     os.chdir('dank.browser-backup')
     
