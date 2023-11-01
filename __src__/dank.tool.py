@@ -118,17 +118,38 @@ def print_modules():
     
     # online modules
     
-    for _title, module in modules.items():
-        user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{_title}[/b] {module['info']}")
+    for title, module in modules.items():
+        if not module['category']:
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{title}[/b] {module['info']}")
+        else:
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red][ [bright_white]{title}[/b] [bright_red]]")
         counter += 1
         
     # local modules
         
-    for _title in local_modules.keys():
-        user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{_title}[/b]")
+    for title in local_modules.keys():
+        user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{title}[/b]")
         counter += 1
 
     console.print(Panel(title=f"[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+    print()
+
+def print_category_modules(modules):
+    
+    print_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
+    user_renderables = []
+    console = Console()
+    counter = 1
+    
+    # category modules
+    
+    user_renderables.append(f"[b][bright_white]0 [bright_red]> [bright_white]Return to menu[/b]")
+    for title, module in modules.items():
+        if title != "category":
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{title}[/b] {module['info']}")
+            counter += 1
+
+    console.print(Panel(title=f"[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
     print()
 
 # set globals
@@ -197,54 +218,78 @@ def set_globals_two():
         global online_modules
         
         online_modules = {
+            
+            translate('Minecraft Tools'): {
+                
+                translate('Minecraft Server Builder'): {
+                    'info': menu_request_responses["dank.minecraft-server-builder"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
+                    'project': "dank.minecraft-server-builder",
+                    'rpc': "building a minecraft server"
+                },
 
-            translate('Minecraft Server Builder'): {
-                'info': menu_request_responses["dank.minecraft-server-builder"],
-                'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
-                'project': "dank.minecraft-server-builder",
-                'rpc': "building a minecraft server"
+                translate('Minecraft Server Scanner'): {
+                    'info': menu_request_responses["dank.minecraft-server-scanner"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
+                    'project': "dank.minecraft-server-scanner",
+                    'rpc': "scanning for minecraft servers"
+                },
+                
+                'category': True,
             },
 
-            translate('Minecraft Server Scanner'): {
-                'info': menu_request_responses["dank.minecraft-server-scanner"],
-                'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
-                'project': "dank.minecraft-server-scanner",
-                'rpc': "scanning for minecraft servers"
-            },
+            #translate('Minecraft Server Builder'): {
+            #    'info': menu_request_responses["dank.minecraft-server-builder"],
+            #    'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
+            #    'project': "dank.minecraft-server-builder",
+            #    'rpc': "building a minecraft server"
+            #},
+
+            #translate('Minecraft Server Scanner'): {
+            #    'info': menu_request_responses["dank.minecraft-server-scanner"],
+            #    'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
+            #    'project': "dank.minecraft-server-scanner",
+            #    'rpc': "scanning for minecraft servers"
+            #},
 
             translate('Fusion-Fall Modding Tool'): {
                 'info': menu_request_responses["dank.fusion-fall"],
                 'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
                 'project': "dank.fusion-fall",
-                'rpc': "modding fusion-fall"
+                'rpc': "modding fusion-fall",
+                'category': False,
             },
 
             translate('SpotX + Spicetify Installer'): {
                 'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
                 'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                 'project': "dank.spotify",
-                'rpc': "installing spotx and spicetify"
+                'rpc': "installing spotx and spicetify",
+                'category': False,
             },
 
             translate('Browser Backup'): {
                 'info': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
                 'project': "dank.browser-backup",
-                'rpc': "backing up a browser"
+                'rpc': "backing up a browser",
+                'category': False,
             },
 
             translate('Windows / Office Activator'): {
                 'info': menu_request_responses["dank.win-activate"],
                 'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                 'project': "dank.win-activate",
-                'rpc': "activating windows / office"
+                'rpc': "activating windows / office",
+                'category': False,
             },
             
             translate('World Exploration Game [bright_red][[red1]BETA[bright_red]]'): {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
-                'rpc': "playing a world exploration game"
+                'rpc': "playing a world exploration game",
+                'category': False,
             },
 
             #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
@@ -258,19 +303,22 @@ def set_globals_two():
                 'info': menu_request_responses["chatroom_user_count"],
                 'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
                 'project': "dank.chatroom",
-                'rpc': "chatting in the chatroom"
+                'rpc': "chatting in the chatroom",
+                'category': False,
             },
 
             'Discord Server': {
                 'info': '[bright_green]Join Now!',
                 'project': "Dankware Inc. Discord Server",
+                'category': False,
             },
             
             'Settings': {
                 'info': '',
                 'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
                 'project': "dank.tool settings",
-                'rpc': "changing dank.tool settings"
+                'rpc': "changing dank.tool settings",
+                'category': False,
             }
         }
     
@@ -432,13 +480,34 @@ if __name__ == "__main__":
             
             choice = input(clr("  - Choice: ") + red)
             if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
+                
                 if int(choice) <= len(modules):
                     choice = modules[list(modules.keys())[int(choice) - 1]]
                     LOCAL_MODULE = False
                 else:
                     choice = local_modules[list(local_modules.keys())[int(choice) - len(modules) - 1]]
                     LOCAL_MODULE = True
-                break
+                
+                if choice['category']:
+
+                    print_category_modules(choice)
+                    
+                    while True:
+                        _choice = input(clr("  - Choice: ") + red)
+                        if _choice in ('0', 'exit'):
+                            print_modules()
+                            break
+                        elif _choice.isdigit() and int(_choice) >= 1 and int(_choice) <= (len(choice) - 1):
+                            choice = choice[list(choice.keys())[int(_choice) - 1]]
+                            break
+                        else: rm_line()
+                        
+                    if not 'category' in choice.keys():
+                        break
+                        
+                else:
+                    
+                    break
 
             elif choice == 'refresh': # re-align ui
                 print_modules()
