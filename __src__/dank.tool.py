@@ -175,28 +175,32 @@ def set_globals_one():
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
             'project': "dank.fusion-fall",
-            'rpc': "modding fusion-fall"
+            'rpc': "modding fusion-fall",
+            'category': False,
         },
         
         'Browser Backup': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
             'project': "dank.browser-backup",
-            'rpc': "backing up a browser"
+            'rpc': "backing up a browser",
+            'category': False,
         },
         
         'World Exploration Game [bright_red][[red1]BETA[bright_red]]': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
             'project': "dank.game",
-            'rpc': "playing a world exploration game"
+            'rpc': "playing a world exploration game",
+            'category': False,
         },
         
         'Settings': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
             'project': "dank.tool settings",
-            'rpc': "changing dank.tool settings"
+            'rpc': "changing dank.tool settings",
+            'category': False,
         }
     }
 
@@ -237,20 +241,6 @@ def set_globals_two():
                 
                 'category': True,
             },
-
-            #translate('Minecraft Server Builder'): {
-            #    'info': menu_request_responses["dank.minecraft-server-builder"],
-            #    'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
-            #    'project': "dank.minecraft-server-builder",
-            #    'rpc': "building a minecraft server"
-            #},
-
-            #translate('Minecraft Server Scanner'): {
-            #    'info': menu_request_responses["dank.minecraft-server-scanner"],
-            #    'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
-            #    'project': "dank.minecraft-server-scanner",
-            #    'rpc': "scanning for minecraft servers"
-            #},
 
             translate('Fusion-Fall Modding Tool'): {
                 'info': menu_request_responses["dank.fusion-fall"],
