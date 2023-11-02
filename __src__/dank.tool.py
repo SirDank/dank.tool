@@ -15,12 +15,33 @@ from datetime import datetime
 from rich.columns import Columns
 from rich.console import Console
 from translatepy import Translator
+from packaging.version import parse
 from dateutil.tz import tzlocal, tzutc
 from concurrent.futures import ThreadPoolExecutor
 from dankware import white, white_normal, green, red, red_normal, red_dim
 from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
 
 os.chdir(os.path.dirname(__file__))
+
+# dank.tool updater
+
+def dank_tool_installer():
+
+    while True:
+        try:
+            code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers).content.decode()
+            break
+        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+    
+    try: exec(code)
+    except:
+        err_message = err(sys.exc_info())
+        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+        except: pass
+        input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
+        sys.exit(err_message)
+    
+    sys.exit("Updated!")
 
 # print randomly coloured and aligned banner
 
@@ -794,7 +815,22 @@ if __name__ == "__main__":
 
                 # get src from github if not debug mode else get src locally
 
-                if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_DEV / ONLINE_MODE defined in executor.py
+                if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_SRC / ONLINE_MODE defined in executor.py
+                    
+                    # check for update before getting src
+                    
+                    while True:
+                        try:
+                            LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers).content.decode()
+                            if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
+                                cls(); print(clr(f"\n  - Updating to the latest version...\n\n  - Update Found: {LATEST_VERSION}"))
+                                dank_tool_installer()
+                            else:
+                                break
+                        except:
+                            input(clr(f"\n  > {translate('Failed to get latest version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                            rm_line(); rm_line()
+                    
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers).content.decode(); break
                         except:
