@@ -71,7 +71,7 @@ def save_server(ip):
         
         for _ in ('§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r'):
             to_print = to_print.replace(_,'')
-        print(clr(f"  > {to_print}\n"))
+        print(clr(f"  - {to_print}\n"))
         open('servers.txt','a',encoding='utf-8').write(f"\n{to_print}")
 
     except:
@@ -106,8 +106,8 @@ def main():
     # get user input
     
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr(f"\n  > Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  > Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  > {translate('You can use the above links to get a list of servers that have been found by the users of this tool')}!"))
-    choice = input(clr("\n  > 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red)
+    print(clr(f"\n  - Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool')}!"))
+    choice = input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red)
     if choice == "1": os.system("start https://dank-site.onrender.com/minecraft-java-servers")
     elif choice == "2": os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
     
@@ -133,7 +133,7 @@ def main():
     # get user input
 
     cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr(f"\n  > {translate('Start with 100 threads and note the performance impact')}.\n\n  > {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value')}!\n\n  > {translate('Start with 50000 IPs, it will take a few seconds to generate')}."))
+    print(clr(f"\n  - {translate('Start with 100 threads and note the performance impact')}.\n\n  - {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value')}!\n\n  - {translate('Start with 50000 IPs, it will take a few seconds to generate')}."))
 
     print("")
     while True:
@@ -160,7 +160,7 @@ def main():
         
     # disclaimer
  
-    cls(); input(clr(f"\n  [IMPORTANT]\n\n  > {translate('Do not use [ Ctrl + C ] without selecting text first')}!\n\n  > {translate('All the servers are saved to servers.txt')}!\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}... "))
+    cls(); input(clr(f"\n  [IMPORTANT]\n\n  - {translate('Do not use [ Ctrl + C ] without selecting text first')}!\n\n  - {translate('All the servers are saved to servers.txt')}!\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}... "))
     cls()
 
     # generate and check ips on multiple threads in batches
@@ -178,7 +178,7 @@ def main():
         # multithreaded generator
         
         #cls()
-        print(clr(f"\n  > Generating {gen_amt} unique ips..."))
+        print(clr(f"\n  - Generating {gen_amt} unique ips..."))
         while generated < gen_amt:
             while True:
                 try:
@@ -194,7 +194,7 @@ def main():
         while True:
             try: 
                 #cls()
-                print(clr(f"\n  > Checking {len(ips)} unique ips...\n"))
+                print(clr(f"\n  - Checking {len(ips)} unique ips...\n"))
                 if server_type == "java": multithread(check_java, threads, tuple(ips.keys())); break
                 else: multithread(check_bedrock, threads, tuple(ips.keys())); break
             except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
@@ -204,13 +204,13 @@ def main():
         scan_count = int(open('scan_count.txt','r',encoding='utf-8').read())
         scan_count += len(ips)
         open('scan_count.txt','w',encoding='utf-8').write(str(scan_count))
-        print(clr(f"\n  > Totally Scanned {scan_count} IPs!"))
+        print(clr(f"\n  - Totally Scanned {scan_count} IPs!"))
         time.sleep(5)
         
         gen_rem -= gen_amt
         
         if gen_rem > 0:
-            print(clr(f"\n  > {gen_rem} IPs remaining..."))
+            print(clr(f"\n  - {gen_rem} IPs remaining..."))
 
 if __name__ == "__main__": 
 

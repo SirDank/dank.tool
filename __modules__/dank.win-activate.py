@@ -34,7 +34,7 @@ def main():
     while True:
         cls()
         try:
-            print(clr(f"\n  > {translate('Exit inside the MAS window to return to the menu')}..."))
+            print(clr(f"\n  - {translate('Exit inside the MAS window to return to the menu')}..."))
             os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
             break
         except: input(clr(f"\n  > {translate('Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))

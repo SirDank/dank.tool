@@ -81,7 +81,7 @@ enable_lighting()
 # terrain vertices generation
 
 start_time = time.time()
-print(clr("\n  > Generating terrain vertices..."))
+print(clr("\n  - Generating terrain vertices..."))
 
 def generate_vertices(x, z):
 
@@ -146,7 +146,7 @@ terrain_keys = terrain.keys()
 triangles = [(0,1,2,3)]
 uvs = [(0,0),(1,0),(1,1),(0,1)]
 
-print(clr(f"\n  > Generated {len(terrain_keys)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
+print(clr(f"\n  - Generated {len(terrain_keys)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
 del start_time
 
 # randomised entity generation

@@ -62,7 +62,7 @@ def main_one():
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr(f"\n  > {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  - {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE")
     
@@ -73,7 +73,7 @@ def main_one():
     while True:
         try:
             version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers).json()['versions']
-            print(clr(f'  > {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
+            print(clr(f'  - {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
         except: input(clr(f"\n  > {translate('Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again')}... ",2))
 
     # user inputs [ name, version, ram, allow_cracked ]
@@ -139,7 +139,7 @@ def main_one():
     # setting max ram
     
     string = translate('When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or "OOMKiller" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you cannot afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns.')
-    print_read_me(); print(clr(f"\n  > {string}"))
+    print_read_me(); print(clr(f"\n  - {string}"))
     print("")
     while True:
         ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + red)
@@ -149,7 +149,7 @@ def main_one():
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  > {translate('Great! Now you need to pick a host for your mc server!')}\n\n  > {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  > {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
+    print_read_me(); print(clr(f"\n  - {translate('Great! Now you need to pick a host for your mc server!')}\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
 
     print("")
     while True:
@@ -182,7 +182,7 @@ def main_one():
 
     # begin preparing downloads
 
-    cls(); print(clr(f"\n  > {translate('Preparing Downloads')}..."))
+    cls(); print(clr(f"\n  - {translate('Preparing Downloads')}..."))
     to_download_urls, to_download_file_names = [], []
 
     # github server-builder files and plugins
@@ -260,15 +260,15 @@ def main_one():
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
-    # > AutoPlug
+    # - AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
     to_download_file_names.append("AutoPlug-Client.jar")
 
-    # > purpur.jar
+    # - purpur.jar
     to_download_urls.append(f"https://api.purpurmc.org/v2/purpur/{version}/latest/download")
     to_download_file_names.append("purpur.jar")
     
-    # > MCAntiMalware.jar
+    # - MCAntiMalware.jar
     for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
         to_download_urls.append(file_url)
         to_download_file_names.append(file_url.split('/')[-1])
@@ -282,18 +282,18 @@ def main_one():
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
                 open(file_name,"wb").write(data)
-                print(clr(f"  > {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
+                print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
                 input(clr(f"  > {translate('Failed')} [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
                 rm_line(); rm_line()
 
     # disabled due to repeated error reports
 
-    '''print_read_me(); input(clr("\n  > Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
+    '''print_read_me(); input(clr("\n  - Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
 
     # begin multithreaded downloader | threads = 2
 
-    print(clr("\n  > Starting Multiple Downloads... [ this might take a few minutes ]"))
+    print(clr("\n  - Starting Multiple Downloads... [ this might take a few minutes ]"))
 
     while True:
         try:
@@ -305,7 +305,7 @@ def main_one():
 
     # begin single threaded downloader
     
-    print(clr(f"\n  > {translate('Downloading... [ this might take a few minutes ]')}\n"))
+    print(clr(f"\n  - {translate('Downloading... [ this might take a few minutes ]')}\n"))
     
     start_time = time.time()
     #for url, file_name in zip(to_download_urls, to_download_file_names):
@@ -314,11 +314,11 @@ def main_one():
     
     time_taken = int(time.time()-start_time)
 
-    print(clr(f"\n  > {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds')}...")); time.sleep(3)
+    print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds')}...")); time.sleep(3)
 
     # unpacking downloaded archives
 
-    '''print(clr(f"\n  > {translate('Unpacking')}..."))
+    '''print(clr(f"\n  - {translate('Unpacking')}..."))
     
     for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
 
@@ -339,7 +339,7 @@ main_one()
 
 # creating local files
 
-cls(); print(clr(f"\n  > {translate('Creating local files')}..."))
+cls(); print(clr(f"\n  - {translate('Creating local files')}..."))
 
 open('eula.txt','w').write('eula=true')
 
@@ -705,18 +705,18 @@ if cracked:
 def main_two():
   
     string = f'''
-  > {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}
+  - {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}
   
-  > quick_chmod.sh - {translate('Script to make all .sh files executable')}
-  > quick_install_java.sh / quick_install_java.cmd - {translate('Script to install Temurin JRE')}
-  > mc-anti-malware.sh / mc-anti-malware.cmd - {translate('Script to start mc-anti-malware')}
-  > start_server.sh / start_server.cmd - {translate('Script to start your server')}
-  > ".check java" - {translate('Command to install Java VM')}
-  > ".start" - {translate('Command to start the server')}
-  > ".stop" - {translate('Command to stop the server')}
-  > ".stop both" - {translate('Command to stop the server and Autoplug')}
-  > ".check plugins" - {translate('Command to update configured plugins')}
-  > ".help" - {translate('Command to display all available commands')}
+  - quick_chmod.sh : {translate('Script to make all .sh files executable')}
+  - quick_install_java.sh / quick_install_java.cmd : {translate('Script to install Temurin JRE')}
+  - mc-anti-malware.sh / mc-anti-malware.cmd : {translate('Script to start mc-anti-malware')}
+  - start_server.sh / start_server.cmd : {translate('Script to start your server')}
+  - ".check java" : {translate('Command to install Java VM')}
+  - ".start" : {translate('Command to start the server')}
+  - ".stop" : {translate('Command to stop the server')}
+  - ".stop both" : {translate('Command to stop the server and Autoplug')}
+  - ".check plugins" : {translate('Command to update configured plugins')}
+  - ".help" : {translate('Command to display all available commands')}
   
   > {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... '''
 
@@ -749,33 +749,33 @@ def main_two():
     if playit:
 
         string = f'''
-  > {translate('It is extremely easy to setup the playit.gg plugin')}
+  - {translate('It is extremely easy to setup the playit.gg plugin')}
   
-  > {translate('After server setup is complete, start your server.')}
+  - {translate('After server setup is complete, start your server.')}
   
-  > {translate('Click on the URL displayed on the console.')}
+  - {translate('Click on the URL displayed on the console.')}
   
-  > {translate("Create an account and login if you haven't already to save the tunnel on playit.gg")}
+  - {translate("Create an account and login if you haven't already to save the tunnel on playit.gg")}
   
-  > {translate('Click "Add Agent"')}
+  - {translate('Click "Add Agent"')}
   
-  > {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
+  - {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
   
   > {translate('Press [ ENTER ] after you have read the message')}... '''
 
         print_read_me(); input(clr(string))  
     else:
-        print_read_me(); print(clr(f"\n  > {translate('As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, you could follow this tutorial on port-forwarding.')}"))
+        print_read_me(); print(clr(f"\n  - {translate('As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, you could follow this tutorial on port-forwarding.')}"))
         if input(clr(f"\n  > {translate('Open port forwarding tutorial on youtube?')} [ y / n ]: ") + red).lower() == "y":
             sys_open('https://youtu.be/X75GbRaGzu8')
 
     tmp_path = f'{dir_name}\\autoplug\\updater.yml'   
     string = f'''
-  > {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
+  - {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 
-  > {translate(f'After you move the folder to a linux system, run "sudo chmod +x {tmp_path}/quick_chmod.sh" to make all .sh files executable')}
+  - {translate(f'After you move the folder to a linux system, run "sudo chmod +x {tmp_path}/quick_chmod.sh" to make all .sh files executable')}
 
-  > {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
+  - {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
   > {translate('Press [ ENTER ] after you have read the message')}... '''
 

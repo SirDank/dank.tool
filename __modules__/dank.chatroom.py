@@ -29,7 +29,7 @@ def chatroom_login():
         
         if "missing" in response.content.decode() and response.status_code == 400:
             
-            cls(); print(clr(align("\n<---|[ A c c o u n t - C r e a t i o n ]|--->") + "\n\n  > Username must be greater than two characters and less than 16 characters, spaces are not counted!"))
+            cls(); print(clr(align("\n<---|[ A c c o u n t - C r e a t i o n ]|--->") + "\n\n  - Username must be greater than two characters and less than 16 characters, spaces are not counted!"))
             
             err_msg = ""
             while True:
