@@ -529,7 +529,7 @@ if __name__ == "__main__":
             
             # user input
             
-            choice = input(clr("  - Choice: ") + red)
+            choice = input(clr("  > Choice: ") + red)
             if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
                 
                 if int(choice) <= len(modules):
@@ -544,7 +544,7 @@ if __name__ == "__main__":
                     print_category_modules(choice)
                     
                     while True:
-                        _choice = input(clr("  - Choice: ") + red)
+                        _choice = input(clr("  > Choice: ") + red)
                         if _choice == '0':
                             print_modules()
                             break
@@ -848,13 +848,13 @@ if __name__ == "__main__":
             
             if code == "404: Not Found":
                 if project.startswith('_'):
-                    print(clr(f"\n  > {translate(f'{project[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {translate(f'{project[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
                 else:
-                    print(clr(f"\n  > {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2))
                 time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  > {translate(f'{project} executed successfully! Returning to menu in 3 seconds')}...")); time.sleep(3)
+                cls(); print(clr(f"\n  - {translate(f'{project} executed successfully! Returning to menu in 3 seconds')}...")); time.sleep(3)
 
         except:
 
