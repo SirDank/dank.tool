@@ -171,6 +171,25 @@ def set_globals_one():
     
     offline_modules = {
         
+        'Windows Tools': {
+
+            'Operating System Repair': {
+                'info': '',
+                'title': "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
+                'project': "dank.os-repair",
+                'rpc': "repairing windows operating system"    
+            },
+            
+            'Network Reset': {
+                'info': '',
+                'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
+                'project': "dank.network-reset",
+                'rpc': "resetting network settings"
+            },
+            
+            'category': True,
+        },
+        
         'Browser Backup': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
@@ -249,6 +268,20 @@ def set_globals_two():
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                     'project': "dank.win-activate",
                     'rpc': "activating windows / office"
+                },
+                
+                translate('Operating System Repair'): {
+                    'info': '',
+                    'title': "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
+                    'project': "dank.os-repair",
+                    'rpc': "repairing windows operating system"    
+                },
+                
+                translate('Network Reset'): {
+                    'info': '',
+                    'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
+                    'project': "dank.network-reset",
+                    'rpc': "resetting network settings"
                 },
                 
                 'category': True,
@@ -491,7 +524,7 @@ if __name__ == "__main__":
                     
                     while True:
                         _choice = input(clr("  - Choice: ") + red)
-                        if _choice in ('0', 'exit'):
+                        if _choice == '0':
                             print_modules()
                             break
                         elif _choice.isdigit() and int(_choice) >= 1 and int(_choice) <= (len(choice) - 1):
@@ -530,7 +563,8 @@ if __name__ == "__main__":
         try:
 
             if "Discord" in choice['project']:
-                os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god'); continue
+                os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
+                continue
 
             else:
                 title(choice['title'])
@@ -571,14 +605,19 @@ if __name__ == "__main__":
                     if update_settings:
                         open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
                     
+                    print(clr(f"  [0] Return to menu"))
+                    
                     counter = 1
                     for name, value in settings.items():
                         print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
                         counter += 1
                     
-                    choice = input(clr("\n  - Choice [num/exit]: ") + red).lower() 
+                    choice = input(clr("\n  > Choice: ") + red).lower() 
                     
-                    if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(settings)):
+                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= int(len(settings)):
+                        
+                        if choice == '0': break
+                        
                         settings = list(settings.items())
                         settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
                         settings = dict(settings)
@@ -597,10 +636,148 @@ if __name__ == "__main__":
                                 os.remove("disable-startup-audio")
                         
                         open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
-                    
-                    elif choice == 'exit': break
 
-                continue       
+                continue
+        
+            elif "dank.os-repair" in choice['project']:
+                
+                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+
+                cls(); print(clr(f"""
+  [ COMMANDS ]
+
+  - [0] Return to menu
+
+  - [1] {clr('DISM /online /cleanup-image /restorehealth',2)} : {translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
+  
+  - [2] {clr('sfc /scannow',2)} : {translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
+  
+  - [3] {clr('chkdsk C: /x /r',2)} : {translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
+
+  - [4] Run all commands
+"""))
+                
+                while True:
+
+                    choice = input(clr("  > Choice: ") + red).lower()
+                    
+                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= 4:
+                        
+                        cls()
+
+                        if choice == '1':
+                            
+                            print(clr(f"\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
+                            os.system("DISM /online /cleanup-image /restorehealth")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '2':
+                            
+                            print(clr(f"\n\n  [ sfc /scannow ]"))
+                            os.system("sfc /scannow")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '3':
+                            
+                            print(clr(f"\n\n  [ chkdsk C: /x /r ]"))
+                            os.system("chkdsk C: /x /r")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '4':
+                            
+                            print(clr(f"\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
+                            os.system("DISM /online /cleanup-image /restorehealth")
+                            print(clr(f"\n  [ sfc /scannow ]"))
+                            os.system("sfc /scannow")
+                            print(clr(f"\n  [ chkdsk C: /x /r ]"))
+                            os.system("chkdsk C: /x /r")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        break
+                    
+                    else: rm_line()
+                
+                continue
+            
+            elif "dank.network-reset" in choice['project']:
+                
+                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+
+                cls(); print(clr(f"""
+  [ COMMANDS ]
+
+  - [0] Return to menu
+
+  - [1] {clr('ipconfig /flushdns',2)} : {translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
+
+  - [2] {clr('ipconfig /registerdns',2)} : {translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
+
+  - [3] {clr('ipconfig /release',2)} : {translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
+
+  - [4] {clr('ipconfig /renew',2)} : {translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
+
+  - [5] {clr('netsh winsock reset',2)} : {translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
+
+  - [6] Run all commands
+"""))
+                
+                while True:
+
+                    choice = input(clr("  > Choice: ") + red).lower()
+                    
+                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= 6:
+                        
+                        cls()
+
+                        if choice == '1':
+                            
+                            print(clr(f"\n\n  [ ipconfig /flushdns ]"))
+                            os.system("ipconfig /flushdns")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '2':
+                            
+                            print(clr(f"\n\n  [ ipconfig /registerdns ]"))
+                            os.system("ipconfig /registerdns")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '3':
+                            
+                            print(clr(f"\n\n  [ ipconfig /release ]"))
+                            os.system("ipconfig /release")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '4':
+                            
+                            print(clr(f"\n\n  [ ipconfig /renew ]"))
+                            os.system("ipconfig /renew")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '5':
+                            
+                            print(clr(f"\n\n  [ netsh winsock reset ]"))
+                            os.system("netsh winsock reset")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            
+                        elif choice == '6':
+                            
+                            print(clr(f"\n\n  [ ipconfig /flushdns ]"))
+                            os.system("ipconfig /flushdns")
+                            print(clr(f"\n  [ ipconfig /registerdns ]"))
+                            os.system("ipconfig /registerdns")
+                            print(clr(f"\n  [ ipconfig /release ]"))
+                            os.system("ipconfig /release")
+                            print(clr(f"\n  [ ipconfig /renew ]"))
+                            os.system("ipconfig /renew")
+                            print(clr(f"\n  [ netsh winsock reset ]"))
+                            os.system("netsh winsock reset")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                        
+                        break
+                    
+                    else: rm_line()
+                
+                continue
                 
             if LOCAL_MODULE:
                 
