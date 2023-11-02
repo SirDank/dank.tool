@@ -705,8 +705,7 @@ if cracked:
 def main_two():
   
     string = f'''
-  - {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}
-  
+
   - quick_chmod.sh : {translate('Script to make all .sh files executable')}
   - quick_install_java.sh / quick_install_java.cmd : {translate('Script to install Temurin JRE')}
   - mc-anti-malware.sh / mc-anti-malware.cmd : {translate('Script to start mc-anti-malware')}
@@ -718,9 +717,11 @@ def main_two():
   - ".check plugins" : {translate('Command to update configured plugins')}
   - ".help" : {translate('Command to display all available commands')}
   
-  > {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... '''
+  '''
+  
+    open('readme.txt', 'w', encoding='utf-8').write(string)
 
-    print_read_me(); input(clr(string))
+    print_read_me(); input(clr(f"  - {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... "))
 
     def config_updater(path):
         config_data = open(path, 'r', encoding='utf-8').read()
