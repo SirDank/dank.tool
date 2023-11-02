@@ -36,10 +36,10 @@ def backup(browser, compression_level):
         path_to_backup = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data")
         
         if not chrome_installed():
-            cls(); print(clr(f"\n  > {translate('Chrome possibly not installed')}!",2))
+            cls(); print(clr(f"\n  - {translate('Chrome possibly not installed')}!",2))
         
         if not os.path.exists(path_to_backup):
-            print(clr(f"\n  > {translate('Invalid Path')}: {path_to_backup}\n",2))
+            print(clr(f"\n  - {translate('Invalid Path')}: {path_to_backup}\n",2))
             while True:
                 path_to_backup = input(clr(f"  > {translate('Input user data folder path')}: ")); rm_line()
                 if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup: break
@@ -52,10 +52,10 @@ def backup(browser, compression_level):
             if chrome_running: input(clr("\n  > Chrome is running! Terminate it and press [ENTER]... ",2))
             else: break
 
-        cls(); print(clr(f"\n  > {translate('Exporting registry keys')}..."))
+        cls(); print(clr(f"\n  - {translate('Exporting registry keys')}..."))
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
         
-        print(clr(f"\n  > {translate('Compressing... (this might take a few minutes)')}\n"))
+        print(clr(f"\n  - {translate('Compressing... (this might take a few minutes)')}\n"))
         
         num_source_files = 0
         for root, dirs, files in os.walk(path_to_backup):
@@ -64,7 +64,7 @@ def backup(browser, compression_level):
 
         now = datetime.datetime.now()
         zip_name = f'chrome_{now.strftime("%d-%m-%Y")}_{now.strftime("%I-%M-%S-%p")}.zip'
-        instructions = f'\n  > [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!'
+        instructions = f'\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!'
         open('instructions.txt', 'w').write(instructions)
 
         width = os.get_terminal_size().columns
@@ -84,7 +84,7 @@ def backup(browser, compression_level):
                 zipf.write("chrome.reg", "chrome.reg")
                 zipf.write("instructions.txt", "instructions.txt")
 
-        print(clr("\n  > Cleaning..."))
+        print(clr("\n  - Cleaning..."))
         os.remove("chrome.reg")
         os.remove("instructions.txt")
         os.system(f'explorer.exe "{os.getcwd()}"')
@@ -123,7 +123,7 @@ def main():
     os.chdir('dank.browser-backup')
     
     browsers = ['Chrome']
-    to_print = "  > Supported Browsers: \n"
+    to_print = "  - Supported Browsers: \n"
     for _, browser in enumerate(browsers):
         to_print += f"\n  - [{_+1}] {browser}"
 
