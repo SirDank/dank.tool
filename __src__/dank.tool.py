@@ -534,9 +534,12 @@ if __name__ == "__main__":
                 
             if "dank.tool settings" in choice['project']:
                 
+                try: runs = open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r').read()
+                except: runs = "?"
+
                 while True:
                     
-                    cls(); print(clr(f"\n  - Settings: [ {translate('restart for changes to take effect')} ]\n"))
+                    cls(); print(clr(f"\n  - Settings: [ {translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n"))
                     
                     settings = json.loads(open("settings.json", "r", encoding="utf-8").read())
                     update_settings = False
@@ -563,7 +566,7 @@ if __name__ == "__main__":
                     
                     counter = 1
                     for name, value in settings.items():
-                        print(clr(f"  - [{counter}] {name}: {'True' if int(value) else 'False'}"))
+                        print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
                         counter += 1
                     
                     choice = input(clr("\n  - Choice [num/exit]: ") + red).lower() 
