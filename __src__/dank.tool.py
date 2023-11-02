@@ -88,7 +88,7 @@ def get_menu_request_responses(task_id, request_key):
         if task_id == 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=run.ps1&page=1&per_page=1"
         elif task_id == 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
         elif task_id == 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
-        menu_request_responses[request_key] = updated_on(url,False)
+        menu_request_responses[request_key] = updated_on(url, False)
         
     # get last update time for modules
         
@@ -170,20 +170,20 @@ def set_globals_one():
     global offline_modules, offline_scripts
     
     offline_modules = {
-
-        'Fusion-Fall Modding Tool': {
-            'info': '',
-            'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
-            'project': "dank.fusion-fall",
-            'rpc': "modding fusion-fall",
-            'category': False,
-        },
         
         'Browser Backup': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
             'project': "dank.browser-backup",
             'rpc': "backing up a browser",
+            'category': False,
+        },
+        
+        'Fusion-Fall Modding Tool': {
+            'info': '',
+            'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
+            'project': "dank.fusion-fall",
+            'rpc': "modding fusion-fall",
             'category': False,
         },
         
@@ -241,13 +241,18 @@ def set_globals_two():
                 
                 'category': True,
             },
-
-            translate('Fusion-Fall Modding Tool'): {
-                'info': menu_request_responses["dank.fusion-fall"],
-                'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
-                'project': "dank.fusion-fall",
-                'rpc': "modding fusion-fall",
-                'category': False,
+            
+            translate('Windows Tools'): {
+                
+                translate('Windows / Office Activator'): {
+                    'info': menu_request_responses["Microsoft-Activation-Scripts"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
+                    'project': "dank.win-activate",
+                    'rpc': "activating windows / office"
+                },
+                
+                'category': True,
+                
             },
 
             translate('SpotX + Spicetify Installer'): {
@@ -265,12 +270,12 @@ def set_globals_two():
                 'rpc': "backing up a browser",
                 'category': False,
             },
-
-            translate('Windows / Office Activator'): {
-                'info': menu_request_responses["dank.win-activate"],
-                'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
-                'project': "dank.win-activate",
-                'rpc': "activating windows / office",
+            
+            translate('Fusion-Fall Modding Tool'): {
+                'info': menu_request_responses["dank.fusion-fall"],
+                'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
+                'project': "dank.fusion-fall",
+                'rpc': "modding fusion-fall",
                 'category': False,
             },
             
@@ -387,6 +392,8 @@ if __name__ == "__main__":
                     input(clr(f"\n  > {translate('Failed to download assets! Press [ENTER] to try again')}... ",2))
                     rm_line(); rm_line()
 
+        # multithreaded request responses
+        
         print(clr(f"\n  > {translate('Getting request responses')}..."))
         
         global menu_request_responses
@@ -402,7 +409,7 @@ if __name__ == "__main__":
                 "chatroom_user_count",
                 "SpotX-Win",
                 "Spicetify",
-                "dank.win-activate",
+                "Microsoft-Activation-Scripts",
                 "dank.minecraft-server-builder",
                 "dank.minecraft-server-scanner",
                 "dank.auto-clicker",
