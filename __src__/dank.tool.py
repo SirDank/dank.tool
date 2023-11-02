@@ -141,7 +141,7 @@ def print_modules():
     
     for title, module in modules.items():
         if not module['category']:
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{title}[/b] {module['info']}")
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red]- [bright_white]{title}[/b] {module['info']}")
         else:
             user_renderables.append(f"[b][bright_white]{counter} [bright_red][ [bright_white]{title}[/b] [bright_red]]")
         counter += 1
@@ -149,7 +149,7 @@ def print_modules():
     # local modules
         
     for title in local_modules.keys():
-        user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]> [bright_white]{title}[/b]")
+        user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]- [bright_white]{title}[/b]")
         counter += 1
 
     console.print(Panel(title=f"[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
@@ -164,10 +164,10 @@ def print_category_modules(modules):
     
     # category modules
     
-    user_renderables.append(f"[b][bright_white]0 [bright_red]> [bright_white]Return to menu[/b]")
+    user_renderables.append(f"[b][bright_white]0 [bright_red]- [bright_white]Return to menu[/b]")
     for title, module in modules.items():
         if title != "category":
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red]> [bright_white]{title}[/b] {module['info']}")
+            user_renderables.append(f"[b][bright_white]{counter} [bright_red]- [bright_white]{title}[/b] {module['info']}")
             counter += 1
 
     console.print(Panel(title=f"[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
@@ -391,7 +391,7 @@ if __name__ == "__main__":
 
     if ONLINE_MODE:
 
-        print(clr(f"\n  > {translate('Downloading modules')}..."))
+        print(clr(f"\n  - {translate('Downloading modules')}..."))
         
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
 
@@ -416,7 +416,7 @@ if __name__ == "__main__":
         
         if int(open("ursina/textures/texture_version.txt", "r").read()) < latest_asset_version:
             
-            print(clr(f"\n  > {translate('Downloading game assets')}..."))
+            print(clr(f"\n  - {translate('Downloading game assets')}..."))
             del latest_asset_version
 
             while True:
@@ -448,7 +448,7 @@ if __name__ == "__main__":
 
         # multithreaded request responses
         
-        print(clr(f"\n  > {translate('Getting request responses')}..."))
+        print(clr(f"\n  - {translate('Getting request responses')}..."))
         
         global menu_request_responses
         menu_request_responses = {}
@@ -864,7 +864,7 @@ if __name__ == "__main__":
             if "Error Type: KeyboardInterrupt" in err_message:
                 
                 print_warning_symbol()
-                print(clr(f"\n  > {translate('Please select text first and then use [ CTRL + C ]')}!"))
+                print(clr(f"\n  - {translate('Please select text first and then use [ CTRL + C ]')}!"))
                 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
