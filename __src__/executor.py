@@ -61,7 +61,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.2"
+DANK_TOOL_VERSION = "3.2.1"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -69,7 +69,7 @@ os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
 
 os.chdir(os.path.dirname(__file__))
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
-print(clr(f"\n  > Version: {DANK_TOOL_VERSION}"))
+print(clr(f"\n  - Version: {DANK_TOOL_VERSION}"))
 
 # rediect stderr to a file
 #if not os.path.exists('__logs__'): os.mkdir('__logs__')
@@ -131,7 +131,7 @@ def latest_dank_tool_version():
             while True:
                 LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers).content.decode()
                 if 'Not Found' in LATEST_VERSION:
-                    print(clr("\n  > Please do not use the dev-branch, it is meant for testing/debugging only!",2))
+                    print(clr("\n  - Please do not use the dev-branch, it is meant for testing/debugging only!",2))
                     global BRANCH; BRANCH = "main"
                     os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
                 else:
@@ -171,7 +171,7 @@ def dank_tool_installer():
 # update environment variables
 
 if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or (ONLINE_MODE and int(DANK_TOOL_SETTINGS['force-update'])):
-    print(clr(f"\n  > Update Found: {LATEST_VERSION}" + ("" if not int(DANK_TOOL_SETTINGS['force-update']) else " [ FORCED ]")))
+    print(clr(f"\n  - Update Found: {LATEST_VERSION}" + ("" if not int(DANK_TOOL_SETTINGS['force-update']) else " [ FORCED ]")))
     if int(DANK_TOOL_SETTINGS['force-update']):
         settings = json.loads(open('settings.json', 'r', encoding='utf-8').read())
         settings['force-update'] = "0"
@@ -180,15 +180,15 @@ if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or (ONLINE_MODE and int(DANK
 
 elif LATEST_VERSION == DANK_TOOL_VERSION:
     if not DEV_BRANCH:
-        print(clr(f"\n  > Latest Version!"))
+        print(clr(f"\n  - Latest Version!"))
     else:
-        print(clr(f"\n  > Development Branch!"))
+        print(clr(f"\n  - Development Branch!"))
 
 elif LATEST_VERSION == "0":
-    print(clr("\n  > Offline Mode!"))
+    print(clr("\n  - Offline Mode!"))
 
 else: # LATEST VERSION IS LOWER THAN CURRENT VERSION
-    print(clr("\n  > Development Version!"))
+    print(clr("\n  - Development Version!"))
 
 # check windows language
 
@@ -211,7 +211,7 @@ def check_windows_language():
     if not locale_name.lower().startswith('en'):
         translator = Translator()
         result = translator.translate("Would you like to enable the translate feature?", source_language='en', destination_language=locale_name)
-        print(clr(f"\n  > Your windows language is set to '{cyan}{locale_name}'!"))
+        print(clr(f"\n  - Your windows language is set to '{cyan}{locale_name}'!"))
         if input(clr(f"\n  > {result} [y/n]:", colour_one=cyan)).lower() == 'y':
             os.environ['DANK_TOOL_LANG'] = locale_name
         else:
@@ -260,7 +260,7 @@ def dank_tool_discord_rpc():
         except: break
 
 if ONLINE_MODE:
-    print(clr("\n  > Trying to set discord rpc... (if this freezes, restart discord)"))
+    print(clr("\n  - Trying to set discord rpc... (if this freezes, restart discord)"))
     try:
         os.environ['DISCORD_RPC'] = "on the main menu"
         RPC = Presence("1028269752386326538")
@@ -309,8 +309,8 @@ else:
 
 title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}")
 
-if not ONLINE_MODE:
-    time.sleep(3)
+if not ONLINE_MODE and not OFFLINE_SRC:
+    time.sleep(2)
 
 try: exec(code)
 except:
@@ -320,12 +320,15 @@ except:
     print(clr(err_message, 2))
     LATEST_VERSION = latest_dank_tool_version()
     
-    if "Error Type: KeyboardInterrupt" in err_message:
+    if "Updated!" in err_message:
+        sys.exit("Updated!")
+    
+    elif "Error Type: KeyboardInterrupt" in err_message:
         print_warning_symbol()
-        print(clr("\n  > Please select text first and then use [ CTRL + C ]!"))
+        print(clr("\n  - Please select text first and then use [ CTRL + C ]!"))
     
     elif parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
-        print(clr(f"\n  > Updating to the latest version...\n\n  > Update Found: {LATEST_VERSION}"))
+        print(clr(f"\n  - Updating to the latest version...\n\n  - Update Found: {LATEST_VERSION}"))
         dank_tool_installer()
 
     elif ONLINE_MODE:
@@ -334,7 +337,7 @@ except:
                 requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
                 break
             except: input(clr(f"\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
-        print(clr("\n  > Error Reported! If it is an OS error, Please run as admin and try again!\n\n  > If it is a logic error, it will be fixed soon!"))
+        print(clr("\n  - Error Reported! If it is an OS error, Please run as admin and try again!\n\n  - If it is a logic error, it will be fixed soon!"))
     
     input(clr("\n  > Press [ENTER] to EXIT... "))
     os.system("taskkill /f /im dank.tool.exe")
