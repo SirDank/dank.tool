@@ -97,7 +97,8 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
-        vert_2_y = choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        avg = (vert_0_y + vert_1_y + vert_3_y)/3
+        vert_2_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -106,8 +107,10 @@ def generate_vertices(x, z):
     elif terrain_beside:
         vert_0_y = terrain[(x-1, z)]['vertices'][1][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
-        vert_1_y = choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
-        vert_2_y = choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        avg = (vert_0_y + vert_3_y)/2
+        vert_1_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        avg = (vert_0_y + vert_1_y + vert_3_y)/3
+        vert_2_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -116,12 +119,20 @@ def generate_vertices(x, z):
     elif terrain_below:
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
-        vert_2_y = choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
-        vert_3_y = choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        avg = (vert_0_y + vert_1_y)/2
+        vert_2_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        avg = (vert_0_y + vert_1_y + vert_2_y)/3
+        vert_3_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
         new_vertices[3][1] = vert_3_y
+    
+    else:
+        new_vertices[0][1] = choice([0, .2, -.2])
+        new_vertices[1][1] = choice([0, .2, -.2])
+        new_vertices[2][1] = choice([0, .2, -.2])
+        new_vertices[3][1] = choice([0, .2, -.2])
     
     global lowest_y, highest_y 
     lowest_y = min(lowest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1])
@@ -176,7 +187,7 @@ def create_entity(x, z, vertices):
         entity.collision = False
         terrain[pos]['entities'].append(entity)
     
-    if choice([0, 1], p=[0.98, 0.02]):
+    elif choice([0, 1], p=[0.98, 0.02]):
        
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
@@ -206,7 +217,7 @@ def create_entity(x, z, vertices):
                         entity.collision = False
                         terrain[pos]['entities'].append(entity)
 
-                if leaves_level_current == 2:
+                elif leaves_level_current == 2:
 
                     for _pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
                         entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
@@ -221,6 +232,26 @@ def create_entity(x, z, vertices):
             next_pos += entity.up
 
 # load / unload entities
+
+def first_load():
+
+    for x in range(int(player.x) - render_dist, int(player.x) + render_dist + 1):
+        for z in range(int(player.z) - render_dist, int(player.z) + render_dist + 1):
+            pos = (x, z)
+            if not pos in rendered_chunks.keys() and pos in terrain_keys:
+                if not terrain[pos]['entities']:
+                    create_entity(x, z, terrain[pos]['vertices'])
+                else:
+                    for entity in terrain[pos]['entities']:
+                        entity.enabled = True
+                rendered_chunks[pos] = ''
+
+    for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
+        for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
+            pos = (x, z)
+            if pos in rendered_chunks.keys():
+                for entity in terrain[pos]['entities']:
+                    entity.collision = True
 
 def world():
 
@@ -246,15 +277,20 @@ def world():
                     entity.collision = True
             collision_grid[pos] = ''
     
-    for pos in [_ for _ in rendered_chunks.keys()]:
-        if not pos in collision_grid.keys():
-            for entity in terrain[pos]['entities']:
-                entity.collision = False
+    to_delete = []
+    
+    for pos in rendered_chunks.keys():
         if not pos in render_grid.keys():
             for entity in terrain[pos]['entities']:
                 _ = destroy(entity)
             terrain[pos]['entities'] = None
-            del rendered_chunks[pos]
+            to_delete.append(pos)
+        elif not pos in collision_grid.keys():
+            for entity in terrain[pos]['entities']:
+                entity.collision = False
+    
+    for pos in to_delete:
+        del rendered_chunks[pos]
 
 # other stuff
 
@@ -278,9 +314,10 @@ c_lower_limit = collision_dist
 c_upper_limit = collision_dist + 1
 
 player.position = (0, 100, 0)
+first_load()
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
-sequence_2 = Sequence(Func(world), loop=True)
+sequence_2 = Sequence(Func(world), Wait(0.005), loop=True)
 sequence_1.start()
 sequence_2.start()
 
