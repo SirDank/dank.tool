@@ -98,7 +98,7 @@ def generate_vertices(x, z):
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
         avg = (vert_0_y + vert_1_y + vert_3_y)/3
-        vert_2_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_2_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -108,9 +108,9 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x-1, z)]['vertices'][1][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
         avg = (vert_0_y + vert_3_y)/2
-        vert_1_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_1_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         avg = (vert_0_y + vert_1_y + vert_3_y)/3
-        vert_2_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_2_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -120,19 +120,19 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         avg = (vert_0_y + vert_1_y)/2
-        vert_2_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        vert_2_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
         avg = (vert_0_y + vert_1_y + vert_2_y)/3
-        vert_3_y = choice([avg, avg+.2, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        vert_3_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
         new_vertices[3][1] = vert_3_y
     
     else:
-        new_vertices[0][1] = choice([0, .2, -.2])
-        new_vertices[1][1] = choice([0, .2, -.2])
-        new_vertices[2][1] = choice([0, .2, -.2])
-        new_vertices[3][1] = choice([0, .2, -.2])
+        new_vertices[0][1] = choice([0, .1, .2, -.1, -.2])
+        new_vertices[1][1] = choice([0, .1, .2, -.1, -.2])
+        new_vertices[2][1] = choice([0, .1, .2, -.1, -.2])
+        new_vertices[3][1] = choice([0, .1, .2, -.1, -.2])
     
     global lowest_y, highest_y 
     lowest_y = min(lowest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1])
