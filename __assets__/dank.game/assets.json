@@ -13,6 +13,7 @@
     },
 
     "audio": {
-        "ambiance.m4a": 1
+        "ambiance_crickets.m4a": 1,
+        "ambiance_trees.m4a": 1
     }
 }
