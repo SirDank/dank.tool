@@ -342,6 +342,8 @@ rendered_chunks = {}
 c_loop = []
 collision_grid = {}
 
+ambiance = Audio("ambiance.m4a", loop=True, autoplay=True, volume=0.5)
+
 player.position = (0, 100, 0)
 
 first_load()
