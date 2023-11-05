@@ -47,7 +47,7 @@ app = Ursina(
 )
 
 #player = EditorCamera()
-player = FirstPersonController()
+player = FirstPersonController(speed=2.5)
 sky = Sky(texture='sky.png')
 Entity.default_shader = texture_blend_shader
 
@@ -81,7 +81,7 @@ enable_lighting()
 # terrain vertices generation
 
 start_time = time.time()
-print(clr("\n  - Generating terrain vertices..."))
+print(clr("\n  > Generating terrain vertices..."))
 
 def generate_vertices(x, z):
 
@@ -157,14 +157,13 @@ terrain_keys = terrain.keys()
 triangles = [(0,1,2,3)]
 uvs = [(0,0),(1,0),(1,1),(0,1)]
 
-print(clr(f"\n  - Generated {len(terrain_keys)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
+print(clr(f"\n  > Generated {len(terrain_keys)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
 del start_time
 
 # randomised entity generation
 
-def create_entity(x, z, vertices):
+def create_entity(pos, vertices):
 
-    pos = (x, z)
     terrain[pos]['entities'] = []
     
     mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs)
@@ -195,7 +194,7 @@ def create_entity(x, z, vertices):
         tree_height = choice(tree_heights)
         leaves_level_start = tree_height-3
         leaves_level_current = 1
-        next_pos = Vec3(x, min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), z)
+        next_pos = Vec3(pos[0], min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), pos[1])
 
         for _ in range(tree_height):
             
@@ -240,11 +239,12 @@ def first_load():
             pos = (x, z)
             if not pos in rendered_chunks.keys() and pos in terrain_keys:
                 if not terrain[pos]['entities']:
-                    create_entity(x, z, terrain[pos]['vertices'])
+                    create_entity(pos, terrain[pos]['vertices'])
                 else:
                     for entity in terrain[pos]['entities']:
                         entity.enabled = True
                 rendered_chunks[pos] = ''
+            render_grid[pos] = ''
 
     for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
         for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
@@ -252,34 +252,63 @@ def first_load():
             if pos in rendered_chunks.keys():
                 for entity in terrain[pos]['entities']:
                     entity.collision = True
-
-def world():
-
-    render_grid = {}
-    for x in range(int(player.x) - r_lower_limit, int(player.x) + r_upper_limit):
-        for z in range(int(player.z) - r_lower_limit, int(player.z) + r_upper_limit):
-            pos = (x, z)
-            if not pos in rendered_chunks.keys() and pos in terrain_keys:
-                if not terrain[pos]['entities']:
-                    create_entity(x, z, terrain[pos]['vertices'])
-                else:
-                    for entity in terrain[pos]['entities']:
-                        entity.enabled = True
-                rendered_chunks[pos] = ''
-            render_grid[pos] = ''
-    
-    collision_grid = {}
-    for x in range(int(player.x) - c_lower_limit, int(player.x) + c_upper_limit):
-        for z in range(int(player.z) - c_lower_limit, int(player.z) + c_upper_limit):
-            pos = (x, z)
-            if pos in rendered_chunks.keys():
-                for entity in terrain[pos]['entities']:
-                    entity.collision = True
             collision_grid[pos] = ''
+
+def reset_render_grid():
+
+    global render_grid
+
+    _render_grid = {}
+    for x in range(int(player.x) - render_dist, int(player.x) + render_dist + 1):
+        for z in range(int(player.z) - render_dist, int(player.z) + render_dist + 1):
+            pos = (x, z)
+            render_grid[pos] = ''
+            _render_grid[pos] = ''
+            if not pos in r_loop and not pos in rendered_chunks.keys() and pos in terrain_keys:
+                r_loop.append(pos)
+    render_grid = _render_grid.copy()
+
+def reset_collision_grid():
+    
+    global collision_grid
+    
+    _collision_grid = {}
+    for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
+        for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
+            pos = (x, z)
+            _collision_grid[pos] = ''
+            if not pos in collision_grid.keys() and pos in rendered_chunks.keys():
+                collision_grid[pos] = ''
+                c_loop.append(pos)
+    collision_grid = _collision_grid.copy()
+
+def render_loop():
+
+    try: 
+        pos = r_loop.pop(0)
+        if not terrain[pos]['entities']:
+            create_entity(pos, terrain[pos]['vertices'])
+        else:
+            for entity in terrain[pos]['entities']:
+                entity.enabled = True
+        rendered_chunks[pos] = '' 
+    except IndexError:
+        pass
+
+def collision_loop():
+
+    try: 
+        pos = c_loop.pop(0)
+        for entity in terrain[pos]['entities']:
+            entity.collision = True
+    except IndexError:
+        pass
+
+def unload():
     
     to_delete = []
     
-    for pos in rendered_chunks.keys():
+    for pos in rendered_chunks:
         if not pos in render_grid.keys():
             for entity in terrain[pos]['entities']:
                 _ = destroy(entity)
@@ -306,19 +335,29 @@ def input(key):
         except:
             application.quit()
 
+r_loop = []
+render_grid = {}
 rendered_chunks = {}
-r_lower_limit = render_dist
-r_upper_limit = render_dist + 1
 
-c_lower_limit = collision_dist
-c_upper_limit = collision_dist + 1
+c_loop = []
+collision_grid = {}
 
 player.position = (0, 100, 0)
+
 first_load()
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
-sequence_2 = Sequence(Func(world), Wait(0.005), loop=True)
+sequence_2 = Sequence(Func(reset_render_grid), Wait(0.25), loop=True)
+sequence_3 = Sequence(Func(render_loop), loop=True) #Wait(0.001),
+sequence_4 = Sequence(Func(reset_collision_grid), Wait(0.25), loop=True)
+sequence_5 = Sequence(Func(collision_loop), Wait(0.025), loop=True)
+sequence_6 = Sequence(Func(unload), Wait(1), loop=True)
+
 sequence_1.start()
 sequence_2.start()
+sequence_3.start()
+sequence_4.start()
+sequence_5.start()
+sequence_6.start()
 
 app.run()
