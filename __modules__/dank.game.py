@@ -1,10 +1,8 @@
 import os
 from ursina import *
-from time import sleep
 from dankware import cls, clr, title
 from numpy.random import choice, randint
 from ursina.shaders import texture_blend_shader
-from concurrent.futures import ThreadPoolExecutor
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
@@ -350,10 +348,13 @@ player.position = (0, 100, 0)
 first_load()
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
+
 sequence_2 = Sequence(Func(reset_render_grid), Wait(0.25), loop=True)
-sequence_3 = Sequence(Func(render_loop), loop=True) #Wait(0.001),
+sequence_3 = Sequence(Func(render_loop), Wait(0.005), loop=True)
+
 sequence_4 = Sequence(Func(reset_collision_grid), Wait(0.25), loop=True)
-sequence_5 = Sequence(Func(collision_loop), Wait(0.025), loop=True)
+sequence_5 = Sequence(Func(collision_loop), Wait(0.05), loop=True)
+
 sequence_6 = Sequence(Func(unload), Wait(1), loop=True)
 
 sequence_1.start()
