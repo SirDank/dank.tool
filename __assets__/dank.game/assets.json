@@ -9,6 +9,10 @@
         "mossy_cobblestone1.png": 1,
         "mossy_cobblestone2.png": 1,
         "mossy_stone_bricks.png": 1,
-        "sky.png": 1
+        "sky.png": 2
+    },
+
+    "audio": {
+        "ambiance.m4a": 1
     }
 }
