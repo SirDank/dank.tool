@@ -421,15 +421,17 @@ if __name__ == "__main__":
         
         for folder in latest_assets_json:
             if not os.path.isdir(f"ursina/{folder}"):
-                os.makedirs(f"ursina/{folder}") 
+                os.makedirs(f"ursina/{folder}")
+            if not folder in local_assets_json.keys():
+                local_assets_json[folder] = {}
             for asset in latest_assets_json[folder]:
-                if not asset in local_assets_json.keys() or local_assets_json[folder][asset] < latest_assets_json[folder][asset]:
+                if not asset in local_assets_json[folder].keys() or local_assets_json[folder][asset] < latest_assets_json[folder][asset]:
                     asset_urls.append(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/{folder}/{asset}")
                     file_names.append(f"ursina/{folder}/{asset}")
         
         if asset_urls:
                 
-            print(clr(f"\n  - {translate('Downloading game assets')}..."))
+            print(clr(f"\n  - {translate('Downloading game assets')}...\n"))
             
             while True:
                 try:
@@ -445,7 +447,7 @@ if __name__ == "__main__":
 
         # multithreaded request responses
         
-        print(clr(f"\n  - {translate('Getting request responses')}..."))
+        print(clr(f"\n  - {translate('Getting request responses')}...\n"))
         
         global menu_request_responses
         menu_request_responses = {}
