@@ -342,7 +342,8 @@ rendered_chunks = {}
 c_loop = []
 collision_grid = {}
 
-ambiance = Audio("ambiance.m4a", loop=True, autoplay=True, volume=0.5)
+ambiance_trees = Audio("ambiance_trees.m4a", loop=True, autoplay=True, volume=1)
+ambiance_crickets = Audio("ambiance_crickets.m4a", loop=True, autoplay=True, volume=0.3)
 
 player.position = (0, 100, 0)
 
