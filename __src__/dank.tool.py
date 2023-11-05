@@ -404,47 +404,44 @@ if __name__ == "__main__":
                 rm_line(); rm_line()
                 
         # download assets
+
+        if not os.path.isdir("ursina"): os.mkdir("ursina")
+        if not os.path.isfile("ursina/assets.json"): open("ursina/assets.json", "w").write("{}")
         
-        if not os.path.isdir("ursina/textures"): os.makedirs("ursina/textures")
-        if not os.path.isfile("ursina/textures/texture_version.txt"): open("ursina/textures/texture_version.txt", "w").write("0")
+        local_assets_json = json.loads(open("ursina/assets.json", "r").read())
         
         while True:
-            try: latest_asset_version = int(requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/textures/texture_version.txt", headers=headers).content.decode()); break
+            try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers).json(); break
             except:
-                input(clr(f"\n  > {translate('Failed to get latest asset version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {translate('Failed to get latest assets! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
-        
-        if int(open("ursina/textures/texture_version.txt", "r").read()) < latest_asset_version:
-            
-            print(clr(f"\n  - {translate('Downloading game assets')}..."))
-            del latest_asset_version
-
-            while True:
                 
-                try: response = requests.get(F"https://api.github.com/repos/SirDank/dank.tool/contents/__assets__/dank.game/textures{'' if not DEV_BRANCH else '?ref=dev'}", headers=headers)
-                except:
-                    input(clr(f"\n  > {translate('Failed to contact github! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
-                    rm_line(); rm_line()
-                    continue
-
-                if response.status_code == 200:
-                    response = response.json()
-                    asset_urls = [item["download_url"] for item in response if item["type"] == "file"]
-                    file_names = [('ursina/textures/' + item["name"]) for item in response if item["type"] == "file"]
-                    del response
-                    break
-                else:
-                    input(clr(f"\n  > {translate(f'Github response status code: {response.status_code}! Press [ENTER] to continue')}...",2))
-                    rm_line(); rm_line()
+        asset_urls = []
+        file_names = []
+        
+        for folder in latest_assets_json:
+            if not os.path.isdir(f"ursina/{folder}"):
+                os.makedirs(f"ursina/{folder}") 
+            for asset in latest_assets_json[folder]:
+                if not asset in local_assets_json.keys() or local_assets_json[folder][asset] < latest_assets_json[folder][asset]:
+                    asset_urls.append(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/{folder}/{asset}")
+                    file_names.append(f"ursina/{folder}/{asset}")
+        
+        if asset_urls:
+                
+            print(clr(f"\n  - {translate('Downloading game assets')}..."))
             
             while True:
                 try:
-                    multithread(download_assets, 50, asset_urls, file_names, progress_bar=False)
-                    del asset_urls, file_names
+                    multithread(download_assets, 50, asset_urls, file_names)
                     break
                 except:
-                    input(clr(f"\n  > {translate('Failed to download assets! Press [ENTER] to try again')}... ",2))
+                    input(clr(f"\n  > {translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                     rm_line(); rm_line()
+            
+            open("ursina/assets.json", "w").write(json.dumps(latest_assets_json, indent=4))
+        
+        del local_assets_json, latest_assets_json, asset_urls, file_names
 
         # multithreaded request responses
         
@@ -475,7 +472,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=False)
+                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys)
                 del request_keys
                 break
             except:
