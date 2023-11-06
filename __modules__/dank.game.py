@@ -45,7 +45,7 @@ app = Ursina(
 )
 
 #player = EditorCamera()
-player = FirstPersonController(speed=3)
+player = FirstPersonController(speed=2.5)
 sky = Sky(texture='sky.png')
 Entity.default_shader = texture_blend_shader
 
