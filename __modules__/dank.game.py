@@ -45,7 +45,7 @@ app = Ursina(
 )
 
 #player = EditorCamera()
-player = FirstPersonController(speed=2.5)
+player = FirstPersonController(speed=3)
 sky = Sky(texture='sky.png')
 Entity.default_shader = texture_blend_shader
 
@@ -55,14 +55,21 @@ collision_dist = 2 # n*2 x n*2
 tree_heights = 10
 tree_heights = [_ for _ in range(tree_heights-3, tree_heights+4)]
 textures = {
-    "grass1": 0.445,
-    "grass2": 0.445,
-    "mossy_cobblestone1": 0.05,
-    "mossy_cobblestone2": 0.05,
-    "mossy_stone_bricks": 0.01,
+    load_texture("grass1"): 0.445,
+    load_texture("grass2"): 0.445,
+    load_texture("mossy_cobblestone1"): 0.05,
+    load_texture("mossy_cobblestone2"): 0.05,
+    load_texture("mossy_stone_bricks"): 0.01,
 }
 weights = tuple(textures.values())
 textures = tuple(textures.keys())
+tree_log = load_texture("acacia_log")
+tree_leaves = load_texture("azalea_leaves")
+leaves = tuple([
+    load_texture("mangrove_leaves_inventory"),
+    load_texture("azalea_leaves"),
+    load_texture("flowering_azalea_leaves")
+])
 
 # lighting
 
@@ -180,7 +187,7 @@ def create_entity(pos, vertices):
         
         mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
         mesh.generate_normals(smooth=True)
-        entity = Entity(model=mesh, collider="mesh", texture=choice(["mangrove_leaves_inventory", "azalea_leaves", "flowering_azalea_leaves"]), ignore=True)
+        entity = Entity(model=mesh, collider="mesh", texture=choice(leaves), ignore=True)
         entity.collision = False
         terrain[pos]['entities'].append(entity)
     
@@ -196,7 +203,7 @@ def create_entity(pos, vertices):
 
         for _ in range(tree_height):
             
-            entity = Entity(model="cube", collider="box", texture="acacia_log", position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+            entity = Entity(model="cube", collider="box", texture=tree_log, position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
             entity.collision = False
             terrain[pos]['entities'].append(entity)
             
@@ -210,14 +217,14 @@ def create_entity(pos, vertices):
                     right_2 = entity.right + entity.right
 
                     for _pos in [entity.back + left_2, left_2, entity.forward + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, entity.back + right_2, right_2, entity.forward + right_2]:
-                        entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+                        entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
                         terrain[pos]['entities'].append(entity)
 
                 elif leaves_level_current == 2:
 
                     for _pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
-                        entity = Entity(model="cube", texture="azalea_leaves", position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+                        entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
                         terrain[pos]['entities'].append(entity)
                 
