@@ -685,33 +685,22 @@ if __name__ == "__main__":
                         
                         cls()
 
-                        if choice == '1':
+                        if choice in ('1', '4'):
                             
                             print(clr(f"\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
                             os.system("DISM /online /cleanup-image /restorehealth")
-                            input(clr("\n  > Press [ENTER] to continue... "))
                             
-                        elif choice == '2':
+                        if choice in ('2', '4'):
                             
                             print(clr(f"\n\n  [ sfc /scannow ]"))
                             os.system("sfc /scannow")
-                            input(clr("\n  > Press [ENTER] to continue... "))
                             
-                        elif choice == '3':
+                        if choice in ('3', '4'):
                             
                             print(clr(f"\n\n  [ chkdsk C: /x /r ]"))
                             os.system("chkdsk C: /x /r")
-                            input(clr("\n  > Press [ENTER] to continue... "))
-                            
-                        elif choice == '4':
-                            
-                            print(clr(f"\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
-                            os.system("DISM /online /cleanup-image /restorehealth")
-                            print(clr(f"\n  [ sfc /scannow ]"))
-                            os.system("sfc /scannow")
-                            print(clr(f"\n  [ chkdsk C: /x /r ]"))
-                            os.system("chkdsk C: /x /r")
-                            input(clr("\n  > Press [ENTER] to continue... "))
+                        
+                        input(clr("\n  > Press [ENTER] to continue... "))
                             
                         break
                     
@@ -749,49 +738,32 @@ if __name__ == "__main__":
                         
                         cls()
 
-                        if choice == '1':
+                        if choice in ('1', '6'):
                             
                             print(clr(f"\n\n  [ ipconfig /flushdns ]"))
                             os.system("ipconfig /flushdns")
-                            input(clr("\n  > Press [ENTER] to continue... "))
                             
-                        elif choice == '2':
+                        if choice in ('2', '6'):
                             
                             print(clr(f"\n\n  [ ipconfig /registerdns ]"))
                             os.system("ipconfig /registerdns")
-                            input(clr("\n  > Press [ENTER] to continue... "))
                             
-                        elif choice == '3':
+                        if choice in ('3', '6'):
                             
                             print(clr(f"\n\n  [ ipconfig /release ]"))
                             os.system("ipconfig /release")
-                            input(clr("\n  > Press [ENTER] to continue... "))
                             
-                        elif choice == '4':
+                        if choice in ('4', '6'):
                             
                             print(clr(f"\n\n  [ ipconfig /renew ]"))
                             os.system("ipconfig /renew")
-                            input(clr("\n  > Press [ENTER] to continue... "))
                             
-                        elif choice == '5':
+                        if choice in ('5', '6'):
                             
                             print(clr(f"\n\n  [ netsh winsock reset ]"))
                             os.system("netsh winsock reset")
-                            input(clr("\n  > Press [ENTER] to continue... "))
-                            
-                        elif choice == '6':
-                            
-                            print(clr(f"\n\n  [ ipconfig /flushdns ]"))
-                            os.system("ipconfig /flushdns")
-                            print(clr(f"\n  [ ipconfig /registerdns ]"))
-                            os.system("ipconfig /registerdns")
-                            print(clr(f"\n  [ ipconfig /release ]"))
-                            os.system("ipconfig /release")
-                            print(clr(f"\n  [ ipconfig /renew ]"))
-                            os.system("ipconfig /renew")
-                            print(clr(f"\n  [ netsh winsock reset ]"))
-                            os.system("netsh winsock reset")
-                            input(clr("\n  > Press [ENTER] to continue... "))
+                        
+                        input(clr("\n  > Press [ENTER] to continue... "))
                         
                         break
                     
