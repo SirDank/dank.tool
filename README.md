@@ -57,6 +57,8 @@
 
 - If you want the startup animation and music to be played on every run, enable `force-audio` in settings.
 
+- Do not enable `offline-src`, `offline_mode`, `dev-branch` in settings as they are not meant for normal users.
+
 - Documentation for developers can be found at the bottom.
 
 ## ♦️ To Do ♦️
