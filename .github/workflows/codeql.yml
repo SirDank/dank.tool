@@ -15,7 +15,7 @@ on:
   release:
     types: [published]
   schedule:
-    - cron: '30 1 * * 6'
+    - cron: '30 4 * * 0'
 
 jobs:
   analyze:
