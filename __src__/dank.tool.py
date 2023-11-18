@@ -362,6 +362,12 @@ def set_globals_two():
                 'category': False,
             },
             
+            'Website': {
+                'info': '[bright_green]Visit Now!',
+                'project': "Dankware Inc. Website",
+                'category': False,
+            },
+            
             'Settings': {
                 'info': '',
                 'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
@@ -584,6 +590,9 @@ if __name__ == "__main__":
 
             if "Discord" in choice['project']:
                 os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
+                continue
+            elif "Website" in choice['project']:
+                os.system(f'start https://dank-site.onrender.com/')
                 continue
 
             else:
