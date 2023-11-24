@@ -355,17 +355,25 @@ def set_globals_two():
                 'rpc': "chatting in the chatroom",
                 'category': False,
             },
-
-            'Discord Server': {
-                'info': '[bright_green]Join Now!',
-                'project': "Dankware Inc. Discord Server",
-                'category': False,
-            },
             
-            'Website': {
-                'info': '[bright_green]Visit Now!',
-                'project': "Dankware Inc. Website",
-                'category': False,
+            'Discord / Telegram / Website': {
+
+                'Discord Server': {
+                    'info': '[bright_green]Join Now!',
+                    'project': "Dankware Inc. Discord Server",
+                },
+                
+                'Telegram Group': {
+                    'info': '[bright_green]Join Now!',
+                    'project': "Dankware Inc. Telegram Group",
+                },
+                
+                'Website': {
+                    'info': '[bright_green]Visit Now!',
+                    'project': "Dankware Inc. Website",
+                },
+                
+                'category': True
             },
             
             'Settings': {
@@ -591,10 +599,12 @@ if __name__ == "__main__":
             if "Discord" in choice['project']:
                 os.system(f'start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
                 continue
+            elif "Telegram" in choice['project']:
+                os.system(f'start https://t.me/+18tWHJ_g2g4yZWI1')
+                continue
             elif "Website" in choice['project']:
                 os.system(f'start https://dank-site.onrender.com/')
                 continue
-
             else:
                 title(choice['title'])
                 project = choice['project']
