@@ -192,7 +192,7 @@ def set_globals_one():
     
     offline_modules = {
         
-        'Windows Tools': {
+        'Windows OS Tools': {
 
             'Operating System Repair': {
                 'info': '',
@@ -282,7 +282,7 @@ def set_globals_two():
                 'category': True,
             },
             
-            translate('Windows Tools'): {
+            translate('Windows OS Tools'): {
                 
                 translate('Windows / Office Activator'): {
                     'info': menu_request_responses["Microsoft-Activation-Scripts"],
