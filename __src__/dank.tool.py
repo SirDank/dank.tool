@@ -253,11 +253,11 @@ def set_globals_two():
     if ONLINE_MODE:
 
         try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
-        except:
+        except Exception as exc:
             # temp debug
-            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 ---> Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
+            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: \n\n{exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
             except: pass
-            stats = ""
+            stats = " [ ERROR ON STATS! ]"
             
         global online_modules
         
