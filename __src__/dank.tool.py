@@ -794,11 +794,11 @@ if __name__ == "__main__":
   
   - [0] Return to menu
   
-  - [1] {clr('Clear Icon Cache',2)} : {translate('This command clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
+  - [1] {clr('Clear Icon Cache',2)} : {translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
   
-  - [2] {clr('Clear Thumbnail Cache',2)} : {translate('This command clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
+  - [2] {clr('Clear Thumbnail Cache',2)} : {translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
   
-  - [3] Run all commands
+  - [3] Run all tasks
 """))
                 
                 while True:
