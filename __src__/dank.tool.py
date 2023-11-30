@@ -808,7 +808,7 @@ if __name__ == "__main__":
                         
                         cls()
                         
-                        print(clr(f"\n\n  [ Terminating Explorer.exe ]"))
+                        print(clr(f"\n  [ Terminating Explorer.exe ]"))
                         os.system("taskkill /f /im explorer.exe >nul 2>&1")
 
                         if choice in ('1', '3'):
