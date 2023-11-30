@@ -695,7 +695,6 @@ if __name__ == "__main__":
             elif "dank.os-repair" in choice['project']:
                 
                 cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-
                 cls(); print(clr(f"""
   [ COMMANDS ]
 
@@ -713,28 +712,22 @@ if __name__ == "__main__":
                 while True:
 
                     choice = input(clr("  > Choice: ") + red).lower()
-                    
                     if choice.isdigit() and int(choice) >= 0 and int(choice) <= 4:
                         
                         cls()
 
                         if choice in ('1', '4'):
-                            
                             print(clr(f"\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
                             os.system("DISM /online /cleanup-image /restorehealth")
-                            
                         if choice in ('2', '4'):
-                            
                             print(clr(f"\n\n  [ sfc /scannow ]"))
                             os.system("sfc /scannow")
-                            
                         if choice in ('3', '4'):
-                            
                             print(clr(f"\n\n  [ chkdsk C: /x /r ]"))
                             os.system("chkdsk C: /x /r")
                         
                         input(clr("\n  > Press [ENTER] to continue... "))
-                            
+                        
                         break
                     
                     else: rm_line()
@@ -744,7 +737,6 @@ if __name__ == "__main__":
             elif "dank.network-reset" in choice['project']:
                 
                 cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-
                 cls(); print(clr(f"""
   [ COMMANDS ]
 
@@ -766,33 +758,23 @@ if __name__ == "__main__":
                 while True:
 
                     choice = input(clr("  > Choice: ") + red).lower()
-                    
                     if choice.isdigit() and int(choice) >= 0 and int(choice) <= 6:
                         
                         cls()
 
                         if choice in ('1', '6'):
-                            
                             print(clr(f"\n\n  [ ipconfig /flushdns ]"))
                             os.system("ipconfig /flushdns")
-                            
                         if choice in ('2', '6'):
-                            
                             print(clr(f"\n\n  [ ipconfig /registerdns ]"))
                             os.system("ipconfig /registerdns")
-                            
                         if choice in ('3', '6'):
-                            
                             print(clr(f"\n\n  [ ipconfig /release ]"))
                             os.system("ipconfig /release")
-                            
                         if choice in ('4', '6'):
-                            
                             print(clr(f"\n\n  [ ipconfig /renew ]"))
                             os.system("ipconfig /renew")
-                            
                         if choice in ('5', '6'):
-                            
                             print(clr(f"\n\n  [ netsh winsock reset ]"))
                             os.system("netsh winsock reset")
                         
@@ -807,7 +789,6 @@ if __name__ == "__main__":
             elif "dank.clear-icons" in choice['project']:
                 
                 #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-
                 cls(); print(clr(f"""
   [ COMMANDS ]
   
@@ -823,27 +804,22 @@ if __name__ == "__main__":
                 while True:
 
                     choice = input(clr("  > Choice: ") + red).lower()
-                    
                     if choice.isdigit() and int(choice) >= 0 and int(choice) <= 3:
                         
                         cls()
                         
                         print(clr(f"\n\n  [ Terminating Explorer.exe ]"))
-                        os.system("taskkill /f /im explorer.exe")
+                        os.system("taskkill /f /im explorer.exe >nul 2>&1")
 
                         if choice in ('1', '3'):
-                            
-                            print(clr(f"\n\n  [ Clearing Icon Cache ]"))
+                            print(clr(f"\n  [ Clearing Icon Cache ]"))
                             os.system(r"cd /d %userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer && attrib -h iconcache* && del /f iconcache*")
-                            
                         if choice in ('2', '3'):
-                            
-                            print(clr(f"\n\n  [ Clearing Thumbnail Cache ]"))
+                            print(clr(f"\n  [ Clearing Thumbnail Cache ]"))
                             os.system(r"cd /d %userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer && attrib -h thumbcache* && del /f thumbcache*")
-                            
-                        print(clr(f"\n\n  [ Starting Explorer.exe ]"))
-                        os.system("start explorer.exe")
                         
+                        print(clr(f"\n  [ Starting Explorer.exe ]"))
+                        os.system("start explorer.exe")
                         input(clr("\n  > Press [ENTER] to continue... "))
                         
                         break
