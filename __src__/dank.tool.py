@@ -208,6 +208,13 @@ def set_globals_one():
                 'rpc': "resetting network settings"
             },
             
+            'Clear Icon & Thumbnail Cache': {
+                'info': '',
+                'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
+                'project': "dank.clear-icons",
+                'rpc': "clearing icon and thumbnail cache"
+            },
+            
             'category': True,
         },
         
@@ -303,6 +310,13 @@ def set_globals_two():
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
                     'project': "dank.network-reset",
                     'rpc': "resetting network settings"
+                },
+                
+                translate('Clear Icon & Thumbnail Cache'): {
+                    'info': '',
+                    'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
+                    'project': "dank.clear-icons",
+                    'rpc': "clearing icon and thumbnail cache"
                 },
                 
                 'category': True,
@@ -781,6 +795,54 @@ if __name__ == "__main__":
                             
                             print(clr(f"\n\n  [ netsh winsock reset ]"))
                             os.system("netsh winsock reset")
+                        
+                        input(clr("\n  > Press [ENTER] to continue... "))
+                        
+                        break
+                    
+                    else: rm_line()
+                
+                continue
+            
+            elif "dank.clear-icons" in choice['project']:
+                
+                #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+
+                cls(); print(clr(f"""
+  [ COMMANDS ]
+  
+  - [0] Return to menu
+  
+  - [1] {clr('Clear Icon Cache',2)} : {translate('This command clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
+  
+  - [2] {clr('Clear Thumbnail Cache',2)} : {translate('This command clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
+  
+  - [3] Run all commands
+"""))
+                
+                while True:
+
+                    choice = input(clr("  > Choice: ") + red).lower()
+                    
+                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= 3:
+                        
+                        cls()
+                        
+                        print(clr(f"\n\n  [ Terminating Explorer.exe ]"))
+                        os.system("taskkill /f /im explorer.exe")
+
+                        if choice in ('1', '3'):
+                            
+                            print(clr(f"\n\n  [ Clearing Icon Cache ]"))
+                            os.system(r"cd /d %userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer && attrib -h iconcache* && del /f iconcache*")
+                            
+                        if choice in ('2', '3'):
+                            
+                            print(clr(f"\n\n  [ Clearing Thumbnail Cache ]"))
+                            os.system(r"cd /d %userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer && attrib -h thumbcache* && del /f thumbcache*")
+                            
+                        print(clr(f"\n\n  [ Starting Explorer.exe ]"))
+                        os.system("start explorer.exe")
                         
                         input(clr("\n  > Press [ENTER] to continue... "))
                         
