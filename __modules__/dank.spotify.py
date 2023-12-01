@@ -50,7 +50,7 @@ def main():
             print(clr(f"\n  - {translate('installing Spicetify-Marketplace')}...\n"))
             os.system('powershell -Command "& iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
             print(clr(f"\n  - {translate('applying Spicetify')}...\n"))
-            os.system('spicetify restore backup apply')
+            os.system('spicetify backup apply') # restore
             print(clr(f"\n  - {translate('Sleeping for 5 seconds')}...\n"))
             time.sleep(5)
             #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
