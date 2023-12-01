@@ -810,14 +810,30 @@ if __name__ == "__main__":
                         
                         print(clr(f"\n  [ Terminating Explorer.exe ]"))
                         os.system("taskkill /f /im explorer.exe >nul 2>&1")
+                        os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
                         if choice in ('1', '3'):
-                            print(clr(f"\n  [ Clearing Icon Cache ]"))
-                            os.system(r"cd /d %userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer && attrib -h iconcache* && del /f iconcache*")
+                            print(clr(f"\n  [ Clearing Icon Cache ]\n"))
+                            os.system(r"attrib -h iconcache*")
+                            for file in os.listdir():
+                                if file.startswith("iconcache") and file.endswith(".db"):
+                                    try: 
+                                        os.remove(file)
+                                        print(clr(f"  - deleted {file}"))
+                                    except:
+                                        print(clr(f"  - failed to delete {file}",2))
                         if choice in ('2', '3'):
-                            print(clr(f"\n  [ Clearing Thumbnail Cache ]"))
-                            os.system(r"cd /d %userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer && attrib -h thumbcache* && del /f thumbcache*")
+                            print(clr(f"\n  [ Clearing Thumbnail Cache ]\n"))
+                            os.system(r"attrib -h thumbcache*")
+                            for file in os.listdir():
+                                if file.startswith("thumbcache") and file.endswith(".db"):
+                                    try: 
+                                        os.remove(file)
+                                        print(clr(f"  - deleted {file}"))
+                                    except:
+                                        print(clr(f"  - failed to delete {file}",2))
                         
+                        os.chdir(os.path.dirname(__file__))
                         print(clr(f"\n  [ Starting Explorer.exe ]"))
                         os.system("start explorer.exe")
                         input(clr("\n  > Press [ENTER] to continue... "))
