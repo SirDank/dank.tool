@@ -67,8 +67,6 @@
 - [x] Add translator
 - [ ] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
-- [ ] Add Linux Wine Support
-- [ ] Add Linux Support
 
 ## ♦️ Support ♦️
 
@@ -152,34 +150,6 @@
 
 ---  
 
-# 🚨 Fusion-Fall Modding Tool 🚨
-
-- Sponsored by [nuclearff.com](https://nuclearff.com/)
-
-## ♦️ Features ♦️
-
-- Custom Asset Bundle Explorer / Editor
-- ImageMagick installer
-- Several in-built shortcuts for modding
-- Swap Textures
-- Swap Audio
-- Swap Models (static, not animated)
-- Export Models
-- Command Logger
-- Workspaces for multiple projects
-
-## ♦️ To Do ♦️
-
-- [ ] Create Mission Builder
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/5fb484c6-e349-460d-ad27-226143473229"></p><br>
-
-<p>&nbsp;</p>
-
----  
-
 # 🚨 SpotX + Spicetify Installer 🚨
 
 - Full credits to [amd64fox](https://github.com/amd64fox/SpotX) and [khanhas](https://github.com/spicetify/spicetify-cli) for their amazing work!
@@ -235,9 +205,9 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221374732-126bdd5e-da49-4d68-979e-0c688e88ea4b.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/f4a2313f-19af-4413-a559-5c97915d9a9d"></p><br>
 
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/221374800-f8d4d8c5-5a6e-4f51-a9b1-784c0322543d.png"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/2d3bc292-055d-4d1c-8649-f8ad9f386100"></p><br>
 
 <p>&nbsp;</p>
 
@@ -251,6 +221,44 @@
 ## ♦️ Preview ♦️
 
 <br><p align="center"><img width="400" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/48b12916-9b58-4f79-b8ea-998fd41c2c1a"></p><br>
+
+# 🚨 Windows Cleanup / Repair Tools 🚨
+
+- Do not use these modules if you do not know what you are doing!
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/394602e3-c574-4720-ab9c-4cb0c80b5837"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/c919c903-e0e2-4fd7-83f7-9e656c9849fc"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/2ae524f8-8622-4bc4-8bf7-5e361e0d0f1a"></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
+# 🚨 Fusion-Fall Modding Tool 🚨
+
+- Sponsored by [nuclearff.com](https://nuclearff.com/)
+
+## ♦️ Features ♦️
+
+- Custom Asset Bundle Explorer / Editor
+- ImageMagick installer
+- Several in-built shortcuts for modding
+- Swap Textures
+- Swap Audio
+- Swap Models (static, not animated)
+- Export Models
+- Command Logger
+- Workspaces for multiple projects
+
+## ♦️ To Do ♦️
+
+- [ ] Create Mission Builder
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/5fb484c6-e349-460d-ad27-226143473229"></p><br>
 
 <p>&nbsp;</p>
 
