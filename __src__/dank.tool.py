@@ -100,6 +100,7 @@ def get_menu_request_responses(task_id, request_key):
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
             if tmp.isdigit() and tmp != "0": menu_request_responses[request_key] = tmp
             else: menu_request_responses[request_key] = "1"
+            del tmp
             menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
         except: menu_request_responses[request_key] = "" # [bright_red]⚠️
         
@@ -261,10 +262,9 @@ def set_globals_two():
 
         try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
         except Exception as exc:
-            # temp debug
-            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: \n\n{exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
+            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: {exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
             except: pass
-            stats = " [ ERROR ON STATS! ]"
+            stats = " [ ERROR ON STATS ⚠️ ]"
             
         global online_modules
         
@@ -806,11 +806,11 @@ if __name__ == "__main__":
                     choice = input(clr("  > Choice: ") + red).lower()
                     if choice.isdigit() and int(choice) >= 0 and int(choice) <= 3:
                         
-                        cls()
-                        
-                        print(clr(f"\n  [ Terminating Explorer.exe ]"))
-                        os.system("taskkill /f /im explorer.exe >nul 2>&1")
-                        os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
+                        if choice != '0':
+                            cls()
+                            print(clr(f"\n  [ Terminating Explorer.exe ]"))
+                            os.system("taskkill /f /im explorer.exe >nul 2>&1")
+                            os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
                         if choice in ('1', '3'):
                             print(clr(f"\n  [ Clearing Icon Cache ]\n"))
@@ -833,10 +833,11 @@ if __name__ == "__main__":
                                     except:
                                         print(clr(f"  - failed to delete {file}",2))
                         
-                        os.chdir(os.path.dirname(__file__))
-                        print(clr(f"\n  [ Starting Explorer.exe ]"))
-                        os.system("start explorer.exe")
-                        input(clr("\n  > Press [ENTER] to continue... "))
+                        if choice != '0':
+                            os.chdir(os.path.dirname(__file__))
+                            print(clr(f"\n  [ Starting Explorer.exe ]"))
+                            os.system("start explorer.exe")
+                            input(clr("\n  > Press [ENTER] to continue... "))
                         
                         break
                     

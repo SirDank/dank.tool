@@ -19,7 +19,7 @@ def setup():
         
         magickwand_installed = False
 
-        cls(); print(clr("\n  > MagickWand shared library not found!",2))
+        cls(); print(clr("\n  - MagickWand shared library not found!",2))
         
         if input(clr("\n  > Download ImageMagick? [y/n]: ") + red).lower() == "y":
     
@@ -34,17 +34,17 @@ def setup():
                             download_path = "C:\\"
                     download_path = os.path.join(download_path, file_name)
                     
-                    print(clr(f"\n  > Downloading [ {file_name} ]..."))
+                    print(clr(f"\n  - Downloading [ {file_name} ]..."))
                     response = requests.get(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.fusion-fall/{file_name}", headers={'user-agent':'dank.tool'}, allow_redirects=True)
                     data = response.content
                     try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                     except: size = "?"
                     open(download_path,"wb").write(data)
-                    print(clr(f"\n  > Downloaded [ {file_name} ] [ {size} MB ]")); break
+                    print(clr(f"\n  - Downloaded [ {file_name} ] [ {size} MB ]")); break
 
                 except: input(clr(f"\n  > Failed [ {file_name} ] Press {white}ENTER{red} to try again... ",2))
             
-            print(clr("\n  > Launching ImageMagick Installer..."))
+            print(clr("\n  - Launching ImageMagick Installer..."))
             os.system(f'"{download_path}"')
             input(clr("\n  > Press [ENTER] after you have installed ImageMagick... "))
             magickwand_installed = True
@@ -85,7 +85,7 @@ def open_workspace():
 
     if len(folders) == 0:
         
-        print(clr("\n  > No workspaces found!\n",2))
+        print(clr("\n  - No workspaces found!\n",2))
         while True:
             try:
                 workspace = input(clr("  > New workspace name: ") + red)
@@ -94,11 +94,11 @@ def open_workspace():
                 break
             except:
                 rm_line()
-                print(clr(f"  > Failed to make directory: {workspace}",2))       
+                print(clr(f"  - Failed to make directory: {workspace}",2))       
     
     else:
         
-        print(clr("\n  - Workspaces:\n\n    0 > Create New Workspace"))
+        print(clr("\n  - Workspaces:\n\n    0 - Create New Workspace"))
         for i, workspace in enumerate(folders):
             print(clr(f"    {i+1} > {workspace}"))
         
@@ -117,7 +117,7 @@ def open_workspace():
                                 rm_line()
                         except:
                             rm_line()
-                            print(clr(f"  > Failed to make directory: {workspace}",2))   
+                            print(clr(f"  - Failed to make directory: {workspace}",2))   
                     break
                 else: workspace = folders[int(_)-1]; break
             elif _ in folders: workspace = _; break
@@ -140,7 +140,7 @@ def path_id(filename: str):
     for _ in data:
         if _ != ')' and _.isdigit(): id += _
         else: break
-    print(clr(f"  > path_id: {id}"))
+    print(clr(f"  - path_id: {id}"))
 
 def dump_xdt():
 
@@ -170,7 +170,7 @@ def fix_bundles():
         modded_bytes = b'UnityWeb' + original_bytes[original_bytes.find(b'\x00'):]
         open(f"fixed_bundles/{bundle}", 'wb+').write(modded_bytes)
 
-    shutil.rmtree("bundles_to_fix"); print(clr(f"\n  > Fixed [{len(bundles)}] bundles!\n"))
+    shutil.rmtree("bundles_to_fix"); print(clr(f"\n  - Fixed [{len(bundles)}] bundles!\n"))
 
 def tswap_mass(dxt_mode):
 
@@ -182,7 +182,7 @@ def tswap_mass(dxt_mode):
         try: import_texture(xdtdata, f"tswap_textures/{texture}", texture.split('.')[0], f'dxt{dxt_mode}')
         except: print(clr(err(sys.exc_info()), 2))
         
-    print(clr(f"\n  > Mass swapped [{len(textures)}] textures!\n"))
+    print(clr(f"\n  - Mass swapped [{len(textures)}] textures!\n"))
 
 def timport_mass(dxt_mode):
     
@@ -197,7 +197,7 @@ def timport_mass(dxt_mode):
             tabledata.add2ab(f"texture/{texture}.dds", new_texture.path_id)
         except: print(clr(err(sys.exc_info()), 2))
         
-    print(clr(f"\n  > Mass imported [{len(textures)}] textures!\n"))
+    print(clr(f"\n  - Mass imported [{len(textures)}] textures!\n"))
 
 def shortcut(mode, cmd, to_exec):
 
@@ -214,7 +214,7 @@ def add_npc():
     tmp = str(xdtdata['m_pNpcTable']['m_pNpcData'][-1])
     
     if "m_iNpcNumber" not in tmp:
-        print(clr('\n  > Could not find "m_iNpcNumber" in str(xdtdata["m_pNpcTable"]["m_pNpcData"][-1])',2))
+        print(clr('\n  - Could not find "m_iNpcNumber" in str(xdtdata["m_pNpcTable"]["m_pNpcData"][-1])',2))
         return
     
     new_npc_num = int(tmp.split("'m_iNpcNumber', ")[1].split(')')[0]) + 1
@@ -317,7 +317,7 @@ def main():
     while True:
 
         banner()
-        print(clr("  > Select Custom Asset Bundle..."))
+        print(clr("  - Select Custom Asset Bundle..."))
         
         cab_path = ''
         while not cab_path:
@@ -336,20 +336,20 @@ def main():
             break
         except:
             print(clr(err(sys.exc_info()), 2))
-            print(clr("  > Sleeping 10s..."))
+            print(clr("  - Sleeping 10s..."))
             time.sleep(10)
 
     if input(clr(f"\n  > Print {len(tabledata.objects)} Available TableData Keys? [y/n]: ") + green).lower() == 'y':
-        print(clr(logger("  > Available TableData Keys: \n\n" + '\n'.join(tabledata_keys) + "\n")))
+        print(clr(logger("  - Available TableData Keys: \n\n" + '\n'.join(tabledata_keys) + "\n")))
 
     if "CustomAssetBundle-1dca92eecee4742d985b799d8226666d" in cab_name and "7" in tabledata_keys:
-        print(clr("  > Suggested Key: 7"))
+        print(clr("  - Suggested Key: 7"))
     elif "CustomAssetBundle-TableData" in cab_name and "2139558964" in tabledata_keys:
-        print(clr("  > Suggested Key: 2139558964"))
+        print(clr("  - Suggested Key: 2139558964"))
     elif "CustomAssetBundle-8320bfa70e3f04727bfc405b1fd7efcc" in cab_name and "3" in tabledata_keys:
-        print(clr("  > Suggested Key: 3"))
+        print(clr("  - Suggested Key: 3"))
     elif "sharedassets0.assets" in cab_name and "1375" in tabledata_keys:
-        print(clr("  > Suggested Key: 1375"))
+        print(clr("  - Suggested Key: 1375"))
 
     while True:    
         key = input(clr(f'  > TableData Key: ') + green)
@@ -358,42 +358,42 @@ def main():
             xdtdata = tabledata.objects[key].contents
             print(clr(logger(f"  > xdtdata = tabledata.objects[{key}].contents")))
             break
-        except: print(clr(logger(f"  > Invalid Key: {key}"),2))
-    print(clr("\n  > Pre-defined commands: print-bundle, print-content, dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, clear, exit\n"))
+        except: print(clr(logger(f"  - Invalid Key: {key}"),2))
+    print(clr("\n  - Pre-defined commands: print-bundle, print-content, dump-xdt, path_id('filename'), fix-bundles, add-npc, help, log, save, save-all, clear, exit\n"))
     
-    help_msg = """  > Available Shortcuts With Examples:\n
- - aimport sound.wav, 22.5, sound  >  new_audio = tabledata.add_object(83); import_audio(new_audio.contents,'sound.wav',22.5,'sound'); tabledata.add2ab('sound.wav',new_audio.path_id)
- - aswap sound.wav, 22.5, sound  >  import_audio(xdtdata,'sound.wav',22.5,'sound')
- - export example.obj  >  open('example.obj','w').write(OBJMesh(xdtdata).export())
- - imesh npc_alienx.obj npc_alienx  >  import_mesh(xdtdata, 'npc_alienx.obj', 'npc_alienx')
- - key 0  >  xdtdata = tabledata.objects[0].contents
- - ms-info  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1])
- - ms-npc 1 2671  >  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'] = NPC_INDEX#
- - ms-npc 1  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'])
- - ms-string 11666 = dee dee's herb garden  >  xdtdata['m_pMissionTable']['m_pMissionStringData'][11666] = \"dee dee's herb garden\"
- - ms-string 11666  >  print(xdtdata['m_pMissionTable']['m_pMissionStringData'][11666])
- - ms-task 1 2  >  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHTaskID'] = 2
- - ms-task 1  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHTaskID'])
- - ms-tasknext 1 2  >  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iSUOutgoingTask'] = 2
- - ms-tasknext 1  >  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iSUOutgoingTask'])
- - mesh 344  >  print(xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMMeshModelString'])
- - mesh 344 fusion_cheese  >  xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMMeshModelString'] = \"fusion_cheese\"
- - meshid 2675 2671  >  xdtdata['m_pNpcTable']['m_pNpcData'][2675]['m_iMesh'] = 2671
- - meshid 2677  >  print(xdtdata['m_pNpcTable']['m_pNpcData'][2675]['m_iMesh'])
- - npc-name 3148 = test name  >  xdtdata['m_pNpcTable']['m_pNpcStringData'][3148]['m_strName'] = \"test name\"
- - npc-name 3148  >  print(xdtdata['m_pNpcTable']['m_pNpcStringData'][3148]['m_strName'])
- - objects 1 1000  >  for _ in range(1,1000): print(f'{_} - {tabledata.objects[_].contents}')
- - rename Cone02, DT_MTDB_ETC05  >  xdtdata.name = xdtdata.name.replace('Cone02','DT_MTDB_ETC05')
- - texture 344  >  print(xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMTextureString'])
- - texture 344 fusion_cheese  >  xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMTextureString'] = \"fusion_cheese\"
- - timport texture 1  >  new_texture = tabledata.add_object(28); import_texture(new_texture._contents,'texture.png','texture','dxt1'); tabledata.add2ab('texture.png',new_texture.path_id)
- - timport texture 5  >  new_texture = tabledata.add_object(28); import_texture(new_texture._contents,'texture.png','texture','dxt5'); tabledata.add2ab('texture.png',new_texture.path_id)
- - timport-mass 1  >  mass import_texture (fmt='dxt1')
- - timport-mass 5  >  mass import_texture (fmt='dxt5')
- - tswap texture.png texture 1  >  import_texture(xdtdata,'texture.png','texture','dxt1')
- - tswap texture.png texture 5  >  import_texture(xdtdata,'texture.png','texture','dxt5')
- - tswap-mass 1  >  mass import_texture (fmt='dxt1')
- - tswap-mass 5  >  mass import_texture (fmt='dxt5')"""
+    help_msg = """  - Available Shortcuts With Examples:\n
+ - aimport sound.wav, 22.5, sound  -  new_audio = tabledata.add_object(83); import_audio(new_audio.contents,'sound.wav',22.5,'sound'); tabledata.add2ab('sound.wav',new_audio.path_id)
+ - aswap sound.wav, 22.5, sound  -  import_audio(xdtdata,'sound.wav',22.5,'sound')
+ - export example.obj  -  open('example.obj','w').write(OBJMesh(xdtdata).export())
+ - imesh npc_alienx.obj npc_alienx  -  import_mesh(xdtdata, 'npc_alienx.obj', 'npc_alienx')
+ - key 0  -  xdtdata = tabledata.objects[0].contents
+ - ms-info  -  print(xdtdata['m_pMissionTable']['m_pMissionData'][1])
+ - ms-npc 1 2671  -  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'] = NPC_INDEX#
+ - ms-npc 1  -  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHNPCID'])
+ - ms-string 11666 = dee dee's herb garden  -  xdtdata['m_pMissionTable']['m_pMissionStringData'][11666] = \"dee dee's herb garden\"
+ - ms-string 11666  -  print(xdtdata['m_pMissionTable']['m_pMissionStringData'][11666])
+ - ms-task 1 2  -  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHTaskID'] = 2
+ - ms-task 1  -  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iHTaskID'])
+ - ms-tasknext 1 2  -  xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iSUOutgoingTask'] = 2
+ - ms-tasknext 1  -  print(xdtdata['m_pMissionTable']['m_pMissionData'][1]['m_iSUOutgoingTask'])
+ - mesh 344  -  print(xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMMeshModelString'])
+ - mesh 344 fusion_cheese  -  xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMMeshModelString'] = \"fusion_cheese\"
+ - meshid 2675 2671  -  xdtdata['m_pNpcTable']['m_pNpcData'][2675]['m_iMesh'] = 2671
+ - meshid 2677  -  print(xdtdata['m_pNpcTable']['m_pNpcData'][2675]['m_iMesh'])
+ - npc-name 3148 = test name  -  xdtdata['m_pNpcTable']['m_pNpcStringData'][3148]['m_strName'] = \"test name\"
+ - npc-name 3148  -  print(xdtdata['m_pNpcTable']['m_pNpcStringData'][3148]['m_strName'])
+ - objects 1 1000  -  for _ in range(1,1000): print(f'{_} - {tabledata.objects[_].contents}')
+ - rename Cone02, DT_MTDB_ETC05  -  xdtdata.name = xdtdata.name.replace('Cone02','DT_MTDB_ETC05')
+ - texture 344  -  print(xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMTextureString'])
+ - texture 344 fusion_cheese  -  xdtdata['m_pNpcTable']['m_pNpcMeshData'][344]['m_pstrMTextureString'] = \"fusion_cheese\"
+ - timport texture 1  -  new_texture = tabledata.add_object(28); import_texture(new_texture._contents,'texture.png','texture','dxt1'); tabledata.add2ab('texture.png',new_texture.path_id)
+ - timport texture 5  -  new_texture = tabledata.add_object(28); import_texture(new_texture._contents,'texture.png','texture','dxt5'); tabledata.add2ab('texture.png',new_texture.path_id)
+ - timport-mass 1  -  mass import_texture (fmt='dxt1')
+ - timport-mass 5  -  mass import_texture (fmt='dxt5')
+ - tswap texture.png texture 1  -  import_texture(xdtdata,'texture.png','texture','dxt1')
+ - tswap texture.png texture 5  -  import_texture(xdtdata,'texture.png','texture','dxt5')
+ - tswap-mass 1  -  mass import_texture (fmt='dxt1')
+ - tswap-mass 5  -  mass import_texture (fmt='dxt5')"""
 
     while True:
         try:
@@ -536,7 +536,7 @@ def menu():
     
     while True:
         
-        banner(); print(clr(f"\n  1 > CAB Explorer / Editor\n  2 > Fix Bundles\n  3 > Mission Builder (coming soon)\n  4 > Change workspace [{os.path.basename(os.getcwd())}]\n  5 > Visit {green}nuclearff.{green}com{white}\n  6 > Exit\n"))
+        banner(); print(clr(f"\n  1 - CAB Explorer / Editor\n  2 - Fix Bundles\n  3 - Mission Builder (coming soon)\n  4 - Change workspace [{os.path.basename(os.getcwd())}]\n  5 - Visit {green}nuclearff.{green}com{white}\n  6 - Exit\n"))
         
         choice = input(clr("  > Choice: ") + green)
         if choice == "1": main()
@@ -554,7 +554,7 @@ if __name__ == '__main__':
     if magickwand_installed:
         menu()
     else:
-        print(clr("\n  > Please install ImageMagick and then run the module!\n",2))
+        print(clr("\n  - Please install ImageMagick and then run the module!\n",2))
         input(clr("  > Press [ENTER] to exit..."))
     
     if "DANK_TOOL_VERSION" in os.environ:
