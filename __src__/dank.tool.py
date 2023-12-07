@@ -91,8 +91,12 @@ def get_menu_request_responses(task_id, request_key):
     # get motd
     
     elif task_id == 2:
-        motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
-        menu_request_responses[request_key] = clr(motd, colour_one=green)
+        try:
+            motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
+            motd = clr(motd, colour_one=green)
+        except:
+            motd = f"{red}⚠️"
+        menu_request_responses[request_key] = motd
 
     # get chatroom user count
 
@@ -261,11 +265,12 @@ def set_globals_two():
     
     if ONLINE_MODE:
 
-        try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
-        except Exception as exc:
-            try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: {exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
-            except: pass
-            stats = " [ ERROR ON STATS ⚠️ ]"
+        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        #try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        #except Exception as exc:
+        #    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: {exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
+        #    except: pass
+        #    stats = " [ ERROR ON STATS ⚠️ ]"
             
         global online_modules
         
