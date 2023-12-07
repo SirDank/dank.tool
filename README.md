@@ -121,6 +121,10 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/60cd8cf0-8cc2-4252-a8e9-9a23c6af2d2c"></p><br>
 
+## ♦️ Youtube ♦️
+
+<br><p align="center"><a href="https://www.youtube.com/shorts/RbX5UNuwAYw"><img width="400" alt="image" src="http://img.youtube.com/vi/RbX5UNuwAYw/0.jpg"></a></p><br>
+
 <p>&nbsp;</p>
 
 ---  
