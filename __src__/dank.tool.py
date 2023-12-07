@@ -91,7 +91,8 @@ def get_menu_request_responses(task_id, request_key):
     # get motd
     
     elif task_id == 2:
-        menu_request_responses[request_key] = clr(requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode(), colour_one=green)
+        motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
+        menu_request_responses[request_key] = clr(motd, colour_one=green)
 
     # get chatroom user count
 
