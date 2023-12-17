@@ -122,8 +122,8 @@ def main():
     
     if not os.path.isfile('scan_count.txt'):
         open('scan_count.txt','w').write('0')
-    try: open('servers.txt','x').close()
-    except: pass
+    if not os.path.isfile('servers.txt'):
+        open('servers.txt','x').close()
     
     # remove old files
 
@@ -200,8 +200,9 @@ def main():
             except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
         
         # saving scanned ips
-
-        scan_count = int(open('scan_count.txt','r',encoding='utf-8').read())
+ 
+        try: scan_count = int(open('scan_count.txt','r',encoding='utf-8').read())
+        except: scan_count = 0
         scan_count += len(ips)
         open('scan_count.txt','w',encoding='utf-8').write(str(scan_count))
         print(clr(f"\n  - Totally Scanned {scan_count} IPs!"))
