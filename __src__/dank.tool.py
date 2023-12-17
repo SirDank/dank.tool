@@ -198,7 +198,7 @@ def set_globals_one():
     
     offline_modules = {
         
-        'Windows OS Tools': {
+        'Windows Tools': {
 
             'Operating System Repair': {
                 'info': '',
@@ -295,7 +295,7 @@ def set_globals_two():
                 'category': True,
             },
             
-            translate('Windows OS Tools'): {
+            translate('Windows Tools'): {
                 
                 translate('Software Downloader / Updater'): {
                     'info': menu_request_responses["dank.winget"],
