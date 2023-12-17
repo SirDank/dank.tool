@@ -297,6 +297,13 @@ def set_globals_two():
             
             translate('Windows OS Tools'): {
                 
+                translate('Software Downloader / Updater'): {
+                    'info': menu_request_responses["dank.winget"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝",
+                    'project': "dank.winget",
+                    'rpc': "installing / updating software"
+                },
+                
                 translate('Windows / Office Activator'): {
                     'info': menu_request_responses["Microsoft-Activation-Scripts"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
@@ -502,7 +509,8 @@ if __name__ == "__main__":
                 "dank.auto-clicker",
                 "dank.browser-backup",
                 "dank.fusion-fall",
-                "dank.game"
+                "dank.game",
+                "dank.winget"
             )
         )
 

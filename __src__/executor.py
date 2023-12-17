@@ -61,7 +61,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.2.1"
+DANK_TOOL_VERSION = "3.2.2"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -134,6 +134,8 @@ def latest_dank_tool_version():
                     print(clr("\n  - Please do not use the dev-branch, it is meant for testing/debugging only!",2))
                     global BRANCH; BRANCH = "main"
                     os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
+                    tmp = open('settings.json', 'r', encoding='utf-8').read().replace('"dev-branch": "1"', '"dev-branch": "0"')
+                    open('settings.json', 'w', encoding='utf-8').write(tmp); del tmp
                 else:
                     break
             os.environ['DANK_TOOL_ONLINE'] = "1"
@@ -231,7 +233,7 @@ if not os.path.isdir('__src__'): os.mkdir('__src__')
 if not os.path.isdir('__modules__'): os.mkdir('__modules__')
 if not os.path.isdir('__local_modules__'): os.mkdir('__local_modules__')
 
-if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.isfile('__src__/dank.tool.py') ):
+if not OFFLINE_SRC and ONLINE_MODE:
     while True:
         try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/dank.tool.py", headers=headers).content.decode(); break
         except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
@@ -282,7 +284,7 @@ def dank_tool_runs_counter():
         try: session.get("https://dank-site.onrender.com/counter?id=dank.tool&hit=true", headers=headers); break
         except: fail_counter += 1
         time.sleep(60)
-        
+
 if ONLINE_MODE:
     _executor.submit(dank_tool_runs_counter)
 else:

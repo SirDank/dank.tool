@@ -217,6 +217,18 @@
 
 ---  
 
+# 🚨 Windows Software Downloader / Updater 🚨
+
+- A simple tool to download and update windows software using [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/)
+
+## ♦️ Preview ♦️
+
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/aee3f2bd-834a-4fbc-b8f1-b8fd43126434"></p><br>
+
+<p>&nbsp;</p>
+
+---  
+
 # 🚨 Windows / Office Activator 🚨
 
 - Full credits to [massgravel](https://github.com/massgravel/Microsoft-Activation-Scripts) for their amazing work!
@@ -383,6 +395,19 @@
 └─📁 __tools__/
   └─📄 package-updater.cmd        [ script I use to quickly update all packages used by the dank.tool before I build the latest version ]
 ```
+
+## ⭕ Completely Offline Installation & Usage Guide ⭕
+
+- [Download repository](https://github.com/SirDank/dank.tool/archive/refs/heads/main.zip)
+- Turn off wifi (to prevent the dank.tool from connecting to the internet)
+- Extract the dank.tool.zip and run the installer, finish installation and run the dank.tool
+- After it says "Failed to get code", move the dank.tool.py script from the `__src__` folder to the `__src__` folder at the install location
+- List of offline modules can be found [here](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py#L199)
+- Move all scripts (except the ones available offline) from the `__modules__` folder to the `__local_modules__` folder at the install location
+- Move all (offline) scripts from the `__modules__` folder to the `__modules__` folder at the install location
+- Edit the `settings.json` file at the install location and set `"offline-src": "1"` and `"offline_mode": "1"`
+- Hit enter on the dank.tool and enjoy offline dank.tool!
+- Note: If you want to switch back to online mode to enable updates and use the latest modules, first delete the `__local_modules__` folder at the install location and then set `"offline-src": "0"` and `"offline_mode": "0"` in the `settings.json` file at the install location.
 
 ## ⭕ Build Process ⭕
 
