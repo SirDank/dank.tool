@@ -65,7 +65,7 @@
 
 - [x] Add offline mode for offline scripts ( High Priority )
 - [x] Add translator
-- [ ] Finish reworking dank.downloader.py
+- [x] Finish reworking dank.downloader.py
 - [ ] Add dank.proxy.py ( scraper / checker )
 
 ## ♦️ Support ♦️
