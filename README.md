@@ -187,8 +187,9 @@
 
 ## ♦️ Suggested Extensions / Themes ♦️
 
-- Beautiful Lyrics
-- Retroblur (dream)
+- Extension: Beautiful Lyrics
+- Theme: Bloom
+- Theme: Retroblur (dream)
 
 ## ♦️ Preview ♦️
 
