@@ -23,7 +23,10 @@ def print_banner():
 
 def handle_response(cmd, results, mode):
     
-    cmd = cmd.stdout.decode('utf-8').split('Source')[1].splitlines()[2:]
+    try:
+        cmd = cmd.stdout.decode('utf-8').split('Source')[1].splitlines()[2:]
+    except:
+        raise Exception(f"Error parsing response!\n\n{cmd.stdout.decode('utf-8')}")
     indexes = []
 
     prev = ''
