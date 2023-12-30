@@ -2,7 +2,8 @@ import os
 from ursina import *
 from dankware import cls, clr, title
 from numpy.random import choice, randint
-from ursina.shaders.texture_blend_shader import texture_blend_shader
+#from ursina.shaders.texture_blend_shader import texture_blend_shader
+from ursina.shaders.basic_lighting_shader import basic_lighting_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
@@ -47,7 +48,8 @@ app = Ursina(
 #player = EditorCamera()
 player = FirstPersonController(speed=2.5)
 sky = Sky(texture='sky.png')
-Entity.default_shader = texture_blend_shader
+#Entity.default_shader = texture_blend_shader
+Entity.default_shader = basic_lighting_shader
 
 world_size = 250 # n*2 x n*2
 render_dist = 15 # n*2 x n*2
