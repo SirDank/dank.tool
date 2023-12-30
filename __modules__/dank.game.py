@@ -2,7 +2,7 @@ import os
 from ursina import *
 from dankware import cls, clr, title
 from numpy.random import choice, randint
-from ursina.shaders import texture_blend_shader
+from ursina.shaders.texture_blend_shader import texture_blend_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
