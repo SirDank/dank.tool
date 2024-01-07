@@ -384,9 +384,7 @@ sudo apt install temurin-{latest_java_version}-jre
 
 open('quick_chmod.sh', 'wb').write(f"""
 #!/bin/sh
-sudo chmod +x start_server.sh
-sudo chmod +x mc-anti-malware.sh
-sudo chmod +x quick_install_java.sh
+sudo chmod +x *.sh
 """.encode().replace(b'\r\n',b'\n'))
 
 # creating autoplug configs
