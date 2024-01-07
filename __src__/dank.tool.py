@@ -335,21 +335,25 @@ def set_globals_two():
                 'category': True,
                 
             },
-
-            translate('SpotX + Spicetify Installer'): {
-                'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
-                'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
-                'project': "dank.spotify",
-                'rpc': "installing spotx and spicetify",
-                'category': False,
-            },
             
-            translate('Adobe Acrobat Pro Installer'): {
-                'info': menu_request_responses["dank.acropolis"],
-                'title': "𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜",
-                'project': "dank.acropolis",
-                'rpc': "installing adobe acrobat pro",
-                'category': False,
+            translate('Software Installers'): {
+                
+                translate('SpotX + Spicetify Installer'): {
+                    'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
+                    'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
+                    'project': "dank.spotify",
+                    'rpc': "installing spotx and spicetify",
+                },
+                
+                translate('Adobe Acrobat Pro Installer'): {
+                    'info': menu_request_responses["dank.acropolis"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜",
+                    'project': "dank.acropolis",
+                    'rpc': "installing adobe acrobat pro",
+                },
+                
+                'category': True,
+                
             },
 
             translate('Browser Backup'): {
