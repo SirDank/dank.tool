@@ -343,6 +343,14 @@ def set_globals_two():
                 'rpc': "installing spotx and spicetify",
                 'category': False,
             },
+            
+            translate('Adobe Acrobat Pro Installer'): {
+                'info': menu_request_responses["dank.acropolis"],
+                'title': "𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜",
+                'project': "dank.acropolis",
+                'rpc': "installing adobe acrobat pro",
+                'category': False,
+            },
 
             translate('Browser Backup'): {
                 'info': menu_request_responses["dank.browser-backup"],
@@ -510,7 +518,8 @@ if __name__ == "__main__":
                 "dank.browser-backup",
                 "dank.fusion-fall",
                 "dank.game",
-                "dank.winget"
+                "dank.winget",
+                "dank.acropolis"
             )
         )
 
