@@ -338,14 +338,14 @@ def set_globals_two():
             
             translate('Software Installers'): {
                 
-                translate('SpotX + Spicetify Installer'): {
+                'SpotX + Spicetify': {
                     'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                     'project': "dank.spotify",
                     'rpc': "installing spotx and spicetify",
                 },
                 
-                translate('Adobe Acrobat Pro Installer'): {
+                'Adobe Acrobat Pro': {
                     'info': menu_request_responses["dank.acropolis"],
                     'title': "𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜",
                     'project': "dank.acropolis",
