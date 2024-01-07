@@ -32,13 +32,9 @@ def main():
     cls(); print(clr(align(banner),4,colours=[white, white_normal, red, red_normal, red_dim]))
     print(clr(f"\n  - Credits to massgravel team!"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin Microsoft-Activation-Script')}... "))
-    while True:
-        cls()
-        try:
-            print(clr(f"\n  - {translate('Exit inside the MAS window to return to the menu')}..."))
-            os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
-            break
-        except: input(clr(f"\n  > {translate('Failed to launch! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+    
+    cls(); print(clr(f"\n  - {translate('Exit inside the MAS window to return to the menu')}..."))
+    os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
 
 if __name__ == "__main__":
     main()
