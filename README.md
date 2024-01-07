@@ -232,7 +232,7 @@
 
 # 🚨 Windows / Office Activator 🚨
 
-- Full credits to [massgravel](https://github.com/massgravel/Microsoft-Activation-Scripts) for their amazing work!
+- Full credits to the [massgravel](https://github.com/massgravel/Microsoft-Activation-Scripts) team for their amazing work!
 - A Windows and Office activator using HWID / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.
 
 ## ♦️ Preview ♦️

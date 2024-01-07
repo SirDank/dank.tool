@@ -30,6 +30,7 @@ def main():
     banner = "\n\n     __          __           _                   __  _           __     \n ___/ /__ ____  / /__ _    __(_)__  _______ _____/ /_(_)  _____ _/ /____ \n/ _  / _ `/ _ \\/  '_/| |/|/ / / _ \\/___/ _ `/ __/ __/ / |/ / _ `/ __/ -_)\n\\_,_/\\_,_/_//_/_/\\_(_)__,__/_/_//_/    \\_,_/\\__/\\__/_/|___/\\_,_/\\__/\\__/ \n                                                                         \n\n"
 
     cls(); print(clr(align(banner),4,colours=[white, white_normal, red, red_normal, red_dim]))
+    print(clr(f"\n  - Credits to massgravel team!"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin Microsoft-Activation-Script')}... "))
     while True:
         cls()
