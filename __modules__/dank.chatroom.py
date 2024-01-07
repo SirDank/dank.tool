@@ -7,7 +7,7 @@ import tkinter as tk
 from win11toast import notify
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, align, rm_line, green, red, white, white_normal, title
+from dankware import cls, clr, align, rm_line, green, red, white_normal, title
 
 def chatroom_login():
     
@@ -29,7 +29,7 @@ def chatroom_login():
         
         if "missing" in response.content.decode() and response.status_code == 400:
             
-            cls(); print(clr(align("\n<---|[ A c c o u n t - C r e a t i o n ]|--->") + "\n\n  - Username must be greater than two characters and less than 16 characters, spaces are not counted!"))
+            cls(); print(clr(align("\n<---|[ A c c o u n t - C r e a t i o n ]|--->") + "\n\n  - Username must be greater than two characters and lesser than 16 characters, spaces are not counted!"))
             
             err_msg = ""
             while True:
@@ -169,7 +169,10 @@ def chatroom_input():
                 print(clr("[dank.tool] > Invalid command!",2))
         
         elif len(msg) > 200:
-            print(clr("[dank.tool] > Message larger than 200 characters!",2))
+            print(clr("[dank.tool] > Message longer than 200 characters!",2))
+            
+        elif msg.lower() == "exit":
+            print(clr("[dank.tool] > Did you mean /exit?",2))
         
         else:
             send_msg = True
