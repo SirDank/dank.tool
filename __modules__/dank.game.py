@@ -22,6 +22,7 @@ except:
 input(clr("""\n  [ DISCLAIMER ]
 
   - This game is in early development, expect bugs!
+  - The error reporting system does not support this game, please report bugs directly!
   - Game updates might be slow!
   - Built with Ursina Engine!
 
