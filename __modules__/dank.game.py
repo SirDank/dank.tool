@@ -20,6 +20,8 @@ except:
 input(clr("""\n  [ DISCLAIMER ]
 
   - This game is in early development, expect bugs!
+  - The error reporting system does not support this game, please report bugs manually!
+  - You might need to use max brightness!
   - Game updates might be slow!
   - Built with Ursina Engine!
 
