@@ -449,9 +449,7 @@ if __name__ == "__main__":
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
 
         while True:
-            try:
-                multithread(download_offline_modules, 50, offline_scripts, progress_bar=False)
-                break
+            try: multithread(download_offline_modules, 50, offline_scripts, progress_bar=False); break
             except:
                 input(clr(f"\n  > {translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
@@ -466,7 +464,7 @@ if __name__ == "__main__":
         while True:
             try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers).json(); break
             except:
-                input(clr(f"\n  > {translate('Failed to get latest assets! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {translate('Failed to fetch assets.json! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
                 
         asset_urls = []

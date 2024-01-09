@@ -2,8 +2,6 @@ import os
 from ursina import *
 from dankware import cls, clr, title
 from numpy.random import choice, randint
-#from ursina.shaders.texture_blend_shader import texture_blend_shader
-#from ursina.shaders.basic_lighting_shader import basic_lighting_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
@@ -12,8 +10,8 @@ title("𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎")
 try:
     os.environ['DANK_TOOL_VERSION']
 except:
-    # this does not work for some reason!
     os.chdir(os.path.dirname(__file__))
+    # this does not work for some reason!
     #os.chdir("..")
     #os.chdir("ursina")
     #application.package_folder = os.getcwd()
@@ -22,7 +20,6 @@ except:
 input(clr("""\n  [ DISCLAIMER ]
 
   - This game is in early development, expect bugs!
-  - The error reporting system does not support this game, please report bugs directly!
   - Game updates might be slow!
   - Built with Ursina Engine!
 
@@ -49,8 +46,6 @@ app = Ursina(
 #player = EditorCamera()
 player = FirstPersonController(speed=2.5)
 sky = Sky(texture='sky.png')
-#Entity.default_shader = texture_blend_shader
-#Entity.default_shader = basic_lighting_shader
 
 world_size = 250 # n*2 x n*2
 render_dist = 15 # n*2 x n*2
@@ -78,10 +73,11 @@ leaves = tuple([
 
 def enable_lighting():
 
-    global torch_light
+    global torch
     scene.fog_density = 0.2
     scene.fog_color = color.black
-    torch_light = SpotLight(color=color.white, parent=camera, position=(0.5, 1, -5), rotation=(0, 0, 0))
+    torch = Entity(parent=camera, model="flashlight.gltf", position=(0.5, -0.5, 0.8), rotation=(0, 135, 5), scale=0.3)
+    torch_light = SpotLight(parent=camera, color=color.white, position=(0.5, -0.5, -5), rotation=(0, 0, 0))
 
 enable_lighting()
 
