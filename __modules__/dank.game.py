@@ -79,7 +79,6 @@ leaves = tuple([
 def enable_lighting():
 
     global torch_light
-    
     scene.fog_density = 0.2
     scene.fog_color = color.black
     torch_light = SpotLight(color=color.white, parent=camera, position=(0.5, 1, -5), rotation=(0, 0, 0))
