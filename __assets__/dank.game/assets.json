@@ -9,11 +9,18 @@
         "mossy_cobblestone1.png": 1,
         "mossy_cobblestone2.png": 1,
         "mossy_stone_bricks.png": 1,
-        "sky.png": 2
+        "sky.png": 2,
+        "gltf_embedded_0.png": 1,
+        "gltf_embedded_1.png": 1,
+        "internal_ground_ao_texture.jpeg": 1
     },
 
     "audio": {
         "ambiance_crickets.m4a": 1,
         "ambiance_trees.m4a": 1
+    },
+
+    "models": {
+        "flashlight.gltf": 1
     }
 }
