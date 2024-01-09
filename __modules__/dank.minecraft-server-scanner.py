@@ -115,7 +115,7 @@ def main():
 
     try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
-    try: os.makedirs('dank.mc-server-scanner')
+    try: os.mkdir('dank.mc-server-scanner')
     except FileExistsError: pass
     os.system(f'explorer.exe "dank.mc-server-scanner"')
     os.chdir('dank.mc-server-scanner')
