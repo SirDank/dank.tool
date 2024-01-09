@@ -24,6 +24,8 @@ def main():
             translator = Translator()
     except:
         DANK_TOOL_LANG = ''
+        
+    # banner
     
     title("𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎")
     os.chdir(os.path.dirname(__file__))
@@ -32,6 +34,8 @@ def main():
     cls(); print(clr(align(banner),4,colours=[white, white_normal, red, red_normal, red_dim]))
     print(clr(f"\n  - Credits to massgravel team!"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin Microsoft-Activation-Script')}... "))
+    
+    # main
     
     cls(); print(clr(f"\n  - {translate('Exit inside the MAS window to return to the menu')}..."))
     os.system('powershell -Command "irm https://massgrave.dev/get | iex"')

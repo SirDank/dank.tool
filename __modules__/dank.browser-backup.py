@@ -35,14 +35,20 @@ def backup(browser, compression_level):
         
         path_to_backup = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data")
         
+        # check if chrome is installed
+        
         if not chrome_installed():
             cls(); print(clr(f"\n  - {translate('Chrome possibly not installed')}!",2))
+            
+        # set path to backup
         
         if not os.path.exists(path_to_backup):
             print(clr(f"\n  - {translate('Invalid Path')}: {path_to_backup}\n",2))
             while True:
                 path_to_backup = input(clr(f"  > {translate('Input user data folder path')}: ")); rm_line()
                 if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup: break
+        
+        # check if chrome is running
         
         while True:
             cls(); chrome_running = False
@@ -51,9 +57,13 @@ def backup(browser, compression_level):
                     chrome_running = True; break
             if chrome_running: input(clr("\n  > Chrome is running! Terminate it and press [ENTER]... ",2))
             else: break
+            
+        # export registry keys
 
         cls(); print(clr(f"\n  - {translate('Exporting registry keys')}..."))
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
+        
+        # compress files
         
         print(clr(f"\n  - {translate('Compressing... (this might take a few minutes)')}\n"))
         
@@ -83,13 +93,13 @@ def backup(browser, compression_level):
                         job_progress.update(overall_task, advance=1)
                 zipf.write("chrome.reg", "chrome.reg")
                 zipf.write("instructions.txt", "instructions.txt")
+        
+        # cleanup
 
         print(clr("\n  - Cleaning..."))
         os.remove("chrome.reg")
         os.remove("instructions.txt")
         os.system(f'explorer.exe "{os.getcwd()}"')
-    
-        # - Unzip with the password "{password}"
         cls(); input(clr(instructions + '\n\n  > Press [ENTER] once you have read the steps... '))
     
     #elif browser == "Firefox"
@@ -110,17 +120,23 @@ def main():
             translator = Translator()
     except:
         DANK_TOOL_LANG = ''
+        
+    # banner, check if admin
 
     cls(); title("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙"); banner = "\n\n                                                                             \n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     try:
         if not is_admin(): raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
     except: sys.exit(clr(err(sys.exc_info()),2))
     
+    # folders
+    
     try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
     try: os.makedirs('dank.browser-backup')
     except FileExistsError: pass
     os.chdir('dank.browser-backup')
+    
+    # user input
     
     browsers = ['Chrome']
     to_print = "  - Supported Browsers: \n"
@@ -151,6 +167,8 @@ def main():
         elif compression_level in ('2', 'best'):
             compression_level = 9; break
         else: rm_line()
+        
+    # backup
 
     backup(choice, compression_level)
 
