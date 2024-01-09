@@ -93,7 +93,7 @@ def main():
     
     print_read_me()
     print(clr(f"\n  - {translate('Open Adobe Acrobat, Go to: Menu > Preferences > Updater')}"))
-    print(clr(f"\n  - {translate('Uncheck "Automatically install updates"')}"))
+    print(clr(f"\n  - {translate('Uncheck [ Automatically install updates ]')}"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] after disabling automatic updates')}... "))
 
 if __name__ == "__main__":
