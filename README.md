@@ -464,6 +464,7 @@
 
 - dank.tool can execute custom user-made modules ( python scripts inside the `__local_modules__` folder ) that are not included in the main dank.tool executable
 - the packages that can be used by these modules are limited to the ones that are already included in the [executor.py](https://github.com/SirDank/dank.tool/blob/main/__src__/executor.py) script
+- to enter console mode, type `debug` in the main menu. to print the environment variables, type `env`. to exit console mode, type `exit`
 
 ## ⭕ error reporting system ⭕
 
