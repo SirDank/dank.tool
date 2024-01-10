@@ -422,6 +422,7 @@
 - List of offline modules can be found [here](https://github.com/SirDank/dank.tool/blob/main/__src__/dank.tool.py#L199)
 - Move all scripts (except the ones available offline) from the `__modules__` folder to the `__local_modules__` folder at the install location
 - Move all (offline) scripts from the `__modules__` folder to the `__modules__` folder at the install location
+- Move all the files and folders inside the `__assets__/dank.game` folder to the `ursina` folder at the install location
 - Edit the `settings.json` file at the install location and set `"offline-src": "1"` and `"offline_mode": "1"`
 - Hit enter on the dank.tool and enjoy offline dank.tool!
 - Note: If you want to switch back to online mode to enable updates and use the latest modules, first delete the `__local_modules__` folder at the install location and then set `"offline-src": "0"` and `"offline_mode": "0"` in the `settings.json` file at the install location.
