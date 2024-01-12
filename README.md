@@ -163,19 +163,14 @@
 - OS: Windows 7-11
 - Spotify: latest official [versions](https://cutt.ly/8EH6NuH)
 - For Windows Desktop only (Microsoft store version is not suitable).
-- PowerShell: version 5 and above recommended
 
 ## ♦️ SpotX Features ♦️
 
 - Blocks all banner, video and audio ads in the client
 - Hiding podcasts, episodes and audiobooks from the homepage (optional)
 - Block Spotify automatic updates (optional)
-- Automatic clearing of [audio cache](https://github.com/amd64fox/SpotX/discussions/2) (optional)
 - More experimental features have been activated ([see the full list](https://github.com/amd64fox/SpotX/discussions/50))
-- Disabled Sentry (Prevented Sentry from sending console log/error/warning to Spotify developers)
-- Disabled logging (Stopped various elements to log user interaction)
-- Removed RTL rules (Removed all right-to-left CSS rules to simplify CSS files)
-- Code minification
+- Disabled sentry's console log/error/warning messages to Spotify developers, halted user interaction logging, eliminated right-to-left CSS rules for simplification, and performed code minification
 
 ## ♦️ Spicetify Features ♦️
 
@@ -189,7 +184,6 @@
 
 - Extension: Beautiful Lyrics
 - Theme: Bloom
-- Theme: Retroblur (dream)
 
 ## ♦️ Preview ♦️
 
@@ -386,12 +380,8 @@
 ├─📄 README.md
 ├─📁 __assets__/                  [ assets used by dank.tool's modules ]
 │ ├─📁 example_module_1/
-│ │ ├─📄 example_file_1.mp3
-│ │ └─📄 example_file_2.mp3
-│ ├─📁 example_module_2/
-│ │ ├─📄 example_file_1.exe
-│ │ └─📄 example_file_2.exe
-│ └─📁 example_module_3/
+│ │ └─📄 example_file_1.exe
+│ └─📁 example_module_2/
 │   ├─📄 example_file_1.jar
 │   ├─📄 example_file_2.xml
 │   └─📄 example_file_3.png
