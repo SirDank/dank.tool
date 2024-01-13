@@ -2,6 +2,7 @@ import os
 from ursina import *
 from dankware import cls, clr, title
 from numpy.random import choice, randint
+from ursina.scripts.smooth_follow import SmoothFollow
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
@@ -47,6 +48,7 @@ app = Ursina(
 
 #player = EditorCamera()
 player = FirstPersonController(speed=2.5)
+player_camera = Entity(parent=camera, position=(0.5, -0.5, 0.8), rotation=(0, 135, 5))
 sky = Sky(texture='sky.png')
 
 world_size = 250 # n*2 x n*2
@@ -75,11 +77,11 @@ leaves = tuple([
 
 def enable_lighting():
 
-    global torch
     scene.fog_density = 0.2
     scene.fog_color = color.black
-    torch = Entity(parent=camera, model="flashlight.gltf", position=(0.5, -0.5, 0.8), rotation=(0, 135, 5), scale=0.3)
-    torch_light = SpotLight(parent=camera, color=color.white, position=(0.5, -0.5, -5), rotation=(0, 0, 0))
+    torch = Entity(model="flashlight.gltf", scale=0.3)
+    torch_light = SpotLight(parent=torch, color=color.white, position=(3, 0.5, 4.2), rotation=(0, -135, -5))
+    torch.add_script(SmoothFollow(target=player_camera, rotation_speed=10))
 
 enable_lighting()
 
