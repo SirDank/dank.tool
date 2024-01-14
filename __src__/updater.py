@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 import pyminizip
-from dankware import cls, clr, green
+from dankware import cls, clr, green, red
 
 session = requests.Session()
 try: DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
@@ -43,15 +43,18 @@ while True:
 
 try: open("dank.tool.zip","wb").write(data); del data
 except:
-    cls(); input(clr("\n  - Failed to save file!\n  - Please manually download the latest version from https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip\n  > Press [ENTER] to EXIT... ",2))
+    cls()
+    if input(clr("\n  - Failed to save file!\n\n  - Would you like to open [https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
+        os.system("start https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip")
     sys.exit("Failed to save file!")
 
 # extract and execute installer
 
 print(clr("\n  - Extracting..."))
 try: pyminizip.uncompress("dank.tool.zip", "dankware", None, True)
-except: 
-    cls(); input(clr(f"\n  - Failed to extract!\n  - Please manually extract and install from \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\" using the password \"dankware\"\n  > Press [ENTER] to EXIT... ",2))
+except:
+    os.system("explorer.exe .")
+    cls(); input(clr(f"\n  - Failed to extract!\n\n  - Please manually extract and install from \"{os.path.join(os.getcwd(), 'dank.tool.zip')}\" using the password \"dankware\"\n\n  > Press [ENTER] to EXIT... ",2))
     sys.exit("Failed to extract file!")
     
 try: os.remove("password = dankware")
