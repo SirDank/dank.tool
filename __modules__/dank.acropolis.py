@@ -93,7 +93,10 @@ def main():
     cls(); print(clr(f"\n  - {translate('Applying Patches')}..."))
     os.chdir('Patches')
     for file in patched_files:
-        shutil.copy(file, f"C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\{file}")
+        try: shutil.copy(file, f"C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\{file}")
+        except:
+            print(clr(f"\n  - {translate('Failed! Please manually copy and replace the file')}!\n\n  - [ {os.path.join(os.getcwd(), file)} ] > [ C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\{file} ]",2))
+            input(clr(f"\n  > {translate('Hit [ ENTER ] after replacing the file')}... "))
     os.chdir('../..')
     
     # disable updater
