@@ -623,7 +623,7 @@ if __name__ == "__main__":
                         elif cmd_to_be_executed == 'globals':
                             _ = globals().copy().items()
                         for key, val in _:
-                            print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
+                            print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(str(val), colour_one=green, colour_two=green))
                         del _
                         continue
                     try: exec(cmd_to_be_executed)
