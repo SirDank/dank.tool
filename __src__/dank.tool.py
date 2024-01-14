@@ -40,8 +40,6 @@ def dank_tool_installer():
         except: pass
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
-    
-    sys.exit("Updated!")
 
 # print randomly coloured and aligned banner
 
@@ -534,15 +532,12 @@ if __name__ == "__main__":
                 input(clr(f"\n  > {translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
 
-    del updated_on
-    del download_assets
-    del download_offline_modules
-    del get_menu_request_responses
+    del updated_on, download_assets, download_offline_modules, get_menu_request_responses
 
     # main
 
-    executor = ThreadPoolExecutor(10)
-    executor.submit(notify, '[ SirDank ]',
+    _ = ThreadPoolExecutor(10)
+    _.submit(notify, '[ SirDank ]',
         translate('Thank you for using my tool ❤️\nShare it with your friends!'),
         icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
         image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
@@ -621,9 +616,14 @@ if __name__ == "__main__":
                     # this variable is long to prevent it from being changed!
                     cmd_to_be_executed = input(clr("\n  > ") + white)
                     if cmd_to_be_executed == 'exit': print_modules(); break
-                    elif cmd_to_be_executed == 'env':
+                    elif cmd_to_be_executed in ('env', 'globals'):
                         print()
-                        for key, val in os.environ.items(): print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
+                        if cmd_to_be_executed == 'env':
+                            _ = os.environ.items()
+                        elif cmd_to_be_executed == 'globals':
+                            _ = globals().items()
+                        for key, val in _:
+                            print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
                         continue
                     try: exec(cmd_to_be_executed)
                     except: print(clr("\n" + err(sys.exc_info()), 2))
@@ -714,6 +714,8 @@ if __name__ == "__main__":
                                 os.remove("disable-startup-audio")
                         
                         open("settings.json", "w", encoding="utf-8").write(json.dumps(settings, indent=4))
+                        
+                del runs, settings, update_settings, counter
 
                 continue
         
@@ -878,7 +880,7 @@ if __name__ == "__main__":
                     try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
                     except:
                         translation = translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
-                        input(clr(f"\n  > {translation}... ",2))
+                        input(clr(f"\n  > {translation}... ",2)); del translation
                         rm_line(); rm_line()
                 
             else:
@@ -893,7 +895,7 @@ if __name__ == "__main__":
                         try:
                             LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers).content.decode()
                             if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
-                                cls(); print(clr(f"\n  - Updating to the latest version...\n\n  - Update Found: {LATEST_VERSION}"))
+                                cls(); print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
                                 dank_tool_installer()
                             else:
                                 break
@@ -906,12 +908,13 @@ if __name__ == "__main__":
                         except:
                             input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
+                
                 else:
                     while True:
                         try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
                         except:
                             translation = translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
-                            input(clr(f"\n  > {translation}... ",2))
+                            input(clr(f"\n  > {translation}... ",2)); del translation
                             rm_line(); rm_line()
 
             # execute src
