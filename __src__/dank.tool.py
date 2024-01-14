@@ -619,11 +619,12 @@ if __name__ == "__main__":
                     elif cmd_to_be_executed in ('env', 'globals'):
                         print()
                         if cmd_to_be_executed == 'env':
-                            _ = os.environ.items()
+                            _ = os.environ.copy().items()
                         elif cmd_to_be_executed == 'globals':
-                            _ = globals().items()
+                            _ = globals().copy().items()
                         for key, val in _:
                             print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(val, colour_one=green, colour_two=green))
+                        del _
                         continue
                     try: exec(cmd_to_be_executed)
                     except: print(clr("\n" + err(sys.exc_info()), 2))
