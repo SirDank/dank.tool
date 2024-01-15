@@ -176,4 +176,4 @@ if __name__ == "__main__":
     main()
     
     if "DANK_TOOL_VERSION" in os.environ:
-        del chrome_installed, backup, main, translate
+        del chrome_installed, backup, main, translate, translator

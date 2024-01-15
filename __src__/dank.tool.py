@@ -429,14 +429,14 @@ def set_globals_two():
 def _translate(text):
 
     if DANK_TOOL_LANG and ONLINE_MODE:
-        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        try: text = _translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
         except: pass
     return text
 
 if __name__ == "__main__":
 
     set_globals_one()
-    translator = Translator()
+    _translator = Translator()
 
     # multithreaded requests responses, download modules / assets
 
