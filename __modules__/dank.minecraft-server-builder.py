@@ -790,4 +790,6 @@ def main_two():
 main_two()
 
 if __name__ == "__main__" and "DANK_TOOL_VERSION" in os.environ:
-    del banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, headers, latest_java_version, translator, print_banner, print_read_me, main_one, main_two, translate
+    for _ in (banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, configs, headers, latest_java_version, translator, print_banner, print_read_me, main_one, main_two, translate):
+      try: del _
+      except: pass
