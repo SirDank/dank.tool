@@ -240,4 +240,6 @@ if __name__ == "__main__":
     executor.shutdown(wait = False, cancel_futures = True)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        del username, chat, last_msg_id, printed_msg_id, session, headers, uuid, running, notifications, executor, chatroom_login, chat_grabber, chatroom_output, chatroom_input, enable_notifications
+        for _ in (username, chat, last_msg_id, printed_msg_id, session, headers, uuid, running, notifications, executor, chatroom_login, chat_grabber, chatroom_output, chatroom_input, enable_notifications):
+            try: del _
+            except: pass

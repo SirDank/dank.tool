@@ -155,4 +155,6 @@ if __name__ == "__main__":
         main()
     
     if "DANK_TOOL_VERSION" in os.environ:
-        del main, winget_installed, print_banner, handle_response, print_info
+        for _ in (main, winget_installed, print_banner, handle_response, print_info):
+            try: del _
+            except: pass
