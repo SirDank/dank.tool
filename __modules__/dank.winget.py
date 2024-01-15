@@ -54,7 +54,7 @@ def handle_response(cmd, results, mode):
     for line in cmd:
         parts = [line[i:j] for i,j in zip(indexes, indexes[1:]+[None])]
         if '.' in parts[1].strip():
-            results[index] = {'name': parts[0].strip(), 'id': parts[1].strip()}#, 'version': parts[2].strip(), 'source': parts[3].strip()}
+            results[index] = {'name': parts[0].strip(), 'id': parts[1].strip()} #, 'version': parts[2].strip(), 'source': parts[3].strip()}
             index += 1
 
     console = Console()

@@ -44,4 +44,4 @@ if __name__ == "__main__":
     main()
     
     if "DANK_TOOL_VERSION" in os.environ:
-        del main
+        del main, translate
