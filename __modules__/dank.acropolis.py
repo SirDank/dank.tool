@@ -121,6 +121,4 @@ if __name__ == "__main__":
     main()
 
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in [main, file_downloader, print_read_me, translate]:
-            try: del _
-            except: pass
+        del main, file_downloader, print_read_me, translate

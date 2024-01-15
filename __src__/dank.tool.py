@@ -274,16 +274,16 @@ def set_globals_two():
         
         online_modules = {
             
-            translate('Minecraft Tools'): {
+            _translate('Minecraft Tools'): {
                 
-                translate('Minecraft Server Builder'): {
+                _translate('Minecraft Server Builder'): {
                     'info': menu_request_responses["dank.minecraft-server-builder"],
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
                     'project': "dank.minecraft-server-builder",
                     'rpc': "building a minecraft server"
                 },
 
-                translate('Minecraft Server Scanner'): {
+                _translate('Minecraft Server Scanner'): {
                     'info': menu_request_responses["dank.minecraft-server-scanner"],
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
                     'project': "dank.minecraft-server-scanner",
@@ -293,37 +293,37 @@ def set_globals_two():
                 'category': True,
             },
             
-            translate('Windows Tools'): {
+            _translate('Windows Tools'): {
                 
-                translate('Software Downloader / Updater'): {
+                _translate('Software Downloader / Updater'): {
                     'info': menu_request_responses["dank.winget"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝",
                     'project': "dank.winget",
                     'rpc': "installing / updating software"
                 },
                 
-                translate('Windows / Office Activator'): {
+                _translate('Windows / Office Activator'): {
                     'info': menu_request_responses["Microsoft-Activation-Scripts"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                     'project': "dank.win-activate",
                     'rpc': "activating windows / office"
                 },
                 
-                translate('Operating System Repair'): {
+                _translate('Operating System Repair'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
                     'project': "dank.os-repair",
                     'rpc': "repairing windows operating system"    
                 },
                 
-                translate('Network Reset'): {
+                _translate('Network Reset'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
                     'project': "dank.network-reset",
                     'rpc': "resetting network settings"
                 },
                 
-                translate('Clear Icon & Thumbnail Cache'): {
+                _translate('Clear Icon & Thumbnail Cache'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
                     'project': "dank.clear-icons",
@@ -334,7 +334,7 @@ def set_globals_two():
                 
             },
             
-            translate('Software Installers'): {
+            _translate('Software Installers'): {
                 
                 'SpotX + Spicetify': {
                     'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
@@ -354,7 +354,7 @@ def set_globals_two():
                 
             },
 
-            translate('Browser Backup'): {
+            _translate('Browser Backup'): {
                 'info': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
                 'project': "dank.browser-backup",
@@ -362,7 +362,7 @@ def set_globals_two():
                 'category': False,
             },
             
-            translate('Fusion-Fall Modding Tool'): {
+            _translate('Fusion-Fall Modding Tool'): {
                 'info': menu_request_responses["dank.fusion-fall"],
                 'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
                 'project': "dank.fusion-fall",
@@ -370,7 +370,7 @@ def set_globals_two():
                 'category': False,
             },
             
-            translate('World Exploration Game [bright_red][[red1]BETA[bright_red]]'): {
+            _translate('World Exploration Game [bright_red][[red1]BETA[bright_red]]'): {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
@@ -426,7 +426,7 @@ def set_globals_two():
 
 # translator
 
-def translate(text):
+def _translate(text):
 
     if DANK_TOOL_LANG and ONLINE_MODE:
         try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
@@ -442,14 +442,14 @@ if __name__ == "__main__":
 
     if ONLINE_MODE:
 
-        print(clr(f"\n  - {translate('Downloading modules')}..."))
+        print(clr(f"\n  - {_translate('Downloading modules')}..."))
         
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
 
         while True:
             try: multithread(download_offline_modules, 50, offline_scripts, progress_bar=False); break
             except:
-                input(clr(f"\n  > {translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
                 
         # download assets
@@ -462,7 +462,7 @@ if __name__ == "__main__":
         while True:
             try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers).json(); break
             except:
-                input(clr(f"\n  > {translate('Failed to fetch assets.json! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to fetch assets.json! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
                 
         asset_urls = []
@@ -480,14 +480,14 @@ if __name__ == "__main__":
         
         if asset_urls:
                 
-            print(clr(f"\n  - {translate('Downloading game assets')}...\n"))
+            print(clr(f"\n  - {_translate('Downloading game assets')}...\n"))
             
             while True:
                 try:
                     multithread(download_assets, 50, asset_urls, file_names)
                     break
                 except:
-                    input(clr(f"\n  > {translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                    input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                     rm_line(); rm_line()
             
             open("ursina/assets.json", "w").write(json.dumps(latest_assets_json, indent=4))
@@ -496,7 +496,7 @@ if __name__ == "__main__":
 
         # multithreaded request responses
         
-        print(clr(f"\n  - {translate('Getting request responses')}...\n"))
+        print(clr(f"\n  - {_translate('Getting request responses')}...\n"))
         
         global menu_request_responses
         menu_request_responses = {}
@@ -529,7 +529,7 @@ if __name__ == "__main__":
                 del request_keys
                 break
             except:
-                input(clr(f"\n  > {translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
 
     del updated_on, download_assets, download_offline_modules, get_menu_request_responses
@@ -538,7 +538,7 @@ if __name__ == "__main__":
 
     _ = ThreadPoolExecutor(10)
     _.submit(notify, '[ SirDank ]',
-        translate('Thank you for using my tool ❤️\nShare it with your friends!'),
+        _translate('Thank you for using my tool ❤️\nShare it with your friends!'),
         icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
         image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
     )
@@ -659,7 +659,7 @@ if __name__ == "__main__":
 
                 while True:
                     
-                    cls(); print(clr(f"\n  - Settings: [ {translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n"))
+                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n"))
                     
                     settings = json.loads(open("settings.json", "r", encoding="utf-8").read())
                     update_settings = False
@@ -722,17 +722,17 @@ if __name__ == "__main__":
         
             elif "dank.os-repair" in choice['project']:
                 
-                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
                 cls(); print(clr(f"""
   [ COMMANDS ]
 
   - [0] Return to menu
 
-  - [1] {clr('DISM /online /cleanup-image /restorehealth',2)} : {translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
+  - [1] {clr('DISM /online /cleanup-image /restorehealth',2)} : {_translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
   
-  - [2] {clr('sfc /scannow',2)} : {translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
+  - [2] {clr('sfc /scannow',2)} : {_translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
   
-  - [3] {clr('chkdsk C: /x /r',2)} : {translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
+  - [3] {clr('chkdsk C: /x /r',2)} : {_translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
 
   - [4] Run all commands
 """))
@@ -764,21 +764,21 @@ if __name__ == "__main__":
             
             elif "dank.network-reset" in choice['project']:
                 
-                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
                 cls(); print(clr(f"""
   [ COMMANDS ]
 
   - [0] Return to menu
 
-  - [1] {clr('ipconfig /flushdns',2)} : {translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
+  - [1] {clr('ipconfig /flushdns',2)} : {_translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
 
-  - [2] {clr('ipconfig /registerdns',2)} : {translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
+  - [2] {clr('ipconfig /registerdns',2)} : {_translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
 
-  - [3] {clr('ipconfig /release',2)} : {translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
+  - [3] {clr('ipconfig /release',2)} : {_translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
 
-  - [4] {clr('ipconfig /renew',2)} : {translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
+  - [4] {clr('ipconfig /renew',2)} : {_translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
 
-  - [5] {clr('netsh winsock reset',2)} : {translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
+  - [5] {clr('netsh winsock reset',2)} : {_translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
 
   - [6] Run all commands
 """))
@@ -822,9 +822,9 @@ if __name__ == "__main__":
   
   - [0] Return to menu
   
-  - [1] {clr('Clear Icon Cache',2)} : {translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
+  - [1] {clr('Clear Icon Cache',2)} : {_translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
   
-  - [2] {clr('Clear Thumbnail Cache',2)} : {translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
+  - [2] {clr('Clear Thumbnail Cache',2)} : {_translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
   
   - [3] Run all tasks
 """))
@@ -880,7 +880,7 @@ if __name__ == "__main__":
                 while True:
                     try: code = open(f'__local_modules__/{project}.py', 'r', encoding='utf-8').read(); break
                     except:
-                        translation = translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
+                        translation = _translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
                         input(clr(f"\n  > {translation}... ",2)); del translation
                         rm_line(); rm_line()
                 
@@ -901,20 +901,20 @@ if __name__ == "__main__":
                             else:
                                 break
                         except:
-                            input(clr(f"\n  > {translate('Failed to get latest version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                            input(clr(f"\n  > {_translate('Failed to get latest version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
                     
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers).content.decode(); break
                         except:
-                            input(clr(f"\n  > {translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                            input(clr(f"\n  > {_translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
                 
                 else:
                     while True:
                         try: code = open(f'__modules__/{project}.py', 'r', encoding='utf-8').read(); break
                         except:
-                            translation = translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
+                            translation = _translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
                             input(clr(f"\n  > {translation}... ",2)); del translation
                             rm_line(); rm_line()
 
@@ -922,13 +922,13 @@ if __name__ == "__main__":
             
             if code == "404: Not Found":
                 if project.startswith('_'):
-                    print(clr(f"\n  - {translate(f'{project[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {_translate(f'{project[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
                 else:
-                    print(clr(f"\n  - {translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {_translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2))
                 time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  - {translate(f'{project} executed successfully! Returning to menu in 3 seconds')}...")); time.sleep(3)
+                cls(); print(clr(f"\n  - {_translate(f'{project} executed successfully! Returning to menu in 3 seconds')}...")); time.sleep(3)
 
         except:
 
@@ -938,15 +938,15 @@ if __name__ == "__main__":
             if "Error Type: KeyboardInterrupt" in err_message:
                 
                 print_warning_symbol()
-                print(clr(f"\n  - {translate('Please select text first and then use [ CTRL + C ]')}!"))
+                print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]')}!"))
                 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
                     try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
                     except:
-                        input(clr(f"\n  > {translate('Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        input(clr(f"\n  > {_translate('Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
-                print(clr(f"\n  > {translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {translate('If it is a logic error, it will be fixed soon!')}"))
+                print(clr(f"\n  > {_translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {_translate('If it is a logic error, it will be fixed soon!')}"))
             
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             #os.system("taskkill /f /im dank.tool.exe")
