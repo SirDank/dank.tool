@@ -300,7 +300,7 @@
 
 ## ♦️ To Do ♦️
 
-- [ ] Add emoji keyboard
+- [x] Add emoji keyboard
 
 ## ♦️ Preview ♦️
 
