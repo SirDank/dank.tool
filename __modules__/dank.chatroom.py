@@ -156,9 +156,7 @@ def chatroom_input():
             
             elif msg_lower == "/help":
                 print(help_msg)
-            
-            # \n  > /users - show users\n  > /msg <username> <message> - send private message\n  > /pm <username> <message> - send private message\n  > /whisper <username> <message> - send private message\n  > /w <username> <message> - send private message\n  > /private <username> <message> - send private message\n  > /p <username> <message> - send private message\n  > /dm <username> <message> - send private message\n  > /d <username> <message> - send private message\n  > /dm <username> <message> - send private message\n  > /d <username> <message> - send private message\n  > /r <message> - reply to last private message\n  > /reply <message> - reply to last private message\n  > /block <username> - block user\n  > /unblock <username> - unblock user\n  > /b <username> - block user\n  > /u <username> - unblock user\n  > /blocklist - show blocked users\n  > /bl - show blocked users\n  > /blocked - show blocked users\n  > /banned - show banned users\n  > /ban <username> - ban user\n  > /unban <username> - unban user\n  > /b <username> - ban user\n  > /u <username> - unban user\n  > /banlist - show banned users\n  > /bl - show banned users\n  > /banned - show banned users\n  > /kick <username> - kick user\n  > /k <username> - kick user\n  > /kicklist - show kicked users\n  > /kl - show kicked users\n  > /kicked - show kicked users\n  > /kicked - show kicked users\n  > /mute <username> - mute user\n  > /unmute <username> - unmute user\n  > /m <username> - mute user\n  > /u <username> - unmute user\n  > /mutelist - show muted users\n
-            
+
             elif username == "SirDank":
                 send_msg = True
                 if msg_lower == "/clear-all":
@@ -182,8 +180,24 @@ def chatroom_input():
             try: session.post("https://dank-site.onrender.com/chatroom", headers=headers, data=data)
             except: print(clr("[dank.tool] > Failed to send!",2))
 
+    def insert_emoji(event):
+        entry.insert(tk.END, event.widget.cget("text"))
+
+    def toggle_emoji_panel():
+        if emoji_frame.winfo_viewable():
+            emoji_frame.grid_remove()
+            root.geometry("300x50")
+        else:
+            emoji_frame.grid(row=2, column=0, columnspan=2)
+            root.geometry("300x100")
+            
+    def get_offset(event):
+        global x_offset, y_offset
+        x_offset = event.x
+        y_offset = event.y
+
     def move_window(event):
-        root.geometry(f"+{event.x_root}+{event.y_root}")
+        root.geometry(f'+{event.x_root - x_offset}+{event.y_root - y_offset}')
         
     def on_closing():
         global running
@@ -195,16 +209,29 @@ def chatroom_input():
     root.tk.call("tk::PlaceWindow", root._w, "center")
 
     root.geometry("300x50")
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_columnconfigure(0, weight=1)
     root.attributes("-alpha", 0.8)
     root.attributes("-topmost", True)
+    root.bind('<Button-1>', get_offset)
     root.bind("<B1-Motion>", move_window)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
     root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF0000", borderwidth=1) # hot-pink > #FF00FF
 
+    emoji_button = tk.Button(root, text="Emojis", command=toggle_emoji_panel, font=("Consolas", 12))
+    emoji_button.grid(row=0, column=1, sticky="e", padx=(5, 0))
+
     entry = tk.Entry(root, bg="#3A3A3A", fg="white", font=("Consolas", 12))
     entry.bind("<Return>", handle_msg)
-    entry.pack(padx=10, pady=10)
+    entry.grid(row=0, column=0, sticky="ew")
+
+    emoji_frame = tk.Frame(root)
+    for i, e in enumerate(["💀", "🗿", "❤️", "🔥", "💣", "🤣", "😭", "😡", "😈", "👍"]):
+        emoji_button = tk.Button(emoji_frame, text=e, font=("Consolas", 12), bg="#2B2B2B", activebackground="#3A3A3A")
+        emoji_button.grid(row=i//5, column=i%5)  # adjust grid size as needed
+        emoji_button.bind("<Button-1>", insert_emoji)
+    emoji_frame.grid_remove()
 
     while running:
         root.update()
@@ -217,6 +244,7 @@ def enable_notifications():
     time.sleep(10)
     global notifications
     notifications = True
+    del globals()['enable_notifications']
 
 if __name__ == "__main__":
 
@@ -240,5 +268,5 @@ if __name__ == "__main__":
     executor.shutdown(wait = False, cancel_futures = True)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input', 'enable_notifications'):
+        for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
             if _ in globals(): del _
