@@ -558,6 +558,5 @@ if __name__ == '__main__':
         input(clr("  > Press [ENTER] to exit..."))
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in (magickwand_installed, log, tabledata, xdtdata, cab_name, setup, banner, open_workspace, logger, path_id, dump_xdt, fix_bundles, tswap_mass, timport_mass, shortcut, add_npc, print_bundle, print_content, main, menu):
-            try: del _
-            except: pass
+        for _ in ('magickwand_installed', 'log', 'tabledata', 'xdtdata', 'cab_name', 'setup', 'banner', 'open_workspace', 'logger', 'path_id', 'dump_xdt', 'fix_bundles', 'tswap_mass', 'timport_mass', 'shortcut', 'add_npc', 'print_bundle', 'print_content', 'main', 'menu'):
+            if _ in globals(): del _
