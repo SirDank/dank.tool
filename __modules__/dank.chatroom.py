@@ -227,7 +227,7 @@ def chatroom_input():
     entry.grid(row=0, column=0, sticky="ew")
 
     emoji_frame = tk.Frame(root)
-    for i, e in enumerate(["💀", "🗿", "❤️", "🔥", "💣", "🤣", "😭", "😡", "😈", "👍"]):
+    for i, e in enumerate(["💀", "🗿", "💕", "🔥", "💣", "🤣", "😭", "😡", "😈", "👍"]):
         emoji_button = tk.Button(emoji_frame, text=e, font=("Consolas", 12), bg="#2B2B2B", activebackground="#3A3A3A")
         emoji_button.grid(row=i//5, column=i%5)  # adjust grid size as needed
         emoji_button.bind("<Button-1>", insert_emoji)
