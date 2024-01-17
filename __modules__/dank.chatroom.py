@@ -265,8 +265,8 @@ if __name__ == "__main__":
     executor.submit(chatroom_output)
     executor.submit(enable_notifications)
     chatroom_input()
-    executor.shutdown(wait = False, cancel_futures = True)
+    executor.shutdown(wait=True, cancel_futures=True)
     
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
+        for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
             if _ in globals(): del _
