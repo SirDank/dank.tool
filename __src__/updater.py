@@ -65,4 +65,4 @@ except: pass
 try: input(clr("\n  > Press [ENTER] to install the latest version of dank.tool... "))
 except EOFError: pass
 os.system("start dank.tool-[installer].exe")
-os.system("taskkill /f /im dank.tool.exe")
+os.system("taskkill /f /t /im dank.tool.exe")
