@@ -271,17 +271,17 @@ def set_globals_two():
                     'info': menu_request_responses["dank.minecraft-server-builder"],
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
                     'project': "dank.minecraft-server-builder",
-                    'rpc': "building a minecraft server"
+                    'rpc': _translate("building a minecraft server")
                 },
 
                 _translate('Minecraft Server Scanner'): {
                     'info': menu_request_responses["dank.minecraft-server-scanner"],
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
                     'project': "dank.minecraft-server-scanner",
-                    'rpc': "scanning for minecraft servers"
+                    'rpc': _translate("scanning for minecraft servers")
                 },
                 
-                'category': True,
+                'category': True
             },
             
             _translate('Windows Tools'): {
@@ -290,38 +290,38 @@ def set_globals_two():
                     'info': menu_request_responses["dank.winget"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝",
                     'project': "dank.winget",
-                    'rpc': "installing / updating software"
+                    'rpc': _translate("installing / updating software")
                 },
                 
                 _translate('Windows / Office Activator'): {
                     'info': menu_request_responses["Microsoft-Activation-Scripts"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                     'project': "dank.win-activate",
-                    'rpc': "activating windows / office"
+                    'rpc': _translate("activating windows / office")
                 },
                 
                 _translate('Operating System Repair'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
                     'project': "dank.os-repair",
-                    'rpc': "repairing windows operating system"    
+                    'rpc': _translate("repairing windows operating system")
                 },
                 
                 _translate('Network Reset'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
                     'project': "dank.network-reset",
-                    'rpc': "resetting network settings"
+                    'rpc': _translate("resetting network settings")
                 },
                 
                 _translate('Clear Icon & Thumbnail Cache'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
                     'project': "dank.clear-icons",
-                    'rpc': "clearing icon and thumbnail cache"
+                    'rpc': _translate("clearing icon and thumbnail cache")
                 },
                 
-                'category': True,
+                'category': True
                 
             },
             
@@ -331,17 +331,17 @@ def set_globals_two():
                     'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                     'project': "dank.spotify",
-                    'rpc': "installing spotx and spicetify",
+                    'rpc': _translate("installing spotx and spicetify")
                 },
                 
                 'Adobe Acrobat Pro': {
                     'info': menu_request_responses["dank.acropolis"],
                     'title': "𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜",
                     'project': "dank.acropolis",
-                    'rpc': "installing adobe acrobat pro",
+                    'rpc': _translate("installing adobe acrobat pro")
                 },
                 
-                'category': True,
+                'category': True
                 
             },
 
@@ -349,16 +349,16 @@ def set_globals_two():
                 'info': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
                 'project': "dank.browser-backup",
-                'rpc': "backing up a browser",
-                'category': False,
+                'rpc': _translate("backing up a browser"),
+                'category': False
             },
 
-            str(_translate('World Exploration Game')) + ' [bright_red][[red1]BETA[bright_red]]': {
+            _translate('World Exploration Game') + ' [bright_red][[red1]BETA[bright_red]]': {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
-                'rpc': "playing a world exploration game",
-                'category': False,
+                'rpc': _translate("playing a world exploration game"),
+                'category': False
             },
 
             #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
@@ -368,40 +368,40 @@ def set_globals_two():
             #    'rpc': "running auto-clicker"
             #},
 
-            'Chatroom': {
+            _translate('Chatroom'): {
                 'info': menu_request_responses["chatroom_user_count"],
                 'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
                 'project': "dank.chatroom",
-                'rpc': "chatting in the chatroom",
-                'category': False,
+                'rpc': _translate("chatting in the chatroom"),
+                'category': False
             },
             
             'Discord / Telegram / Website': {
 
                 'Discord Server': {
                     'info': '[bright_green]Join Now!',
-                    'project': "Dankware Inc. Discord Server",
+                    'project': "Dankware Inc. Discord Server"
                 },
                 
                 'Telegram Group': {
                     'info': '[bright_green]Join Now!',
-                    'project': "Dankware Inc. Telegram Group",
+                    'project': "Dankware Inc. Telegram Group"
                 },
                 
                 'Website': {
                     'info': '[bright_green]Visit Now!',
-                    'project': "Dankware Inc. Website",
+                    'project': "Dankware Inc. Website"
                 },
                 
                 'category': True
             },
             
-            'Settings': {
+            _translate('Settings'): {
                 'info': '',
                 'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
                 'project': "dank.tool settings",
-                'rpc': "changing dank.tool settings",
-                'category': False,
+                'rpc': _translate("changing dank.tool settings"),
+                'category': False
             }
         }
     
@@ -412,7 +412,7 @@ def set_globals_two():
 def _translate(text):
 
     if DANK_TOOL_LANG and ONLINE_MODE:
-        try: text = _translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        try: text = _translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
         except: pass
     return text
 
