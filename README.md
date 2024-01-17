@@ -265,27 +265,7 @@
 
 # 🚨 Fusion-Fall Modding Tool 🚨
 
-- Sponsored by [nuclearff.com](https://nuclearff.com/)
-
-## ♦️ Features ♦️
-
-- Custom Asset Bundle Explorer / Editor
-- ImageMagick installer
-- Several in-built shortcuts for modding
-- Swap Textures
-- Swap Audio
-- Swap Models (static, not animated)
-- Export Models
-- Command Logger
-- Workspaces for multiple projects
-
-## ♦️ To Do ♦️
-
-- [ ] Create Mission Builder
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/5fb484c6-e349-460d-ad27-226143473229"></p><br>
+- [Moved](https://github.com/SirDank/dank.fusion-fall)
 
 <p>&nbsp;</p>
 
