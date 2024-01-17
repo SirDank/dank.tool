@@ -353,7 +353,7 @@ def set_globals_two():
                 'category': False,
             },
 
-            _translate('World Exploration Game') + ' [bright_red][[red1]BETA[bright_red]]': {
+            str(_translate('World Exploration Game')) + ' [bright_red][[red1]BETA[bright_red]]': {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
