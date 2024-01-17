@@ -8,7 +8,7 @@
 [NOTE]
 
 - executor.py is meant to be executed only as an executable, not as a python script!
-- the below packages are not required by the executor.py script but is required by the various __modules__ run by the dank.tool.exe
+- the below packages are not required by the executor.py script but are required by the various __modules__ run by the dank.tool.exe
 - they are listed here to be included in the final build of dank.tool.exe
 '''
 
@@ -20,6 +20,7 @@ import shutil
 import ctypes
 import winreg
 import sqlite3
+import requests
 import pyminizip
 import subprocess
 import tkinter as tk
@@ -33,35 +34,26 @@ from dateutil.tz import tzlocal, tzutc
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
 from mcstatus import JavaServer, BedrockServer
-from dankware import cls, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, file_selector, folder_selector, get_path
+from concurrent.futures import ThreadPoolExecutor
+from dankware import cls, clr, title, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, file_selector, folder_selector, get_path
 from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
-
-# required packages for dank.fusion-fall.py
-
-from unitypackff.asset import Asset
-from unitypackff.export import OBJMesh
-from unitypackff.object import FFOrderedDict, ObjectPointer
-from unitypackff.modding import import_texture, import_mesh, import_audio
 
 # required packages for dank.game.py
 
 import numpy
 from ursina import *
+from ursina.scripts import *
 from ursina.shaders import *
-from ursina.shaders import texture_blend_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 # required packages for executor.py
 
-import requests
 from pypresence import Presence
-from dankware import clr, title
 from packaging.version import parse
-from concurrent.futures import ThreadPoolExecutor
 
 # variables
 
-DANK_TOOL_VERSION = "3.2.2"
+DANK_TOOL_VERSION = "3.2.3"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -85,6 +77,7 @@ def settings_json():
             "offline-mode": "0",
             "dev-branch": "0",
             "force-update": "0",
+            "force-translate": "0",
             "force-startup-audio": "0",
             "disable-startup-audio": "0",
         }
@@ -92,11 +85,12 @@ def settings_json():
     if not os.path.isfile('settings.json'):
         overwrite = True
     else:
-        keys = json.loads(open('settings.json', 'r', encoding='utf-8').read()).keys()
+        data = json.loads(open('settings.json', 'r', encoding='utf-8').read())
         for key in default_settings:
-            if not key in keys:
+            if not key in data.keys():
                 overwrite = True
-                break
+            else:
+                default_settings[key] = data[key]
 
     if overwrite:
         open('settings.json', 'w', encoding='utf-8').write(json.dumps(default_settings, indent=4))
@@ -114,9 +108,8 @@ BRANCH = ("main" if not DEV_BRANCH else "dev")
 # handle KeyboardInterrupt
 
 def print_warning_symbol():
-    
-    warning_symbol = f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'
-    cls(); print(align(warning_symbol))
+
+    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'))
 
 # get latest version number
 
@@ -167,8 +160,6 @@ def dank_tool_installer():
         except: pass
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
-    
-    sys.exit("Updated!")
 
 # update environment variables
 
@@ -211,13 +202,16 @@ def check_windows_language():
                 break
     
     if not locale_name.lower().startswith('en'):
-        translator = Translator()
-        result = translator.translate("Would you like to enable the translate feature?", source_language='en', destination_language=locale_name)
-        print(clr(f"\n  - Your windows language is set to '{cyan}{locale_name}'!"))
-        if input(clr(f"\n  > {result} [y/n]:", colour_one=cyan)).lower() == 'y':
+        if int(DANK_TOOL_SETTINGS['force-translate']):
             os.environ['DANK_TOOL_LANG'] = locale_name
         else:
-            os.environ['DANK_TOOL_LANG'] = "en"
+            translator = Translator()
+            result = translator.translate("Would you like to enable the translate feature?", source_language='en', destination_language=locale_name).result
+            print(clr(f"\n  - Your windows language is set to '{cyan}{locale_name}'!"))
+            if input(clr(f"\n  > {result} [y/n]: ", colour_one=cyan) + cyan).lower() == 'y':
+                os.environ['DANK_TOOL_LANG'] = locale_name
+            else:
+                os.environ['DANK_TOOL_LANG'] = "en"
     else:
         os.environ['DANK_TOOL_LANG'] = "en" 
 
@@ -284,6 +278,7 @@ def dank_tool_runs_counter():
         try: session.get("https://dank-site.onrender.com/counter?id=dank.tool&hit=true", headers=headers); break
         except: fail_counter += 1
         time.sleep(60)
+    del globals()['dank_tool_runs_counter']
 
 if ONLINE_MODE:
     _executor.submit(dank_tool_runs_counter)
@@ -301,6 +296,7 @@ def dank_tool_chatroom():
         try: session.post("https://dank-site.onrender.com/chatroom-users", headers=headers); fail_counter = 0 # do not add a break here! (keeps user validated)
         except: fail_counter += 1
         time.sleep(240)
+    del globals()['dank_tool_chatroom']
 
 if ONLINE_MODE:
     _executor.submit(dank_tool_chatroom)
@@ -321,16 +317,13 @@ except:
     err_message = err(sys.exc_info())
     print(clr(err_message, 2))
     LATEST_VERSION = latest_dank_tool_version()
-    
-    if "Updated!" in err_message:
-        sys.exit("Updated!")
-    
-    elif "Error Type: KeyboardInterrupt" in err_message:
+
+    if "Error Type: KeyboardInterrupt" in err_message:
         print_warning_symbol()
         print(clr("\n  - Please select text first and then use [ CTRL + C ]!"))
     
     elif parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
-        print(clr(f"\n  - Updating to the latest version...\n\n  - Update Found: {LATEST_VERSION}"))
+        print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
         dank_tool_installer()
 
     elif ONLINE_MODE:
@@ -342,5 +335,5 @@ except:
         print(clr("\n  - Error Reported! If it is an OS error, Please run as admin and try again!\n\n  - If it is a logic error, it will be fixed soon!"))
     
     input(clr("\n  > Press [ENTER] to EXIT... "))
-    os.system("taskkill /f /im dank.tool.exe")
+    os.system("taskkill /f /t /im dank.tool.exe")
 

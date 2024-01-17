@@ -12,4 +12,4 @@ win11toast
 translatepy
 playsound==1.2.2
 numpy
-ursina
+https://github.com/pokepetter/ursina/archive/refs/heads/master.zip
