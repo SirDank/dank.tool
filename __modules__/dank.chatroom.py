@@ -219,7 +219,7 @@ def chatroom_input():
     root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
     root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF0000", borderwidth=1) # hot-pink > #FF00FF
 
-    emoji_button = tk.Button(root, text="Emojis", command=toggle_emoji_panel, font=("Consolas", 12))
+    emoji_button = tk.Button(root, text="Emojis", command=toggle_emoji_panel, font=("Consolas", 12), fg="white", bg="#2B2B2B", activebackground="#3A3A3A")
     emoji_button.grid(row=0, column=1, sticky="e", padx=(5, 0))
 
     entry = tk.Entry(root, bg="#3A3A3A", fg="white", font=("Consolas", 12))
@@ -228,7 +228,7 @@ def chatroom_input():
 
     emoji_frame = tk.Frame(root)
     for i, e in enumerate(["💀", "🗿", "💕", "🔥", "💣", "🤣", "😭", "😡", "😈", "👍"]):
-        emoji_button = tk.Button(emoji_frame, text=e, font=("Consolas", 12), bg="#2B2B2B", activebackground="#3A3A3A")
+        emoji_button = tk.Button(emoji_frame, text=e, font=("Consolas", 12), fg="white", bg="#2B2B2B", activebackground="#3A3A3A")
         emoji_button.grid(row=i//5, column=i%5)  # adjust grid size as needed
         emoji_button.bind("<Button-1>", insert_emoji)
     emoji_frame.grid_remove()
