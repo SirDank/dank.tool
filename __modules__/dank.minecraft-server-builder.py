@@ -23,7 +23,7 @@ def print_read_me():
 def translate(text):
 
     if DANK_TOOL_LANG:
-        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG)
+        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
         except: pass
     return text
 
