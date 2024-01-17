@@ -612,7 +612,7 @@ if __name__ == "__main__":
                     except: print(clr("\n" + err(sys.exc_info()), 2))
             
             elif choice == 'exit':
-                os.system("taskkill /f /im dank.tool.exe")
+                os.system("taskkill /f /t /im dank.tool.exe")
             
             else: rm_line()
 
@@ -931,4 +931,3 @@ if __name__ == "__main__":
                 print(clr(f"\n  > {_translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {_translate('If it is a logic error, it will be fixed soon!')}"))
             
             input(clr("\n  > Press [ENTER] to return to the menu... "))
-            #os.system("taskkill /f /im dank.tool.exe")
