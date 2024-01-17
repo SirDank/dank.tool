@@ -51,9 +51,8 @@ def dank_tool_banner():
 # handle KeyboardInterrupt
 
 def print_warning_symbol():
-    
-    warning_symbol = f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'
-    cls(); print(align(warning_symbol))
+
+    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'))
 
 # get commit date & time
 
@@ -229,15 +228,7 @@ def set_globals_one():
             'rpc': "backing up a browser",
             'category': False,
         },
-        
-        'Fusion-Fall Modding Tool': {
-            'info': '',
-            'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
-            'project': "dank.fusion-fall",
-            'rpc': "modding fusion-fall",
-            'category': False,
-        },
-        
+
         'World Exploration Game [bright_red][[red1]BETA[bright_red]]': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
@@ -361,16 +352,8 @@ def set_globals_two():
                 'rpc': "backing up a browser",
                 'category': False,
             },
-            
-            _translate('Fusion-Fall Modding Tool'): {
-                'info': menu_request_responses["dank.fusion-fall"],
-                'title': "𝚍𝚊𝚗𝚔.𝚏𝚞𝚜𝚒𝚘𝚗-𝚏𝚊𝚕𝚕",
-                'project': "dank.fusion-fall",
-                'rpc': "modding fusion-fall",
-                'category': False,
-            },
-            
-            _translate('World Exploration Game [bright_red][[red1]BETA[bright_red]]'): {
+
+            _translate('World Exploration Game') + ' [bright_red][[red1]BETA[bright_red]]': {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
@@ -514,9 +497,8 @@ if __name__ == "__main__":
                 "Microsoft-Activation-Scripts",
                 "dank.minecraft-server-builder",
                 "dank.minecraft-server-scanner",
-                "dank.auto-clicker",
+                #"dank.auto-clicker",
                 "dank.browser-backup",
-                "dank.fusion-fall",
                 "dank.game",
                 "dank.winget",
                 "dank.acropolis"

@@ -8,7 +8,6 @@ pypresence
 python-dateutil
 requests
 rich
-unitypackff
 win11toast
 translatepy
 playsound==1.2.2
