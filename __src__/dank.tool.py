@@ -376,7 +376,7 @@ def set_globals_two():
                 'category': False
             },
             
-            'Discord / Telegram / Website': {
+            'Discord / Telegram': {
 
                 'Discord Server': {
                     'info': '[bright_green]Join Now!',
