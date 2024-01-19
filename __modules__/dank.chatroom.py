@@ -238,6 +238,7 @@ def chatroom_input():
 
     root.destroy()
     running = False
+    print(clr("[dank.tool] > shutting down chatroom...", colour_two=green))
 
 def enable_notifications():
     
@@ -265,7 +266,7 @@ if __name__ == "__main__":
     executor.submit(chatroom_output)
     executor.submit(enable_notifications)
     chatroom_input()
-    executor.shutdown(wait=True, cancel_futures=True)
+    executor.shutdown()
     
     if "DANK_TOOL_VERSION" in os.environ:
         for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
