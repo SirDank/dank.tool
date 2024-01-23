@@ -34,11 +34,11 @@ def chatroom_login():
             err_msg = ""
             while True:
 
-                username = input(clr(f"\n  > Username{err_msg}: ") + green)
+                username = input(clr(f"\n  > Username{err_msg}: ") + green).strip()
                 if len(username.replace(' ','')) < 3:
                     err_msg = f" [{red}too short!]"
                     rm_line(); rm_line(); continue
-                elif len(username.replace(' ','')) > 15:
+                elif len(username.strip()) > 15:
                     err_msg = f" [{red}too long!]"
                     rm_line(); rm_line(); continue
                 err_msg = ""
