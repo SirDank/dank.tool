@@ -82,8 +82,13 @@ def get_menu_request_responses(task_id, request_key):
     if task_id in (0, 1):
         if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
         elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
-        try: menu_request_responses[request_key] = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
-        except: menu_request_responses[request_key] = f"{red}⚠️"
+        menu_request_responses[request_key] = f"{red}⚠️"
+        try:
+            result = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
+            if result.isdigit():
+                menu_request_responses[request_key] = result
+        except:
+            pass
     
     # get motd
     
