@@ -248,4 +248,4 @@ if __name__ == "__main__":
     
     if "DANK_TOOL_VERSION" in os.environ:
         for _ in ('ips', 'server_type', 'port', 'saved', 'executor', 'translator', 'check_java', 'check_bedrock', 'save_server', 'generate_ip', 'generate_ip_targetted', 'target_ips', 'target_weights', 'main', 'translate'):
-            if _ in globals(): del _
+            if _ in globals(): del globals()[_]
