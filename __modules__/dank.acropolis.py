@@ -122,4 +122,4 @@ if __name__ == "__main__":
 
     if "DANK_TOOL_VERSION" in os.environ:
         for _ in ('main', 'file_downloader', 'print_read_me', 'translate', 'translator'):
-            if _ in globals(): del _
+            if _ in globals(): del globals()[_]

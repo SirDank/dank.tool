@@ -270,4 +270,4 @@ if __name__ == "__main__":
     
     if "DANK_TOOL_VERSION" in os.environ:
         for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
-            if _ in globals(): del _
+            if _ in globals(): del globals()[_]
