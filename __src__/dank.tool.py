@@ -105,11 +105,13 @@ def get_menu_request_responses(task_id, request_key):
     elif task_id == 3:
         try:
             tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
-            if tmp.isdigit() and tmp != "0": menu_request_responses[request_key] = tmp
-            else: menu_request_responses[request_key] = "1"
+            if tmp.isdigit():
+                if tmp != "0": menu_request_responses[request_key] = tmp
+                else: menu_request_responses[request_key] = "1"
+                menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
+            else: menu_request_responses[request_key] = "[bright_red]⚠️"
             del tmp
-            menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
-        except: menu_request_responses[request_key] = "" # [bright_red]⚠️
+        except: menu_request_responses[request_key] = "[bright_red]⚠️"
         
     # get last update time for modules based on external repos
     
