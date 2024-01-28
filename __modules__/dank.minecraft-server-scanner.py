@@ -146,14 +146,17 @@ def main():
         if ips_amt.isdigit(): ips_amt = int(ips_amt); break
         else: rm_line()
         
-    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
-    print(clr(f"\n  - [0] {translate('Default Scan: Generates completely random IPs, good chance to find private / locally hosted servers, low find-rate')}.\n\n  - [1] {translate('Targetted Scan: Generates random IPs based on custom rules, good chance to find data center servers, high find-rate')}."))
+    if server_type == "java":
+        cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim])))
+        print(clr(f"\n  - [0] {translate('Default Scan: Generates completely random IPs, good chance to find private / locally hosted servers, low find-rate')}.\n\n  - [1] {translate('Targetted Scan: Generates random IPs based on custom rules, good chance to find data center servers, high find-rate')}."))
 
-    print("")
-    while True:
-        targetted_scan = input(clr("  > Scan Type [0/1]: ") + red)
-        if targetted_scan in ('0', '1'): targetted_scan = int(targetted_scan); break
-        else: rm_line()
+        print("")
+        while True:
+            targetted_scan = input(clr("  > Scan Type [0/1]: ") + red)
+            if targetted_scan in ('0', '1'): targetted_scan = int(targetted_scan); break
+            else: rm_line()
+    else:
+        targetted_scan = 0
        
     # disclaimer
  
