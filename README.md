@@ -66,7 +66,6 @@
 - [x] Add offline mode for offline scripts ( High Priority )
 - [x] Add translator
 - [x] Finish reworking dank.downloader.py
-- [ ] Add dank.proxy.py ( scraper / checker )
 
 ## ♦️ Support ♦️
 
@@ -139,7 +138,7 @@
 
 ## ♦️ To Do ♦️
 
-- [ ] Add targeted scans ( for specific IPs / ranges )
+- [x] Add targeted scans ( for specific IPs / ranges )
 - [ ] Use masscan for windows
 
 ## ♦️ Preview ♦️
