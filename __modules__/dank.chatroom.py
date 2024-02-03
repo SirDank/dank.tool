@@ -10,27 +10,27 @@ from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, align, rm_line, green, red, white_normal, title
 
 def chatroom_login():
-    
+
     global username
     url = "https://dank-site.onrender.com/chatroom-login"
-    
+
     while True:
-        
+
         cls()
-    
+
         # check if uuid is registered
 
         while True:
-            data = compress(json.dumps({"uuid": uuid}).encode('utf-8'))
-            try: response = session.post(url, headers=headers, data=data); break
+            data = compress(json.dumps({"uuid": uuid}).encode('utf-8')) # pylint: disable=used-before-assignment
+            try: response = session.post(url, headers=headers, data=data); break # pylint: disable=used-before-assignment
             except: input(clr("\n  > Failed to login! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
         # register user
-        
+
         if "missing" in response.content.decode() and response.status_code == 400:
-            
+
             cls(); print(clr(align("\n<---|[ A c c o u n t - C r e a t i o n ]|--->") + "\n\n  - Username must be greater than two characters and lesser than 16 characters, spaces are not counted!"))
-            
+
             err_msg = ""
             while True:
 
@@ -60,19 +60,19 @@ def chatroom_login():
             break
 
         # user already registered
-            
-        elif response.status_code == 200:
+
+        if response.status_code == 200:
             username = response.content.decode()
             cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n")))
             break
-            
+
         # unauthorized
-        
-        elif response.status_code == 401:
+
+        if response.status_code == 401:
             cls(); input(clr("\n  > Unauthorized! Try again in a minute! Press [ENTER] to try again... ",2))
 
 def chat_grabber():
-    
+
     global chat
     global last_msg_id
 
@@ -86,53 +86,53 @@ def chat_grabber():
             chat = str(response["chat"]).splitlines()
             last_msg_id = int(response["msg_id"])
         except:
-            if len(chat) > 0 and chat[-1] != offline_msg:
+            if len(chat) > 0 and chat[-1] != offline_msg: # pylint: disable=used-before-assignment
                 chat.append(offline_msg)
                 print(offline_msg)
         time.sleep(5)
-        
+
 def chatroom_output():
-    
+
     global printed_msg_id
 
     while running:
 
         if printed_msg_id < last_msg_id and len(chat) > 0:
 
-            for _ in range(len(chat)):
-                
-                if notifications and not chat[_].startswith(f"[{username}]"):
+            for _, line in enumerate(chat):
 
-                    executor.submit(
+                if notifications and not line.startswith(f"[{username}]"):
+
+                    executor.submit( # pylint: disable=used-before-assignment
                         notify,
-                        chat[_].split(" > ")[0].replace('[','[ ').replace(']',' ]'),
-                        chat[_].split(" > ")[1],
+                        line.split(" > ")[0].replace('[','[ ').replace(']',' ]'),
+                        line.split(" > ")[1],
                         icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
                     )
 
-                if chat[_].startswith("[dank.server]"):
-                    chat[_] = clr(chat[_], colour_two=green)
-                elif chat[_].startswith("[SirDank]"):
-                    chat[_] = clr(chat[_].replace("[SirDank]",f"[{green}SirDank{red}]"))
-                elif chat[_].startswith(f"[{username}]"):
-                    chat[_] = clr(chat[_])
+                if line.startswith("[dank.server]"):
+                    chat[_] = clr(line, colour_two=green)
+                elif line.startswith("[SirDank]"):
+                    chat[_] = clr(line.replace("[SirDank]",f"[{green}SirDank{red}]"))
+                elif line.startswith(f"[{username}]"):
+                    chat[_] = clr(line)
                 else:
-                    chat[_] = clr(chat[_], colour_one=white_normal)
-            
+                    chat[_] = clr(line, colour_one=white_normal)
+
             print('\n'.join(chat))
-            
+
             printed_msg_id = last_msg_id
 
         time.sleep(1)
 
 def chatroom_input():
-    
+
     global running
-    
+
     help_msg = clr("[dank.tool] > /help - show help\n[dank.tool] > /clear - clear chatroom\n[dank.tool] > /notify - enable/disable notifications\n[dank.tool] > /exit - exit chatroom", colour_two=green)
     print(help_msg)
-    
-    def handle_msg(event):
+
+    def handle_msg(event): # pylint: disable=unused-argument
 
         msg = entry.get()
         msg_lower = msg.lower()
@@ -141,19 +141,19 @@ def chatroom_input():
 
         if msg == "": return
         elif msg.startswith("/"):
-            
+
             if msg_lower in ["/exit", "/quit", "/bye", "/terminate"]:
                 global running
                 running = False
-            
+
             elif msg_lower in ["/clear", "/cls"]:
                 cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n")))
-            
+
             elif msg_lower in ["/notify", "/notifications"]:
                 global notifications
                 notifications = not notifications
                 print(clr(f"[dank.tool] > Notifications {'enabled' if notifications else 'disabled'}!", colour_two=green))
-            
+
             elif msg_lower == "/help":
                 print(help_msg)
 
@@ -162,19 +162,19 @@ def chatroom_input():
                 if msg_lower == "/clear-all":
                     global printed_msg_id
                     printed_msg_id = 0
-            
+
             else:
                 print(clr("[dank.tool] > Invalid command!",2))
-        
+
         elif len(msg) > 200:
             print(clr("[dank.tool] > Message longer than 200 characters!",2))
-            
+
         elif msg.lower() == "exit":
             print(clr("[dank.tool] > Did you mean /exit?",2))
-        
+
         else:
             send_msg = True
-        
+
         if send_msg:
             data = compress(json.dumps({"uuid": uuid, "msg": msg}).encode('utf-8'))
             try: session.post("https://dank-site.onrender.com/chatroom", headers=headers, data=data)
@@ -190,7 +190,7 @@ def chatroom_input():
         else:
             emoji_frame.grid(row=2, column=0, columnspan=2)
             root.geometry("300x100")
-            
+
     def get_offset(event):
         global x_offset, y_offset
         x_offset = event.x
@@ -198,7 +198,7 @@ def chatroom_input():
 
     def move_window(event):
         root.geometry(f'+{event.x_root - x_offset}+{event.y_root - y_offset}')
-        
+
     def on_closing():
         global running
         running = False
@@ -206,7 +206,7 @@ def chatroom_input():
     root = tk.Tk()
     root.title("dank.chatroom")
     root.overrideredirect(True)
-    root.tk.call("tk::PlaceWindow", root._w, "center")
+    root.tk.call("tk::PlaceWindow", root._w, "center") # pylint: disable=protected-access
 
     root.geometry("300x50")
     root.grid_rowconfigure(1, weight=1)
@@ -241,7 +241,7 @@ def chatroom_input():
     print(clr("[dank.tool] > shutting down chatroom...", colour_two=green))
 
 def enable_notifications():
-    
+
     time.sleep(10)
     global notifications
     notifications = True
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     executor.submit(enable_notifications)
     chatroom_input()
     executor.shutdown()
-    
+
     if "DANK_TOOL_VERSION" in os.environ:
         for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
             if _ in globals(): del globals()[_]

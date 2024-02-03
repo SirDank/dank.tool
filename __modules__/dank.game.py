@@ -55,7 +55,7 @@ world_size = 250 # n*2 x n*2
 render_dist = 15 # n*2 x n*2
 collision_dist = 2 # n*2 x n*2
 tree_heights = 10
-tree_heights = [_ for _ in range(tree_heights-3, tree_heights+4)]
+tree_heights = list(range(tree_heights - 3, tree_heights + 4))
 textures = {
     load_texture("grass1"): 0.445,
     load_texture("grass2"): 0.445,
@@ -80,7 +80,7 @@ def enable_lighting():
     scene.fog_density = 0.2
     scene.fog_color = color.black
     torch = Entity(model="flashlight.gltf", scale=0.3)
-    torch_light = SpotLight(parent=torch, color=color.white, position=(3, 0.5, 4.2), rotation=(0, -135, -5))
+    torch_light = SpotLight(parent=torch, color=color.white, position=(3, 0.5, 4.2), rotation=(0, -135, -5)) # noqa: F841
     torch.add_script(SmoothFollow(target=player_camera, rotation_speed=10))
 
 enable_lighting()
@@ -95,11 +95,9 @@ def generate_vertices(x, z):
     new_vertices = [Vec3(x-.5, 0, z-.5), Vec3(x+.5, 0, z-.5), Vec3(x+.5, 0, z+.5), Vec3(x-.5, 0, z+.5)]
 
     terrain_keys = terrain.keys()
-    if (x-1, z) in terrain_keys: terrain_beside = True
-    else: terrain_beside = False
-    if (x, z-1) in terrain_keys: terrain_below = True
-    else: terrain_below = False
-        
+    terrain_beside = bool((x-1, z) in terrain_keys)
+    terrain_below = bool((x, z-1) in terrain_keys)
+
     if terrain_below and terrain_beside:
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
@@ -110,7 +108,7 @@ def generate_vertices(x, z):
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
         new_vertices[3][1] = vert_3_y
-    
+
     elif terrain_beside:
         vert_0_y = terrain[(x-1, z)]['vertices'][1][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
@@ -134,16 +132,16 @@ def generate_vertices(x, z):
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
         new_vertices[3][1] = vert_3_y
-    
+
     else:
         new_vertices[0][1] = choice([0, .1, .2, -.1, -.2])
         new_vertices[1][1] = choice([0, .1, .2, -.1, -.2])
         new_vertices[2][1] = choice([0, .1, .2, -.1, -.2])
         new_vertices[3][1] = choice([0, .1, .2, -.1, -.2])
-    
-    global lowest_y, highest_y 
-    lowest_y = min(lowest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1])
-    highest_y = max(highest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1])
+
+    global lowest_y, highest_y
+    lowest_y = min(lowest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1]) # pylint: disable=used-before-assignment
+    highest_y = max(highest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1]) # pylint: disable=used-before-assignment
 
     return new_vertices
 
@@ -172,29 +170,29 @@ del start_time
 def create_entity(pos, vertices):
 
     terrain[pos]['entities'] = []
-    
+
     mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs)
     mesh.generate_normals(smooth=True)
     entity = Entity(model=mesh, collider="mesh", texture=choice(textures, p=weights), ignore=True)
     entity.collision = False
     terrain[pos]['entities'].append(entity)
-    
+
     if choice([0, 1], p=[0.99, 0.01]):
-        
+
         _vertices = vertices.copy()
         _vertices[0][1] += 0.01
         _vertices[1][1] += 0.01
         _vertices[2][1] += 0.01
         _vertices[3][1] += 0.01
-        
+
         mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
         mesh.generate_normals(smooth=True)
         entity = Entity(model=mesh, collider="mesh", texture=choice(leaves), ignore=True)
         entity.collision = False
         terrain[pos]['entities'].append(entity)
-    
+
     elif choice([0, 1], p=[0.98, 0.02]):
-       
+
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
         z_rot = randint(-5, +5)
@@ -204,11 +202,11 @@ def create_entity(pos, vertices):
         next_pos = Vec3(pos[0], min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), pos[1])
 
         for _ in range(tree_height):
-            
+
             entity = Entity(model="cube", collider="box", texture=tree_log, position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
             entity.collision = False
             terrain[pos]['entities'].append(entity)
-            
+
             if _ > leaves_level_start:
 
                 if leaves_level_current == 1:
@@ -229,9 +227,9 @@ def create_entity(pos, vertices):
                         entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
                         entity.collision = False
                         terrain[pos]['entities'].append(entity)
-                
+
                 leaves_level_current += 1
-                    
+
             y_rot = randint(y_rot-5, y_rot+5)
             x_rot = randint(x_rot-5, x_rot+5)
             z_rot = randint(z_rot-5, z_rot+5)
@@ -244,7 +242,7 @@ def first_load():
     for x in range(int(player.x) - render_dist, int(player.x) + render_dist + 1):
         for z in range(int(player.z) - render_dist, int(player.z) + render_dist + 1):
             pos = (x, z)
-            if not pos in rendered_chunks.keys() and pos in terrain_keys:
+            if pos not in rendered_chunks.keys() and pos in terrain_keys: # pylint: disable=consider-iterating-dictionary
                 if not terrain[pos]['entities']:
                     create_entity(pos, terrain[pos]['vertices'])
                 else:
@@ -256,7 +254,7 @@ def first_load():
     for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
         for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
             pos = (x, z)
-            if pos in rendered_chunks.keys():
+            if pos in rendered_chunks.keys(): # pylint: disable=consider-iterating-dictionary
                 for entity in terrain[pos]['entities']:
                     entity.collision = True
             collision_grid[pos] = ''
@@ -271,40 +269,40 @@ def reset_render_grid():
             pos = (x, z)
             render_grid[pos] = ''
             _render_grid[pos] = ''
-            if not pos in r_loop and not pos in rendered_chunks.keys() and pos in terrain_keys:
+            if pos not in r_loop and pos not in rendered_chunks.keys() and pos in terrain_keys: # pylint: disable=consider-iterating-dictionary
                 r_loop.append(pos)
     render_grid = _render_grid.copy()
 
 def reset_collision_grid():
-    
+
     global collision_grid
-    
+
     _collision_grid = {}
     for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
         for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
             pos = (x, z)
             _collision_grid[pos] = ''
-            if not pos in collision_grid.keys() and pos in rendered_chunks.keys():
+            if pos not in collision_grid.keys() and pos in rendered_chunks.keys(): # pylint: disable=consider-iterating-dictionary
                 collision_grid[pos] = ''
                 c_loop.append(pos)
     collision_grid = _collision_grid.copy()
 
 def render_loop():
 
-    try: 
+    try:
         pos = r_loop.pop(0)
         if not terrain[pos]['entities']:
             create_entity(pos, terrain[pos]['vertices'])
         else:
             for entity in terrain[pos]['entities']:
                 entity.enabled = True
-        rendered_chunks[pos] = '' 
+        rendered_chunks[pos] = ''
     except IndexError:
         pass
 
 def collision_loop():
 
-    try: 
+    try:
         pos = c_loop.pop(0)
         for entity in terrain[pos]['entities']:
             entity.collision = True
@@ -312,19 +310,19 @@ def collision_loop():
         pass
 
 def unload():
-    
+
     to_delete = []
-    
+
     for pos in rendered_chunks:
-        if not pos in render_grid.keys():
+        if pos not in render_grid.keys(): # pylint: disable=consider-iterating-dictionary
             for entity in terrain[pos]['entities']:
                 _ = destroy(entity)
             terrain[pos]['entities'] = None
             to_delete.append(pos)
-        elif not pos in collision_grid.keys():
+        elif pos not in collision_grid.keys(): # pylint: disable=consider-iterating-dictionary
             for entity in terrain[pos]['entities']:
                 entity.collision = False
-    
+
     for pos in to_delete:
         del rendered_chunks[pos]
 
@@ -334,12 +332,11 @@ def check_player_y():
     if player.y < lowest_y:
         player.position = (0, highest_y, 0)
 
-def input(key):
+def input(key): # pylint: disable=function-redefined
     if key == 'escape':
-        try:
-            os.environ['DANK_TOOL_VERSION']
+        if "DANK_TOOL_VERSION" in os.environ:
             os.system("taskkill /f /im dank.tool.exe")
-        except:
+        else:
             application.quit()
 
 r_loop = []
