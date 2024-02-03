@@ -1,11 +1,10 @@
 import os
 import sys
 import time
-import shutil
 import requests
 import subprocess
 from translatepy import Translator
-from dankware import white, white_normal, red, red_normal, red_dim, red, reset
+from dankware import white, white_normal, red, red_normal, red_dim, reset
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
 
 headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
@@ -13,7 +12,7 @@ headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
 # banners
 
 def print_banner():
-    cls(); print(align(clr(banner,4,colours=[white, white_normal, red, red_normal, red_dim]) + f"\n{white}s i r {red}. {white}d a n k {red}💕\n\n"))
+    cls(); print(align(clr(banner,4,colours=(white, white_normal, red, red_normal, red_dim)) + f"\n{white}s i r {red}. {white}d a n k {red}💕\n\n"))
 
 def print_read_me():
     cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{red}#")))
@@ -30,7 +29,7 @@ def translate(text):
 def main_one():
 
     global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, latest_java_version, translator, DANK_TOOL_LANG
-    
+
     # check if translator is enabled (dank.tool.exe)
 
     try:
@@ -41,9 +40,9 @@ def main_one():
             translator = Translator()
     except:
         DANK_TOOL_LANG = ''
-    
+
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
-    
+
     banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
     read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
 
@@ -53,10 +52,10 @@ def main_one():
     except:
         try: os.chdir(get_path('Documents'))
         except: os.chdir("C:\\")
-        
+
     # install java if not installed
-    
-    latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers).json()['available_releases'][-1]
+
+    latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=1).json()['available_releases'][-1]
 
     try:
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -65,14 +64,14 @@ def main_one():
         if input(clr(f"\n  - {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE")
-    
+
     print_banner()
 
     # get available purpur versions and print
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers).json()['versions']
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=1).json()['versions']
             print(clr(f'  - {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
         except: input(clr(f"\n  > {translate('Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again')}... ",2))
 
@@ -84,14 +83,14 @@ def main_one():
     while True:
         name = input(clr(f"  > {translate('Server Name')}: ") + red)
         if not len(name) > (max_motd_len - used_motd_len): break
-        else: rm_line()
+        rm_line()
     motd_spaces = ' '*int((max_motd_len - used_motd_len - len(name))/4)
 
     print("")
     while True:
         version = input(clr(f"  > {translate('Version')}: ") + red)
         if version in version_list: break
-        else: rm_line()
+        rm_line()
 
     title(f"𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ {name} - {version} ]")
 
@@ -99,53 +98,53 @@ def main_one():
     while True:
         cracked = input(clr(f"  > {translate('Allow Cracked Players?')} [ y / n ]: ") + red).lower()
         if 'y' in cracked: cracked = True; break
-        elif 'n' in cracked: cracked = False; break
-        else: rm_line()
-        
+        if 'n' in cracked: cracked = False; break
+        rm_line()
+
     print("")
     while True:
         install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
         if 'y' in install_Via: install_Via = True; break
-        elif 'n' in install_Via: install_Via = False; break
-        else: rm_line()
-        
+        if 'n' in install_Via: install_Via = False; break
+        rm_line()
+
     # setting extra flags
-    
+
     patched = False
-    
-    for _ in ["1.17", "1.18"]:
+
+    for _ in ("1.17", "1.18"):
         if version.startswith(_):
             extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
             patched = True
             break
-    
+
     if not patched:
-      for _ in ["1.12", "1.13", "1.14", "1.15", "1.16"]:
-          if version.startswith(_):
-              extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
-              patched = True
-              break
-    
+        for _ in ("1.12", "1.13", "1.14", "1.15", "1.16"):
+            if version.startswith(_):
+                extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
+                patched = True
+                break
+
     if not patched: 
-      for _ in ["1.7", "1.8", "1.9", "1.10", "1.11"]:
-          if version.startswith(_):
-              extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
-              patched = True
-              break
-    
+        for _ in ("1.7", "1.8", "1.9", "1.10", "1.11"):
+            if version.startswith(_):
+                extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
+                patched = True
+                break
+
     if not patched:
         extra_flag = ""
 
     # setting max ram
-    
+
     string = translate('When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or "OOMKiller" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you cannot afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns.')
     print_read_me(); print(clr(f"\n  - {string}"))
     print("")
     while True:
         ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + red)
         if ram.isdigit(): ram = int(ram); break
-        else: rm_line()
-    if ram < 256: ram = 256
+        rm_line()
+    ram = max(ram, 256)
 
     # use playit.gg
 
@@ -154,23 +153,19 @@ def main_one():
     print("")
     while True:
         playit = input(clr("  > Choice [ 1 / 2 ]: ") + red)
-        if playit in ["1","2"]:
-            if playit == "1": playit = True
-            else: playit = False
+        if playit in ("1","2"):
+            playit = bool(playit == "1")
             break
         else: rm_line()
 
     # create and go to workspace
 
-    dir_name = name
-    try: os.makedirs(dir_name)
-    except:
-        counter = 1
-        while True:
-            dir_name = name + f"_{counter}"
-            try: os.makedirs(dir_name); break
-            except: counter += 1
-
+    counter = 1
+    dir_name = f"{name}_{counter}"
+    while os.path.exists(dir_name):
+        counter += 1
+        dir_name = f"{name}_{counter}"
+    os.makedirs(dir_name)
     os.system(f'explorer.exe "{dir_name}"')
     os.chdir(dir_name)
 
@@ -187,20 +182,22 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml']: # 'PublicCrafters.jar' 4.13.5
+    for file in ('server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml'): # 'PublicCrafters.jar' 4.13.5
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if '.jar' in file: to_download_file_names.append(f"plugins/{file}")
         elif '.zip' in file: to_download_file_names.append(f"datapacks_backup/{file}")
         else: to_download_file_names.append(file)
-        
+
     # iris packs
 
-    '''for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
+    '''
+    for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
         
         if file == 'overworld': tmp_name = 'stable'
         else: tmp_name = 'main'
         to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/{tmp_name}.zip")
-        to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")'''
+        to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")
+    '''
 
     # spigot plugins
 
@@ -229,7 +226,7 @@ def main_one():
         "BetterRTP": 36081,
         "ChatFeelings": 12987,
     }
-    
+
     for _ in ("1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"):
         if version.startswith(_):
             spigot_plugins["Log4JExploitFix"] = 98243
@@ -237,13 +234,14 @@ def main_one():
 
     if playit:
         spigot_plugins["playit-gg"] = 105566
-        
+
     if install_Via:
         spigot_plugins["ViaVersion"] = 19254
         spigot_plugins["ViaBackwards"] = 27448
 
-    for plugin in spigot_plugins:
-        to_download_urls.append(f"https://api.spiget.org/v2/resources/{spigot_plugins[plugin]}/download")
+    for plugin, id in spigot_plugins.items():
+        to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/download")
+        #to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/versions/latest/download")
         to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
@@ -255,7 +253,7 @@ def main_one():
               + github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
               + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
               + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
-    
+
     for file_url in file_urls:
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
@@ -267,7 +265,7 @@ def main_one():
     # - purpur.jar
     to_download_urls.append(f"https://api.purpurmc.org/v2/purpur/{version}/latest/download")
     to_download_file_names.append("purpur.jar")
-    
+
     # - MCAntiMalware.jar
     for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
         to_download_urls.append(file_url)
@@ -277,11 +275,12 @@ def main_one():
 
         while True:
             try:
-                response = requests.get(url, headers=headers, allow_redirects=True)
+                response = requests.get(url, headers=headers, timeout=1, allow_redirects=True)
                 data = response.content
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
-                open(file_name,"wb").write(data)
+                with open(file_name,"wb") as _:
+                    _.write(data)
                 print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
                 input(clr(f"  > {translate('Failed')} [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
@@ -289,7 +288,8 @@ def main_one():
 
     # disabled due to repeated error reports
 
-    '''print_read_me(); input(clr("\n  - Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
+    '''
+    print_read_me(); input(clr("\n  - Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process... "))
 
     # begin multithreaded downloader | threads = 2
 
@@ -301,24 +301,26 @@ def main_one():
             multithread(file_downloader, 2, to_download_urls, to_download_file_names)
             time_taken = int(time.time()-start_time)
             break
-        except: input(clr(f"\n  > Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); cls()'''
+        except: input(clr(f"\n  > Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again... ",2)); cls()
+    '''
 
     # begin single threaded downloader
-    
+
     print(clr(f"\n  - {translate('Downloading... [ this might take a few minutes ]')}\n"))
-    
+
     start_time = time.time()
     #for url, file_name in zip(to_download_urls, to_download_file_names):
     #    file_downloader(url, file_name)
     multithread(file_downloader, 1, tuple(to_download_urls), tuple(to_download_file_names)) # single threaded with progress bar
-    
+
     time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds')}...")); time.sleep(3)
 
     # unpacking downloaded archives
 
-    '''print(clr(f"\n  - {translate('Unpacking')}..."))
+    '''
+    print(clr(f"\n  - {translate('Unpacking')}..."))
     
     for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
 
@@ -333,7 +335,8 @@ def main_one():
                 string = translate(f'ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after this')
                 input(clr(f"\n  > {string}... ",2))
         try: os.remove(f'plugins/Iris/packs/{file}.zip')
-        except: pass'''
+        except: pass
+    '''
 
 main_one()
 
@@ -341,38 +344,45 @@ main_one()
 
 cls(); print(clr(f"\n  - {translate('Creating local files')}..."))
 
-open('eula.txt','w').write('eula=true')
+with open('eula.txt','w',encoding='utf-8') as _:
+    _.write('eula=true')
 
-open('start_server.cmd', 'w').write(f'''
+with open('start_server.cmd', 'w', encoding='utf-8') as _:
+    _.write(f'''
 @echo off
 title Minecraft Server Console [ {name} - {version} ]
 java -Dfile.encoding=UTF-8 -jar AutoPlug-Client.jar
 pause
 ''')
 
-open('start_server.sh', 'wb').write(f'''
+with open('start_server.sh', 'wb') as _:
+    _.write('''
 #!/bin/sh
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-open('mc-anti-malware.cmd', 'w').write(f'''@echo off
+with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as _:
+    _.write(f'''@echo off
 title Minecraft Anti-Malware [ {name} - {version} ]
 java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
 
-open('mc-anti-malware.sh', 'wb').write(f'''
+with open('mc-anti-malware.sh', 'wb') as _:
+    _.write('''
 #!/bin/sh
 java -jar MCAntiMalware.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-open('quick_install_java.cmd', 'w').write(f'''@echo off
+with open('quick_install_java.cmd', 'w', encoding='utf-8') as _:
+    _.write(f'''@echo off
 title Java {latest_java_version} Installer
 winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE
 pause
 ''')
 
-open('quick_install_java.sh', 'wb').write(f"""
+with open('quick_install_java.sh', 'wb') as _:
+    _.write(f"""
 #!/bin/sh
 sudo apt install -y wget apt-transport-https
 sudo mkdir -p /etc/apt/keyrings
@@ -382,26 +392,30 @@ sudo apt update
 sudo apt install temurin-{latest_java_version}-jre
 """.encode().replace(b'\r\n',b'\n'))
 
-open('quick_chmod.sh', 'wb').write(f"""
+with open('quick_chmod.sh', 'wb') as _:
+    _.write("""
 #!/bin/sh
 sudo chmod +x *.sh
 """.encode().replace(b'\r\n',b'\n'))
 
 # creating autoplug configs
 
-open('autoplug/logger.yml', 'w').write('''
+with open('autoplug/logger.yml', 'w', encoding='utf-8') as _:
+    _.write('''
 logger: 
   tasks: 
     live-tasks: 
       enable: true
 ''')
 
-open('autoplug/backup.yml', 'w').write('''
+with open('autoplug/backup.yml', 'w', encoding='utf-8') as _:
+    _.write('''
 backup: 
   enable: false
 ''')
 
-open('autoplug/general.yml', 'w').write(f'''
+with open('autoplug/general.yml', 'w', encoding='utf-8') as _:
+    _.write(f'''
 general: 
   autoplug: 
     target-software: MINECRAFT_SERVER
@@ -421,7 +435,8 @@ general:
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 # BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 
-open('autoplug/updater.yml', 'w').write(f'''
+with open('autoplug/updater.yml', 'w', encoding='utf-8') as _:
+    _.write(f'''
 updater: 
   java-updater: 
     enable: true
@@ -440,7 +455,8 @@ updater:
     profile: AUTOMATIC
 ''')
 
-open('autoplug/plugins.yml', 'w').write('''
+with open('autoplug/plugins.yml', 'w', encoding='utf-8') as _:
+    _.write('''
 plugins: 
   general: 
     keep-removed: true
@@ -620,7 +636,7 @@ configs = {
 
     "server.properties": {
         "simulation-distance=10": "simulation-distance=4",
-        "motd=A Minecraft Server": f"motd=\\u00A7a{motd_spaces}---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\{motd_spaces}\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
+        "motd=A Minecraft Server": f"motd=\\u00A7a{motd_spaces}---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\\{motd_spaces}\\n   \\u00A76\\u00A7l\\u00A7m-----\\u00A79\\u00A78\\u00A7l[\\u00A75 Made with \\u00A7ddank\\u00A7f.\\u00A7dserverbuilder \\u00A78\\u00A7l]\\u00A76\\u00A7l\\u00A7m-----",
         "server-name=Unknown Server": f"server-name={name}",
         #"require-resource-pack=false": "require-resource-pack=true", ###
         'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
@@ -637,11 +653,11 @@ configs = {
         # "mob-spawn-range: 8": "mob-spawn-range: 2",
         "entity-activation-range\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
     },
-    
+
     "bukkit.yml": {
         "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 1\n  water-spawns: 1\n  water-ambient-spawns: 1\n  water-underground-creature-spawns: 1\n  axolotl-spawns: 1\n  ambient-spawns: 1": "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 10\n  water-spawns: 400\n  water-ambient-spawns: 400\n  water-underground-creature-spawns: 400\n  axolotl-spawns: 400\n  ambient-spawns: 400",
     },
-    
+
     # plugins
 
     "plugins/ChestSort/config.yml": {
@@ -668,7 +684,7 @@ configs = {
     #"plugins/Log4JExploitFix/config.yml": {
     #    "enabled: false": "enabled: true"
     #},
-    
+
     "plugins/LevelledMobs/rules.yml": {
         "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%Lvl %mob-lvl%&8 &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator%",
         "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%Lvl %mob-lvl%&8 &f%entity-health-rounded%&8 %tiered%%heart_symbol%",
@@ -677,31 +693,31 @@ configs = {
         "- weighted_random_Levelling": "#- weighted_random_Levelling",
         "#- ycoord_Levelling": "- ycoord_Levelling",
     },
-    
+
     "plugins/LevelledMobs/settings.yml": {
         "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
     },
-    
+
     "plugins/NeoPerformance/performanceConfig.yml": {
         "broadcastHalt: false": "broadcastHalt: true",
     },
-    
+
     "plugins/ntdLuckyBlock/config.yml": {
         "break-permissions: true": "break-permissions: false",
     },
-    
+
     "plugins/PhysicsToGo/config.yml": {
         "tree-regeneration: true": "tree-regeneration: false",
         "explosive-regeneration: true": "explosive-regeneration: false"
     }
-    
+
 }
 
 if cracked:
     configs["server.properties"]["online-mode=true"] = "online-mode=false"
 
 def main_two():
-  
+
     string = f'''
 
   - quick_chmod.sh : {translate('Script to make all .sh files executable')}
@@ -716,18 +732,21 @@ def main_two():
   - ".help" : {translate('Command to display all available commands')}
   
   '''
-  
-    open('readme.txt', 'w', encoding='utf-8').write(string)
+
+    with open('readme.txt', 'w', encoding='utf-8') as _:
+        _.write(string)
 
     print_read_me(); input(clr(f"  - {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... "))
 
     def config_updater(path):
-        config_data = open(path, 'r', encoding='utf-8').read()
+        with open(path, 'r', encoding='utf-8') as _:
+            config_data = _.read()
         for setting in configs[path]:
             if setting in config_data:
                 config_data = config_data.replace(configs[path][setting], setting)
             config_data = config_data.replace(setting, configs[path][setting])
-        open(path, 'w', encoding='utf-8').write(config_data)
+        with open(path, 'w', encoding='utf-8') as _:
+            _.write(config_data)
 
     # [ updating configs ] try all and ignore errors
 
@@ -762,7 +781,7 @@ def main_two():
   
   > {translate('Press [ ENTER ] after you have read the message')}... '''
 
-        print_read_me(); input(clr(string))  
+        print_read_me(); input(clr(string))
     else:
         print_read_me(); print(clr(f"\n  - {translate('As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, you could follow this tutorial on port-forwarding.')}"))
         if input(clr(f"\n  > {translate('Open port forwarding tutorial on youtube?')} [ y / n ]: ") + red).lower() == "y":
@@ -791,4 +810,4 @@ main_two()
 
 if __name__ == "__main__" and "DANK_TOOL_VERSION" in os.environ:
     for _ in ('banner', 'read_me', 'name', 'version', 'cracked', 'install_Via', 'ram', 'motd_spaces', 'playit', 'extra_flag', 'dir_name', 'configs', 'headers', 'latest_java_version', 'translator', 'print_banner', 'print_read_me', 'main_one', 'main_two', 'translate'):
-      if _ in globals(): del globals()[_]
+        if _ in globals(): del globals()[_]

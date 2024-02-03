@@ -9,10 +9,7 @@ from dankware import white, white_normal, red, red_normal, red_dim, green
 def winget_installed():
     try:
         result = subprocess.run(['winget', '--info'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if result.returncode == 0:
-            return True
-        else:
-            return False
+        return bool(result.returncode == 0)
     except FileNotFoundError:
         return False
 
@@ -22,15 +19,15 @@ def print_banner():
     print(clr("  [ Commands ]\n\n  - search NAME (to find software, winget only)\n\n  - installed (installed software, winget only)\n\n  - updates\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
 def handle_response(cmd, results, mode):
-    
+
     try:
         cmd = cmd.stdout.decode('utf-8')
         for line in cmd.splitlines():
             if line.count('-') > 5:
                 cmd = cmd.split(line)[1].splitlines()[1:]
                 break
-    except:
-        raise Exception(f"Error parsing response!\n\n{cmd.stdout.decode('utf-8')}")
+    except Exception as exc:
+        raise Exception(f"Error parsing response!\n\n{cmd.stdout.decode('utf-8')}") from exc
     indexes = []
 
     prev = ''
@@ -60,8 +57,8 @@ def handle_response(cmd, results, mode):
     console = Console()
     user_renderables = [f"[b][bright_white]{key} [bright_red]- [bright_white]{value['name']}[/b]" for key, value in results.items()]
     results['mode'] = mode; print()
-    console.print(Panel(title=f"[red1]> [bright_white][b]R E S U L T S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
-    
+    console.print(Panel(title="[red1]> [bright_white][b]R E S U L T S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+
     if mode == 'search':
         print(clr("\n  - Type number to install.\n"))
     elif mode == 'installed':
@@ -77,10 +74,10 @@ def print_info(id):
         print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
 
 def main():
-    
+
     results = {}
     print_banner()
-    
+
     while True:
 
         cmd = input(clr('  > ') + green)
@@ -91,26 +88,26 @@ def main():
                 handle_response(cmd, results, 'search')
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
-                
+
         elif cmd.lower().startswith('installed'): 
             cmd = subprocess.run(['winget', 'list', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             if cmd.returncode == 0:
                 handle_response(cmd, results, 'installed')
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
-                
+
         elif cmd.lower().startswith('updates'):
             cmd = subprocess.run(['winget', 'upgrade', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             if cmd.returncode == 0:
                 handle_response(cmd, results, 'updates')
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
-    
+
         elif cmd.isdigit():
-            
+
             if results:
                 cmd = int(cmd)
-                if cmd in results.keys():
+                if cmd in results:
 
                     if results['mode'] == 'search':
                         if input(clr("\n  > Display info? [y/n]: ") + green).lower().startswith('y'):
@@ -121,10 +118,10 @@ def main():
                             os.system(f"winget install --interactive --id {results[cmd]['id']}")
                             print()
                         else: rm_line()
-                    
+
                     elif results['mode'] == 'installed':
                         print_info(results[cmd]['id'])
-                    
+
                     elif results['mode'] == 'updates':
                         print()
                         os.system(f"winget upgrade --interactive --id {results[cmd]['id']}")
@@ -136,24 +133,24 @@ def main():
 
         elif cmd.lower().startswith('clear'):
             print_banner()
-        
+
         elif cmd.lower().startswith('exit'):
             break
-        
+
         else:
             rm_line()
 
 if __name__ == "__main__":
 
     title("𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝")
-    
+
     if os.name != 'nt':
         input(clr("\n  - This module only works for Windows! Press ENTER to exit... ",2))
     elif not winget_installed():
         input(clr("\n  - This module requires winget to be installed! Press ENTER to exit... ",2))
     else:
         main()
-    
+
     if "DANK_TOOL_VERSION" in os.environ:
         for _ in ('main', 'winget_installed', 'print_banner', 'handle_response', 'print_info'):
             if _ in globals(): del globals()[_]
