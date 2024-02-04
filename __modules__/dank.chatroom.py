@@ -140,7 +140,7 @@ def chatroom_input():
         send_msg = False
 
         if msg == "": return
-        elif msg.startswith("/"):
+        if msg.startswith("/"):
 
             if msg_lower in ["/exit", "/quit", "/bye", "/terminate"]:
                 global running
