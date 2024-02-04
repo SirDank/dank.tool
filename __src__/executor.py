@@ -158,7 +158,9 @@ def dank_tool_installer():
         try:
             code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=1).content.decode()
             break
-        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+        except Exception as exc:
+            input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
+            rm_line(); rm_line()
 
     try: exec(code)
     except:
@@ -239,7 +241,9 @@ if not os.path.isdir('__local_modules__'): os.mkdir('__local_modules__')
 if not OFFLINE_SRC and ONLINE_MODE:
     while True:
         try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/dank.tool.py", headers=headers, timeout=1).content.decode(); break
-        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+        except Exception as exc:
+            input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
+            rm_line(); rm_line()
     with open('__src__/dank.tool.py', 'w', encoding='utf-8') as _:
         _.write(code)
 else:
@@ -247,7 +251,9 @@ else:
         try:
             with open('__src__/dank.tool.py', 'r', encoding='utf-8') as _:
                 code = _.read(); break
-        except: input(clr("\n  > Failed to get code! Unable to read '__src__/dank.tool.py'! Press [ENTER] to try again... ",2))
+        except:
+            input(clr("\n  > Failed to get code! Unable to read '__src__/dank.tool.py'! Press [ENTER] to try again... ",2))
+            rm_line(); rm_line()
 
 # start discord rpc
 
@@ -343,7 +349,9 @@ except:
             try:
                 requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
                 break
-            except: input(clr("\n  > Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+            except Exception as exc:
+                input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))
+                rm_line(); rm_line()
         print(clr("\n  - Error Reported! If it is an OS error, Please run as admin and try again!\n\n  - If it is a logic error, it will be fixed soon!"))
 
     input(clr("\n  > Press [ENTER] to EXIT... "))

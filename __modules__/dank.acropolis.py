@@ -24,8 +24,8 @@ def file_downloader(url):
             with open(file_name,"wb") as _:
                 _.write(data)
             break
-        except:
-            input(clr(f"\n  > {translate(f'Failed to download {file_name}! Press ENTER to try again')}... ",2))
+        except Exception as exc:
+            input(clr(f"\n  > {translate(f'Failed to download {file_name}! {exc} | Press ENTER to try again')}... ",2))
             rm_line(); rm_line()
 
 def main():

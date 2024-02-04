@@ -31,7 +31,9 @@ def dank_tool_installer():
         try:
             code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=1).content.decode()
             break
-        except: input(clr("\n  > Failed to get code! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+        except Exception as exc:
+            input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
+            rm_line(); rm_line()
 
     try: exec(code)
     except:
@@ -455,8 +457,8 @@ if __name__ == "__main__":
 
         while True:
             try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=1).json(); break
-            except:
-                input(clr(f"\n  > {_translate('Failed to fetch assets.json! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+            except Exception as exc:
+                input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
 
         asset_urls = []
@@ -690,7 +692,7 @@ if __name__ == "__main__":
                         print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
                         counter += 1
 
-                    choice = input(clr("\n  > Choice: ") + red).lower() 
+                    choice = input(clr("\n  > Choice: ") + red).lower()
 
                     if choice.isdigit() and int(choice) >= 0 and int(choice) <= int(len(settings)):
 
@@ -717,6 +719,9 @@ if __name__ == "__main__":
 
                         with open("settings.json", "w", encoding="utf-8")as _:
                             _.write(json.dumps(settings, indent=4))
+
+                    elif choice.lower() == "exit":
+                        break
 
                 del runs, settings, update_settings, counter
 
@@ -904,14 +909,14 @@ if __name__ == "__main__":
                                 dank_tool_installer()
                             else:
                                 break
-                        except:
-                            input(clr(f"\n  > {_translate('Failed to get latest version! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        except Exception as exc:
+                            input(clr(f"\n  > {_translate(f'Failed to get latest version! {exc} | Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
 
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=1).content.decode(); break
-                        except:
-                            input(clr(f"\n  > {_translate(f'Failed to get code for {project}! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                        except Exception as exc:
+                            input(clr(f"\n  > {_translate(f'Failed to get code for {project}! {exc} | Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
 
                 else:
@@ -949,8 +954,8 @@ if __name__ == "__main__":
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
                     try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
-                    except:
-                        input(clr(f"\n  > {_translate('Failed to post error report! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                    except Exception as exc:
+                        input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
                 print(clr(f"\n  > {_translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {_translate('If it is a logic error, it will be fixed soon!')}"))
 

@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 import pyminizip
-from dankware import cls, clr, green, red
+from dankware import cls, clr, rm_line, green, red
 
 session = requests.Session()
 try: DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
@@ -39,7 +39,9 @@ except:
 print(clr("\n  - Downloading dank.tool.zip..."))
 while True:
     try: data = session.get("https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip", timeout=1, allow_redirects=True).content; break
-    except: input(clr("\n  > Failed to download! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
+    except Exception as exc:
+        input(clr(f"\n  > Failed to download! {exc} | Press [ENTER] to try again... ",2))
+        rm_line(); rm_line()
 
 try:
     with open("dank.tool.zip","wb") as _:

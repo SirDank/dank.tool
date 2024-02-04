@@ -55,7 +55,13 @@ def main_one():
 
     # install java if not installed
 
-    latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=1).json()['available_releases'][-1]
+    while True:
+        try:
+            latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=1).json()['available_releases'][-1]
+            break
+        except Exception as exc:
+            input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
+            rm_line(); rm_line()
 
     try:
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -73,7 +79,9 @@ def main_one():
         try:
             version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=1).json()['versions']
             print(clr(f'  - {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
-        except: input(clr(f"\n  > {translate('Failed to get purpur versions! Make sure you are connected to the internet! Press [ ENTER ] to try again')}... ",2))
+        except Exception as exc:
+            input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))
+            rm_line(); rm_line()
 
     # user inputs [ name, version, ram, allow_cracked ]
 
