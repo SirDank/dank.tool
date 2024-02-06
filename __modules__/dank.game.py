@@ -64,7 +64,7 @@ textures = {
     load_texture("mossy_stone_bricks"): 0.01,
 }
 weights = tuple(textures.values())
-textures = tuple(textures.keys())
+textures = tuple(textures)
 tree_log = load_texture("acacia_log")
 tree_leaves = load_texture("azalea_leaves")
 leaves = tuple([
@@ -94,9 +94,8 @@ def generate_vertices(x, z):
 
     new_vertices = [Vec3(x-.5, 0, z-.5), Vec3(x+.5, 0, z-.5), Vec3(x+.5, 0, z+.5), Vec3(x-.5, 0, z+.5)]
 
-    terrain_keys = terrain.keys()
-    terrain_beside = bool((x-1, z) in terrain_keys)
-    terrain_below = bool((x, z-1) in terrain_keys)
+    terrain_beside = bool((x-1, z) in terrain)
+    terrain_below = bool((x, z-1) in terrain)
 
     if terrain_below and terrain_beside:
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
@@ -158,11 +157,10 @@ del generate_vertices
 
 lowest_y -= 10
 highest_y += 10
-terrain_keys = terrain.keys()
 triangles = [(0,1,2,3)]
 uvs = [(0,0),(1,0),(1,1),(0,1)]
 
-print(clr(f"\n  > Generated {len(terrain_keys)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
+print(clr(f"\n  > Generated {len(terrain)} sets of terrain vertices in {int(time.time() - start_time)} seconds!\n"))
 del start_time
 
 # randomised entity generation
@@ -242,22 +240,22 @@ def first_load():
     for x in range(int(player.x) - render_dist, int(player.x) + render_dist + 1):
         for z in range(int(player.z) - render_dist, int(player.z) + render_dist + 1):
             pos = (x, z)
-            if pos not in rendered_chunks.keys() and pos in terrain_keys: # pylint: disable=consider-iterating-dictionary
+            if pos not in rendered_chunks and pos in terrain:
                 if not terrain[pos]['entities']:
                     create_entity(pos, terrain[pos]['vertices'])
                 else:
                     for entity in terrain[pos]['entities']:
                         entity.enabled = True
-                rendered_chunks[pos] = ''
-            render_grid[pos] = ''
+                rendered_chunks[pos] = None
+            render_grid[pos] = None
 
     for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
         for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
             pos = (x, z)
-            if pos in rendered_chunks.keys(): # pylint: disable=consider-iterating-dictionary
+            if pos in rendered_chunks:
                 for entity in terrain[pos]['entities']:
                     entity.collision = True
-            collision_grid[pos] = ''
+            collision_grid[pos] = None
 
 def reset_render_grid():
 
@@ -267,9 +265,9 @@ def reset_render_grid():
     for x in range(int(player.x) - render_dist, int(player.x) + render_dist + 1):
         for z in range(int(player.z) - render_dist, int(player.z) + render_dist + 1):
             pos = (x, z)
-            render_grid[pos] = ''
-            _render_grid[pos] = ''
-            if pos not in r_loop and pos not in rendered_chunks.keys() and pos in terrain_keys: # pylint: disable=consider-iterating-dictionary
+            render_grid[pos] = None
+            _render_grid[pos] = None
+            if pos not in r_loop and pos not in rendered_chunks and pos in terrain:
                 r_loop.append(pos)
     render_grid = _render_grid.copy()
 
@@ -281,9 +279,9 @@ def reset_collision_grid():
     for x in range(int(player.x) - collision_dist, int(player.x) + collision_dist + 1):
         for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
             pos = (x, z)
-            _collision_grid[pos] = ''
-            if pos not in collision_grid.keys() and pos in rendered_chunks.keys(): # pylint: disable=consider-iterating-dictionary
-                collision_grid[pos] = ''
+            _collision_grid[pos] = None
+            if pos not in collision_grid and pos in rendered_chunks:
+                collision_grid[pos] = None
                 c_loop.append(pos)
     collision_grid = _collision_grid.copy()
 
@@ -296,7 +294,7 @@ def render_loop():
         else:
             for entity in terrain[pos]['entities']:
                 entity.enabled = True
-        rendered_chunks[pos] = ''
+        rendered_chunks[pos] = None
     except IndexError:
         pass
 
@@ -314,12 +312,12 @@ def unload():
     to_delete = []
 
     for pos in rendered_chunks:
-        if pos not in render_grid.keys(): # pylint: disable=consider-iterating-dictionary
+        if pos not in render_grid:
             for entity in terrain[pos]['entities']:
                 _ = destroy(entity)
             terrain[pos]['entities'] = None
             to_delete.append(pos)
-        elif pos not in collision_grid.keys(): # pylint: disable=consider-iterating-dictionary
+        elif pos not in collision_grid:
             for entity in terrain[pos]['entities']:
                 entity.collision = False
 

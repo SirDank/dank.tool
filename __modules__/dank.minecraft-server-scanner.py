@@ -51,7 +51,8 @@ def save():
         while to_save: # pylint: disable=used-before-assignment
             tmp.append(to_save.pop())
         if tmp:
-            open('servers.txt','a',encoding='utf-8').write('\n'.join(tmp)+'\n')
+            with open('servers.txt','a',encoding='utf-8') as _:
+                _.write('\n'.join(tmp)+'\n')
             tmp.clear()
         time.sleep(5)
 
@@ -59,7 +60,7 @@ def check(ip, server):
 
     try:
         status = server.status()
-        saved[ip] = ""
+        saved[ip] = None
         #try: query_response = f"{server.query().software}"
         #except: query_response = ""
 
@@ -94,14 +95,14 @@ def check(ip, server):
 def generate_ip():
     while True:
         ip = random_ip()
-        if ip in ips.keys() or ip in saved.keys(): continue # pylint: disable=consider-iterating-dictionary
+        if ip in ips or ip in saved: continue
         ips[ip] = ""; break
 
 def generate_ip_targetted():
     while True:
         ip = choice(target_ips, p=target_weights) + f".{randint(0,255)}.{randint(0,255)}" # pylint: disable=used-before-assignment
-        if ip in ips.keys() or ip in saved.keys(): continue # pylint: disable=consider-iterating-dictionary
-        ips[ip] = ""; break        
+        if ip in ips or ip in saved: continue
+        ips[ip] = ""; break
 
 def main():
 
@@ -180,15 +181,18 @@ def main():
     os.chdir('dank.mc-server-scanner')
 
     if not os.path.isfile('scan_count.txt'):
-        open('scan_count.txt','w',encoding='utf-8').write('0')
+        with open('scan_count.txt','w',encoding='utf-8') as _:
+            _.write('0')
     if not os.path.isfile('servers.txt'):
-        open('servers.txt','x',encoding='utf-8').close()
+        with open('servers.txt','x',encoding='utf-8') as _:
+            _.close()
         saved = {}
     else:
         saved = {}
-        for _ in open('servers.txt','r',encoding='utf-8').read().splitlines():
-            try: saved[_.split(' | ',1)[0]] = ""
-            except: pass
+        with open('servers.txt','r',encoding='utf-8') as _:
+            for __ in _.read().splitlines():
+                try: saved[__.split(' | ',1)[0]] = None
+                except: pass
 
     # remove old files
 
@@ -234,10 +238,13 @@ def main():
 
         # saving scanned ips
 
-        try: scan_count = int(open('scan_count.txt','r',encoding='utf-8').read())
+        try:
+            with open('scan_count.txt','r',encoding='utf-8') as _:
+                scan_count = int(_.read())
         except: scan_count = 0
         scan_count += len(ips)
-        open('scan_count.txt','w',encoding='utf-8').write(str(scan_count))
+        with open('scan_count.txt','w',encoding='utf-8') as _:
+            _.write(str(scan_count))
         print(clr(f"\n  - Totally Scanned {scan_count} IPs!"))
         time.sleep(5)
 

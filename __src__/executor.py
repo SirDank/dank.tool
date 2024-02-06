@@ -88,7 +88,7 @@ def settings_json():
         with open('settings.json', 'r', encoding='utf-8') as _:
             data = json.loads(_.read())
         for key in default_settings:
-            if key not in data.keys():
+            if key not in data:
                 overwrite = True
             else:
                 default_settings[key] = data[key]

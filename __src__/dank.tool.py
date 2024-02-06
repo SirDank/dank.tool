@@ -467,10 +467,10 @@ if __name__ == "__main__":
         for folder in latest_assets_json:
             if not os.path.isdir(f"ursina/{folder}"):
                 os.makedirs(f"ursina/{folder}")
-            if folder not in local_assets_json.keys():
+            if folder not in local_assets_json:
                 local_assets_json[folder] = {}
             for asset in latest_assets_json[folder]:
-                if asset not in local_assets_json[folder].keys() or local_assets_json[folder][asset] < latest_assets_json[folder][asset]:
+                if asset not in local_assets_json[folder] or local_assets_json[folder][asset] < latest_assets_json[folder][asset]:
                     asset_urls.append(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/{folder}/{asset}")
                     file_names.append(f"ursina/{folder}/{asset}")
 
@@ -576,10 +576,10 @@ if __name__ == "__main__":
             if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
 
                 if int(choice) <= len(modules):
-                    choice = modules[list(modules.keys())[int(choice) - 1]]
+                    choice = modules[list(modules)[int(choice) - 1]]
                     LOCAL_MODULE = False
                 else:
-                    choice = local_modules[list(local_modules.keys())[int(choice) - len(modules) - 1]]
+                    choice = local_modules[list(local_modules)[int(choice) - len(modules) - 1]]
                     LOCAL_MODULE = True
 
                 if not LOCAL_MODULE and choice['category']:
@@ -592,11 +592,11 @@ if __name__ == "__main__":
                             print_modules()
                             break
                         elif _choice.isdigit() and int(_choice) >= 1 and int(_choice) <= (len(choice) - 1):
-                            choice = choice[list(choice.keys())[int(_choice) - 1]]
+                            choice = choice[list(choice)[int(_choice) - 1]]
                             break
                         else: rm_line()
 
-                    if 'category' not in choice.keys():
+                    if 'category' not in choice:
                         break
 
                 else:
