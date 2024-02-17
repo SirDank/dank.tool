@@ -70,7 +70,7 @@ def check(ip, server):
         except: pass
 
         try:
-            response = requests.get(f"http://ipwho.is/{ip}", timeout=1).json()
+            response = requests.get(f"http://ipwho.is/{ip}", timeout=3).json()
             if response['success']:
                 server_info = f"{response['city']} | {response['connection']['org']} | {response['connection']['domain']}"
             else:

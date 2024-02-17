@@ -127,7 +127,7 @@ def latest_dank_tool_version():
     else:
         try:
             while True:
-                LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=1).content.decode()
+                LATEST_VERSION = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
                 if 'Not Found' in LATEST_VERSION:
                     print(clr("\n  - Please do not use the dev-branch, it is meant for testing/debugging only!",2))
                     BRANCH = "main"
@@ -156,7 +156,7 @@ def dank_tool_installer():
 
     while True:
         try:
-            code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=1).content.decode()
+            code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
             break
         except Exception as exc:
             input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
@@ -240,7 +240,7 @@ if not os.path.isdir('__local_modules__'): os.mkdir('__local_modules__')
 
 if not OFFLINE_SRC and ONLINE_MODE:
     while True:
-        try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/dank.tool.py", headers=headers, timeout=1).content.decode(); break
+        try: code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/dank.tool.py", headers=headers, timeout=3).content.decode(); break
         except Exception as exc:
             input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
             rm_line(); rm_line()
@@ -347,7 +347,7 @@ except:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))

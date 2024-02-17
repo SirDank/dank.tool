@@ -29,7 +29,7 @@ def dank_tool_installer():
 
     while True:
         try:
-            code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=1).content.decode()
+            code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
             break
         except Exception as exc:
             input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
@@ -38,7 +38,7 @@ def dank_tool_installer():
     try: exec(code)
     except:
         err_message = err(sys.exc_info())
-        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
         except: pass
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
@@ -132,13 +132,13 @@ def get_menu_request_responses(task_id, request_key):
 
 def download_offline_modules(project):
 
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=1).content.decode()
+    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
     with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as _:
         _.write(code)
 
 def download_assets(url, file_name):
 
-    data = requests.get(url, headers=headers, timeout=1).content
+    data = requests.get(url, headers=headers, timeout=3).content
     with open(file_name, 'wb') as _:
         _.write(data)
 
@@ -456,7 +456,7 @@ if __name__ == "__main__":
             local_assets_json = json.loads(_.read())
 
         while True:
-            try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=1).json(); break
+            try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json(); break
             except Exception as exc:
                 input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
@@ -906,7 +906,7 @@ if __name__ == "__main__":
 
                     while True:
                         try:
-                            LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=1).content.decode()
+                            LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
                             if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
                                 cls(); print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
                                 dank_tool_installer()
@@ -917,7 +917,7 @@ if __name__ == "__main__":
                             rm_line(); rm_line()
 
                     while True:
-                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=1).content.decode(); break
+                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode(); break
                         except Exception as exc:
                             input(clr(f"\n  > {_translate(f'Failed to get code for {project}! {exc} | Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
@@ -957,7 +957,7 @@ if __name__ == "__main__":
 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
-                    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
+                    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()

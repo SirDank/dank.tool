@@ -55,7 +55,7 @@ def main_one():
 
     while True:
         try:
-            latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=1).json()['available_releases'][-1]
+            latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['available_releases'][-1]
             break
         except Exception as exc:
             input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
@@ -75,7 +75,7 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=1).json()['versions']
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions']
             print(clr(f'  - {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
         except Exception as exc:
             input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))

@@ -19,7 +19,7 @@ def file_downloader(url):
     file_name = url.split('/')[-1]
     while True:
         try:
-            data = requests.get(url, headers={'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}, timeout=1, allow_redirects=True).content
+            data = requests.get(url, headers={'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}, timeout=3, allow_redirects=True).content
             with open(file_name,"wb") as _:
                 _.write(data)
             break
