@@ -12,7 +12,7 @@ headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
 # banners
 
 def print_banner():
-    banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
+    banner = "\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n\n\n"
     cls(); print(align(clr(banner,4,colours=(red, red_dim))))
 
 def print_read_me():
@@ -289,7 +289,7 @@ def main_one():
                     _.write(data)
                 print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
-                input(clr(f"  > {translate('Failed')} [ {file_name} ] Press {white_bright}ENTER{red} to try again... \n",2))
+                input(clr(f"  > {translate('Failed')} [ {file_name} ] Press ENTER to try again... \n",2))
                 rm_line(); rm_line()
 
     # disabled due to repeated error reports
