@@ -281,7 +281,7 @@ def main_one():
 
         while True:
             try:
-                response = requests.get(url, headers=headers, timeout=1, allow_redirects=True)
+                response = requests.get(url, headers=headers, timeout=3, allow_redirects=True)
                 data = response.content
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
