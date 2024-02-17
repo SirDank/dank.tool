@@ -36,7 +36,7 @@ from pynput.mouse import Button, Controller
 from mcstatus import JavaServer, BedrockServer
 from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, title, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, file_selector, folder_selector, get_path
-from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
+from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
 
 # required packages for dank.game.py
 
@@ -53,7 +53,7 @@ from packaging.version import parse
 
 # variables
 
-DANK_TOOL_VERSION = "3.2.3"
+DANK_TOOL_VERSION = "3.2.4"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": "dank.tool"}
@@ -112,7 +112,7 @@ BRANCH = ("main" if not DEV_BRANCH else "dev")
 
 def print_warning_symbol():
 
-    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'))
+    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}        ██          {white_bright}██████{red_normal}          ██        \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}    ██              {white_bright}██████{red_normal}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}██                  {white_bright}██████{red_normal}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n\n'))
 
 # get latest version number
 
