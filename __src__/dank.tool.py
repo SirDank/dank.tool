@@ -658,7 +658,7 @@ if __name__ == "__main__":
 
                 while True:
 
-                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch\n"))
+                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
 
                     with open("settings.json", "r", encoding="utf-8") as _:
                         settings = json.loads(_.read())
