@@ -4,7 +4,7 @@ from rich.panel import Panel
 from rich.columns import Columns
 from rich.console import Console
 from dankware import title, cls, clr, align, rm_line
-from dankware import white, white_normal, red, red_normal, red_dim, green
+from dankware import white, white_normal, red, red_normal, red_dim, green_bright
 
 def winget_installed():
     try:
@@ -15,7 +15,7 @@ def winget_installed():
 
 def print_banner():
     banner = "\n\n   _         _           _             _   \n _| |___ ___| |_   _ _ _|_|___ ___ ___| |_ \n| . | .'|   | '_|_| | | | |   | . | -_|  _|\n|___|__,|_|_|_,_|_|_____|_|_|_|_  |___|_|  \n                              |___|        \n\n\n"
-    cls(); print(clr(align(banner),4,colours=[white, white_normal, red, red_normal, red_dim]))
+    cls(); print(clr(align(banner),4,colours=(red, red_dim)))
     print(clr("  [ Commands ]\n\n  - search NAME (to find software, winget only)\n\n  - installed (installed software, winget only)\n\n  - updates\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
 def handle_response(cmd, results, mode):
@@ -42,7 +42,7 @@ def handle_response(cmd, results, mode):
                 indexes.append(index)
             prev = char
 
-    max_count = max([indexes.count(_) for _ in sorted(list(set(indexes)))])
+    max_count = max(indexes.count(_) for _ in sorted(list(set(indexes))))
     indexes = [_ for _ in sorted(list(set(indexes))) if indexes.count(_) == max_count]
     indexes.insert(0,0)
     results.clear()
@@ -57,7 +57,7 @@ def handle_response(cmd, results, mode):
     console = Console()
     user_renderables = [f"[b][bright_white]{key} [bright_red]- [bright_white]{value['name']}[/b]" for key, value in results.items()]
     results['mode'] = mode; print()
-    console.print(Panel(title="[red1]> [bright_white][b]R E S U L T S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+    console.print(Panel(title="[red1]> [bright_white][b]R E S U L T S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True))
 
     if mode == 'search':
         print(clr("\n  - Type number to install.\n"))
@@ -80,7 +80,7 @@ def main():
 
     while True:
 
-        cmd = input(clr('  > ') + green)
+        cmd = input(clr('  > ') + green_bright)
 
         if cmd.lower().startswith('search '):
             cmd = subprocess.run(['winget', 'search', '--accept-source-agreements', cmd[7:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -110,10 +110,10 @@ def main():
                 if cmd in results:
 
                     if results['mode'] == 'search':
-                        if input(clr("\n  > Display info? [y/n]: ") + green).lower().startswith('y'):
+                        if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith('y'):
                             print_info(results[cmd]['id'])
                         else: rm_line(); rm_line()
-                        if input(clr("\n  > Install? [y/n]: ") + green).lower().startswith('y'):
+                        if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith('y'):
                             print()
                             os.system(f"winget install --interactive --id {results[cmd]['id']}")
                             print()

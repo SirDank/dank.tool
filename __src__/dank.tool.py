@@ -19,7 +19,7 @@ from packaging.version import parse
 from dateutil.tz import tzlocal, tzutc
 from concurrent.futures import ThreadPoolExecutor
 from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
-from dankware import white, white_bright, white_normal, green, green_bright, red, red_bright, red_normal, red_dim, reset
+from dankware import white, white_bright, green, green_bright, red, red_normal, red_dim
 
 os.chdir(os.path.dirname(__file__))
 

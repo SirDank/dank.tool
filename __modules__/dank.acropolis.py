@@ -3,10 +3,9 @@ import shutil
 import requests
 from translatepy import Translator
 from dankware import title, cls, clr, align, rm_line
-from dankware import white, white_normal, red, red_normal, red_dim, reset
+from dankware import white_normal, white_bright, red, red_normal, red_dim
 
 def translate(text):
-
     if DANK_TOOL_LANG:
         try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
         except: pass
@@ -14,7 +13,7 @@ def translate(text):
 
 def print_read_me():
     read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
-    cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{red}#")))
+    cls(); print(align(read_me.replace(":",f"{white_normal}:").replace("+",f"{white_bright}+").replace("#",f"{red_normal}#")))
 
 def file_downloader(url):
     file_name = url.split('/')[-1]
@@ -47,7 +46,7 @@ def main():
 
     title("𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜")
     banner = '\n\n __                        __   __   __   __   __          __  \n|  \\  /\\  |\\ | |__/   /\\  /  ` |__) /  \\ |__) /  \\ |    | /__` \n|__/ /~~\\ | \\| |  \\ ./~~\\ \\__, |  \\ \\__/ |    \\__/ |___ | .__/ \n\n\n'
-    cls(); print(clr(align(banner),4,colours=(white, white_normal, red, red_normal, red_dim)))
+    cls(); print(clr(align(banner),4,colours=(red, red_dim)))
     print(clr("\n  - Credits to u/Verix- from r/GenP | Based on Acropolis v24.1"))
     print(clr(f"\n  - {translate('Uninstall Adobe Acrobat before proceeding')}!"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin installation')}... "))
@@ -73,7 +72,7 @@ def main():
     if not os.path.isdir('Patches'):
         os.mkdir('Patches')
     os.chdir('Patches')
-    patched_files = ['Acrobat.dll', 'acrodistdll.dll', 'acrotray.exe']
+    patched_files = ('Acrobat.dll', 'acrodistdll.dll', 'acrotray.exe')
     for file in patched_files:
         if not os.path.isfile(file):
             print(clr(f"\n  - {translate(f'Downloading Patched {file}')}..."))

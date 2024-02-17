@@ -7,7 +7,7 @@ import tkinter as tk
 from win11toast import notify
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, align, rm_line, green, red, white_normal, title
+from dankware import cls, clr, align, rm_line, green_bright, red, white_normal, title
 
 def chatroom_login():
 
@@ -34,7 +34,7 @@ def chatroom_login():
             err_msg = ""
             while True:
 
-                username = input(clr(f"\n  > Username{err_msg}: ") + green).strip()
+                username = input(clr(f"\n  > Username{err_msg}: ") + green_bright).strip()
                 if len(username.replace(' ','')) < 3:
                     err_msg = f" [{red}too short!]"
                     rm_line(); rm_line(); continue
@@ -111,9 +111,9 @@ def chatroom_output():
                     )
 
                 if line.startswith("[dank.server]"):
-                    chat[_] = clr(line, colour_two=green)
+                    chat[_] = clr(line, colour_two=green_bright)
                 elif line.startswith("[SirDank]"):
-                    chat[_] = clr(line.replace("[SirDank]",f"[{green}SirDank{red}]"))
+                    chat[_] = clr(line.replace("[SirDank]",f"[{green_bright}SirDank{red}]"))
                 elif line.startswith(f"[{username}]"):
                     chat[_] = clr(line)
                 else:
@@ -129,7 +129,7 @@ def chatroom_input():
 
     global running
 
-    help_msg = clr("[dank.tool] > /help - show help\n[dank.tool] > /clear - clear chatroom\n[dank.tool] > /notify - enable/disable notifications\n[dank.tool] > /exit - exit chatroom", colour_two=green)
+    help_msg = clr("[dank.tool] > /help - show help\n[dank.tool] > /clear - clear chatroom\n[dank.tool] > /notify - enable/disable notifications\n[dank.tool] > /exit - exit chatroom", colour_two=green_bright)
     print(help_msg)
 
     def handle_msg(event): # pylint: disable=unused-argument
@@ -152,7 +152,7 @@ def chatroom_input():
             elif msg_lower in ["/notify", "/notifications"]:
                 global notifications
                 notifications = not notifications
-                print(clr(f"[dank.tool] > Notifications {'enabled' if notifications else 'disabled'}!", colour_two=green))
+                print(clr(f"[dank.tool] > Notifications {'enabled' if notifications else 'disabled'}!", colour_two=green_bright))
 
             elif msg_lower == "/help":
                 print(help_msg)
@@ -238,7 +238,7 @@ def chatroom_input():
 
     root.destroy()
     running = False
-    print(clr("[dank.tool] > shutting down chatroom...", colour_two=green))
+    print(clr("[dank.tool] > shutting down chatroom...", colour_two=green_bright))
 
 def enable_notifications():
 

@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 import pyminizip
-from dankware import cls, clr, rm_line, green, red
+from dankware import cls, clr, rm_line, green_bright, red
 
 session = requests.Session()
 try: DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
@@ -24,7 +24,7 @@ try:
         if tmp:
             print(clr("\n  [ Release Notes ]"))
             for _ in tmp:
-                print(clr(_, colour_two=green))
+                print(clr(_, colour_two=green_bright))
 except: pass
 
 # change directory
