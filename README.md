@@ -39,7 +39,7 @@
 
 ## ♦️ Preview ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/ded02b28-8e3a-4a0b-aae0-1d09ba72e8e0"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/99caab6e-68ee-4d8e-91f1-b85b6df7220e"></p><br>
 
 ## ♦️ Notes ♦️
 
@@ -338,6 +338,10 @@
 ## ♦️ 2.4 ♦️
 
 <br><p align="center"><img width="550" alt="image" src="https://user-images.githubusercontent.com/52797753/235306892-5472e34a-1f2e-4dd5-adcc-2124def1e8bb.png"></p><br>
+
+## ♦️ 3.1 ♦️
+
+<br><p align="center"><img width="550" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/ded02b28-8e3a-4a0b-aae0-1d09ba72e8e0"></p><br>
 
 <p>&nbsp;</p>
 
