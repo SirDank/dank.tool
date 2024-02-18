@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 import pyminizip
-from dankware import cls, clr, rm_line, green, red
+from dankware import cls, clr, rm_line, green_bright, red
 
 session = requests.Session()
 try: DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
@@ -11,7 +11,7 @@ except: exec("DANK_TOOL_VERSION = current_version") # current_version defined in
 # print release notes
 
 try:
-    response = session.get("https://api.github.com/repos/SirDank/dank.tool/releases", headers = {"User-Agent": "dank.tool", "Accept": "application/vnd.github.v3+json"}, timeout=1)
+    response = session.get("https://api.github.com/repos/SirDank/dank.tool/releases", headers = {"User-Agent": "dank.tool", "Accept": "application/vnd.github.v3+json"}, timeout=3)
     # REMOVE THE BELOW CHECK IN THE FUTURE!
     if response.status_code == 200 and DANK_TOOL_VERSION not in ("2.3.1", "2.3.2", "2.4") and f"v{DANK_TOOL_VERSION}" in (release["tag_name"] for release in response.json()):
 
@@ -24,7 +24,7 @@ try:
         if tmp:
             print(clr("\n  [ Release Notes ]"))
             for _ in tmp:
-                print(clr(_, colour_two=green))
+                print(clr(_, colour_two=green_bright))
 except: pass
 
 # change directory
@@ -38,7 +38,7 @@ except:
 
 print(clr("\n  - Downloading dank.tool.zip..."))
 while True:
-    try: data = session.get("https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip", timeout=1, allow_redirects=True).content; break
+    try: data = session.get("https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip", timeout=3, allow_redirects=True).content; break
     except Exception as exc:
         input(clr(f"\n  > Failed to download! {exc} | Press [ENTER] to try again... ",2))
         rm_line(); rm_line()
