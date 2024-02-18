@@ -4,7 +4,7 @@ import time
 import requests
 import subprocess
 from translatepy import Translator
-from dankware import white, white_normal, red, red_normal, red_dim, reset
+from dankware import white_normal, white_bright, red, red_normal, red_dim
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
 
 headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
@@ -12,15 +12,16 @@ headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
 # banners
 
 def print_banner():
-    cls(); print(align(clr(banner,4,colours=(white, white_normal, red, red_normal, red_dim)) + f"\n{white}s i r {red}. {white}d a n k {red}💕\n\n"))
+    banner = "\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n\n\n"
+    cls(); print(align(clr(banner,4,colours=(red, red_dim))))
 
 def print_read_me():
-    cls(); print(align(read_me.replace(":",f"{reset}:").replace("+",f"{white}+").replace("#",f"{red}#")))
+    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
+    cls(); print(align(read_me.replace(":",f"{white_normal}:").replace("+",f"{white_bright}+").replace("#",f"{red_normal}#")))
 
 # translator
 
 def translate(text):
-
     if DANK_TOOL_LANG:
         try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
         except: pass
@@ -28,7 +29,7 @@ def translate(text):
 
 def main_one():
 
-    global banner, read_me, name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, latest_java_version, translator, DANK_TOOL_LANG
+    global name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, latest_java_version, translator, DANK_TOOL_LANG
 
     # check if translator is enabled (dank.tool.exe)
 
@@ -43,9 +44,6 @@ def main_one():
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
 
-    banner = "\n\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n"
-    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
-
     # change dir and print banner
 
     try: os.chdir(get_path('Desktop'))
@@ -57,7 +55,7 @@ def main_one():
 
     while True:
         try:
-            latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=1).json()['available_releases'][-1]
+            latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
             input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
@@ -77,7 +75,7 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=1).json()['versions']
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions']
             print(clr(f'  - {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
         except Exception as exc:
             input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))
@@ -164,7 +162,7 @@ def main_one():
         if playit in ("1","2"):
             playit = bool(playit == "1")
             break
-        else: rm_line()
+        rm_line()
 
     # create and go to workspace
 
@@ -283,7 +281,7 @@ def main_one():
 
         while True:
             try:
-                response = requests.get(url, headers=headers, timeout=1, allow_redirects=True)
+                response = requests.get(url, headers=headers, timeout=3, allow_redirects=True)
                 data = response.content
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
@@ -291,7 +289,7 @@ def main_one():
                     _.write(data)
                 print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
-                input(clr(f"  > {translate('Failed')} [ {file_name} ] Press {white}ENTER{red} to try again... \n",2))
+                input(clr(f"  > {translate('Failed')} [ {file_name} ] Press ENTER to try again... \n",2))
                 rm_line(); rm_line()
 
     # disabled due to repeated error reports
@@ -769,7 +767,7 @@ def main_two():
             try: config_updater(path); break
             except:
                 string = translate('Press [ ENTER ] to retry or type "skip" to skip')
-                choice = input(clr(f"\n{err(sys.exc_info(),'mini')}\n\n  > {string}: ", 2) + white)
+                choice = input(clr(f"\n{err(sys.exc_info(),'mini')}\n\n  > {string}: ", 2) + white_bright)
                 if choice == "skip": break
 
     if playit:
@@ -817,5 +815,5 @@ def main_two():
 main_two()
 
 if __name__ == "__main__" and "DANK_TOOL_VERSION" in os.environ:
-    for _ in ('banner', 'read_me', 'name', 'version', 'cracked', 'install_Via', 'ram', 'motd_spaces', 'playit', 'extra_flag', 'dir_name', 'configs', 'headers', 'latest_java_version', 'translator', 'print_banner', 'print_read_me', 'main_one', 'main_two', 'translate'):
+    for _ in ('name', 'version', 'cracked', 'install_Via', 'ram', 'motd_spaces', 'playit', 'extra_flag', 'dir_name', 'configs', 'headers', 'latest_java_version', 'translator', 'print_banner', 'print_read_me', 'main_one', 'main_two', 'translate'):
         if _ in globals(): del globals()[_]

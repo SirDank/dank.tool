@@ -18,8 +18,8 @@ from translatepy import Translator
 from packaging.version import parse
 from dateutil.tz import tzlocal, tzutc
 from concurrent.futures import ThreadPoolExecutor
-from dankware import white, white_normal, green, red, red_normal, red_dim
 from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
+from dankware import white, white_bright, green, green_bright, red, red_normal, red_dim
 
 os.chdir(os.path.dirname(__file__))
 
@@ -29,7 +29,7 @@ def dank_tool_installer():
 
     while True:
         try:
-            code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=1).content.decode()
+            code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
             break
         except Exception as exc:
             input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
@@ -38,7 +38,7 @@ def dank_tool_installer():
     try: exec(code)
     except:
         err_message = err(sys.exc_info())
-        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
         except: pass
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
@@ -48,13 +48,13 @@ def dank_tool_installer():
 def dank_tool_banner():
 
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'    
-    cls(); print(align(clr(banner,4,colours=(white, white_normal, red, red, red, red, red_normal, red_dim)) + f"\n{white}s i r {red}. {white}d a n k {red}💕"))
+    cls(); print(align(clr(banner,4,colours=(red, red_dim)) + f"\n{white_bright}s i r {red_normal}. {white_bright}d a n k {red_normal}💕"))
 
 # handle KeyboardInterrupt
 
 def print_warning_symbol():
 
-    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white}██████{red}      ██            \n{red}            ██      {white}██████{red}      ██            \n{red}          ██        {white}██████{red}        ██          \n{red}          ██        {white}██████{red}        ██          \n{red}        ██          {white}██████{red}          ██        \n{red}      ██            {white}██████{red}            ██      \n{red}      ██            {white}██████{red}            ██      \n{red}    ██              {white}██████{red}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white}██████{red}                ██  \n{red}  ██                {white}██████{red}                ██  \n{red}██                  {white}██████{red}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n'))
+    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}        ██          {white_bright}██████{red_normal}          ██        \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}    ██              {white_bright}██████{red_normal}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}██                  {white_bright}██████{red_normal}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n\n'))
 
 # get commit date & time
 
@@ -73,7 +73,7 @@ def updated_on(url, dankware_module = True):
         date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
 
-    except: return "" # [bright_red]⚠️
+    except: return "" # [red1]⚠️
 
 # multithread requests
 
@@ -84,7 +84,7 @@ def get_menu_request_responses(task_id, request_key):
     if task_id in (0, 1):
         if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
         elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
-        menu_request_responses[request_key] = f"{red}⚠️"
+        menu_request_responses[request_key] = f"{red_normal}⚠️"
         try:
             result = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
             if result.isdigit():
@@ -97,9 +97,9 @@ def get_menu_request_responses(task_id, request_key):
     elif task_id == 2:
         try:
             motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
-            motd = clr(motd, colour_one=green)
+            motd = clr(motd, colour_one=green_bright)
         except:
-            motd = f"{red}⚠️"
+            motd = f"{red_normal}⚠️"
         menu_request_responses[request_key] = motd
 
     # get chatroom user count
@@ -111,9 +111,9 @@ def get_menu_request_responses(task_id, request_key):
                 if tmp != "0": menu_request_responses[request_key] = tmp
                 else: menu_request_responses[request_key] = "1"
                 menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
-            else: menu_request_responses[request_key] = "[bright_red]⚠️"
+            else: menu_request_responses[request_key] = "[red1]⚠️"
             del tmp
-        except: menu_request_responses[request_key] = "[bright_red]⚠️"
+        except: menu_request_responses[request_key] = "[red1]⚠️"
 
     # get last update time for modules based on external repos
 
@@ -132,13 +132,13 @@ def get_menu_request_responses(task_id, request_key):
 
 def download_offline_modules(project):
 
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=1).content.decode()
+    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
     with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as _:
         _.write(code)
 
 def download_assets(url, file_name):
 
-    data = requests.get(url, headers=headers, timeout=1).content
+    data = requests.get(url, headers=headers, timeout=3).content
     with open(file_name, 'wb') as _:
         _.write(data)
 
@@ -146,7 +146,7 @@ def download_assets(url, file_name):
 
 def print_modules():
 
-    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
+    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
     user_renderables = []
     console = Console()
     counter = 1
@@ -155,9 +155,9 @@ def print_modules():
 
     for _title, module in modules.items():
         if not module['category']:
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red]- [bright_white]{_title}[/b] {module['info']}")
+            user_renderables.append(f"[b][bright_white]{counter} [red1]- [bright_white]{_title}[/b] {module['info']}")
         else:
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red][ [bright_white]{_title}[/b] [bright_red]]")
+            user_renderables.append(f"[b][bright_white]{counter} [red1][ [bright_white]{_title}[/b] [red1]]")
         counter += 1
 
     # local modules
@@ -166,25 +166,25 @@ def print_modules():
         user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]- [bright_white]{_title}[/b]")
         counter += 1
 
-    console.print(Panel(title="[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+    console.print(Panel(title="[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True))
     print()
 
 def print_category_modules(modules):
 
-    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
+    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
     user_renderables = []
     console = Console()
     counter = 1
 
     # category modules
 
-    user_renderables.append("[b][bright_white]0 [bright_red]- [bright_white]Return to menu[/b]")
+    user_renderables.append("[b][bright_white]0 [red1]- [bright_white]Return to menu[/b]")
     for _title, module in modules.items():
         if _title != "category":
-            user_renderables.append(f"[b][bright_white]{counter} [bright_red]- [bright_white]{_title}[/b] {module['info']}")
+            user_renderables.append(f"[b][bright_white]{counter} [red1]- [bright_white]{_title}[/b] {module['info']}")
             counter += 1
 
-    console.print(Panel(title="[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="bright_red", expand=True))
+    console.print(Panel(title="[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True))
     print()
 
 # set globals
@@ -240,7 +240,7 @@ def set_globals_one():
             'category': False,
         },
 
-        'World Exploration Game [bright_red][[red1]BETA[bright_red]]': {
+        'World Exploration Game [red1][[red]BETA[red1]]': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
             'project': "dank.game",
@@ -267,7 +267,7 @@ def set_globals_two():
 
         global online_modules
 
-        stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
+        stats = f" [ dankware runs: {green_bright}{menu_request_responses['dankware_runs']} | dank.tool runs: {green_bright}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
         #try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
         #except Exception as exc:
         #    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: {exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
@@ -364,7 +364,7 @@ def set_globals_two():
                 'category': False
             },
 
-            _translate('World Exploration Game') + ' [bright_red][[red1]BETA[bright_red]]': {
+            _translate('World Exploration Game') + ' [red1][[red]BETA[red1]]': {
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
@@ -372,7 +372,7 @@ def set_globals_two():
                 'category': False
             },
 
-            #'Auto Clicker [bright_red][[red1]WIP[bright_red]]': {
+            #'Auto Clicker [red1][[red]WIP[red1]]': {
             #    'info': menu_request_responses["dank.auto-clicker"],
             #    'title': "𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛",
             #    'project': "dank.auto-clicker",
@@ -456,7 +456,7 @@ if __name__ == "__main__":
             local_assets_json = json.loads(_.read())
 
         while True:
-            try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=1).json(); break
+            try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json(); break
             except Exception as exc:
                 input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
@@ -591,10 +591,10 @@ if __name__ == "__main__":
                         if _choice == '0':
                             print_modules()
                             break
-                        elif _choice.isdigit() and int(_choice) >= 1 and int(_choice) <= (len(choice) - 1):
+                        if _choice.isdigit() and int(_choice) >= 1 and int(_choice) <= (len(choice) - 1):
                             choice = choice[list(choice)[int(_choice) - 1]]
                             break
-                        else: rm_line()
+                        rm_line()
 
                     if 'category' not in choice:
                         break
@@ -610,7 +610,7 @@ if __name__ == "__main__":
                 cls()
                 while True:
                     # this variable is long to prevent it from being changed!
-                    cmd_to_be_executed = input(clr("\n  > ") + white)
+                    cmd_to_be_executed = input(clr("\n  > ") + white_bright)
                     if cmd_to_be_executed == 'exit': print_modules(); break
                     if cmd_to_be_executed in ('env', 'globals'):
                         print()
@@ -619,7 +619,7 @@ if __name__ == "__main__":
                         elif cmd_to_be_executed == 'globals':
                             _ = globals().copy().items()
                         for key, val in _:
-                            print(clr(key, colour_one=green, colour_two=green) + f"{white}:{green} " + clr(str(val), colour_one=green, colour_two=green))
+                            print(f"{green_bright}{key}{white}: {green}{val}")
                         del _
                         continue
                     try: exec(cmd_to_be_executed)
@@ -658,7 +658,7 @@ if __name__ == "__main__":
 
                 while True:
 
-                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n"))
+                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
 
                     with open("settings.json", "r", encoding="utf-8") as _:
                         settings = json.loads(_.read())
@@ -694,7 +694,7 @@ if __name__ == "__main__":
 
                     choice = input(clr("\n  > Choice: ") + red).lower()
 
-                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= int(len(settings)):
+                    if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
                         if choice == '0': break
 
@@ -717,7 +717,7 @@ if __name__ == "__main__":
                             if os.path.isfile("disable-startup-audio"):
                                 os.remove("disable-startup-audio")
 
-                        with open("settings.json", "w", encoding="utf-8")as _:
+                        with open("settings.json", "w", encoding="utf-8") as _:
                             _.write(json.dumps(settings, indent=4))
 
                     elif choice.lower() == "exit":
@@ -730,16 +730,16 @@ if __name__ == "__main__":
             if "dank.os-repair" in choice['project']:
 
                 cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                cls(); print(clr(f"""
+                cls(); print(clr("""
   [ COMMANDS ]
 
   - [0] Return to menu
 
-  - [1] {clr('DISM /online /cleanup-image /restorehealth',2)} : {_translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
+  - [1] """) + clr('DISM /online /cleanup-image /restorehealth',2) + clr(f""" : {_translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
   
-  - [2] {clr('sfc /scannow',2)} : {_translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
+  - [2] """) + clr('sfc /scannow',2) + clr(f""" : {_translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
   
-  - [3] {clr('chkdsk C: /x /r',2)} : {_translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
+  - [3] """) + clr('chkdsk C: /x /r',2) + clr(f""" : {_translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
 
   - [4] Run all commands
 """))
@@ -747,8 +747,9 @@ if __name__ == "__main__":
                 while True:
 
                     choice = input(clr("  > Choice: ") + red).lower()
-                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= 4:
+                    if choice.isdigit() and 0 <= int(choice) <= 4:
 
+                        if choice == '0': break
                         cls()
 
                         if choice in ('1', '4'):
@@ -765,27 +766,27 @@ if __name__ == "__main__":
 
                         break
 
-                    else: rm_line()
+                    rm_line()
 
                 continue
 
             if "dank.network-reset" in choice['project']:
 
                 cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                cls(); print(clr(f"""
+                cls(); print(clr("""
   [ COMMANDS ]
 
   - [0] Return to menu
 
-  - [1] {clr('ipconfig /flushdns',2)} : {_translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
+  - [1] """) + clr('ipconfig /flushdns',2) + clr(f""" : {_translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
 
-  - [2] {clr('ipconfig /registerdns',2)} : {_translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
+  - [2] """) + clr('ipconfig /registerdns',2) + clr(f""" : {_translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
 
-  - [3] {clr('ipconfig /release',2)} : {_translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
+  - [3] """) + clr('ipconfig /release',2) + clr(f""" : {_translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
 
-  - [4] {clr('ipconfig /renew',2)} : {_translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
+  - [4] """) + clr('ipconfig /renew',2) + clr(f""" : {_translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
 
-  - [5] {clr('netsh winsock reset',2)} : {_translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
+  - [5] """) + clr('netsh winsock reset',2) + clr(f""" : {_translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
 
   - [6] Run all commands
 """))
@@ -793,8 +794,9 @@ if __name__ == "__main__":
                 while True:
 
                     choice = input(clr("  > Choice: ") + red).lower()
-                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= 6:
+                    if choice.isdigit() and 0 <= int(choice) <= 6:
 
+                        if choice == '0': break
                         cls()
 
                         if choice in ('1', '6'):
@@ -824,14 +826,14 @@ if __name__ == "__main__":
             if "dank.clear-icons" in choice['project']:
 
                 #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                cls(); print(clr(f"""
+                cls(); print(clr("""
   [ COMMANDS ]
   
   - [0] Return to menu
   
-  - [1] {clr('Clear Icon Cache',2)} : {_translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
+  - [1] """) + clr('Clear Icon Cache',2) + clr(f""" : {_translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
   
-  - [2] {clr('Clear Thumbnail Cache',2)} : {_translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
+  - [2] """) + clr('Clear Thumbnail Cache',2) + clr(f""" : {_translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
   
   - [3] Run all tasks
 """))
@@ -839,40 +841,41 @@ if __name__ == "__main__":
                 while True:
 
                     choice = input(clr("  > Choice: ") + red).lower()
-                    if choice.isdigit() and int(choice) >= 0 and int(choice) <= 3:
+                    if choice.isdigit() and 0 <= int(choice) <= 3:
 
-                        if choice != '0':
-                            cls()
-                            print(clr("\n  [ Terminating Explorer.exe ]"))
-                            os.system("taskkill /f /im explorer.exe >nul 2>&1")
-                            os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
+                        if choice == '0': break
+
+                        cls()
+                        print(clr("\n  [ Terminating Explorer.exe ]"))
+                        os.system("taskkill /f /im explorer.exe >nul 2>&1")
+                        os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
                         if choice in ('1', '3'):
                             print(clr("\n  [ Clearing Icon Cache ]\n"))
                             os.system(r"attrib -h iconcache*")
                             for file in os.listdir():
                                 if file.startswith("iconcache") and file.endswith(".db"):
-                                    try: 
-                                        os.remove(file)
-                                        print(clr(f"  - deleted {file}"))
-                                    except:
-                                        print(clr(f"  - failed to delete {file}",2))
-                        if choice in ('2', '3'):
-                            print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
-                            os.system(r"attrib -h thumbcache*")
-                            for file in os.listdir():
-                                if file.startswith("thumbcache") and file.endswith(".db"):
-                                    try: 
+                                    try:
                                         os.remove(file)
                                         print(clr(f"  - deleted {file}"))
                                     except:
                                         print(clr(f"  - failed to delete {file}",2))
 
-                        if choice != '0':
-                            os.chdir(os.path.dirname(__file__))
-                            print(clr("\n  [ Starting Explorer.exe ]"))
-                            os.system("start explorer.exe")
-                            input(clr("\n  > Press [ENTER] to continue... "))
+                        if choice in ('2', '3'):
+                            print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
+                            os.system(r"attrib -h thumbcache*")
+                            for file in os.listdir():
+                                if file.startswith("thumbcache") and file.endswith(".db"):
+                                    try:
+                                        os.remove(file)
+                                        print(clr(f"  - deleted {file}"))
+                                    except:
+                                        print(clr(f"  - failed to delete {file}",2))
+
+                        os.chdir(os.path.dirname(__file__))
+                        print(clr("\n  [ Starting Explorer.exe ]"))
+                        os.system("start explorer.exe")
+                        input(clr("\n  > Press [ENTER] to continue... "))
 
                         break
 
@@ -903,7 +906,7 @@ if __name__ == "__main__":
 
                     while True:
                         try:
-                            LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=1).content.decode()
+                            LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
                             if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
                                 cls(); print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
                                 dank_tool_installer()
@@ -914,7 +917,7 @@ if __name__ == "__main__":
                             rm_line(); rm_line()
 
                     while True:
-                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=1).content.decode(); break
+                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode(); break
                         except Exception as exc:
                             input(clr(f"\n  > {_translate(f'Failed to get code for {project}! {exc} | Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
@@ -939,7 +942,8 @@ if __name__ == "__main__":
                 time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  - {_translate(f'{project} executed successfully! Returning to menu in 3 seconds')}...")); time.sleep(3)
+                cls(); print(clr(f"\n  - {_translate(f'{project} executed successfully! Returning to menu in 3 seconds')}..."))
+                time.sleep(3)
 
         except:
 
@@ -953,7 +957,7 @@ if __name__ == "__main__":
 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
-                    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=1, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
+                    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()

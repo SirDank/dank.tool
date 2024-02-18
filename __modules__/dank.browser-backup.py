@@ -5,7 +5,7 @@ import zipfile
 import datetime
 from psutil import process_iter
 from translatepy import Translator
-from dankware import white, white_normal, red, red_normal, red_dim
+from dankware import red, red_dim
 from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys, get_path
 
 from rich.live import Live
@@ -14,7 +14,6 @@ from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn, TimeElapsedColumn
 
 def translate(text):
-
     if DANK_TOOL_LANG:
         try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
         except: pass
@@ -46,7 +45,8 @@ def backup(browser, compression_level):
             print(clr(f"\n  - {translate('Invalid Path')}: {path_to_backup}\n",2))
             while True:
                 path_to_backup = input(clr(f"  > {translate('Input user data folder path')}: ")); rm_line()
-                if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup: break
+                if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup:
+                    break
 
         # check if chrome is running
 
@@ -82,7 +82,7 @@ def backup(browser, compression_level):
         job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
         overall_task = job_progress.add_task("[bright_green]Compressing", total=num_source_files)
         progress_table = Table.grid()
-        progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="bright_red", padding=(1, 2)))
+        progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="red", padding=(1, 2)))
 
         with Live(progress_table, refresh_per_second=10):
             with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, True, compression_level, strict_timestamps=False) as zipf:
@@ -144,7 +144,7 @@ def main():
     for _, browser in enumerate(browsers):
         to_print += f"\n  - [{_+1}] {browser}"
 
-    print(align(clr(banner,4,colours=(white, white_normal, red, red_normal, red_dim))))
+    print(align(clr(banner,4,colours=(red, red_dim))))
     print(clr(to_print))
 
     print("")

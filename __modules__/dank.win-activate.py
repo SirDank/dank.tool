@@ -1,10 +1,9 @@
 import os
 from translatepy import Translator
 from dankware import title, cls, clr, align
-from dankware import white, white_normal, red, red_normal, red_dim
+from dankware import red, red_dim
 
 def translate(text):
-
     if DANK_TOOL_LANG:
         try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
         except: pass
@@ -31,7 +30,7 @@ def main():
     os.chdir(os.path.dirname(__file__))
     banner = "\n\n     __          __           _                   __  _           __     \n ___/ /__ ____  / /__ _    __(_)__  _______ _____/ /_(_)  _____ _/ /____ \n/ _  / _ `/ _ \\/  '_/| |/|/ / / _ \\/___/ _ `/ __/ __/ / |/ / _ `/ __/ -_)\n\\_,_/\\_,_/_//_/_/\\_(_)__,__/_/_//_/    \\_,_/\\__/\\__/_/|___/\\_,_/\\__/\\__/ \n                                                                         \n\n"
 
-    cls(); print(clr(align(banner),4,colours=[white, white_normal, red, red_normal, red_dim]))
+    cls(); print(clr(align(banner),4,colours=(red, red_dim)))
     print(clr("\n  - Credits to massgravel team!"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin Microsoft-Activation-Script')}... "))
 
