@@ -2,7 +2,9 @@ import os
 import sys
 import requests
 import pyminizip
-from dankware import cls, clr, rm_line, green_bright, red
+from colorama import Style, Fore
+from dankware import cls, clr, rm_line, red
+green_bright = Style.BRIGHT + Fore.GREEN
 
 session = requests.Session()
 try: DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
