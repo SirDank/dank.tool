@@ -64,11 +64,6 @@ def check(ip, server):
         #try: query_response = f"{server.query().software}"
         #except: query_response = ""
 
-        # for https://dashboard.render.com/minecraft-java-servers
-        # for https://dashboard.render.com/minecraft-bedrock-servers
-        try: executor.submit(requests.post, f"https://dank-site.onrender.com/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json={"server_ip":ip}) # pylint: disable=used-before-assignment
-        except: pass
-
         try:
             response = requests.get(f"http://ipwho.is/{ip}", timeout=3).json()
             if response['success']:
@@ -76,6 +71,17 @@ def check(ip, server):
             else:
                 server_info = "ratelimited on ipwho.is" # 50mil monthly limit
         except: server_info = "ipwho.is is unreachable"
+
+        # for https://dashboard.render.com/minecraft-java-servers
+        # for https://dashboard.render.com/minecraft-bedrock-servers
+        try:
+            json = {'server_ip': ip, 'city': '', 'org': '', 'domain': ''}
+            if response['success']:
+                json['city'] = response['city']
+                json['org'] = response['connection']['org']
+                json['domain'] = response['connection']['domain']
+            executor.submit(requests.post, f"https://dank-site.onrender.com/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json) # pylint: disable=used-before-assignment
+        except: pass
 
         if server_type == "java":
             to_print = f"{ip} | java | {status.version.name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n',' ').replace('ü','u')
