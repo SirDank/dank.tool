@@ -42,7 +42,7 @@ def handle_response(cmd, results, mode):
                 indexes.append(index)
             prev = char
 
-    max_count = max(indexes.count(_) for _ in sorted(list(set(indexes))))
+    max_count = max([indexes.count(_) for _ in sorted(list(set(indexes)))])
     indexes = [_ for _ in sorted(list(set(indexes))) if indexes.count(_) == max_count]
     indexes.insert(0,0)
     results.clear()
