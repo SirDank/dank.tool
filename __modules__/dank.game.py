@@ -208,24 +208,23 @@ def create_entity(pos, vertices):
 
             if _ > leaves_level_start:
 
-                if leaves_level_current == 1:
+                match leaves_level_current:
+                    case 1:
+                        back_2 = entity.back + entity.back
+                        forward_2 = entity.forward + entity.forward
+                        left_2 = entity.left + entity.left
+                        right_2 = entity.right + entity.right
 
-                    back_2 = entity.back + entity.back
-                    forward_2 = entity.forward + entity.forward
-                    left_2 = entity.left + entity.left
-                    right_2 = entity.right + entity.right
+                        for _pos in [entity.back + left_2, left_2, entity.forward + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, entity.back + right_2, right_2, entity.forward + right_2]:
+                            entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+                            entity.collision = False
+                            terrain[pos]['entities'].append(entity)
 
-                    for _pos in [entity.back + left_2, left_2, entity.forward + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, entity.back + right_2, right_2, entity.forward + right_2]:
-                        entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
-                        entity.collision = False
-                        terrain[pos]['entities'].append(entity)
-
-                elif leaves_level_current == 2:
-
-                    for _pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
-                        entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
-                        entity.collision = False
-                        terrain[pos]['entities'].append(entity)
+                    case 2:
+                        for _pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
+                            entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
+                            entity.collision = False
+                            terrain[pos]['entities'].append(entity)
 
                 leaves_level_current += 1
 

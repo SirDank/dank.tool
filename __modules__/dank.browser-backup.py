@@ -152,22 +152,21 @@ def main():
         choice = input(clr("  > Enter choice: ") + red)
         if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(browsers)):
             choice = browsers[int(choice)-1]; break
-        else: rm_line()
+        rm_line()
 
     #print("")
     #while True:
     #    password = input(clr("  > Enter backup password: ") + red)
     #    if password: break
-    #    else: rm_line()
+    #    rm_line()
 
     print("")
     while True:
         compression_level = input(clr(f"  > {translate('Compression level (Fast/Best)')} [1/2]: ") + red).lower()
-        if compression_level in ('1', 'fast'):
-            compression_level = 0; break
-        elif compression_level in ('2', 'best'):
-            compression_level = 9; break
-        else: rm_line()
+        match compression_level:
+            case '1' | 'fast': compression_level = 0; break
+            case '2' | 'best': compression_level = 9; break
+        rm_line()
 
     # backup
 

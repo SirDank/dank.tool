@@ -85,7 +85,7 @@ def check(ip, server):
 
         if server_type == "java":
             to_print = f"{ip} | java | {status.version.name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.description}".replace('\n',' ').replace('ü','u')
-        elif server_type == "bedrock":
+        else:
             to_print = f"{ip} | bedrock | {status.version.name} | {status.gamemode} | Map: {status.map_name} | {status.players.online}/{status.players.max} online | {int(status.latency)}ms | {server_info} | {status.motd.raw}".replace('\n',' ')
 
         for _ in ('§0', '§1', '§2', '§3', '§4', '§5', '§6', '§7', '§8', '§9', '§a', '§b', '§c', '§d', '§e', '§f', '§l', '§n', '§o', '§m', '§k', '§r'):
@@ -130,9 +130,9 @@ def main():
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛"); banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n                                                                                  \n'
     cls(); print(align(clr(banner,4,colours=(red, red_dim))))
     print(clr(f"\n  - Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool')}!"))
-    choice = input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red)
-    if choice == "1": os.system("start https://dank-site.onrender.com/minecraft-java-servers")
-    elif choice == "2": os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
+    match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
+        case "1": os.system("start https://dank-site.onrender.com/minecraft-java-servers")
+        case "2": os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
 
     cls(); print(align(clr(banner,4,colours=(red, red_dim))))
     print(clr(f"\n  - {translate('Start with 100 threads and note the performance impact')}.\n\n  - {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value')}!\n\n  - {translate('Test it for the first time with 50000 IPs, it will take a few seconds to generate')}."))
@@ -140,12 +140,13 @@ def main():
     print("")
     while True:
         server_type = input(clr("  > Server Type [java/bedrock]: ") + red).lower()
-        if server_type == "java":
-            port = 25565
-            break
-        if server_type == "bedrock":
-            port = 19132
-            break
+        match server_type:
+            case "java":
+                port = 25565
+                break
+            case "bedrock":
+                port = 19132
+                break
         rm_line()
 
     print("")

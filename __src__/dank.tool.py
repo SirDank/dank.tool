@@ -79,54 +79,46 @@ def updated_on(url, dankware_module = True):
 
 def get_menu_request_responses(task_id, request_key):
 
-    # get global runs
+    match task_id:
+        case 0 | 1: # get global runs
+            match task_id:
+                case 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
+                case 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
+            menu_request_responses[request_key] = f"{red_normal}⚠️"
+            try:
+                result = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
+                if result.isdigit():
+                    menu_request_responses[request_key] = result
+            except:
+                pass
 
-    if task_id in (0, 1):
-        if task_id == 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
-        elif task_id == 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
-        menu_request_responses[request_key] = f"{red_normal}⚠️"
-        try:
-            result = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
-            if result.isdigit():
-                menu_request_responses[request_key] = result
-        except:
-            pass
+        case 2: # get motd
+            try:
+                motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
+                motd = clr(motd, colour_one=green_bright)
+            except:
+                motd = f"{red_normal}⚠️"
+            menu_request_responses[request_key] = motd
 
-    # get motd
+        case 3: # get chatroom user count
+            try:
+                _ = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
+                if _.isdigit():
+                    if _ != "0": menu_request_responses[request_key] = _
+                    else: menu_request_responses[request_key] = "1"
+                    menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
+                else: menu_request_responses[request_key] = "[red1]⚠️"
+            except: menu_request_responses[request_key] = "[red1]⚠️"
 
-    elif task_id == 2:
-        try:
-            motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
-            motd = clr(motd, colour_one=green_bright)
-        except:
-            motd = f"{red_normal}⚠️"
-        menu_request_responses[request_key] = motd
+        case 4 | 5 | 6: # get last update time for modules based on external repos
+            match task_id:
+                case 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=run.ps1&page=1&per_page=1"
+                case 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
+                case 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
+            menu_request_responses[request_key] = updated_on(url, False)
 
-    # get chatroom user count
-
-    elif task_id == 3:
-        try:
-            tmp = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
-            if tmp.isdigit():
-                if tmp != "0": menu_request_responses[request_key] = tmp
-                else: menu_request_responses[request_key] = "1"
-                menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
-            else: menu_request_responses[request_key] = "[red1]⚠️"
-            del tmp
-        except: menu_request_responses[request_key] = "[red1]⚠️"
-
-    # get last update time for modules based on external repos
-
-    elif task_id in (4, 5, 6):
-        if task_id == 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=run.ps1&page=1&per_page=1"
-        elif task_id == 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
-        elif task_id == 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
-        menu_request_responses[request_key] = updated_on(url, False)
-
-    # get last update time for modules
-
-    elif task_id > 6:
-        menu_request_responses[request_key] = updated_on(request_key)
+        case _: # get last update time for modules based on internal repo
+            menu_request_responses[request_key] = updated_on(request_key)
 
 # multithreaded module / asset downloader
 
@@ -573,6 +565,7 @@ if __name__ == "__main__":
             # user input
 
             choice = input(clr("  > Choice: ") + red)
+
             if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
 
                 if int(choice) <= len(modules):
@@ -591,7 +584,7 @@ if __name__ == "__main__":
                         if _choice == '0':
                             print_modules()
                             break
-                        if _choice.isdigit() and int(_choice) >= 1 and int(_choice) <= (len(choice) - 1):
+                        if _choice.isdigit() and 1 <= int(_choice) <= (len(choice) - 1):
                             choice = choice[list(choice)[int(_choice) - 1]]
                             break
                         rm_line()
@@ -600,47 +593,52 @@ if __name__ == "__main__":
                         break
 
                 else:
-
                     break
 
-            elif choice == 'refresh': # re-align ui
-                print_modules()
+            else:
 
-            elif choice == 'debug': # debug menu
-                cls()
-                while True:
-                    # this variable is long to prevent it from being changed!
-                    cmd_to_be_executed = input(clr("\n  > ") + white_bright)
-                    if cmd_to_be_executed == 'exit': print_modules(); break
-                    if cmd_to_be_executed in ('env', 'globals'):
-                        print()
-                        if cmd_to_be_executed == 'env':
-                            _ = os.environ.copy().items()
-                        elif cmd_to_be_executed == 'globals':
-                            _ = globals().copy().items()
-                        for key, val in _:
-                            print(f"{green_bright}{key}{white}: {green}{val}")
-                        del _
-                        continue
-                    try: exec(cmd_to_be_executed)
-                    except: print(clr("\n" + err(sys.exc_info()), 2))
+                match choice.lower():
 
-            elif choice == 'exit':
-                os.system("taskkill /f /t /im dank.tool.exe")
+                    case 'refresh': # re-align ui
+                        print_modules()
 
-            else: rm_line()
+                    case 'debug': # debug menu
+                        cls()
+                        while True:
+                            # this variable is long to prevent it from being changed!
+                            cmd_to_be_executed = input(clr("\n  > ") + white_bright)
+                            if cmd_to_be_executed == 'exit': print_modules(); break
+                            if cmd_to_be_executed in ('env', 'globals'):
+                                print()
+                                if cmd_to_be_executed == 'env':
+                                    _ = os.environ.copy().items()
+                                elif cmd_to_be_executed == 'globals':
+                                    _ = globals().copy().items()
+                                for key, val in _:
+                                    print(f"{green_bright}{key}{white}: {green}{val}")
+                                del _
+                                continue
+                            try: exec(cmd_to_be_executed)
+                            except: print(clr("\n" + err(sys.exc_info()), 2))
+
+                    case 'exit':
+                        os.system("taskkill /f /t /im dank.tool.exe")
+
+                    case _:
+                        rm_line()
 
         try:
 
-            if "Discord" in choice['project']:
-                os.system('start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
-                continue
-            if "Telegram" in choice['project']:
-                os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
-                continue
-            if "Website" in choice['project']:
-                os.system('start https://dank-site.onrender.com/')
-                continue
+            match choice['project']:
+                case "Discord Server":
+                    os.system('start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
+                    continue
+                case "Telegram Group":
+                    os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
+                    continue
+                case "Website":
+                    os.system('start https://dank-site.onrender.com/')
+                    continue
 
             title(choice['title'])
             project = choice['project']
@@ -648,89 +646,90 @@ if __name__ == "__main__":
 
             # settings menu
 
-            if "dank.tool settings" in choice['project']:
+            match project:
 
-                try:
-                    with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as _:
-                        runs = _.read()
-                except:
-                    runs = "?"
+                case "dank.tool settings":
 
-                while True:
+                    try:
+                        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as _:
+                            runs = _.read()
+                    except:
+                        runs = "?"
 
-                    cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
+                    while True:
 
-                    with open("settings.json", "r", encoding="utf-8") as _:
-                        settings = json.loads(_.read())
-                    update_settings = False
+                        cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
 
-                    if os.path.isfile("force-startup-audio"):
-                        if not int(settings["force-startup-audio"]):
-                            settings["force-startup-audio"] = "1"
-                            update_settings = True
-                    else:
-                        if int(settings["force-startup-audio"]):
-                            settings["force-startup-audio"] = "0"
-                            update_settings = True
-                    if os.path.isfile("disable-startup-audio"):
-                        if not int(settings["disable-startup-audio"]):
-                            settings["disable-startup-audio"] = "1"
-                            update_settings = True
-                    else:
-                        if int(settings["disable-startup-audio"]):
-                            settings["disable-startup-audio"] = "0"
-                            update_settings = True
+                        with open("settings.json", "r", encoding="utf-8") as _:
+                            settings = json.loads(_.read())
+                        update_settings = False
 
-                    if update_settings:
-                        with open("settings.json", "w", encoding="utf-8") as _:
-                            _.write(json.dumps(settings, indent=4))
-
-                    print(clr("  [0] Return to menu"))
-
-                    counter = 1
-                    for name, value in settings.items():
-                        print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
-                        counter += 1
-
-                    choice = input(clr("\n  > Choice: ") + red).lower()
-
-                    if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
-
-                        if choice == '0': break
-
-                        settings = list(settings.items())
-                        settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
-                        settings = dict(settings)
-
-                        if int(settings["force-startup-audio"]):
-                            if not os.path.isfile("force-startup-audio"):
-                                with open("force-startup-audio", "w", encoding="utf-8") as _:
-                                    _.write("")
+                        if os.path.isfile("force-startup-audio"):
+                            if not int(settings["force-startup-audio"]):
+                                settings["force-startup-audio"] = "1"
+                                update_settings = True
                         else:
-                            if os.path.isfile("force-startup-audio"):
-                                os.remove("force-startup-audio")
-                        if int(settings["disable-startup-audio"]):
-                            if not os.path.isfile("disable-startup-audio"):
-                                with open("disable-startup-audio", "w", encoding="utf-8") as _:
-                                    _.write("")
+                            if int(settings["force-startup-audio"]):
+                                settings["force-startup-audio"] = "0"
+                                update_settings = True
+                        if os.path.isfile("disable-startup-audio"):
+                            if not int(settings["disable-startup-audio"]):
+                                settings["disable-startup-audio"] = "1"
+                                update_settings = True
                         else:
-                            if os.path.isfile("disable-startup-audio"):
-                                os.remove("disable-startup-audio")
+                            if int(settings["disable-startup-audio"]):
+                                settings["disable-startup-audio"] = "0"
+                                update_settings = True
 
-                        with open("settings.json", "w", encoding="utf-8") as _:
-                            _.write(json.dumps(settings, indent=4))
+                        if update_settings:
+                            with open("settings.json", "w", encoding="utf-8") as _:
+                                _.write(json.dumps(settings, indent=4))
 
-                    elif choice.lower() == "exit":
-                        break
+                        print(clr("  [0] Return to menu"))
 
-                del runs, settings, update_settings, counter
+                        counter = 1
+                        for name, value in settings.items():
+                            print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
+                            counter += 1
+                        choice = input(clr("\n  > Choice: ") + red).lower()
 
-                continue
+                        if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
-            if "dank.os-repair" in choice['project']:
+                            if choice == '0': break
 
-                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                cls(); print(clr("""
+                            settings = list(settings.items())
+                            settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
+                            settings = dict(settings)
+
+                            if int(settings["force-startup-audio"]):
+                                if not os.path.isfile("force-startup-audio"):
+                                    with open("force-startup-audio", "w", encoding="utf-8") as _:
+                                        _.write("")
+                            else:
+                                if os.path.isfile("force-startup-audio"):
+                                    os.remove("force-startup-audio")
+                            if int(settings["disable-startup-audio"]):
+                                if not os.path.isfile("disable-startup-audio"):
+                                    with open("disable-startup-audio", "w", encoding="utf-8") as _:
+                                        _.write("")
+                            else:
+                                if os.path.isfile("disable-startup-audio"):
+                                    os.remove("disable-startup-audio")
+
+                            with open("settings.json", "w", encoding="utf-8") as _:
+                                _.write(json.dumps(settings, indent=4))
+
+                        elif choice.lower() == "exit":
+                            break
+
+                    del runs, settings, update_settings, counter
+
+                    continue
+
+                case "dank.os-repair":
+
+                    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+                    cls(); print(clr("""
   [ COMMANDS ]
 
   - [0] Return to menu
@@ -744,36 +743,32 @@ if __name__ == "__main__":
   - [4] Run all commands
 """))
 
-                while True:
+                    while True:
 
-                    choice = input(clr("  > Choice: ") + red).lower()
-                    if choice.isdigit() and 0 <= int(choice) <= 4:
+                        choice = input(clr("  > Choice: ") + red).lower()
+                        if choice.isdigit() and 0 <= int(choice) <= 4:
+                            if choice == '0': break
+                            cls()
+                            match choice:
+                                case '1' | '4':
+                                    print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
+                                    os.system("DISM /online /cleanup-image /restorehealth")
+                                case '2' | '4':
+                                    print(clr("\n\n  [ sfc /scannow ]"))
+                                    os.system("sfc /scannow")
+                                case '3' | '4':
+                                    print(clr("\n\n  [ chkdsk C: /x /r ]"))
+                                    os.system("chkdsk C: /x /r")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            break
+                        rm_line()
 
-                        if choice == '0': break
-                        cls()
+                    continue
 
-                        if choice in ('1', '4'):
-                            print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
-                            os.system("DISM /online /cleanup-image /restorehealth")
-                        if choice in ('2', '4'):
-                            print(clr("\n\n  [ sfc /scannow ]"))
-                            os.system("sfc /scannow")
-                        if choice in ('3', '4'):
-                            print(clr("\n\n  [ chkdsk C: /x /r ]"))
-                            os.system("chkdsk C: /x /r")
+                case "dank.network-reset":
 
-                        input(clr("\n  > Press [ENTER] to continue... "))
-
-                        break
-
-                    rm_line()
-
-                continue
-
-            if "dank.network-reset" in choice['project']:
-
-                cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                cls(); print(clr("""
+                    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+                    cls(); print(clr("""
   [ COMMANDS ]
 
   - [0] Return to menu
@@ -791,42 +786,38 @@ if __name__ == "__main__":
   - [6] Run all commands
 """))
 
-                while True:
+                    while True:
 
-                    choice = input(clr("  > Choice: ") + red).lower()
-                    if choice.isdigit() and 0 <= int(choice) <= 6:
+                        choice = input(clr("  > Choice: ") + red).lower()
+                        if choice.isdigit() and 0 <= int(choice) <= 6:
+                            if choice == '0': break
+                            cls()
+                            match choice:
+                                case '1' | '6':
+                                    print(clr("\n\n  [ ipconfig /flushdns ]"))
+                                    os.system("ipconfig /flushdns")
+                                case '2' | '6':
+                                    print(clr("\n\n  [ ipconfig /registerdns ]"))
+                                    os.system("ipconfig /registerdns")
+                                case '3' | '6':
+                                    print(clr("\n\n  [ ipconfig /release ]"))
+                                    os.system("ipconfig /release")
+                                case '4' | '6':
+                                    print(clr("\n\n  [ ipconfig /renew ]"))
+                                    os.system("ipconfig /renew")
+                                case '5' | '6':
+                                    print(clr("\n\n  [ netsh winsock reset ]"))
+                                    os.system("netsh winsock reset")
+                            input(clr("\n  > Press [ENTER] to continue... "))
+                            break
+                        rm_line()
 
-                        if choice == '0': break
-                        cls()
+                    continue
 
-                        if choice in ('1', '6'):
-                            print(clr("\n\n  [ ipconfig /flushdns ]"))
-                            os.system("ipconfig /flushdns")
-                        if choice in ('2', '6'):
-                            print(clr("\n\n  [ ipconfig /registerdns ]"))
-                            os.system("ipconfig /registerdns")
-                        if choice in ('3', '6'):
-                            print(clr("\n\n  [ ipconfig /release ]"))
-                            os.system("ipconfig /release")
-                        if choice in ('4', '6'):
-                            print(clr("\n\n  [ ipconfig /renew ]"))
-                            os.system("ipconfig /renew")
-                        if choice in ('5', '6'):
-                            print(clr("\n\n  [ netsh winsock reset ]"))
-                            os.system("netsh winsock reset")
+                case "dank.clear-icons":
 
-                        input(clr("\n  > Press [ENTER] to continue... "))
-
-                        break
-
-                    rm_line()
-
-                continue
-
-            if "dank.clear-icons" in choice['project']:
-
-                #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                cls(); print(clr("""
+                    #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+                    cls(); print(clr("""
   [ COMMANDS ]
   
   - [0] Return to menu
@@ -838,54 +829,53 @@ if __name__ == "__main__":
   - [3] Run all tasks
 """))
 
-                while True:
+                    while True:
 
-                    choice = input(clr("  > Choice: ") + red).lower()
-                    if choice.isdigit() and 0 <= int(choice) <= 3:
+                        choice = input(clr("  > Choice: ") + red).lower()
+                        if choice.isdigit() and 0 <= int(choice) <= 3:
 
-                        if choice == '0': break
+                            if choice == '0': break
 
-                        cls()
-                        print(clr("\n  [ Terminating Explorer.exe ]"))
-                        os.system("taskkill /f /im explorer.exe >nul 2>&1")
-                        os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
+                            cls()
+                            print(clr("\n  [ Terminating Explorer.exe ]"))
+                            os.system("taskkill /f /im explorer.exe >nul 2>&1")
+                            os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
-                        if choice in ('1', '3'):
-                            print(clr("\n  [ Clearing Icon Cache ]\n"))
-                            os.system(r"attrib -h iconcache*")
-                            for file in os.listdir():
-                                if file.startswith("iconcache") and file.endswith(".db"):
-                                    try:
-                                        os.remove(file)
-                                        print(clr(f"  - deleted {file}"))
-                                    except:
-                                        print(clr(f"  - failed to delete {file}",2))
+                            match choice:
+                                case '1' | '3':
+                                    print(clr("\n  [ Clearing Icon Cache ]\n"))
+                                    os.system(r"attrib -h iconcache*")
+                                    for file in os.listdir():
+                                        if file.startswith("iconcache") and file.endswith(".db"):
+                                            try:
+                                                os.remove(file)
+                                                print(clr(f"  - deleted {file}"))
+                                            except:
+                                                print(clr(f"  - failed to delete {file}",2))
 
-                        if choice in ('2', '3'):
-                            print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
-                            os.system(r"attrib -h thumbcache*")
-                            for file in os.listdir():
-                                if file.startswith("thumbcache") and file.endswith(".db"):
-                                    try:
-                                        os.remove(file)
-                                        print(clr(f"  - deleted {file}"))
-                                    except:
-                                        print(clr(f"  - failed to delete {file}",2))
+                                case '2' | '3':
+                                    print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
+                                    os.system(r"attrib -h thumbcache*")
+                                    for file in os.listdir():
+                                        if file.startswith("thumbcache") and file.endswith(".db"):
+                                            try:
+                                                os.remove(file)
+                                                print(clr(f"  - deleted {file}"))
+                                            except:
+                                                print(clr(f"  - failed to delete {file}",2))
 
-                        os.chdir(os.path.dirname(__file__))
-                        print(clr("\n  [ Starting Explorer.exe ]"))
-                        os.system("start explorer.exe")
-                        input(clr("\n  > Press [ENTER] to continue... "))
+                            os.chdir(os.path.dirname(__file__))
+                            print(clr("\n  [ Starting Explorer.exe ]"))
+                            os.system("start explorer.exe")
+                            input(clr("\n  > Press [ENTER] to continue... "))
 
-                        break
+                            break
 
-                    rm_line()
+                        rm_line()
 
-                continue
+                    continue
 
-            if LOCAL_MODULE:
-
-                # get src from local_module
+            if LOCAL_MODULE: # get src from local_module
 
                 while True:
                     try:
@@ -896,9 +886,7 @@ if __name__ == "__main__":
                         input(clr(f"\n  > {translation}... ",2)); del translation
                         rm_line(); rm_line()
 
-            else:
-
-                # get src from github if not debug mode else get src locally
+            else: # get src from github if not debug mode else get src locally
 
                 if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_SRC / ONLINE_MODE defined in executor.py
 

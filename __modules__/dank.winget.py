@@ -59,12 +59,13 @@ def handle_response(cmd, results, mode):
     results['mode'] = mode; print()
     console.print(Panel(title="[red1]> [bright_white][b]R E S U L T S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True))
 
-    if mode == 'search':
-        print(clr("\n  - Type number to install.\n"))
-    elif mode == 'installed':
-        print(clr("\n  - Type number to display info.\n"))
-    elif mode == 'updates':
-        print(clr("\n  - Type number to update.\n"))
+    match mode:
+        case 'search':
+            print(clr("\n  - Type number to install.\n"))
+        case 'installed':
+            print(clr("\n  - Type number to display info.\n"))
+        case 'updates':
+            print(clr("\n  - Type number to update.\n"))
 
 def print_info(id):
     cmd = subprocess.run(['winget', 'show', '--id', id], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -109,25 +110,26 @@ def main():
                 cmd = int(cmd)
                 if cmd in results:
 
-                    if results['mode'] == 'search':
-                        if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith('y'):
+                    match results['mode']:
+                        case 'search':
+                            if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith('y'):
+                                print_info(results[cmd]['id'])
+                            else: rm_line(); rm_line()
+                            if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith('y'):
+                                print()
+                                os.system(f"winget install --interactive --id {results[cmd]['id']}")
+                                print()
+                            else: rm_line()
+
+                        case 'installed':
                             print_info(results[cmd]['id'])
-                        else: rm_line(); rm_line()
-                        if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith('y'):
+
+                        case 'updates':
                             print()
-                            os.system(f"winget install --interactive --id {results[cmd]['id']}")
+                            os.system(f"winget upgrade --interactive --id {results[cmd]['id']}")
                             print()
-                        else: rm_line()
 
-                    elif results['mode'] == 'installed':
-                        print_info(results[cmd]['id'])
-
-                    elif results['mode'] == 'updates':
-                        print()
-                        os.system(f"winget upgrade --interactive --id {results[cmd]['id']}")
-                        print()
-
-                    else: rm_line()
+                        case _: rm_line()
                 else: rm_line()
             else: rm_line()
 
