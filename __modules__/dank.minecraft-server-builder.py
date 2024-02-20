@@ -103,15 +103,17 @@ def main_one():
     print("")
     while True:
         cracked = input(clr(f"  > {translate('Allow Cracked Players?')} [ y / n ]: ") + red).lower()
-        if 'y' in cracked: cracked = True; break
-        if 'n' in cracked: cracked = False; break
+        match cracked:
+            case 'y': cracked = True; break
+            case 'n': cracked = False; break
         rm_line()
 
     print("")
     while True:
         install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
-        if 'y' in install_Via: install_Via = True; break
-        if 'n' in install_Via: install_Via = False; break
+        match install_Via:
+            case 'y': install_Via = True; break
+            case 'n': install_Via = False; break
         rm_line()
 
     # setting extra flags
@@ -131,7 +133,7 @@ def main_one():
                 patched = True
                 break
 
-    if not patched: 
+    if not patched:
         for _ in ("1.7", "1.8", "1.9", "1.10", "1.11"):
             if version.startswith(_):
                 extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
@@ -793,7 +795,7 @@ def main_two():
         if input(clr(f"\n  > {translate('Open port forwarding tutorial on youtube?')} [ y / n ]: ") + red).lower() == "y":
             sys_open('https://youtu.be/X75GbRaGzu8')
 
-    tmp_path = f'{dir_name}\\autoplug\\updater.yml'   
+    tmp_path = f'{dir_name}\\autoplug\\updater.yml'
     string = f'''
   - {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 

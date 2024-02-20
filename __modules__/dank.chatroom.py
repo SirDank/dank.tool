@@ -38,7 +38,7 @@ def chatroom_login():
                 if len(username.replace(' ','')) < 3:
                     err_msg = f" [{red}too short!]"
                     rm_line(); rm_line(); continue
-                elif len(username.strip()) > 15:
+                if len(username.strip()) > 15:
                     err_msg = f" [{red}too long!]"
                     rm_line(); rm_line(); continue
                 err_msg = ""
@@ -48,28 +48,25 @@ def chatroom_login():
                     try: response = session.post(url, headers=headers, data=data); break
                     except: input(clr("\n  > Failed to create user! Make sure you are connected to the internet! Press [ENTER] to try again... ",2))
 
-                if response.status_code == 400: # failed to create user
-                    err_msg = f" [{red}{response.content.decode()}]"
-                    rm_line(); rm_line()
-                elif response.status_code == 401: # unauthorized
-                    err_msg = f" [{red}Unauthorized! Try again in a minute!]"
-                    rm_line(); rm_line()
-                elif response.status_code == 200: # successfully created user
-                    cls(); print(clr(align(f"\n<---|[ Welcome [{username}]! ]|--->\n")))
-                    break
+                match response.status_code:
+                    case 400: # failed to create user
+                        err_msg = f" [{red}{response.content.decode()}]"
+                        rm_line(); rm_line()
+                    case 401: # unauthorized
+                        err_msg = f" [{red}Unauthorized! Try again in a minute!]"
+                        rm_line(); rm_line()
+                    case 200: # successfully created user
+                        cls(); print(clr(align(f"\n<---|[ Welcome [{username}]! ]|--->\n")))
+                        break
             break
 
-        # user already registered
-
-        if response.status_code == 200:
-            username = response.content.decode()
-            cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n")))
-            break
-
-        # unauthorized
-
-        if response.status_code == 401:
-            cls(); input(clr("\n  > Unauthorized! Try again in a minute! Press [ENTER] to try again... ",2))
+        match response.status_code:
+            case 200: # user already registered
+                username = response.content.decode()
+                cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n")))
+                break
+            case 401: # unauthorized
+                cls(); input(clr("\n  > Unauthorized! Try again in a minute! Press [ENTER] to try again... ",2))
 
 def chat_grabber():
 
