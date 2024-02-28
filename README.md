@@ -192,22 +192,6 @@
 
 ---  
 
-# 🚨 Adobe Acrobat Pro Installer 🚨
-
-- Installs Adobe Acrobat Pro DC | Version 23.008.20458
-- Full credits to [u/Verix-](https://www.reddit.com/u/Verix-) from [r/GenP](https://www.reddit.com/r/GenP/) for their amazing work!
-- VT Scan: [Acrobat.dll](https://www.virustotal.com/gui/file/3f913bd88361a3c9a23ac1d18792ea0333cbb8a3cf0b06318b2c27b4ff379a18)
-- VT Scan: [acrodistdll.dll](https://www.virustotal.com/gui/file/3fad8a669150b4b9ee317d2117569e419c7aa6ab2a04e39320b64296d40eada0)
-- VT Scan: [acrotray.exe](https://www.virustotal.com/gui/file/00e4559dd83bfe4444214a1b959ba6c4f73577dc431c072febe7a4ed29f4d22e)
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/a2726a69-f925-4b73-9599-bbabd9d03509"></p><br>
-
-<p>&nbsp;</p>
-
----  
-
 # 🚨 Browser Backup 🚨
 
 - Creates a full backup of your browser data including registry keys and protects it using a user set password
