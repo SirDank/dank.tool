@@ -337,13 +337,6 @@ def set_globals_two():
                     'rpc': _translate("installing spotx and spicetify")
                 },
 
-                'Adobe Acrobat Pro': {
-                    'info': menu_request_responses["dank.acropolis"],
-                    'title': "𝚍𝚊𝚗𝚔.𝚊𝚌𝚛𝚘𝚙𝚘𝚕𝚒𝚜",
-                    'project': "dank.acropolis",
-                    'rpc': _translate("installing adobe acrobat pro")
-                },
-
                 'category': True
 
             },
@@ -506,8 +499,7 @@ if __name__ == "__main__":
                 #"dank.auto-clicker",
                 "dank.browser-backup",
                 "dank.game",
-                "dank.winget",
-                "dank.acropolis"
+                "dank.winget"
             )
         )
 
