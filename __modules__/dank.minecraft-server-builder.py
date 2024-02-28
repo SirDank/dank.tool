@@ -318,7 +318,7 @@ def main_one():
     start_time = time.time()
     #for url, file_name in zip(to_download_urls, to_download_file_names):
     #    file_downloader(url, file_name)
-    multithread(file_downloader, 3, tuple(to_download_urls), tuple(to_download_file_names)) # single threaded with progress bar
+    multithread(file_downloader, 5, tuple(to_download_urls), tuple(to_download_file_names)) # single threaded with progress bar
 
     time_taken = int(time.time()-start_time)
 
