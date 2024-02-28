@@ -291,8 +291,7 @@ def main_one():
                     _.write(data)
                 print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
-                input(clr(f"  > {translate('Failed')} [ {file_name} ] Press ENTER to try again... \n",2))
-                rm_line(); rm_line()
+                print(clr(f"  > {translate('Failed')} [ {file_name} ] Retrying...\n",2))
 
     # disabled due to repeated error reports
 
