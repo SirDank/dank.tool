@@ -412,6 +412,244 @@ def _translate(text):
         except: pass
     return text
 
+# built-in modules
+
+def debug_mode():
+    cls()
+    while True:
+        # this variable is long to prevent it from being changed!
+        cmd_to_be_executed = input(clr("\n  > ") + white_bright)
+        match cmd_to_be_executed:
+            case 'exit': print_modules(); break
+            case 'env' | 'globals':
+                print()
+                if cmd_to_be_executed == 'env':
+                    for key, val in os.environ.items():
+                        print(f"{green_bright}{key}{white}: {green}{val}")
+                elif cmd_to_be_executed == 'globals':
+                    for key, val in globals().items():
+                        if key == "code": val = "<code is too long to display>"
+                        print(f"{green_bright}{key}{white}: {green}{val}\n")
+                del _
+                continue
+        try: exec(cmd_to_be_executed)
+        except: print(clr("\n" + err(sys.exc_info()), 2))
+
+def dank_tool_settings():
+
+    try:
+        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as _:
+            runs = _.read()
+    except:
+        runs = "?"
+
+    while True:
+
+        cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
+
+        with open("settings.json", "r", encoding="utf-8") as _:
+            settings = json.loads(_.read())
+        update_settings = False
+
+        if os.path.isfile("force-startup-audio"):
+            if not int(settings["force-startup-audio"]):
+                settings["force-startup-audio"] = "1"
+                update_settings = True
+        else:
+            if int(settings["force-startup-audio"]):
+                settings["force-startup-audio"] = "0"
+                update_settings = True
+        if os.path.isfile("disable-startup-audio"):
+            if not int(settings["disable-startup-audio"]):
+                settings["disable-startup-audio"] = "1"
+                update_settings = True
+        else:
+            if int(settings["disable-startup-audio"]):
+                settings["disable-startup-audio"] = "0"
+                update_settings = True
+
+        if update_settings:
+            with open("settings.json", "w", encoding="utf-8") as _:
+                _.write(json.dumps(settings, indent=4))
+
+        print(clr("  [0] Return to menu"))
+
+        counter = 1
+        for name, value in settings.items():
+            print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
+            counter += 1
+        choice = input(clr("\n  > Choice: ") + red).lower()
+
+        if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
+
+            if choice == '0': break
+
+            settings = list(settings.items())
+            settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
+            settings = dict(settings)
+
+            if int(settings["force-startup-audio"]):
+                if not os.path.isfile("force-startup-audio"):
+                    with open("force-startup-audio", "w", encoding="utf-8") as _:
+                        _.write("")
+            else:
+                if os.path.isfile("force-startup-audio"):
+                    os.remove("force-startup-audio")
+            if int(settings["disable-startup-audio"]):
+                if not os.path.isfile("disable-startup-audio"):
+                    with open("disable-startup-audio", "w", encoding="utf-8") as _:
+                        _.write("")
+            else:
+                if os.path.isfile("disable-startup-audio"):
+                    os.remove("disable-startup-audio")
+
+            with open("settings.json", "w", encoding="utf-8") as _:
+                _.write(json.dumps(settings, indent=4))
+
+        elif choice.lower() == "exit":
+            break
+
+def dank_os_repair():
+
+    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+    cls(); print(clr("""
+  [ COMMANDS ]
+
+  - [0] Return to menu
+
+  - [1] """) + clr('DISM /online /cleanup-image /restorehealth',2) + clr(f""" : {_translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
+  
+  - [2] """) + clr('sfc /scannow',2) + clr(f""" : {_translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
+  
+  - [3] """) + clr('chkdsk C: /x /r',2) + clr(f""" : {_translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
+
+  - [4] Run all commands
+"""))
+
+    while True:
+        choice = input(clr("  > Choice: ") + red).lower()
+        if choice.isdigit() and 0 <= int(choice) <= 4:
+            if choice == '0': break
+            cls()
+            match choice:
+                case '1' | '4':
+                    print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
+                    os.system("DISM /online /cleanup-image /restorehealth")
+                case '2' | '4':
+                    print(clr("\n\n  [ sfc /scannow ]"))
+                    os.system("sfc /scannow")
+                case '3' | '4':
+                    print(clr("\n\n  [ chkdsk C: /x /r ]"))
+                    os.system("chkdsk C: /x /r")
+            input(clr("\n  > Press [ENTER] to continue... "))
+            break
+        rm_line()
+
+def dank_network_reset():
+
+    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+    cls(); print(clr("""
+  [ COMMANDS ]
+
+  - [0] Return to menu
+
+  - [1] """) + clr('ipconfig /flushdns',2) + clr(f""" : {_translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
+
+  - [2] """) + clr('ipconfig /registerdns',2) + clr(f""" : {_translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
+
+  - [3] """) + clr('ipconfig /release',2) + clr(f""" : {_translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
+
+  - [4] """) + clr('ipconfig /renew',2) + clr(f""" : {_translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
+
+  - [5] """) + clr('netsh winsock reset',2) + clr(f""" : {_translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
+
+  - [6] Run all commands
+"""))
+
+    while True:
+        choice = input(clr("  > Choice: ") + red).lower()
+        if choice.isdigit() and 0 <= int(choice) <= 6:
+            if choice == '0': break
+            cls()
+            match choice:
+                case '1' | '6':
+                    print(clr("\n\n  [ ipconfig /flushdns ]"))
+                    os.system("ipconfig /flushdns")
+                case '2' | '6':
+                    print(clr("\n\n  [ ipconfig /registerdns ]"))
+                    os.system("ipconfig /registerdns")
+                case '3' | '6':
+                    print(clr("\n\n  [ ipconfig /release ]"))
+                    os.system("ipconfig /release")
+                case '4' | '6':
+                    print(clr("\n\n  [ ipconfig /renew ]"))
+                    os.system("ipconfig /renew")
+                case '5' | '6':
+                    print(clr("\n\n  [ netsh winsock reset ]"))
+                    os.system("netsh winsock reset")
+            input(clr("\n  > Press [ENTER] to continue... "))
+            break
+        rm_line()
+
+def dank_clear_icons():
+
+    #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+    cls(); print(clr("""
+  [ COMMANDS ]
+  
+  - [0] Return to menu
+  
+  - [1] """) + clr('Clear Icon Cache',2) + clr(f""" : {_translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
+  
+  - [2] """) + clr('Clear Thumbnail Cache',2) + clr(f""" : {_translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
+  
+  - [3] Run all tasks
+"""))
+
+    while True:
+
+        choice = input(clr("  > Choice: ") + red).lower()
+        if choice.isdigit() and 0 <= int(choice) <= 3:
+
+            if choice == '0': break
+
+            cls()
+            print(clr("\n  [ Terminating Explorer.exe ]"))
+            os.system("taskkill /f /im explorer.exe >nul 2>&1")
+            os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
+
+            match choice:
+                case '1' | '3':
+                    print(clr("\n  [ Clearing Icon Cache ]\n"))
+                    os.system(r"attrib -h iconcache*")
+                    for file in os.listdir():
+                        if file.startswith("iconcache") and file.endswith(".db"):
+                            try:
+                                os.remove(file)
+                                print(clr(f"  - deleted {file}"))
+                            except:
+                                print(clr(f"  - failed to delete {file}",2))
+
+                case '2' | '3':
+                    print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
+                    os.system(r"attrib -h thumbcache*")
+                    for file in os.listdir():
+                        if file.startswith("thumbcache") and file.endswith(".db"):
+                            try:
+                                os.remove(file)
+                                print(clr(f"  - deleted {file}"))
+                            except:
+                                print(clr(f"  - failed to delete {file}",2))
+
+            os.chdir(os.path.dirname(__file__))
+            print(clr("\n  [ Starting Explorer.exe ]"))
+            os.system("start explorer.exe")
+            input(clr("\n  > Press [ENTER] to continue... "))
+
+            break
+
+        rm_line()
+
 if __name__ == "__main__":
 
     set_globals_one()
@@ -590,36 +828,18 @@ if __name__ == "__main__":
             else:
 
                 match choice.lower():
-
                     case 'refresh': # re-align ui
                         print_modules()
-
                     case 'debug': # debug menu
-                        cls()
-                        while True:
-                            # this variable is long to prevent it from being changed!
-                            cmd_to_be_executed = input(clr("\n  > ") + white_bright)
-                            if cmd_to_be_executed == 'exit': print_modules(); break
-                            if cmd_to_be_executed in ('env', 'globals'):
-                                print()
-                                if cmd_to_be_executed == 'env':
-                                    _ = os.environ.copy().items()
-                                elif cmd_to_be_executed == 'globals':
-                                    _ = globals().copy().items()
-                                for key, val in _:
-                                    print(f"{green_bright}{key}{white}: {green}{val}")
-                                del _
-                                continue
-                            try: exec(cmd_to_be_executed)
-                            except: print(clr("\n" + err(sys.exc_info()), 2))
-
+                        debug_mode()
                     case 'exit':
                         os.system("taskkill /f /t /im dank.tool.exe")
-
                     case _:
                         rm_line()
 
         try:
+
+            # built-in modules
 
             match choice['project']:
                 case "Discord Server":
@@ -636,235 +856,20 @@ if __name__ == "__main__":
             project = choice['project']
             os.environ['DISCORD_RPC'] = choice['rpc']
 
-            # settings menu
+            # built-in modules
 
             match project:
-
                 case "dank.tool settings":
-
-                    try:
-                        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as _:
-                            runs = _.read()
-                    except:
-                        runs = "?"
-
-                    while True:
-
-                        cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
-
-                        with open("settings.json", "r", encoding="utf-8") as _:
-                            settings = json.loads(_.read())
-                        update_settings = False
-
-                        if os.path.isfile("force-startup-audio"):
-                            if not int(settings["force-startup-audio"]):
-                                settings["force-startup-audio"] = "1"
-                                update_settings = True
-                        else:
-                            if int(settings["force-startup-audio"]):
-                                settings["force-startup-audio"] = "0"
-                                update_settings = True
-                        if os.path.isfile("disable-startup-audio"):
-                            if not int(settings["disable-startup-audio"]):
-                                settings["disable-startup-audio"] = "1"
-                                update_settings = True
-                        else:
-                            if int(settings["disable-startup-audio"]):
-                                settings["disable-startup-audio"] = "0"
-                                update_settings = True
-
-                        if update_settings:
-                            with open("settings.json", "w", encoding="utf-8") as _:
-                                _.write(json.dumps(settings, indent=4))
-
-                        print(clr("  [0] Return to menu"))
-
-                        counter = 1
-                        for name, value in settings.items():
-                            print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
-                            counter += 1
-                        choice = input(clr("\n  > Choice: ") + red).lower()
-
-                        if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
-
-                            if choice == '0': break
-
-                            settings = list(settings.items())
-                            settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
-                            settings = dict(settings)
-
-                            if int(settings["force-startup-audio"]):
-                                if not os.path.isfile("force-startup-audio"):
-                                    with open("force-startup-audio", "w", encoding="utf-8") as _:
-                                        _.write("")
-                            else:
-                                if os.path.isfile("force-startup-audio"):
-                                    os.remove("force-startup-audio")
-                            if int(settings["disable-startup-audio"]):
-                                if not os.path.isfile("disable-startup-audio"):
-                                    with open("disable-startup-audio", "w", encoding="utf-8") as _:
-                                        _.write("")
-                            else:
-                                if os.path.isfile("disable-startup-audio"):
-                                    os.remove("disable-startup-audio")
-
-                            with open("settings.json", "w", encoding="utf-8") as _:
-                                _.write(json.dumps(settings, indent=4))
-
-                        elif choice.lower() == "exit":
-                            break
-
-                    del runs, settings, update_settings, counter
-
+                    dank_tool_settings()
                     continue
-
                 case "dank.os-repair":
-
-                    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                    cls(); print(clr("""
-  [ COMMANDS ]
-
-  - [0] Return to menu
-
-  - [1] """) + clr('DISM /online /cleanup-image /restorehealth',2) + clr(f""" : {_translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
-  
-  - [2] """) + clr('sfc /scannow',2) + clr(f""" : {_translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
-  
-  - [3] """) + clr('chkdsk C: /x /r',2) + clr(f""" : {_translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
-
-  - [4] Run all commands
-"""))
-
-                    while True:
-
-                        choice = input(clr("  > Choice: ") + red).lower()
-                        if choice.isdigit() and 0 <= int(choice) <= 4:
-                            if choice == '0': break
-                            cls()
-                            match choice:
-                                case '1' | '4':
-                                    print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
-                                    os.system("DISM /online /cleanup-image /restorehealth")
-                                case '2' | '4':
-                                    print(clr("\n\n  [ sfc /scannow ]"))
-                                    os.system("sfc /scannow")
-                                case '3' | '4':
-                                    print(clr("\n\n  [ chkdsk C: /x /r ]"))
-                                    os.system("chkdsk C: /x /r")
-                            input(clr("\n  > Press [ENTER] to continue... "))
-                            break
-                        rm_line()
-
+                    dank_os_repair()
                     continue
-
                 case "dank.network-reset":
-
-                    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                    cls(); print(clr("""
-  [ COMMANDS ]
-
-  - [0] Return to menu
-
-  - [1] """) + clr('ipconfig /flushdns',2) + clr(f""" : {_translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
-
-  - [2] """) + clr('ipconfig /registerdns',2) + clr(f""" : {_translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
-
-  - [3] """) + clr('ipconfig /release',2) + clr(f""" : {_translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
-
-  - [4] """) + clr('ipconfig /renew',2) + clr(f""" : {_translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
-
-  - [5] """) + clr('netsh winsock reset',2) + clr(f""" : {_translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
-
-  - [6] Run all commands
-"""))
-
-                    while True:
-
-                        choice = input(clr("  > Choice: ") + red).lower()
-                        if choice.isdigit() and 0 <= int(choice) <= 6:
-                            if choice == '0': break
-                            cls()
-                            match choice:
-                                case '1' | '6':
-                                    print(clr("\n\n  [ ipconfig /flushdns ]"))
-                                    os.system("ipconfig /flushdns")
-                                case '2' | '6':
-                                    print(clr("\n\n  [ ipconfig /registerdns ]"))
-                                    os.system("ipconfig /registerdns")
-                                case '3' | '6':
-                                    print(clr("\n\n  [ ipconfig /release ]"))
-                                    os.system("ipconfig /release")
-                                case '4' | '6':
-                                    print(clr("\n\n  [ ipconfig /renew ]"))
-                                    os.system("ipconfig /renew")
-                                case '5' | '6':
-                                    print(clr("\n\n  [ netsh winsock reset ]"))
-                                    os.system("netsh winsock reset")
-                            input(clr("\n  > Press [ENTER] to continue... "))
-                            break
-                        rm_line()
-
+                    dank_network_reset()
                     continue
-
                 case "dank.clear-icons":
-
-                    #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-                    cls(); print(clr("""
-  [ COMMANDS ]
-  
-  - [0] Return to menu
-  
-  - [1] """) + clr('Clear Icon Cache',2) + clr(f""" : {_translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
-  
-  - [2] """) + clr('Clear Thumbnail Cache',2) + clr(f""" : {_translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
-  
-  - [3] Run all tasks
-"""))
-
-                    while True:
-
-                        choice = input(clr("  > Choice: ") + red).lower()
-                        if choice.isdigit() and 0 <= int(choice) <= 3:
-
-                            if choice == '0': break
-
-                            cls()
-                            print(clr("\n  [ Terminating Explorer.exe ]"))
-                            os.system("taskkill /f /im explorer.exe >nul 2>&1")
-                            os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
-
-                            match choice:
-                                case '1' | '3':
-                                    print(clr("\n  [ Clearing Icon Cache ]\n"))
-                                    os.system(r"attrib -h iconcache*")
-                                    for file in os.listdir():
-                                        if file.startswith("iconcache") and file.endswith(".db"):
-                                            try:
-                                                os.remove(file)
-                                                print(clr(f"  - deleted {file}"))
-                                            except:
-                                                print(clr(f"  - failed to delete {file}",2))
-
-                                case '2' | '3':
-                                    print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
-                                    os.system(r"attrib -h thumbcache*")
-                                    for file in os.listdir():
-                                        if file.startswith("thumbcache") and file.endswith(".db"):
-                                            try:
-                                                os.remove(file)
-                                                print(clr(f"  - deleted {file}"))
-                                            except:
-                                                print(clr(f"  - failed to delete {file}",2))
-
-                            os.chdir(os.path.dirname(__file__))
-                            print(clr("\n  [ Starting Explorer.exe ]"))
-                            os.system("start explorer.exe")
-                            input(clr("\n  > Press [ENTER] to continue... "))
-
-                            break
-
-                        rm_line()
-
+                    dank_clear_icons()
                     continue
 
             if LOCAL_MODULE: # get src from local_module
