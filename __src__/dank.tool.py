@@ -430,7 +430,6 @@ def debug_mode():
                     for key, val in globals().items():
                         if key == "code": val = "<code is too long to display>"
                         print(f"{green_bright}{key}{white}: {green}{val}\n")
-                del _
                 continue
         try: exec(cmd_to_be_executed)
         except: print(clr("\n" + err(sys.exc_info()), 2))
