@@ -289,7 +289,7 @@ def set_globals_two():
 
             _translate('Windows Tools'): {
 
-                _translate('Software Downloader / Updater'): {
+                _translate('Software Installer / Updater'): {
                     'info': menu_request_responses["dank.winget"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝",
                     'project': "dank.winget",
@@ -328,7 +328,7 @@ def set_globals_two():
 
             },
 
-            _translate('Software Installers'): {
+            _translate('Software Patchers'): {
 
                 'SpotX + Spicetify': {
                     'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
