@@ -797,9 +797,7 @@ if __name__ == "__main__":
 
         print_modules()
 
-        while True:
-
-            # user input
+        while True: # user input
 
             choice = input(clr("  > Choice: ") + red)
 

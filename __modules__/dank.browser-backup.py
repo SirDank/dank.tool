@@ -6,7 +6,7 @@ import datetime
 from psutil import process_iter
 from translatepy import Translator
 from dankware import red, red_dim
-from dankware import title, cls, clr, err, align, rm_line, is_admin, export_registry_keys, get_path
+from dankware import cls, clr, err, align, rm_line, is_admin, export_registry_keys, get_path
 
 from rich.live import Live
 from rich.panel import Panel
@@ -124,7 +124,7 @@ def main():
 
     # banner, check if admin
 
-    cls(); title("𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙"); banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
+    cls(); banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     try:
         if not is_admin(): raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
     except: sys.exit(clr(err(sys.exc_info()),2))
