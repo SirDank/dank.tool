@@ -23,6 +23,9 @@ from dankware import white, white_bright, green, green_bright, red, red_normal, 
 
 os.chdir(os.path.dirname(__file__))
 
+def set_title():
+    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
+
 # dank.tool updater
 
 def dank_tool_installer():
@@ -383,17 +386,17 @@ def set_globals_two():
 
                 'Discord Server': {
                     'info': '[bright_green]Join Now!',
-                    'project': "Dankware Inc. Discord Server"
+                    'project': "Discord Server"
                 },
 
                 'Telegram Group': {
                     'info': '[bright_green]Join Now!',
-                    'project': "Dankware Inc. Telegram Group"
+                    'project': "Telegram Group"
                 },
 
                 'Website': {
                     'info': '[bright_green]Visit Now!',
-                    'project': "Dankware Inc. Website"
+                    'project': "Website"
                 },
 
                 'category': True
@@ -422,12 +425,13 @@ def _translate(text):
 # built-in modules
 
 def debug_mode():
-    cls()
+
+    cls(); title("𝚍𝚎𝚋𝚞𝚐 𝚖𝚘𝚍𝚎")
     while True:
         # this variable is long to prevent it from being changed!
         cmd_to_be_executed = input(clr("\n  > ") + white_bright)
         match cmd_to_be_executed:
-            case 'exit': print_modules(); break
+            case 'exit' | 'EXIT' | 'stop' | 'STOP': print_modules(); break
             case 'env' | 'globals':
                 print()
                 if cmd_to_be_executed == 'env':
@@ -440,6 +444,7 @@ def debug_mode():
                 continue
         try: exec(cmd_to_be_executed)
         except: print(clr("\n" + err(sys.exc_info()), 2))
+    set_title()
 
 def dank_tool_settings():
 
@@ -775,7 +780,7 @@ if __name__ == "__main__":
         set_globals_one()
         set_globals_two()
 
-        title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
+        set_title()
         os.environ['DISCORD_RPC'] = "on the main menu"
         os.chdir(os.path.dirname(__file__))
 
@@ -801,7 +806,7 @@ if __name__ == "__main__":
 
             choice = input(clr("  > Choice: ") + red)
 
-            if choice.isdigit() and int(choice) >= 1 and int(choice) <= int(len(modules) + len(local_modules)):
+            if choice.isdigit() and 1 <= int(choice) <= int(len(modules) + len(local_modules)):
 
                 if int(choice) <= len(modules):
                     choice = modules[list(modules)[int(choice) - 1]]
@@ -837,7 +842,7 @@ if __name__ == "__main__":
                         print_modules()
                     case 'debug': # debug menu
                         debug_mode()
-                    case 'exit':
+                    case 'exit' | 'stop':
                         os.system("taskkill /f /t /im dank.tool.exe")
                     case _:
                         rm_line()
