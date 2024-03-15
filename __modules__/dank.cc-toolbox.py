@@ -30,13 +30,12 @@ def main():
     banner = "\n\n _____         _____               _           _ _           \n|   __|___ ___|  _  |  ___ ___ ___| |_ ___ ___| | |_ ___ _ _ \n|  |  | -_|   |   __|_|  _|  _|___|  _| . | . | | . | . |_'_|\n|_____|___|_|_|__|  |_|___|___|   |_| |___|___|_|___|___|_,_|\n\n\n"
 
     cls(); print(clr(align(banner),4,colours=(red, red_dim)))
-    print(clr("\n  - Credits to GenP team!"))
+    print(clr(f"\n  - {translate('Credits to GenP team!')}"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to start CC-ToolBox')}... "))
 
     # main
 
-    cls(); print(clr(f"\n  - {translate('Exit inside the CC-ToolBox window to return to the menu')}..."))
-    os.system('powershell -Command "irm dank-site.onrender.com/GenP/cc-toolbox-ps | iex"')
+    cls(); os.system('powershell -Command "irm dank-site.onrender.com/GenP/cc-toolbox-ps | iex"')
 
 if __name__ == "__main__":
     main()
