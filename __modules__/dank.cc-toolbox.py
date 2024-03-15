@@ -1,6 +1,6 @@
 import os
 from translatepy import Translator
-from dankware import title, cls, clr, align
+from dankware import cls, clr, align
 from dankware import red, red_dim
 
 def translate(text):
@@ -26,7 +26,6 @@ def main():
 
     # banner
 
-    title("𝚍𝚊𝚗𝚔.𝚌𝚌-𝚝𝚘𝚘𝚕𝚋𝚘𝚡")
     os.chdir(os.path.dirname(__file__))
     banner = "\n\n _____         _____               _           _ _           \n|   __|___ ___|  _  |  ___ ___ ___| |_ ___ ___| | |_ ___ _ _ \n|  |  | -_|   |   __|_|  _|  _|___|  _| . | . | | . | . |_'_|\n|_____|___|_|_|__|  |_|___|___|   |_| |___|___|_|___|___|_,_|\n\n\n"
 

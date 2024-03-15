@@ -7,7 +7,7 @@ import tkinter as tk
 from win11toast import notify
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, align, rm_line, green_bright, red, white_normal, title
+from dankware import cls, clr, align, rm_line, green_bright, red, white_normal
 
 def chatroom_login():
 
@@ -245,8 +245,6 @@ def enable_notifications():
     del globals()['enable_notifications']
 
 if __name__ == "__main__":
-
-    title("𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖")
 
     chat = []
     last_msg_id = 0

@@ -3,8 +3,8 @@ import subprocess
 from rich.panel import Panel
 from rich.columns import Columns
 from rich.console import Console
-from dankware import title, cls, clr, align, rm_line
-from dankware import white, white_normal, red, red_normal, red_dim, green_bright
+from dankware import cls, clr, align, rm_line
+from dankware import red, red_dim, green_bright
 
 def winget_installed():
     try:
@@ -143,8 +143,6 @@ def main():
             rm_line()
 
 if __name__ == "__main__":
-
-    title("𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝")
 
     if os.name != 'nt':
         input(clr("\n  - This module only works for Windows! Press ENTER to exit... ",2))

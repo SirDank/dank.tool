@@ -1,12 +1,11 @@
 import os
 from ursina import *
-from dankware import cls, clr, title
+from dankware import cls, clr
 from numpy.random import choice, randint
 from ursina.scripts.smooth_follow import SmoothFollow
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
-title("𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎")
 
 try:
     os.environ['DANK_TOOL_VERSION']
