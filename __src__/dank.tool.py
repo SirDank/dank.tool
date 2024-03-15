@@ -340,7 +340,7 @@ def set_globals_two():
                     'rpc': _translate("installing spotx and spicetify")
                 },
 
-                'CC-ToolBox': {
+                'Adobe CC-ToolBox': {
                     'info': menu_request_responses["dank.cc-toolbox"],
                     'title': "𝚍𝚊𝚗𝚔.𝚌𝚌-𝚝𝚘𝚘𝚕𝚋𝚘𝚡",
                     'project': "dank.cc-toolbox",
