@@ -798,7 +798,7 @@ def main_two():
     string = f'''
   - {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 
-  - {translate(f'After you move the folder to a linux system, run "sudo chmod +x {tmp_path}/quick_chmod.sh" to make all .sh files executable')}
+  - {translate(f'After you move the folder to a linux system, run "sudo chmod +x {tmp_path}\\quick_chmod.sh" to make all .sh files executable')}
 
   - {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
