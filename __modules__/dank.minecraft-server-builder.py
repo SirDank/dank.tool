@@ -55,7 +55,8 @@ def main_one():
 
     while True:
         try:
-            latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
+            latest_java_version = "17"
+            #latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
             input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
@@ -798,7 +799,7 @@ def main_two():
     string = f'''
   - {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 
-  - {translate(f'After you move the folder to a linux system, run "sudo chmod +x {tmp_path}\\quick_chmod.sh" to make all .sh files executable')}
+  - {translate('After you move the folder to a linux system, run "sudo chmod +x quick_chmod.sh; ./quick_chmod.sh" to make all .sh files executable')}
 
   - {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
