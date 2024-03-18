@@ -175,7 +175,7 @@ def main():
 
     # disclaimer
 
-    cls(); input(clr(f"\n  [IMPORTANT]\n\n  - {translate('Do not use [ Ctrl + C ] without selecting text first')}!\n\n  - {translate('All the servers are saved to servers.txt')}!\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}... "))
+    cls(); input(clr(f"\n  [IMPORTANT]\n\n  - {translate('Do not use [ Ctrl + C ] without selecting text first')}!\n\n  - {translate('All the servers are saved to servers.txt')}!\n\n  - {translate('Be responsible! Do not use the scanner for the wrong reasons')}!\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}... "))
     cls()
 
     # change directory
