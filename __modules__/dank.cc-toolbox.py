@@ -30,7 +30,7 @@ def main():
     banner = "\n\n _____         _____               _           _ _           \n|   __|___ ___|  _  |  ___ ___ ___| |_ ___ ___| | |_ ___ _ _ \n|  |  | -_|   |   __|_|  _|  _|___|  _| . | . | | . | . |_'_|\n|_____|___|_|_|__|  |_|___|___|   |_| |___|___|_|___|___|_,_|\n\n\n"
 
     cls(); print(clr(align(banner),4,colours=(red, red_dim)))
-    print(clr(f"\n  - {translate('Credits to GenP team!')}"))
+    print(clr(f"\n  - {translate('Credits to r/GenP team!')}"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to start CC-ToolBox')}... "))
 
     # main

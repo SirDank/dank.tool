@@ -155,7 +155,7 @@
 
 # 🚨 SpotX + Spicetify Installer 🚨
 
-- Full credits to [amd64fox](https://github.com/amd64fox/SpotX) and [khanhas](https://github.com/spicetify/spicetify-cli) for their amazing work!
+- Full credits to [amd64fox](https://github.com/SpotX-Official/SpotX) and [spicetify contributors](https://github.com/spicetify/spicetify-cli) for their amazing work!
 
 ## ♦️ System Requirements ♦️
 
