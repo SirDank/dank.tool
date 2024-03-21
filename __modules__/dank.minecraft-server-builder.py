@@ -7,7 +7,7 @@ from translatepy import Translator
 from dankware import white_normal, white_bright, red, red_normal, red_dim
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
 
-headers = {'User-Agent': 'dank.tool', 'Content-Type': 'application/json'}
+headers = {'User-Agent': f'dank.tool {os.environ["DANK_TOOL_VERSION"]}', 'Content-Type': 'application/json'}
 
 # banners
 
