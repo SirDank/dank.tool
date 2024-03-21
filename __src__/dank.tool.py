@@ -105,19 +105,20 @@ def get_menu_request_responses(task_id, request_key):
 
         case 3: # get chatroom user count
             try:
-                _ = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
-                if _.isdigit():
-                    if _ != "0": menu_request_responses[request_key] = _
+                result = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
+                if result.isdigit():
+                    if result != "0": menu_request_responses[request_key] = result
                     else: menu_request_responses[request_key] = "1"
                     menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
                 else: menu_request_responses[request_key] = "[red1]⚠️"
             except: menu_request_responses[request_key] = "[red1]⚠️"
 
-        case 4 | 5 | 6: # get last update time for modules based on external repos
+        case 4 | 5 | 6 | 7: # get last update time for modules based on external repos
             match task_id:
-                case 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=run.ps1&page=1&per_page=1"
+                case 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=.&page=1&per_page=1"
                 case 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
-                case 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=MAS/All-In-One-Version/MAS_AIO.cmd&page=1&per_page=1"
+                case 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=.&page=1&per_page=1"
+                case 7: url = "https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1"
             menu_request_responses[request_key] = updated_on(url, False)
 
         case _: # get last update time for modules based on internal repo
@@ -128,14 +129,14 @@ def get_menu_request_responses(task_id, request_key):
 def download_offline_modules(project):
 
     code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
-    with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as _:
-        _.write(code)
+    with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as file:
+        file.write(code)
 
 def download_assets(url, file_name):
 
     data = requests.get(url, headers=headers, timeout=3).content
-    with open(file_name, 'wb') as _:
-        _.write(data)
+    with open(file_name, 'wb') as file:
+        file.write(data)
 
 # print modules with index and get choice
 
@@ -195,7 +196,7 @@ def set_globals_one():
     DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
     DANK_TOOL_LANG = ('' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG)
     BRANCH = ("main" if not DEV_BRANCH else "dev")
-    headers = {"User-Agent": "dank.tool"}
+    headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 
     global offline_modules, offline_scripts
 
@@ -333,11 +334,18 @@ def set_globals_two():
 
             _translate('Software Patchers'): {
 
-                'SpotX + Spicetify': {
-                    'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX-Win"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX-Win"] else ""),
+                'Spotify': {
+                    'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                     'project': "dank.spotify",
                     'rpc': _translate("installing spotx and spicetify")
+                },
+
+                'NetLimiter Pro': {
+                    'info': menu_request_responses["NetLimiter"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛",
+                    'project': "dank.netlimiter",
+                    'rpc': _translate("installing netlimiter pro")
                 },
 
                 'Adobe CC-ToolBox': {
@@ -449,8 +457,8 @@ def debug_mode():
 def dank_tool_settings():
 
     try:
-        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as _:
-            runs = _.read()
+        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as file:
+            runs = file.read()
     except:
         runs = "?"
 
@@ -458,8 +466,8 @@ def dank_tool_settings():
 
         cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
 
-        with open("settings.json", "r", encoding="utf-8") as _:
-            settings = json.loads(_.read())
+        with open("settings.json", "r", encoding="utf-8") as file:
+            settings = json.loads(file.read())
         update_settings = False
 
         if os.path.isfile("force-startup-audio"):
@@ -480,8 +488,8 @@ def dank_tool_settings():
                 update_settings = True
 
         if update_settings:
-            with open("settings.json", "w", encoding="utf-8") as _:
-                _.write(json.dumps(settings, indent=4))
+            with open("settings.json", "w", encoding="utf-8") as file:
+                file.write(json.dumps(settings, indent=4))
 
         print(clr("  [0] Return to menu"))
 
@@ -501,21 +509,21 @@ def dank_tool_settings():
 
             if int(settings["force-startup-audio"]):
                 if not os.path.isfile("force-startup-audio"):
-                    with open("force-startup-audio", "w", encoding="utf-8") as _:
-                        _.write("")
+                    with open("force-startup-audio", "w", encoding="utf-8") as file:
+                        file.write("")
             else:
                 if os.path.isfile("force-startup-audio"):
                     os.remove("force-startup-audio")
             if int(settings["disable-startup-audio"]):
                 if not os.path.isfile("disable-startup-audio"):
-                    with open("disable-startup-audio", "w", encoding="utf-8") as _:
-                        _.write("")
+                    with open("disable-startup-audio", "w", encoding="utf-8") as file:
+                        file.write("")
             else:
                 if os.path.isfile("disable-startup-audio"):
                     os.remove("disable-startup-audio")
 
-            with open("settings.json", "w", encoding="utf-8") as _:
-                _.write(json.dumps(settings, indent=4))
+            with open("settings.json", "w", encoding="utf-8") as file:
+                file.write(json.dumps(settings, indent=4))
 
         elif choice.lower() == "exit":
             break
@@ -740,8 +748,9 @@ if __name__ == "__main__":
                 "danktool_runs",
                 "motd",
                 "chatroom_user_count",
-                "SpotX-Win",
+                "SpotX",
                 "Spicetify",
+                "NetLimiter",
                 "Microsoft-Activation-Scripts",
                 "dank.minecraft-server-builder",
                 "dank.minecraft-server-scanner",
