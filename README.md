@@ -122,7 +122,7 @@
 
 ## ♦️ Youtube ♦️
 
-<br><p align="center"><a href="https://www.youtube.com/shorts/RbX5UNuwAYw"><img width="400" alt="image" src="http://img.youtube.com/vi/RbX5UNuwAYw/0.jpg"></a></p><br>
+<br><p align="center"><a href="https://youtu.be/fPLEq33BGBM"><img width="400" alt="image" src="http://img.youtube.com/vi/fPLEq33BGBM/0.jpg"></a></p><br>
 
 <p>&nbsp;</p>
 
