@@ -29,11 +29,11 @@
 
 - ZIP Password: `dankware`
 
-- Download: https://github.com/SirDank/dank.tool/releases
+- Direct Download: https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip
 
-## ♦️ Short URL ♦️
+- Short Direct Download: https://bit.ly/dank-tool-zip
 
-- Github Short URL: https://bit.ly/dank-tool
+- Short Github URL: https://bit.ly/dank-tool
 
 ## ♦️ Preview ♦️
 
@@ -64,6 +64,7 @@
 - [x] Add offline mode for offline scripts ( High Priority )
 - [x] Add translator
 - [x] Finish reworking dank.downloader.py
+- [ ] Linux wine support
 
 ## ♦️ Support ♦️
 
@@ -75,7 +76,7 @@
 
 ## ♦️ Anonymous Suggestions ♦️
 
-- [Give SirDank Ideas for Windows Tools!](https://dank-site.onrender.com/dank-tool-suggestions)
+- [Suggest new modules for the dank.tool!](https://dank-site.onrender.com/dank-tool-suggestions)
 
 <p>&nbsp;</p>
 
@@ -92,7 +93,7 @@
 - Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating jdk / plugins / server jar and much more!
 - Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
 - Downloads [purpur](https://github.com/PurpurMC/Purpur) of the selected minecraft version
-- Downloads several plugins from [spigot](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22%23+spigot+plugins%22&type=code) / [github](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22%23+github+server-builder+files+and+plugins%22&type=code)
+- Downloads several plugins from [spigot](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22spigot_plugins+%3D+%7B%22&type=code) / [github](https://github.com/search?q=repo%3ASirDank%2Fdank.tool+%22github+plugins%22&type=code)
 - Downloads [minecraft anti-malware](https://www.spigotmc.org/resources/spigot-anti-malware.64982/)
 - Applies [Log4j](https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition) exploit patches automatically
 - Creates scripts for starting the server with respect to [Aikar's Flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/) and [Etil's Flags](https://github.com/etil2jz/etil-minecraft-flags)
