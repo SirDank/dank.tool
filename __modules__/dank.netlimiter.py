@@ -5,7 +5,7 @@ from dankware import cls, clr, align, rm_line, red, red_dim
 
 def translate(text):
     if DANK_TOOL_LANG:
-        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
+        try: text = translator.translate(text, DANK_TOOL_LANG, 'en').result
         except: pass
     return text
 

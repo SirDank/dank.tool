@@ -23,7 +23,7 @@ def print_read_me():
 
 def translate(text):
     if DANK_TOOL_LANG:
-        try: text = translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
+        try: text = translator.translate(text, DANK_TOOL_LANG, 'en').result
         except: pass
     return text
 
@@ -299,7 +299,7 @@ def main_one():
     translated = translate('Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process')
     print_read_me(); input(clr(f"\n  - {translated}... "))
 
-    # begin multithreaded downloader | threads = 2
+    # begin multithreaded downloader
 
     print(clr(f"\n  - {translate('Starting Multiple Downloads... [ this might take a few minutes ]')}"))
 

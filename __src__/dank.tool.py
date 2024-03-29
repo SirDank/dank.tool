@@ -426,7 +426,7 @@ def set_globals_two():
 def _translate(text):
 
     if DANK_TOOL_LANG and ONLINE_MODE:
-        try: text = _translator.translate(text, source_language='en', destination_language=DANK_TOOL_LANG).result
+        try: text = _translator.translate(text, DANK_TOOL_LANG, 'en').result
         except: pass
     return text
 
