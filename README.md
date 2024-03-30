@@ -441,7 +441,7 @@
 
 ## ♦️ Style 2 ♦️
 
-<br><p align="center"><img width="800" alt="image" src="https://raw.githubusercontent.com/SirDank/dank.tool/main/__wallpapers__/2.jpg"></p><br>
+<br><p align="center"><img width="800" alt="image" src="https://raw.githubusercontent.com/SirDank/dank.tool/main/__wallpapers__/2.png"></p><br>
 
 ## ♦️ Style 3 ♦️
 
