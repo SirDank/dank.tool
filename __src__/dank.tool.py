@@ -348,13 +348,6 @@ def set_globals_two():
                     'rpc': _translate("installing netlimiter pro")
                 },
 
-                'Adobe CC-ToolBox': {
-                    'info': menu_request_responses["dank.cc-toolbox"],
-                    'title': "𝚍𝚊𝚗𝚔.𝚌𝚌-𝚝𝚘𝚘𝚕𝚋𝚘𝚡",
-                    'project': "dank.cc-toolbox",
-                    'rpc': _translate("using cc-toolbox")
-                },
-
                 'category': True
 
             },
@@ -757,8 +750,7 @@ if __name__ == "__main__":
                 #"dank.auto-clicker",
                 "dank.browser-backup",
                 "dank.game",
-                "dank.winget",
-                "dank.cc-toolbox"
+                "dank.winget"
             )
         )
 
