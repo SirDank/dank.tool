@@ -395,6 +395,11 @@ def set_globals_two():
                     'project': "Telegram Group"
                 },
 
+                'Youtube': {
+                    'info': '[bright_green]Subscribe!',
+                    'project': "Youtube"
+                },
+
                 'Website': {
                     'info': '[bright_green]Visit Now!',
                     'project': "Website"
@@ -858,6 +863,9 @@ if __name__ == "__main__":
                     continue
                 case "Telegram Group":
                     os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
+                    continue
+                case "Youtube":
+                    os.system('start https://www.youtube.com/@dankware_')
                     continue
                 case "Website":
                     os.system('start https://dank-site.onrender.com/')
