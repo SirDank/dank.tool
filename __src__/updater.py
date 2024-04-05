@@ -50,7 +50,7 @@ try:
         _.write(data); del data
 except:
     cls()
-    if input(clr("\n  - Failed to save file!\n\n  - Would you like to open [https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
+    if input(clr("\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
         os.system("start https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip")
     sys.exit("Failed to save file!")
 
