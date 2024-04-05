@@ -395,9 +395,9 @@ def set_globals_two():
                     'project': "Telegram Group"
                 },
 
-                'Youtube': {
+                'YouTube': {
                     'info': '[bright_green]Subscribe!',
-                    'project': "Youtube"
+                    'project': "YouTube"
                 },
 
                 'Website': {
@@ -864,7 +864,7 @@ if __name__ == "__main__":
                 case "Telegram Group":
                     os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
                     continue
-                case "Youtube":
+                case "YouTube":
                     os.system('start https://www.youtube.com/@dankware_')
                     continue
                 case "Website":
