@@ -108,7 +108,7 @@
 - [x] Add ViaVersion / ViaBackwards / ViaRewind
 - [ ] Add datapacks ( based on mc version )
 - [ ] Add GeyserMC / Floodgate Options
-- [ ] Add Magma / Mohist Options
+- [ ] Add Mohist Options
 - [ ] Maybe add a super simple web panel to only display stats
 
 ## ♦️ History ♦️

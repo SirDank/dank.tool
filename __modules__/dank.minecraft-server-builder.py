@@ -59,14 +59,14 @@ def main_one():
             #latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
-            input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
+            input(clr(f"\n  > {translate('Failed to get latest java version')}! {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
             rm_line(); rm_line()
 
     try:
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr(f"\n  - {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  - {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}')}? [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE")
 
@@ -82,7 +82,7 @@ def main_one():
             input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))
             rm_line(); rm_line()
 
-    # user inputs [ name, version, ram, allow_cracked ]
+    # user inputs
 
     max_motd_len = 49
     used_motd_len = 10
@@ -109,9 +109,11 @@ def main_one():
             case 'n': cracked = False; break
         rm_line()
 
+    string = translate('The following plugins allow older / newer clients to join your server')
+    print_read_me(); print(clr(f"\n  - {string}!"))
     print("")
     while True:
-        install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
+        install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards')}? [ y / n ]: ") + red).lower()
         match install_Via:
             case 'y': install_Via = True; break
             case 'n': install_Via = False; break
@@ -157,7 +159,7 @@ def main_one():
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  - {translate('Great! Now you need to pick a host for your mc server!')}\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
+    print_read_me(); print(clr(f"\n  - {translate('Great! Now you need to pick a host for your mc server')}!\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
 
     print("")
     while True:
@@ -224,7 +226,7 @@ def main_one():
         "ProtocolLib": 1997,
         "SkinRestorer": 2124,
         "Spark": 57242,
-        #"TabTPS": 82528, BROKEN on SPIGET
+        "TabTPS": 82528,
         #"TreeAssist": 67436,
         #"SmoothTimber": 39965,
         "LevelledMobs": 74304,
@@ -261,12 +263,17 @@ def main_one():
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
               + github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               + github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
-              + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
               + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
+              #+ github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
 
     for file_url in file_urls:
         to_download_urls.append(file_url)
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
+
+    # - MCAntiMalware.jar
+    for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
+        to_download_urls.append(file_url)
+        to_download_file_names.append(file_url.split('/')[-1])
 
     # - AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
@@ -276,11 +283,6 @@ def main_one():
     to_download_urls.append(f"https://api.purpurmc.org/v2/purpur/{version}/latest/download")
     to_download_file_names.append("purpur.jar")
 
-    # - MCAntiMalware.jar
-    for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
-        to_download_urls.append(file_url)
-        to_download_file_names.append(file_url.split('/')[-1])
-
     def file_downloader(url, file_name):
 
         while True:
@@ -289,8 +291,8 @@ def main_one():
                 data = response.content
                 try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
                 except: size = "?"
-                with open(file_name,"wb") as _:
-                    _.write(data)
+                with open(file_name,"wb") as file:
+                    file.write(data)
                 print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
             except:
                 print(clr(f"  > {translate('Failed')} [ {file_name} ] Retrying...\n",2))
@@ -350,45 +352,45 @@ main_one()
 
 cls(); print(clr(f"\n  - {translate('Creating local files')}..."))
 
-with open('eula.txt','w',encoding='utf-8') as _:
-    _.write('eula=true')
+with open('eula.txt','w',encoding='utf-8') as file:
+    file.write('eula=true')
 
-with open('start_server.cmd', 'w', encoding='utf-8') as _:
-    _.write(f'''
+with open('start_server.cmd', 'w', encoding='utf-8') as file:
+    file.write(f'''
 @echo off
 title Minecraft Server Console [ {name} - {version} ]
 java -Dfile.encoding=UTF-8 -jar AutoPlug-Client.jar
 pause
 ''')
 
-with open('start_server.sh', 'wb') as _:
-    _.write('''
+with open('start_server.sh', 'wb') as file:
+    file.write('''
 #!/bin/sh
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as _:
-    _.write(f'''@echo off
+with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as file:
+    file.write(f'''@echo off
 title Minecraft Anti-Malware [ {name} - {version} ]
 java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
 
-with open('mc-anti-malware.sh', 'wb') as _:
-    _.write('''
+with open('mc-anti-malware.sh', 'wb') as file:
+    file.write('''
 #!/bin/sh
 java -jar MCAntiMalware.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-with open('quick_install_java.cmd', 'w', encoding='utf-8') as _:
-    _.write(f'''@echo off
+with open('quick_install_java.cmd', 'w', encoding='utf-8') as file:
+    file.write(f'''@echo off
 title Java {latest_java_version} Installer
 winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE
 pause
 ''')
 
-with open('quick_install_java.sh', 'wb') as _:
-    _.write(f"""
+with open('quick_install_java.sh', 'wb') as file:
+    file.write(f"""
 #!/bin/sh
 sudo apt install -y wget apt-transport-https
 sudo mkdir -p /etc/apt/keyrings
@@ -398,30 +400,30 @@ sudo apt update
 sudo apt install temurin-{latest_java_version}-jre
 """.encode().replace(b'\r\n',b'\n'))
 
-with open('quick_chmod.sh', 'wb') as _:
-    _.write("""
+with open('quick_chmod.sh', 'wb') as file:
+    file.write("""
 #!/bin/sh
 sudo chmod +x *.sh
 """.encode().replace(b'\r\n',b'\n'))
 
 # creating autoplug configs
 
-with open('autoplug/logger.yml', 'w', encoding='utf-8') as _:
-    _.write('''
+with open('autoplug/logger.yml', 'w', encoding='utf-8') as file:
+    file.write('''
 logger: 
   tasks: 
     live-tasks: 
       enable: true
 ''')
 
-with open('autoplug/backup.yml', 'w', encoding='utf-8') as _:
-    _.write('''
+with open('autoplug/backup.yml', 'w', encoding='utf-8') as file:
+    file.write('''
 backup: 
   enable: false
 ''')
 
-with open('autoplug/general.yml', 'w', encoding='utf-8') as _:
-    _.write(f'''
+with open('autoplug/general.yml', 'w', encoding='utf-8') as file:
+    file.write(f'''
 general: 
   autoplug: 
     target-software: MINECRAFT_SERVER
@@ -441,8 +443,8 @@ general:
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 # BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 
-with open('autoplug/updater.yml', 'w', encoding='utf-8') as _:
-    _.write(f'''
+with open('autoplug/updater.yml', 'w', encoding='utf-8') as file:
+    file.write(f'''
 updater: 
   java-updater: 
     enable: true
@@ -461,8 +463,8 @@ updater:
     profile: AUTOMATIC
 ''')
 
-with open('autoplug/plugins.yml', 'w', encoding='utf-8') as _:
-    _.write('''
+with open('autoplug/plugins.yml', 'w', encoding='utf-8') as file:
+    file.write('''
 plugins: 
   general: 
     keep-removed: true
@@ -739,20 +741,20 @@ def main_two():
   
   '''
 
-    with open('readme.txt', 'w', encoding='utf-8') as _:
-        _.write(string)
+    with open('readme.txt', 'w', encoding='utf-8') as file:
+        file.write(string)
 
     print_read_me(); input(clr(f"  - {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... "))
 
     def config_updater(path):
-        with open(path, 'r', encoding='utf-8') as _:
-            config_data = _.read()
+        with open(path, 'r', encoding='utf-8') as file:
+            config_data = file.read()
         for setting in configs[path]:
             if setting in config_data:
                 config_data = config_data.replace(configs[path][setting], setting)
             config_data = config_data.replace(setting, configs[path][setting])
-        with open(path, 'w', encoding='utf-8') as _:
-            _.write(config_data)
+        with open(path, 'w', encoding='utf-8') as file:
+            file.write(config_data)
 
     # [ updating configs ] try all and ignore errors
 
