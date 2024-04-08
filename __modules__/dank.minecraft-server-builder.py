@@ -760,17 +760,17 @@ def main_two():
         with open(path, 'r', encoding='utf-8') as file:
             config_data = file.read()
         for setting in configs[path]:
-            if setting in config_data:
-                config_data = config_data.replace(configs[path][setting], setting)
+            #if setting in config_data:
+            #    config_data = config_data.replace(configs[path][setting], setting)
             config_data = config_data.replace(setting, configs[path][setting])
         with open(path, 'w', encoding='utf-8') as file:
             file.write(config_data)
 
     # [ updating configs ] try all and ignore errors
 
-    for path in configs:
-        try: config_updater(path)
-        except: pass
+    #for path in configs:
+    #    try: config_updater(path)
+    #    except: pass
 
     # [ updating configs ] try all without ignoring errors
 
