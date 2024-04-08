@@ -187,7 +187,7 @@ def main_one():
 
     # create folders
 
-    for folder in ('world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'plugins/BetterStructures/imports', 'autoplug'): # 'datapacks_backup'
+    for folder in ('world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'plugins/BetterStructures/imports', 'plugins/EliteMobs/imports', 'autoplug'): # 'datapacks_backup'
         try: os.makedirs(folder)
         except: pass
 
@@ -198,11 +198,18 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ('server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml', 'BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines Pack.zip'): # 'PublicCrafters.jar' 4.13.5
+    for file in ('server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml'): # 'PublicCrafters.jar' 4.13.5
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         if file.endswith('.jar'): to_download_file_names.append(f"plugins/{file}")
-        elif file.endswith('.zip'): to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
         else: to_download_file_names.append(file)
+
+    for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines Pack.zip'):
+        to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
+        to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
+
+    for file in ('em_dark_cathedral.zip', 'em_enchantment_sanctums_free.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks.zip', 'em_hallosseum.zip', 'em_id_the_cave.zip', 'em_id_the_climb.zip', 'em_id_the_mines.zip', 'em_knights_castle_v6.zip', 'em_north_pole.zip', 'em_sewers.zip', 'em_shadow_of_the_binder_of_worlds.zip', 'em_the_binder_of_worlds.zip', 'em_the_steamworks.zip'):
+        to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
+        to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
 
     # iris packs
 
@@ -215,7 +222,7 @@ def main_one():
         to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")
     '''
 
-    # spigot plugins
+    # spigot / bukkit plugins
 
     spigot_plugins = {
         #"dankchatroom": 112398, Needs to be updated
@@ -241,9 +248,13 @@ def main_one():
         #"Multiverse-Core": 390,
         "BetterRTP": 36081,
         "ChatFeelings": 12987,
-        #"EliteMobs": 40090,
-        "BetterStructures": 103241
+        "BetterStructures": 103241,
+        "EliteMobs": 40090,
     }
+
+    bukkit_plugins = [
+        "worldguard"
+    ]
 
     for _ in ("1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"):
         if version.startswith(_):
@@ -259,7 +270,10 @@ def main_one():
 
     for plugin, id in spigot_plugins.items():
         to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/download")
-        #to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/versions/latest/download")
+        to_download_file_names.append(f"plugins/{plugin}.jar")
+
+    for plugin in bukkit_plugins:
+        to_download_urls.append(f"https://dev.bukkit.org/projects/{plugin}/files/latest")
         to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
@@ -614,6 +628,14 @@ plugins:
         artifact-name: FastAsyncWorldEdit-Bukkit
   SmoothTimber:
     spigot-id: 39965
+  EliteMobs:
+    alternatives: 
+      github: 
+        repo-name: MagmaGuy/EliteMobs
+        asset-name: EliteMobs
+  WorldGuard:
+    exclude: false
+    bukkit-id: 31054
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
@@ -724,6 +746,10 @@ configs = {
     "plugins/PhysicsToGo/config.yml": {
         "tree-regeneration: true": "tree-regeneration: false",
         "explosive-regeneration: true": "explosive-regeneration: false"
+    },
+
+    "plugins/BetterStructures/config.yml": {
+        "warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"
     }
 
 }
