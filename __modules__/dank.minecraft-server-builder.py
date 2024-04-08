@@ -1,14 +1,15 @@
+from genericpath import isdir
 import os
-import shutil
 import sys
 import time
+import shutil
 import requests
 import subprocess
 from translatepy import Translator
 from dankware import white_normal, white_bright, red, red_normal, red_dim
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
 
-headers = {'User-Agent': f'dank.tool {os.environ["DANK_TOOL_VERSION"]}', 'Content-Type': 'application/json'}
+headers = {'User-Agent': ('dank.tool' if "DANK_TOOL_VERSION" not in os.environ else f'dank.tool {os.environ["DANK_TOOL_VERSION"]}'), 'Content-Type': 'application/json'}
 
 # banners
 
@@ -462,6 +463,8 @@ updater:
   plugins-updater: 
     enable: true
     profile: AUTOMATIC
+    web-database: 
+      enable: false
   mods-updater: 
     enable: false
     profile: AUTOMATIC
@@ -796,10 +799,10 @@ def main_two():
     os.rename("world_nether", "world-iris_nether")
     os.rename("world_the_end", "world-iris_the_end")
 
-    with open('bukkit.yml', 'r', encoding='utf-8') as file:
+    with open('server.properties', 'r', encoding='utf-8') as file:
         data = file.read().replace("level-name=world", "level-name=world-iris")
 
-    with open('bukkit.yml', 'w', encoding='utf-8') as file:
+    with open('server.properties', 'w', encoding='utf-8') as file:
         file.write(data)
 
     if playit:
