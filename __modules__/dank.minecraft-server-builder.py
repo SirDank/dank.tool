@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 import time
 import requests
@@ -84,6 +85,12 @@ def main_one():
 
     # user inputs
 
+    print("")
+    while True:
+        version = input(clr(f"  > {translate('Version')}: ") + red)
+        if version in version_list: break
+        rm_line()
+
     max_motd_len = 49
     used_motd_len = 10
     print("")
@@ -92,12 +99,6 @@ def main_one():
         if not len(name) > (max_motd_len - used_motd_len): break
         rm_line()
     motd_spaces = ' '*int((max_motd_len - used_motd_len - len(name))/4)
-
-    print("")
-    while True:
-        version = input(clr(f"  > {translate('Version')}: ") + red)
-        if version in version_list: break
-        rm_line()
 
     title(f"𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ {name} - {version} ]")
 
@@ -777,6 +778,29 @@ def main_two():
                 string = translate('Press [ ENTER ] to retry or type "skip" to skip')
                 choice = input(clr(f"\n{err(sys.exc_info(),'mini')}\n\n  > {string}: ", 2) + white_bright)
                 if choice == "skip": break
+
+    string = f'''
+  - {translate('Follow these steps to enable custom world generation')}:
+
+  [1] {translate('Start the server')}
+  [2] {translate('Run the following command:')} iris create world-iris
+  [3] {translate('Wait for it to complete then stop the server')}
+
+  > {translate('Press [ ENTER ] after you have followed the steps')}... '''
+
+    while not os.path.isdir("world-iris"):
+        print_read_me(); input(clr(string))
+
+    shutil.move("world/datapacks", "world-iris/datapacks")
+    shutil.rmtree("world")
+    os.rename("world_nether", "world-iris_nether")
+    os.rename("world_the_end", "world-iris_the_end")
+
+    with open('bukkit.yml', 'r', encoding='utf-8') as file:
+        data = file.read().replace("level-name=world", "level-name=world-iris")
+
+    with open('bukkit.yml', 'w', encoding='utf-8') as file:
+        file.write(data)
 
     if playit:
 
