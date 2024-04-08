@@ -171,11 +171,14 @@ def main_one():
 
     # create and go to workspace
 
-    counter = 1
-    dir_name = f"{name}_{counter}"
-    while os.path.exists(dir_name):
-        counter += 1
+    if os.path.exists(name):
+        counter = 2
         dir_name = f"{name}_{counter}"
+        while os.path.exists(dir_name):
+            counter += 1
+            dir_name = f"{name}_{counter}"
+    else:
+        dir_name = name
     os.makedirs(dir_name)
     os.system(f'explorer.exe "{dir_name}"')
     os.chdir(dir_name)
@@ -213,15 +216,15 @@ def main_one():
     # spigot plugins
 
     spigot_plugins = {
-        "dankchatroom": 112398,
+        #"dankchatroom": 112398, Needs to be updated
         #"ActionHealth": 2661,
         "BetterSleeping": 60837,
         "BloodEffect": 90955,
         "BloodFading": 99263,
         "ChestSort": 59773,
         #"Chunky": 81534,
-        "Corpses": 96774,
-        "NeoPerformance": 103183,
+        #"Corpses": 96774, # breaks on latest # disabled config
+        #"NeoPerformance": 103183, # removed from spigot? # disabled config
         "PLayerNPC": 93625,
         "ProtocolLib": 1997,
         "SkinRestorer": 2124,
@@ -304,7 +307,7 @@ def main_one():
 
     # begin multithreaded downloader
 
-    print(clr(f"\n  - {translate('Starting Multiple Downloads... [ this might take a few minutes ]')}"))
+    print(clr(f"\n  - {translate('Starting Multiple Downloads... [ this might take a few minutes ]')}\n"))
 
     while True:
         try:
@@ -674,9 +677,9 @@ configs = {
         "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
     },
 
-    "plugins/Corpses/config.yml": {
-        "secondsToDisappear: 300": "secondsToDisappear: 3600",
-    },
+    #"plugins/Corpses/config.yml": {
+    #    "secondsToDisappear: 300": "secondsToDisappear: 3600",
+    #},
 
     "plugins/Essentials/config.yml": {
         "nickname-prefix: '~'": "nickname-prefix: ''",
@@ -706,9 +709,9 @@ configs = {
         "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
     },
 
-    "plugins/NeoPerformance/performanceConfig.yml": {
-        "broadcastHalt: false": "broadcastHalt: true",
-    },
+    #"plugins/NeoPerformance/performanceConfig.yml": {
+    #    "broadcastHalt: false": "broadcastHalt: true",
+    #},
 
     "plugins/ntdLuckyBlock/config.yml": {
         "break-permissions: true": "break-permissions: false",
@@ -728,10 +731,13 @@ def main_two():
 
     string = f'''
 
+  [ Scripts ]
   - quick_chmod.sh : {translate('Script to make all .sh files executable')}
-  - quick_install_java.sh / quick_install_java.cmd : {translate('Script to install Temurin JRE')}
-  - mc-anti-malware.sh / mc-anti-malware.cmd : {translate('Script to start mc-anti-malware')}
-  - start_server.sh / start_server.cmd : {translate('Script to start your server')}
+  - quick_install_java.cmd / quick_install_java.sh : {translate('Script to install Temurin JRE')}
+  - mc-anti-malware.cmd / mc-anti-malware.sh : {translate('Script to start mc-anti-malware')}
+  - start_server.cmd / start_server.sh : {translate('Script to start your server')}
+  
+  [ Autoplug Commands ]
   - ".check java" : {translate('Command to install Java VM')}
   - ".start" : {translate('Command to start the server')}
   - ".stop" : {translate('Command to stop the server')}
