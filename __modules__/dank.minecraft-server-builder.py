@@ -207,7 +207,7 @@ def main_one():
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
-    for file in ('em_dark_cathedral.zip', 'em_enchantment_sanctums_free.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks.zip', 'em_hallosseum.zip', 'em_id_the_cave.zip', 'em_id_the_climb.zip', 'em_id_the_mines.zip', 'em_knights_castle_v6.zip', 'em_north_pole.zip', 'em_sewers.zip', 'em_shadow_of_the_binder_of_worlds.zip', 'em_the_binder_of_worlds.zip', 'em_the_steamworks.zip'):
+    for file in ('Adventurers_Guild.zip', 'em_dark_cathedral.zip', 'em_enchantment_sanctums_free.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks.zip', 'em_hallosseum.zip', 'em_id_the_cave.zip', 'em_id_the_climb.zip', 'em_id_the_mines.zip', 'em_knights_castle_v6.zip', 'em_north_pole.zip', 'em_sewers.zip', 'em_shadow_of_the_binder_of_worlds.zip', 'em_the_binder_of_worlds.zip', 'em_the_steamworks.zip'):
         to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
         to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
 
