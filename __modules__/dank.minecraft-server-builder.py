@@ -187,7 +187,7 @@ def main_one():
 
     # create folders
 
-    for folder in ('world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'autoplug'): # 'datapacks_backup'
+    for folder in ('world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'plugins/BetterStructures/imports', 'autoplug'): # 'datapacks_backup'
         try: os.makedirs(folder)
         except: pass
 
@@ -241,7 +241,8 @@ def main_one():
         #"Multiverse-Core": 390,
         "BetterRTP": 36081,
         "ChatFeelings": 12987,
-        # ADD EliteMobs & BetterStructures
+        #"EliteMobs": 40090,
+        "BetterStructures": 103241
     }
 
     for _ in ("1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"):
@@ -262,7 +263,6 @@ def main_one():
         to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
-    # Iris, FastAsyncWorldEdit, EssentialsX, mcMMO, TabTPS, PhysicsToGo
 
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
