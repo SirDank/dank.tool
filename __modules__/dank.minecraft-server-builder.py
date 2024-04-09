@@ -1,10 +1,10 @@
-from genericpath import isdir
 import os
 import sys
 import time
 import shutil
 import requests
 import subprocess
+from random import randint
 from translatepy import Translator
 from dankware import white_normal, white_bright, red, red_normal, red_dim
 from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
@@ -187,7 +187,20 @@ def main_one():
 
     # create folders
 
-    for folder in ('world/datapacks', 'world_nether/datapacks', 'world_the_end/datapacks', 'plugins/Iris/packs', 'plugins/BetterStructures/imports', 'plugins/EliteMobs/imports', 'autoplug'): # 'datapacks_backup'
+    for folder in (
+        'world/datapacks',
+        'world_nether/datapacks',
+        'world_the_end/datapacks',
+        'plugins/Iris/packs',
+        'plugins/BetterStructures/imports',
+        'plugins/BetterStructures/schematics/default',
+        'plugins/BetterStructures/schematics/exploration',
+        'plugins/BetterStructures/schematics/BetterStructures Free Elite Shrines',
+        'plugins/BetterStructures/elitemobs/powers/BetterStructures Free Elite Shrines',
+        'plugins/BetterStructures/elitemobs/customitems/BetterStructures Free Elite Shrines',
+        'plugins/BetterStructures/elitemobs/custombosses/BetterStructures Free Elite Shrines',
+        'plugins/EliteMobs/imports',
+        'autoplug'): # 'datapacks_backup'
         try: os.makedirs(folder)
         except: pass
 
@@ -723,8 +736,9 @@ configs = {
     #},
 
     "plugins/LevelledMobs/rules.yml": {
-        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%Lvl %mob-lvl%&8 &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator%",
-        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%Lvl %mob-lvl%&8 &f%entity-health-rounded%&8 %tiered%%heart_symbol%",
+        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%%mob-lvl% &r%health-indicator%",
+        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%%mob-lvl%&8 &f%entity-health-rounded%",
+        "&8&l༺ &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "&f%entity-health-rounded% %tiered%%heart_symbol%",
         "- nametag_using_numbers": "#- nametag_using_numbers",
         "#- nametag_using_indicator": "- nametag_using_indicator",
         "- weighted_random_Levelling": "#- weighted_random_Levelling",
@@ -780,7 +794,7 @@ def main_two():
     with open('readme.txt', 'w', encoding='utf-8') as file:
         file.write(string)
 
-    print_read_me(); input(clr(f"  - {translate('Start the server once ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... "))
+    print_read_me(); input(clr(f"  - {translate('Start the server using: start_server.cmd ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... "))
 
     def config_updater(path):
         with open(path, 'r', encoding='utf-8') as file:
@@ -811,9 +825,9 @@ def main_two():
     string = f'''
   - {translate('Follow these steps to enable custom world generation')}:
 
-  [1] {translate('Start the server')}
-  [2] {translate('Run the following command:')} iris create world-iris
-  [3] {translate('Wait for it to complete then stop the server')}
+  [1] {translate('Start the server again using the following command: ')} .start
+  [2] {translate('Copy and paste the following command:')} iris create name=world-iris seed={randint(1,99999)}
+  [3] {translate('Wait for it to complete then stop the server using the following command: ')} .stop
 
   > {translate('Press [ ENTER ] after you have followed the steps')}... '''
 
