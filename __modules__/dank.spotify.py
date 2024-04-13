@@ -32,7 +32,6 @@ def main():
 
     cls(); print(align(clr(banner1,4,colours=(green, green_dim)) + align(clr('+')) + align(clr(banner2,4,colours=(yellow, yellow_dim)))))
     print(clr(f"\n  - {translate('Credits to amd64fox & spicetify contributors!')}"))
-    print(clr(f"\n  - {translate('NOTE: If you have never installed Spotify before, this will install it for you but you will need to sign in manually. In only this case you will need to re-run this module to complete the spicetify installation')}."))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin installation')}... "))
 
     # main
@@ -53,7 +52,7 @@ def main():
     #os.system('powershell -Command "& iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
     print(clr(f"\n  - {translate('applying Spicetify')}...\n"))
     os.system('spicetify restore backup apply')
-    print(clr("\n  [ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom\n  - Theme: Retroblur (dream)"))
+    print(clr("\n  [ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom (darkmono)"))
     print(clr(f"\n  - {translate('Sleeping for 5 seconds')}...\n"))
     time.sleep(5)
     #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
