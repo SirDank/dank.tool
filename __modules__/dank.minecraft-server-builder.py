@@ -826,7 +826,7 @@ def main_two():
   - {translate('Follow these steps to enable custom world generation')}:
 
   [1] {translate('Start the server again using the following command: ')} .start
-  [2] {translate('Copy and paste the following command:')} iris create name=world-iris seed={randint(1,99999)}
+  [2] {translate('Copy and paste the following command:')} iris create name=world-iris seed={randint(1,9999999999)}
   [3] {translate('Wait for it to complete then stop the server using the following command: ')} .stop
 
   > {translate('Press [ ENTER ] after you have followed the steps')}... '''
