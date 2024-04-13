@@ -187,7 +187,10 @@ def main():
     os.system('explorer.exe "dank.mc-server-scanner"')
     os.chdir('dank.mc-server-scanner')
 
-    if not os.path.isfile('scan_count.txt'):
+    if not os.path.isfile('scan_count_java.txt'):
+        with open('scan_count.txt','w',encoding='utf-8') as _:
+            _.write('0')
+    if not os.path.isfile('scan_count_bedrock.txt'):
         with open('scan_count.txt','w',encoding='utf-8') as _:
             _.write('0')
     if not os.path.isfile('servers.txt'):
@@ -246,11 +249,11 @@ def main():
         # saving scanned ips
 
         try:
-            with open('scan_count.txt','r',encoding='utf-8') as _:
+            with open(f'scan_count_{server_type}.txt','r',encoding='utf-8') as _:
                 scan_count = int(_.read())
         except: scan_count = 0
         scan_count += len(ips)
-        with open('scan_count.txt','w',encoding='utf-8') as _:
+        with open(f'scan_count_{server_type}.txt','w',encoding='utf-8') as _:
             _.write(str(scan_count))
         print(clr(f"\n  - Totally Scanned {scan_count} IPs!"))
         time.sleep(5)
