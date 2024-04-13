@@ -181,7 +181,7 @@
 ## ♦️ Suggested Extensions / Themes ♦️
 
 - Extension: Beautiful Lyrics
-- Theme: Bloom
+- Theme: Bloom (darkmono)
 
 ## ♦️ Preview ♦️
 
