@@ -187,6 +187,8 @@ def main():
     os.system('explorer.exe "dank.mc-server-scanner"')
     os.chdir('dank.mc-server-scanner')
 
+    if os.path.isfile('scan_count.txt'):
+        os.rename('scan_count.txt','scan_count_java.txt')
     if not os.path.isfile('scan_count_java.txt'):
         with open('scan_count.txt','w',encoding='utf-8') as _:
             _.write('0')
