@@ -8,10 +8,10 @@ import os
 import sys
 import json
 import time
+import datetime
 import requests
 from rich.panel import Panel
 from win11toast import notify
-from datetime import datetime
 from rich.columns import Columns
 from rich.console import Console
 from translatepy import Translator
@@ -73,8 +73,8 @@ def updated_on(url, dankware_module = True):
         date, time = response[0]["commit"]["author"]["date"].split("T")
         date = date.split("-")
         time = time.replace("Z","").split(":")
-        date_time_data = datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
-        return f"[bright_green]{get_duration(date_time_data, datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
+        date_time_data = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
+        return f"[bright_green]{get_duration(date_time_data, datetime.datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
 
     except: return "" # [red1]⚠️
 
@@ -113,12 +113,15 @@ def get_menu_request_responses(task_id, request_key):
                 else: menu_request_responses[request_key] = "[red1]⚠️"
             except: menu_request_responses[request_key] = "[red1]⚠️"
 
-        case 4 | 5 | 6 | 7: # get last update time for modules based on external repos
+def get_menu_request_responses_api(task_id, request_key):
+
+    match task_id:
+        case 0 | 1 | 2 | 3: # get last update time for modules based on external repos
             match task_id:
-                case 4: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=.&page=1&per_page=1"
-                case 5: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
-                case 6: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=.&page=1&per_page=1"
-                case 7: url = "https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1"
+                case 0: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=.&page=1&per_page=1"
+                case 1: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
+                case 2: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=.&page=1&per_page=1"
+                case 3: url = "https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1"
             menu_request_responses[request_key] = updated_on(url, False)
 
         case _: # get last update time for modules based on internal repo
@@ -740,35 +743,76 @@ if __name__ == "__main__":
 
         # KEEP request_keys IN ORDER!
 
-        request_keys = tuple(
-            (
-                "dankware_runs",
-                "danktool_runs",
-                "motd",
-                "chatroom_user_count",
-                "SpotX",
-                "Spicetify",
-                "NetLimiter",
-                "Microsoft-Activation-Scripts",
-                "dank.minecraft-server-builder",
-                "dank.minecraft-server-scanner",
-                #"dank.auto-clicker",
-                "dank.browser-backup",
-                "dank.game",
-                "dank.winget"
-            )
+        request_keys = (
+            "dankware_runs",
+            "danktool_runs",
+            "motd",
+            "chatroom_user_count"
+        )
+
+        request_keys_api = (
+            "SpotX",
+            "Spicetify",
+            "Microsoft-Activation-Scripts",
+            "NetLimiter",
+            "dank.minecraft-server-builder",
+            "dank.minecraft-server-scanner",
+            #"dank.auto-clicker",
+            "dank.browser-backup",
+            "dank.game",
+            "dank.winget"
         )
 
         while True:
             try:
                 multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys)
-                del request_keys
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
                 rm_line(); rm_line()
 
-    del updated_on, download_assets, download_offline_modules, get_menu_request_responses
+        # hourly limit on github api
+
+        github_api = False
+        if not os.path.isfile("github_api.json"):
+            with open("github_api.json", "w", encoding="utf-8") as _:
+                _.write("{}")
+            github_api = True
+
+        with open("github_api.json", "r", encoding="utf-8") as _:
+            github_api_json = json.loads(_.read())
+        if "updated_on" not in github_api_json or github_api_json["updated_on"] < (datetime.datetime.now() - datetime.timedelta(hours=1)).strftime("%d-%m-%Y %H:%M"):
+            github_api = True
+
+        for key in request_keys_api:
+            if key not in github_api_json:
+                github_api = True
+                break
+
+        if github_api:
+
+            while True:
+                try:
+                    multithread(get_menu_request_responses_api, 50, tuple(_ for _ in range(len(request_keys_api))), request_keys_api)
+                    break
+                except:
+                    input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                    rm_line(); rm_line()
+
+            github_api_json["updated_on"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
+
+            for key in request_keys_api:
+                github_api_json[key] = menu_request_responses[key]
+
+            with open("github_api.json", "w", encoding="utf-8") as _:
+                _.write(json.dumps(github_api_json, indent=4))
+
+        else:
+
+            for key in request_keys_api:
+                menu_request_responses[key] = github_api_json[key]
+
+    del updated_on, download_assets, download_offline_modules, get_menu_request_responses, request_keys, request_keys_api, github_api
 
     # main
 
@@ -965,6 +1009,6 @@ if __name__ == "__main__":
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
-                print(clr(f"\n  > {_translate('Error Reported! If it is an OS error, Please run as admin and try again!')}\n\n  > {_translate('If it is a logic error, it will be fixed soon!')}"))
+                print(clr(f"\n  > {_translate('Error Reported! If it is a logic error, it will be fixed soon!')}"))
 
             input(clr("\n  > Press [ENTER] to return to the menu... "))
