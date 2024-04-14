@@ -816,8 +816,7 @@ if __name__ == "__main__":
 
     # main
 
-    _ = ThreadPoolExecutor(10)
-    _.submit(notify, '[ SirDank ]',
+    ThreadPoolExecutor().submit(notify, '[ SirDank ]',
         _translate('Thank you for using my tool ❤️\nShare it with your friends!'),
         icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
         image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
@@ -915,13 +914,13 @@ if __name__ == "__main__":
                     os.system('start https://dank-site.onrender.com/')
                     continue
 
-            title(choice['title'])
-            project = choice['project']
+            TITLE = choice['title']
+            PROJECT = choice['project']
             os.environ['DISCORD_RPC'] = choice['rpc']
 
             # built-in modules
 
-            match project:
+            match PROJECT:
                 case "dank.tool settings":
                     dank_tool_settings()
                     continue
@@ -939,16 +938,16 @@ if __name__ == "__main__":
 
                 while True:
                     try:
-                        with open(f'__local_modules__/{project}.py', 'r', encoding='utf-8') as _:
+                        with open(f'__local_modules__/{PROJECT}.py', 'r', encoding='utf-8') as _:
                             code = _.read(); break
                     except:
-                        translation = _translate(f"Failed to get code! Unable to read '__local_modules__/{project}.py'! Press [ENTER] to try again")
+                        translation = _translate(f"Failed to get code! Unable to read '__local_modules__/{PROJECT}.py'! Press [ENTER] to try again")
                         input(clr(f"\n  > {translation}... ",2)); del translation
                         rm_line(); rm_line()
 
             else: # get src from github if not debug mode else get src locally
 
-                if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{project}.py') ): # OFFLINE_SRC / ONLINE_MODE defined in executor.py
+                if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{PROJECT}.py') ): # OFFLINE_SRC / ONLINE_MODE defined in executor.py
 
                     # check for update before getting src
 
@@ -965,32 +964,32 @@ if __name__ == "__main__":
                             rm_line(); rm_line()
 
                     while True:
-                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode(); break
+                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode(); break
                         except Exception as exc:
-                            input(clr(f"\n  > {_translate(f'Failed to get code for {project}! {exc} | Press [ENTER] to try again')}... ",2))
+                            input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again')}... ",2))
                             rm_line(); rm_line()
 
                 else:
                     while True:
                         try:
-                            with open(f'__modules__/{project}.py', 'r', encoding='utf-8') as _:
+                            with open(f'__modules__/{PROJECT}.py', 'r', encoding='utf-8') as _:
                                 code = _.read(); break
                         except:
-                            translation = _translate(f"Failed to get code! Unable to read '__modules__/{project}.py'! Press [ENTER] to try again")
+                            translation = _translate(f"Failed to get code! Unable to read '__modules__/{PROJECT}.py'! Press [ENTER] to try again")
                             input(clr(f"\n  > {translation}... ",2)); del translation
                             rm_line(); rm_line()
 
             # execute src
 
             if code == "404: Not Found":
-                if project.startswith('_'):
-                    print(clr(f"\n  - {_translate(f'{project[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
+                if PROJECT.startswith('_'):
+                    print(clr(f"\n  - {_translate(f'{PROJECT[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
                 else:
-                    print(clr(f"\n  - {_translate(f'{project} has not been released yet! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds')}...",2))
                 time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  - {_translate(f'{project} executed successfully! Returning to menu in 3 seconds')}..."))
+                cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds')}..."))
                 time.sleep(3)
 
         except:
@@ -1005,7 +1004,9 @@ if __name__ == "__main__":
 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
-                    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> Module: {choice['title']}\n\n{err_message}```"}); break
+                    try:
+                        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
+                        break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again')}... ",2))
                         rm_line(); rm_line()
