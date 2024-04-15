@@ -812,7 +812,9 @@ if __name__ == "__main__":
             for key in request_keys_api:
                 menu_request_responses[key] = github_api_json[key]
 
-    del updated_on, download_assets, download_offline_modules, get_menu_request_responses, request_keys, request_keys_api, github_api
+        del request_keys, request_keys_api, github_api
+
+    del updated_on, download_assets, download_offline_modules, get_menu_request_responses
 
     # main
 
