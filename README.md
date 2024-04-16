@@ -64,7 +64,7 @@
 - [x] Add offline mode for offline scripts ( High Priority )
 - [x] Add translator
 - [x] Finish reworking dank.downloader.py
-- [ ] Linux wine support
+- [ ] Linux / Wine support
 
 ## ♦️ Support ♦️
 
@@ -186,6 +186,10 @@
 ## ♦️ Preview ♦️
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/d4830eb1-d606-4906-a2fb-9256eb7733fd"></p><br>
+
+## ♦️ Youtube ♦️
+
+<br><p align="center"><a href="https://youtu.be/Aeb2bVaTj9k"><img width="400" alt="image" src="http://img.youtube.com/vi/Aeb2bVaTj9k/0.jpg"></a></p><br>
 
 <p>&nbsp;</p>
 
