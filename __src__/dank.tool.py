@@ -999,8 +999,9 @@ if __name__ == "__main__":
             err_message = err(sys.exc_info())
             print(clr(err_message, 2))
 
-            if "Error Type: KeyboardInterrupt" in err_message:
-
+            if "Error Type: SystemExit" in err_message:
+                os.system("taskkill /f /t /im dank.tool.exe")
+            elif "Error Type: KeyboardInterrupt" in err_message:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]')}!"))
 
