@@ -187,9 +187,9 @@
 
 <br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/d4830eb1-d606-4906-a2fb-9256eb7733fd"></p><br>
 
-## ♦️ Youtube ♦️
+## ♦️ Preview Video ♦️
 
-<br><p align="center"><a href="https://youtu.be/Aeb2bVaTj9k"><img width="400" alt="image" src="http://img.youtube.com/vi/Aeb2bVaTj9k/0.jpg"></a></p><br>
+<br><p align="center"><a href="https://mega.nz/embed/8eABmIBJ#yZBE4lVj-bPETlauIvOuKxulJyRfjClRAOHmL6_iOs8"><img width="400" alt="image" src="https://i.imgur.com/VQWZFsU.png"></a></p><br>
 
 <p>&nbsp;</p>
 
