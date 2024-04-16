@@ -855,32 +855,32 @@ if __name__ == "__main__":
 
         while True: # user input
 
-            choice = input(clr("  > Choice: ") + red)
+            _choice = input(clr("  > Choice: ") + red)
 
-            if choice.isdigit() and 1 <= int(choice) <= int(len(modules) + len(local_modules)):
+            if _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
 
-                if int(choice) <= len(modules):
-                    choice = modules[list(modules)[int(choice) - 1]]
+                if int(_choice) <= len(modules):
+                    _choice = modules[list(modules)[int(_choice) - 1]]
                     LOCAL_MODULE = False
                 else:
-                    choice = local_modules[list(local_modules)[int(choice) - len(modules) - 1]]
+                    _choice = local_modules[list(local_modules)[int(_choice) - len(modules) - 1]]
                     LOCAL_MODULE = True
 
-                if not LOCAL_MODULE and choice['category']:
+                if not LOCAL_MODULE and _choice['category']:
 
-                    print_category_modules(choice)
+                    print_category_modules(_choice)
 
                     while True:
-                        _choice = input(clr("  > Choice: ") + red)
-                        if _choice == '0':
+                        __choice = input(clr("  > Choice: ") + red)
+                        if __choice == '0':
                             print_modules()
                             break
-                        if _choice.isdigit() and 1 <= int(_choice) <= (len(choice) - 1):
-                            choice = choice[list(choice)[int(_choice) - 1]]
+                        if __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
+                            _choice = _choice[list(_choice)[int(__choice) - 1]]
                             break
                         rm_line()
 
-                    if 'category' not in choice:
+                    if 'category' not in _choice:
                         break
 
                 else:
@@ -888,7 +888,7 @@ if __name__ == "__main__":
 
             else:
 
-                match choice.lower():
+                match _choice.lower():
                     case 'refresh': # re-align ui
                         print_modules()
                     case 'debug': # debug menu
@@ -902,7 +902,7 @@ if __name__ == "__main__":
 
             # built-in modules
 
-            match choice['project']:
+            match _choice['project']:
                 case "Discord Server":
                     os.system('start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
                     continue
@@ -916,9 +916,9 @@ if __name__ == "__main__":
                     os.system('start https://dank-site.onrender.com/')
                     continue
 
-            TITLE = choice['title']
-            PROJECT = choice['project']
-            os.environ['DISCORD_RPC'] = choice['rpc']
+            TITLE = _choice['title']
+            PROJECT = _choice['project']
+            os.environ['DISCORD_RPC'] = _choice['rpc']
 
             # built-in modules
 
