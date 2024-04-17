@@ -20,32 +20,19 @@ def print_banner():
 
 def handle_response(cmd, results, mode):
 
+    indexes = [0]
+    cmd = cmd.stdout.decode('utf-8').splitlines()
+    while not cmd[0].startswith('Name'):
+        cmd = cmd[1:]
+
     try:
-        cmd = cmd.stdout.decode('utf-8')
-        for line in cmd.splitlines():
-            if line.count('-') > 5:
-                cmd = cmd.split(line)[1].splitlines()[1:]
-                break
+        for char in ('I', 'V', 'A', 'S'):
+            indexes.append(cmd[0].index(char))
     except Exception as exc:
-        raise Exception(f"Error parsing response!\n\n{cmd.stdout.decode('utf-8')}") from exc
-    indexes = []
+        raise RuntimeError(f"Error parsing response!\n\n{cmd}") from exc
 
-    prev = ''
-    for index, char in enumerate(cmd[0]):
-        if prev == ' ' and char != ' ':
-            indexes.append(index)
-        prev = char
-    for line in cmd[1:]:
-        prev = ''
-        for index, char in enumerate(line):
-            if prev == ' ' and char != ' ' and index in indexes:
-                indexes.append(index)
-            prev = char
-
-    max_count = max([indexes.count(_) for _ in sorted(set(indexes))])
-    indexes = [_ for _ in sorted(set(indexes)) if indexes.count(_) == max_count]
-    indexes.insert(0,0)
     results.clear()
+    cmd = cmd[2:]
     index = 1
 
     for line in cmd:
