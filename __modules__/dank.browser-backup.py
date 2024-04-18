@@ -37,7 +37,7 @@ def backup(browser, compression_level):
         # check if chrome is installed
 
         if not chrome_installed():
-            cls(); print(clr(f"\n  - {translate('Chrome possibly not installed')}!",2))
+            cls(); print(clr(f"\n  - {translate('Chrome possibly not installed!')}",2))
 
         # set path to backup
 
@@ -55,12 +55,12 @@ def backup(browser, compression_level):
             for proc in process_iter(['name']):
                 if proc.info['name'] == 'chrome.exe':
                     chrome_running = True; break
-            if chrome_running: input(clr("\n  > Chrome is running! Terminate it and press [ENTER]... ",2))
+            if chrome_running: input(clr(f"\n  > {translate('Chrome is running! Terminate it and press [ENTER]...')} ",2))
             else: break
 
         # export registry keys
 
-        cls(); print(clr(f"\n  - {translate('Exporting registry keys')}..."))
+        cls(); print(clr(f"\n  - {translate('Exporting registry keys...')}"))
         export_registry_keys('HKEY_CURRENT_USER', r'Software\Google\Chrome\PreferenceMACs', export_path='chrome.reg')
 
         # compress files
@@ -74,9 +74,9 @@ def backup(browser, compression_level):
 
         now = datetime.datetime.now()
         zip_name = f'chrome_{now.strftime("%d-%m-%Y")}_{now.strftime("%I-%M-%S-%p")}.zip'
-        instructions = f'\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!'
-        with open('instructions.txt', 'w', encoding='utf-8') as _:
-            _.write(instructions)
+        instructions = translate(f'\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!')
+        with open('instructions.txt', 'w', encoding='utf-8') as file:
+            file.write(instructions)
 
         width = os.get_terminal_size().columns
         job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
@@ -97,11 +97,11 @@ def backup(browser, compression_level):
 
         # cleanup
 
-        print(clr("\n  - Cleaning..."))
+        print(clr(f"\n  - {translate('Cleaning...')}"))
         os.remove("chrome.reg")
         os.remove("instructions.txt")
         os.system(f'explorer.exe "{os.getcwd()}"')
-        cls(); input(clr(instructions + '\n\n  > Press [ENTER] once you have read the steps... '))
+        cls(); input(clr(instructions + f"\n\n  > {translate('Press [ENTER] once you have read the steps...')} "))
 
     #elif browser == "Firefox"
     #elif browser == "Opera":
@@ -126,7 +126,8 @@ def main():
 
     cls(); banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     try:
-        if not is_admin(): raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
+        if not is_admin():
+            raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
     except: sys.exit(clr(err(sys.exc_info()),2))
 
     # folders
@@ -149,7 +150,7 @@ def main():
 
     print("")
     while True:
-        choice = input(clr("  > Enter choice: ") + red)
+        choice = input(clr(f"  > {translate('Enter choice')}: ") + red)
         if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(browsers)):
             choice = browsers[int(choice)-1]; break
         rm_line()

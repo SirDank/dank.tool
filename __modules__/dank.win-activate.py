@@ -31,11 +31,11 @@ def main():
 
     cls(); print(clr(align(banner),4,colours=(red, red_dim)))
     print(clr(f"\n  - {translate('Credits to massgravel team!')}"))
-    input(clr(f"\n  > {translate('Hit [ ENTER ] to begin Microsoft-Activation-Script')}... "))
+    input(clr(f"\n  > {translate('Hit [ ENTER ] to begin Microsoft-Activation-Script...')} "))
 
     # main
 
-    cls(); print(clr(f"\n  - {translate('Exit inside the MAS window to return to the menu')}..."))
+    cls(); print(clr(f"\n  - {translate('Exit inside the MAS window to return to the menu...')}"))
     os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
 
 if __name__ == "__main__":

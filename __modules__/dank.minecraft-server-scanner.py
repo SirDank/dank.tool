@@ -129,13 +129,13 @@ def main():
 
     banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n\n'
     cls(); print(align(clr(banner,4,colours=(red, red_dim))))
-    print(clr(f"\n  - Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool')}!"))
+    print(clr(f"\n  - Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
     match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
         case "1": os.system("start https://dank-site.onrender.com/minecraft-java-servers")
         case "2": os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
 
     cls(); print(align(clr(banner,4,colours=(red, red_dim))))
-    print(clr(f"\n  - {translate('Start with 100 threads and note the performance impact')}.\n\n  - {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value')}!\n\n  - {translate('Test it for the first time with 50000 IPs, it will take a few seconds to generate')}."))
+    print(clr(f"\n  - {translate('Start with 100 threads and note the performance impact.')}\n\n  - {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value!')}\n\n  - {translate('Test it for the first time with 50000 IPs, it will take a few seconds to generate.')}"))
 
     print("")
     while True:
@@ -163,7 +163,7 @@ def main():
 
     if server_type == "java":
         cls(); print(align(clr(banner,4,colours=(red, red_dim))))
-        print(clr(f"\n  - [0] {translate('Default Scan: Generates completely random IPs, good chance to find private / locally hosted servers, low find-rate')}.\n\n  - [1] {translate('Targetted Scan: Generates random IPs based on custom rules, good chance to find data center servers, high find-rate')}."))
+        print(clr(f"\n  - [0] {translate('Default Scan: Generates completely random IPs, good chance to find private / locally hosted servers, low find-rate.')}\n\n  - [1] {translate('Targetted Scan: Generates random IPs based on custom rules, good chance to find data center servers, high find-rate.')}"))
 
         print("")
         while True:
@@ -175,7 +175,7 @@ def main():
 
     # disclaimer
 
-    cls(); input(clr(f"\n  [IMPORTANT]\n\n  - {translate('Do not use [ Ctrl + C ] without selecting text first')}!\n\n  - {translate('All the servers are saved to servers.txt')}!\n\n  - {translate('Be responsible! Do not use the scanner for the wrong reasons')}!\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner')}... "))
+    cls(); input(clr(f"\n  [IMPORTANT]\n\n  - {translate('Do not use [ Ctrl + C ] without selecting text first!')}\n\n  - {translate('All the servers are saved to servers.txt!')}\n\n  - {translate('Be responsible! Do not use the scanner for the wrong reasons!')}\n\n  > {translate('Press [ ENTER ] to start the multithreaded scanner...')} "))
     cls()
 
     # change directory
@@ -192,19 +192,19 @@ def main():
             os.remove('scan_count_java.txt')
         os.rename('scan_count.txt','scan_count_java.txt')
     if not os.path.isfile('scan_count_java.txt'):
-        with open('scan_count.txt','w',encoding='utf-8') as _:
-            _.write('0')
+        with open('scan_count.txt','w',encoding='utf-8') as file:
+            file.write('0')
     if not os.path.isfile('scan_count_bedrock.txt'):
-        with open('scan_count.txt','w',encoding='utf-8') as _:
-            _.write('0')
+        with open('scan_count.txt','w',encoding='utf-8') as file:
+            file.write('0')
     if not os.path.isfile('servers.txt'):
-        with open('servers.txt','x',encoding='utf-8') as _:
-            _.close()
+        with open('servers.txt','x',encoding='utf-8') as file:
+            file.close()
         saved = {}
     else:
         saved = {}
-        with open('servers.txt','r',encoding='utf-8') as _:
-            for __ in _.read().splitlines():
+        with open('servers.txt','r',encoding='utf-8') as file:
+            for __ in file.read().splitlines():
                 try: saved[__.split(' | ',1)[0]] = None
                 except: pass
 
@@ -239,7 +239,7 @@ def main():
                         multithread((generate_ip_targetted if targetted_scan else generate_ip), gen_amt, progress_bar=False)
                         generated += gen_amt
                     break
-                except: input(clr(f"\n  > {translate('Failed to generate ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
+                except: input(clr(f"\n  > {translate('Failed to generate ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); rm_line()
 
         # multithreaded checker
 
@@ -248,17 +248,17 @@ def main():
                 print(clr(f"\n  - Checking {len(ips)} unique ips...\n"))
                 if server_type == "java": multithread(check_java, threads, tuple(ips.keys())); break
                 if server_type == "bedrock": multithread(check_bedrock, threads, tuple(ips.keys())); break
-            except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); rm_line()
+            except: input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); rm_line()
 
         # saving scanned ips
 
         try:
-            with open(f'scan_count_{server_type}.txt','r',encoding='utf-8') as _:
-                scan_count = int(_.read())
+            with open(f'scan_count_{server_type}.txt','r',encoding='utf-8') as file:
+                scan_count = int(file.read())
         except: scan_count = 0
         scan_count += len(ips)
-        with open(f'scan_count_{server_type}.txt','w',encoding='utf-8') as _:
-            _.write(str(scan_count))
+        with open(f'scan_count_{server_type}.txt','w',encoding='utf-8') as file:
+            file.write(str(scan_count))
         print(clr(f"\n  - Totally Scanned {scan_count} IPs!"))
         time.sleep(5)
 
@@ -267,7 +267,7 @@ def main():
         if gen_rem > 0:
             print(clr(f"\n  - {gen_rem} IPs remaining..."))
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
 
     to_save = []
     running = True
