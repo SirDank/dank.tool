@@ -231,6 +231,18 @@ def set_globals_one():
             'category': True,
         },
 
+        'Software Patchers': {
+
+            'WinRAR': {
+                'info': '',
+                'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛",
+                'project': "dank.winrar",
+                'rpc': "patching winrar"
+            },
+
+            'category': True
+        },
+
         'Browser Backup': {
             'info': '',
             'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
@@ -349,6 +361,13 @@ def set_globals_two():
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛",
                     'project': "dank.netlimiter",
                     'rpc': _translate("installing netlimiter pro")
+                },
+
+                'WinRAR': {
+                    'info': '',
+                    'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛",
+                    'project': "dank.winrar",
+                    'rpc': _translate("patching winrar")
                 },
 
                 'category': True
@@ -670,6 +689,37 @@ def dank_clear_icons():
 
         rm_line()
 
+def dank_winrar_patcher():
+
+    cls()
+    path = os.path.expandvars(r"%appdata%\\WinRAR")
+    if os.path.isdir(path):
+        os.chdir(path)
+        data1 = "RAR registration data\nWinRAR\nUnlimited Company License\nUID=4b914fb772c8376bf571\n6412212250f5711ad072cf351cfa39e2851192daf8a362681bbb1d\ncd48da1d14d995f0bbf960fce6cb5ffde62890079861be57638717\n7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565\nb41bcf56929486b8bcdac33d50ecf773996052598f1f556defffbd\n982fbe71e93df6b6346c37a3890f3c7edc65d7f5455470d13d1190\n6e6fb824bcf25f155547b5fc41901ad58c0992f570be1cf5608ba9\naef69d48c864bcd72d15163897773d314187f6a9af350808719796"
+        data2 = "RAR registration data\nTechTools.net\nUnlimited Company License\nUID=be495af2e04c51526b85\n64122122506b85be56d054210a35c74d3d4b85c98b58c1c03635b4\n931f702fd05f10d8593c60fce6cb5ffde62890079861be57638717\n7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565\nb41bcf56929486b8bcdac33d50ecf77399607b61cbd4c7c227f192\n2b3291c3cf4822a590ea57181b47bfe6cf92ddc40a7de2d2796819\n1781857ba6b1b67a2b15bc5f9dfb682cca338eaa5c606da560397f\n6c6efc340004788adcfe55aa8c331391a95957b7e7401955721377"
+        if os.path.isfile("rarreg.key"):
+            with open("rarreg.key", 'r', encoding='utf-8') as file:
+                existing_data = file.read()
+            if existing_data in (data1, data2):
+                print(clr(f"\n  - {_translate('WinRAR already patched!')}"))
+            else:
+                print(clr(f"\n  - {_translate('WinRAR already activated? (found rarreg.key)')}"))
+                if input(clr(f"\n  > {_translate('Would you like to patch WinRAR anyway?')} [y/n]: ") + red).lower() == 'y':
+                    if os.path.isfile("rarreg.key.bak"):
+                        os.remove("rarreg.key.bak")
+                    os.rename("rarreg.key", "rarreg.key.bak")
+                    with open("rarreg.key", 'w', encoding='utf-8') as file:
+                        file.write(data1)
+                    print(clr(f"\n  - {_translate('WinRAR patched!')}"))
+        else:
+            with open("rarreg.key", 'r', encoding='utf-8') as file:
+                file.write(data1)
+            print(clr(f"\n  - {_translate('WinRAR patched!')}"))
+        os.chdir(os.path.dirname(__file__))
+    else:
+        print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
+    input(clr("\n  > Press [ENTER] to continue... "))
+
 if __name__ == "__main__":
 
     set_globals_one()
@@ -934,6 +984,9 @@ if __name__ == "__main__":
                     continue
                 case "dank.clear-icons":
                     dank_clear_icons()
+                    continue
+                case "dank.winrar":
+                    dank_winrar_patcher()
                     continue
 
             if LOCAL_MODULE: # get src from local_module
