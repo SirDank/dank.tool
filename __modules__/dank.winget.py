@@ -27,7 +27,8 @@ def handle_response(cmd, results, mode):
 
     try:
         for char in ('I', 'V', 'A', 'S'):
-            indexes.append(cmd[0].index(char))
+            if char in cmd[0]:
+                indexes.append(cmd[0].index(char))
     except Exception as exc:
         raise RuntimeError(f"Error parsing response!\n\n{cmd}") from exc
 
