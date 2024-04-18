@@ -61,14 +61,14 @@ def main_one():
             #latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
-            input(clr(f"\n  > {translate('Failed to get latest java version')}! {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
+            input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
             rm_line(); rm_line()
 
     try:
         subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
         print_read_me()
-        if input(clr(f"\n  - {translate('Java is not installed')}!\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}')}? [ y / n ]: ") + red).lower() == 'y':
+        if input(clr(f"\n  - {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
             print()
             os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE")
 
@@ -115,7 +115,7 @@ def main_one():
     print_read_me(); print(clr(f"\n  - {string}!"))
     print("")
     while True:
-        install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards')}? [ y / n ]: ") + red).lower()
+        install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
         match install_Via:
             case 'y': install_Via = True; break
             case 'n': install_Via = False; break
@@ -161,7 +161,7 @@ def main_one():
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  - {translate('Great! Now you need to pick a host for your mc server')}!\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
+    print_read_me(); print(clr(f"\n  - {translate('Great! Now you need to pick a host for your mc server!')}\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
 
     print("")
     while True:
@@ -206,7 +206,7 @@ def main_one():
 
     # begin preparing downloads
 
-    cls(); print(clr(f"\n  - {translate('Preparing Downloads')}..."))
+    cls(); print(clr(f"\n  - {translate('Preparing Downloads...')}"))
     to_download_urls, to_download_file_names = [], []
 
     # github server-builder files and plugins
@@ -344,7 +344,7 @@ def main_one():
             multithread(file_downloader, 5, to_download_urls, to_download_file_names)
             time_taken = int(time.time()-start_time)
             break
-        except: input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again')}... ",2)); cls()
+        except: input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); cls()
 
     # begin single threaded downloader
 
@@ -355,12 +355,12 @@ def main_one():
     #multithread(file_downloader, 1, tuple(to_download_urls), tuple(to_download_file_names)) # single threaded with progress bar
     #time_taken = int(time.time()-start_time)
 
-    print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds')}...")); time.sleep(3)
+    print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds...')}")); time.sleep(3)
 
     # unpacking downloaded archives
 
     '''
-    print(clr(f"\n  - {translate('Unpacking')}..."))
+    print(clr(f"\n  - {translate('Unpacking...')}"))
     
     for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
 
@@ -382,7 +382,7 @@ main_one()
 
 # creating local files
 
-cls(); print(clr(f"\n  - {translate('Creating local files')}..."))
+cls(); print(clr(f"\n  - {translate('Creating local files...')}"))
 
 with open('eula.txt','w',encoding='utf-8') as file:
     file.write('eula=true')
@@ -794,7 +794,7 @@ def main_two():
     with open('readme.txt', 'w', encoding='utf-8') as file:
         file.write(string)
 
-    print_read_me(); input(clr(f"  - {translate('Start the server using: start_server.cmd ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration')}... "))
+    print_read_me(); input(clr(f"  - {translate('Start the server using: start_server.cmd ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration...')} "))
 
     def config_updater(path):
         with open(path, 'r', encoding='utf-8') as file:
@@ -825,11 +825,11 @@ def main_two():
     string = f'''
   - {translate('Follow these steps to enable custom world generation')}:
 
-  [1] {translate('Start the server again using the following command: ')} .start
-  [2] {translate('Copy and paste the following command:')} iris create name=world-iris seed={randint(1,9999999999)}
-  [3] {translate('Wait for it to complete then stop the server using the following command: ')} .stop
+  [1] {translate('Start the server again using the following command')}: .start
+  [2] {translate('Copy and paste the following command')}: iris create name=world-iris seed={randint(1,9999999999)}
+  [3] {translate('Wait for it to complete then stop the server using the following command')}: .stop
 
-  > {translate('Press [ ENTER ] after you have followed the steps')}... '''
+  > {translate('Press [ ENTER ] after you have followed the steps...')} '''
 
     while not os.path.isdir("world-iris"):
         print_read_me(); input(clr(string))
@@ -860,7 +860,7 @@ def main_two():
   
   - {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
   
-  > {translate('Press [ ENTER ] after you have read the message')}... '''
+  > {translate('Press [ ENTER ] after you have read the message...')} '''
 
         print_read_me(); input(clr(string))
     else:
@@ -876,7 +876,7 @@ def main_two():
 
   - {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
-  > {translate('Press [ ENTER ] after you have read the message')}... '''
+  > {translate('Press [ ENTER ] after you have read the message...')} '''
 
     print_read_me(); input(clr(string))
 
