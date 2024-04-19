@@ -121,7 +121,7 @@
 
 ## ♦️ Youtube ♦️
 
-<br><p align="center"><a href="https://youtu.be/fPLEq33BGBM"><img width="400" alt="image" src="http://img.youtube.com/vi/fPLEq33BGBM/0.jpg"></a></p><br>
+<br><p align="center"><a href="https://youtu.be/fPLEq33BGBM" target="_blank"><img width="400" alt="image" src="http://img.youtube.com/vi/fPLEq33BGBM/0.jpg"></a></p><br>
 
 <p>&nbsp;</p>
 
@@ -189,7 +189,7 @@
 
 ## ♦️ Preview Video ♦️
 
-<br><p align="center"><a href="https://mega.nz/embed/8eABmIBJ#yZBE4lVj-bPETlauIvOuKxulJyRfjClRAOHmL6_iOs8"><img width="400" alt="image" src="https://i.imgur.com/VQWZFsU.png"></a></p><br>
+<br><p align="center"><a href="https://mega.nz/embed/MKwSxIwD#yZBE4lVj-bPETlauIvOuKxulJyRfjClRAOHmL6_iOs8" target="_blank"><img width="400" alt="image" src="https://i.imgur.com/VQWZFsU.png"></a></p><br>
 
 <p>&nbsp;</p>
 
