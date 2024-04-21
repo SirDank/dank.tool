@@ -609,22 +609,21 @@ def dank_network_reset():
         if choice.isdigit() and 0 <= int(choice) <= 6:
             if choice == '0': break
             cls()
-            match choice:
-                case '1' | '6':
-                    print(clr("\n\n  [ ipconfig /flushdns ]"))
-                    os.system("ipconfig /flushdns")
-                case '2' | '6':
-                    print(clr("\n\n  [ ipconfig /registerdns ]"))
-                    os.system("ipconfig /registerdns")
-                case '3' | '6':
-                    print(clr("\n\n  [ ipconfig /release ]"))
-                    os.system("ipconfig /release")
-                case '4' | '6':
-                    print(clr("\n\n  [ ipconfig /renew ]"))
-                    os.system("ipconfig /renew")
-                case '5' | '6':
-                    print(clr("\n\n  [ netsh winsock reset ]"))
-                    os.system("netsh winsock reset")
+            if choice in ('1', '6'):
+                print(clr("\n\n  [ ipconfig /flushdns ]"))
+                os.system("ipconfig /flushdns")
+            if choice in ('2', '6'):
+                print(clr("\n\n  [ ipconfig /registerdns ]"))
+                os.system("ipconfig /registerdns")
+            if choice in ('3', '6'):
+                print(clr("\n\n  [ ipconfig /release ]"))
+                os.system("ipconfig /release")
+            if choice in ('4', '6'):
+                print(clr("\n\n  [ ipconfig /renew ]"))
+                os.system("ipconfig /renew")
+            if choice in ('5', '6'):
+                print(clr("\n\n  [ netsh winsock reset ]"))
+                os.system("netsh winsock reset")
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
@@ -656,28 +655,27 @@ def dank_clear_icons():
             os.system("taskkill /f /im explorer.exe >nul 2>&1")
             os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
-            match choice:
-                case '1' | '3':
-                    print(clr("\n  [ Clearing Icon Cache ]\n"))
-                    os.system(r"attrib -h iconcache*")
-                    for file in os.listdir():
-                        if file.startswith("iconcache") and file.endswith(".db"):
-                            try:
-                                os.remove(file)
-                                print(clr(f"  - deleted {file}"))
-                            except:
-                                print(clr(f"  - failed to delete {file}",2))
+            if choice in ('1', '3'):
+                print(clr("\n  [ Clearing Icon Cache ]\n"))
+                os.system(r"attrib -h iconcache*")
+                for file in os.listdir():
+                    if file.startswith("iconcache") and file.endswith(".db"):
+                        try:
+                            os.remove(file)
+                            print(clr(f"  - deleted {file}"))
+                        except:
+                            print(clr(f"  - failed to delete {file}",2))
 
-                case '2' | '3':
-                    print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
-                    os.system(r"attrib -h thumbcache*")
-                    for file in os.listdir():
-                        if file.startswith("thumbcache") and file.endswith(".db"):
-                            try:
-                                os.remove(file)
-                                print(clr(f"  - deleted {file}"))
-                            except:
-                                print(clr(f"  - failed to delete {file}",2))
+            if choice in ('2', '3'):
+                print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
+                os.system(r"attrib -h thumbcache*")
+                for file in os.listdir():
+                    if file.startswith("thumbcache") and file.endswith(".db"):
+                        try:
+                            os.remove(file)
+                            print(clr(f"  - deleted {file}"))
+                        except:
+                            print(clr(f"  - failed to delete {file}",2))
 
             os.chdir(os.path.dirname(__file__))
             print(clr("\n  [ Starting Explorer.exe ]"))
