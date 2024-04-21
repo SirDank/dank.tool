@@ -570,17 +570,16 @@ def dank_os_repair():
         if choice.isdigit() and 0 <= int(choice) <= 4:
             if choice == '0': break
             cls()
-            match choice:
-                case '1' | '4':
-                    print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
-                    os.system("DISM /online /cleanup-image /restorehealth")
-                case '2' | '4':
-                    print(clr("\n\n  [ sfc /scannow ]"))
-                    os.system("sfc /scannow")
-                case '3' | '4':
-                    print(clr("\n\n  [ chkdsk C: /x /r ]"))
-                    os.system("chkdsk C: /x /r")
-            input(clr("\n  > Press [ENTER] to continue... "))
+            if choice in ('1', '4'):
+                print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
+                os.system("DISM /online /cleanup-image /restorehealth")
+            if choice in ('2', '4'):
+                print(clr("\n\n  [ sfc /scannow ]"))
+                os.system("sfc /scannow")
+            if choice in ('3', '4'):
+                print(clr("\n\n  [ chkdsk C: /x /r ]"))
+                os.system("chkdsk C: /x /r")
+            input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
 
@@ -626,7 +625,7 @@ def dank_network_reset():
                 case '5' | '6':
                     print(clr("\n\n  [ netsh winsock reset ]"))
                     os.system("netsh winsock reset")
-            input(clr("\n  > Press [ENTER] to continue... "))
+            input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
 
@@ -683,8 +682,7 @@ def dank_clear_icons():
             os.chdir(os.path.dirname(__file__))
             print(clr("\n  [ Starting Explorer.exe ]"))
             os.system("start explorer.exe")
-            input(clr("\n  > Press [ENTER] to continue... "))
-
+            input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
 
         rm_line()
@@ -718,7 +716,7 @@ def dank_winrar_patcher():
         os.chdir(os.path.dirname(__file__))
     else:
         print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
-    input(clr("\n  > Press [ENTER] to continue... "))
+    input(clr("\n  > Press [ENTER] to return to the menu... "))
 
 if __name__ == "__main__":
 
