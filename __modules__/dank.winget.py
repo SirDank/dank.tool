@@ -101,7 +101,7 @@ def main():
                     match results['mode']:
                         case 'search':
                             if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith('y'):
-                                print_info(results[cmd]['id'])
+                                print(); print_info(results[cmd]['id'])
                             else: rm_line(); rm_line()
                             if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith('y'):
                                 print()

@@ -708,7 +708,7 @@ def dank_winrar_patcher():
                         file.write(data1)
                     print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         else:
-            with open("rarreg.key", 'r', encoding='utf-8') as file:
+            with open("rarreg.key", 'w', encoding='utf-8') as file:
                 file.write(data1)
             print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         os.chdir(os.path.dirname(__file__))
