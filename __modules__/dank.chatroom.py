@@ -209,7 +209,7 @@ def chatroom_input():
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(0, weight=1)
     root.attributes("-alpha", 0.8)
-    root.attributes("-topmost", True)
+    #root.attributes("-topmost", True)
     root.bind('<Button-1>', get_offset)
     root.bind("<B1-Motion>", move_window)
     root.protocol("WM_DELETE_WINDOW", on_closing)
