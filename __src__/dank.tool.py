@@ -650,36 +650,36 @@ def dank_clear_icons():
             if choice == '0': break
 
             cls()
-            print(clr("\n  [ Terminating Explorer.exe ]"))
+            print(clr(f"\n  [ {_translate('Terminating Explorer.exe')} ]"))
             os.system("taskkill /f /im explorer.exe >nul 2>&1")
             os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
             if choice in ('1', '3'):
-                print(clr("\n  [ Clearing Icon Cache ]\n"))
+                print(clr(f"\n  [ {_translate('Clearing Icon Cache')} ]\n"))
                 os.system(r"attrib -h iconcache*")
                 for file in os.listdir():
                     if file.startswith("iconcache") and file.endswith(".db"):
                         try:
                             os.remove(file)
-                            print(clr(f"  - deleted {file}"))
+                            print(clr(f"  - {_translate('deleted')} {file}"))
                         except:
-                            print(clr(f"  - failed to delete {file}",2))
+                            print(clr(f"  - {_translate('failed to delete')} {file}",2))
 
             if choice in ('2', '3'):
-                print(clr("\n  [ Clearing Thumbnail Cache ]\n"))
+                print(clr(f"\n  [ {_translate('Clearing Thumbnail Cache')} ]\n"))
                 os.system(r"attrib -h thumbcache*")
                 for file in os.listdir():
                     if file.startswith("thumbcache") and file.endswith(".db"):
                         try:
                             os.remove(file)
-                            print(clr(f"  - deleted {file}"))
+                            print(clr(f"  - {_translate('deleted')} {file}"))
                         except:
-                            print(clr(f"  - failed to delete {file}",2))
+                            print(clr(f"  - {_translate('failed to delete')} {file}",2))
 
             os.chdir(os.path.dirname(__file__))
-            print(clr("\n  [ Starting Explorer.exe ]"))
+            print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
             os.system("start explorer.exe")
-            input(clr("\n  > Press [ENTER] to return to the menu... "))
+            input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
             break
 
         rm_line()
@@ -688,7 +688,8 @@ def dank_winrar_patcher():
 
     cls()
     path = os.path.expandvars(r"%appdata%\\WinRAR")
-    if os.path.isdir(path):
+
+    def patch():
         os.chdir(path)
         data1 = "RAR registration data\nWinRAR\nUnlimited Company License\nUID=4b914fb772c8376bf571\n6412212250f5711ad072cf351cfa39e2851192daf8a362681bbb1d\ncd48da1d14d995f0bbf960fce6cb5ffde62890079861be57638717\n7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565\nb41bcf56929486b8bcdac33d50ecf773996052598f1f556defffbd\n982fbe71e93df6b6346c37a3890f3c7edc65d7f5455470d13d1190\n6e6fb824bcf25f155547b5fc41901ad58c0992f570be1cf5608ba9\naef69d48c864bcd72d15163897773d314187f6a9af350808719796"
         data2 = "RAR registration data\nTechTools.net\nUnlimited Company License\nUID=be495af2e04c51526b85\n64122122506b85be56d054210a35c74d3d4b85c98b58c1c03635b4\n931f702fd05f10d8593c60fce6cb5ffde62890079861be57638717\n7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565\nb41bcf56929486b8bcdac33d50ecf77399607b61cbd4c7c227f192\n2b3291c3cf4822a590ea57181b47bfe6cf92ddc40a7de2d2796819\n1781857ba6b1b67a2b15bc5f9dfb682cca338eaa5c606da560397f\n6c6efc340004788adcfe55aa8c331391a95957b7e7401955721377"
@@ -711,9 +712,15 @@ def dank_winrar_patcher():
                 file.write(data1)
             print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         os.chdir(os.path.dirname(__file__))
+
+    if os.path.isdir(path):
+        patch()
     else:
-        print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
-    input(clr("\n  > Press [ENTER] to return to the menu... "))
+        print(clr(f"\n  - {_translate('WinRAR not installed!')}\n\n  - {_translate('Downloading WinRAR...')}"))
+        os.system("winget install --interactive --id RARLab.WinRAR")
+        input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
+        patch()
+    input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
 if __name__ == "__main__":
 
@@ -731,7 +738,7 @@ if __name__ == "__main__":
         while True:
             try: multithread(download_offline_modules, 50, offline_scripts, progress_bar=False); break
             except:
-                input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
 
         # download assets
@@ -746,7 +753,7 @@ if __name__ == "__main__":
         while True:
             try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json(); break
             except Exception as exc:
-                input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
 
         asset_urls = []
@@ -764,14 +771,14 @@ if __name__ == "__main__":
 
         if asset_urls:
 
-            print(clr(f"\n  - {_translate('Downloading game assets')}...\n"))
+            print(clr(f"\n  - {_translate('Downloading game assets...')}\n"))
 
             while True:
                 try:
                     multithread(download_assets, 50, asset_urls, file_names)
                     break
                 except:
-                    input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                    input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                     rm_line(); rm_line()
 
             with open("ursina/assets.json", "w", encoding="utf-8") as _:
@@ -781,7 +788,7 @@ if __name__ == "__main__":
 
         # multithreaded request responses
 
-        print(clr(f"\n  - {_translate('Getting request responses')}...\n"))
+        print(clr(f"\n  - {_translate('Getting request responses...')}\n"))
 
         global menu_request_responses
         menu_request_responses = {}
@@ -813,7 +820,7 @@ if __name__ == "__main__":
                 multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys)
                 break
             except:
-                input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
 
         # hourly limit on github api
@@ -841,7 +848,7 @@ if __name__ == "__main__":
                     multithread(get_menu_request_responses_api, 50, tuple(_ for _ in range(len(request_keys_api))), request_keys_api)
                     break
                 except:
-                    input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again')}... ",2))
+                    input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                     rm_line(); rm_line()
 
             github_api_json["updated_on"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
