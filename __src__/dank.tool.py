@@ -482,71 +482,70 @@ def dank_tool_settings():
     except:
         runs = "?"
 
-    while True:
+    if os.path.isfile("settings.json"):
 
-        cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n"))
+        while True:
 
-        with open("settings.json", "r", encoding="utf-8") as file:
-            settings = json.loads(file.read())
-        update_settings = False
+            cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n\n  [0] Return to menu"))
 
-        if os.path.isfile("force-startup-audio"):
-            if not int(settings["force-startup-audio"]):
-                settings["force-startup-audio"] = "1"
-                update_settings = True
-        else:
-            if int(settings["force-startup-audio"]):
-                settings["force-startup-audio"] = "0"
-                update_settings = True
-        if os.path.isfile("disable-startup-audio"):
-            if not int(settings["disable-startup-audio"]):
-                settings["disable-startup-audio"] = "1"
-                update_settings = True
-        else:
-            if int(settings["disable-startup-audio"]):
-                settings["disable-startup-audio"] = "0"
-                update_settings = True
+            with open("settings.json", "r", encoding="utf-8") as file:
+                settings = json.loads(file.read())
 
-        if update_settings:
-            with open("settings.json", "w", encoding="utf-8") as file:
-                file.write(json.dumps(settings, indent=4))
+            counter = 1
+            for name, value in settings.items():
+                print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
+                counter += 1
+            choice = input(clr("\n  > Choice: ") + red).lower()
 
-        print(clr("  [0] Return to menu"))
+            if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
-        counter = 1
-        for name, value in settings.items():
-            print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
-            counter += 1
-        choice = input(clr("\n  > Choice: ") + red).lower()
+                choice = int(choice)
+                if not choice: break
 
-        if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
+                settings = list(settings.items())
+                settings[choice - 1] = (settings[choice - 1][0], str(int(not int(settings[choice - 1][1]))))
+                choice = settings[choice - 1][0]
+                settings = dict(settings)
 
-            if choice == '0': break
+                match choice:
+                    case "force-startup-audio":
+                        with open("force-startup-audio", "w", encoding="utf-8") as file:
+                            file.write("")
+                        if os.path.exists("disable-startup-audio"):
+                            os.remove("disable-startup-audio")
+                        settings["disable-startup-audio"] = "0"
 
-            settings = list(settings.items())
-            settings[int(choice) - 1] = (settings[int(choice) - 1][0], str(int(not int(settings[int(choice) - 1][1]))))
-            settings = dict(settings)
+                    case "disable-startup-audio":
+                        with open("disable-startup-audio", "w", encoding="utf-8") as file:
+                            file.write("")
+                        if os.path.exists("force-startup-audio"):
+                            os.remove("force-startup-audio")
+                        settings["force-startup-audio"] = "0"
 
-            if int(settings["force-startup-audio"]):
-                if not os.path.isfile("force-startup-audio"):
-                    with open("force-startup-audio", "w", encoding="utf-8") as file:
-                        file.write("")
-            else:
-                if os.path.isfile("force-startup-audio"):
-                    os.remove("force-startup-audio")
-            if int(settings["disable-startup-audio"]):
-                if not os.path.isfile("disable-startup-audio"):
-                    with open("disable-startup-audio", "w", encoding="utf-8") as file:
-                        file.write("")
-            else:
-                if os.path.isfile("disable-startup-audio"):
-                    os.remove("disable-startup-audio")
+                    case "force-translate":
+                        with open("force-translate", "w", encoding="utf-8") as file:
+                            file.write("")
+                        if os.path.exists("disable-translate"):
+                            os.remove("disable-translate")
+                        settings["disable-translate"] = "0"
 
-            with open("settings.json", "w", encoding="utf-8") as file:
-                file.write(json.dumps(settings, indent=4))
+                    case "disable-translate":
+                        with open("disable-translate", "w", encoding="utf-8") as file:
+                            file.write("")
+                        if os.path.exists("force-translate"):
+                            os.remove("force-translate")
+                        settings["force-translate"] = "0"
 
-        elif choice.lower() == "exit":
-            break
+                with open("settings.json", "w", encoding="utf-8") as file:
+                    file.write(json.dumps(settings, indent=4))
+
+            elif choice.lower() == "exit":
+                break
+
+    else:
+
+        cls(); print(clr("\n  - settings.json missing!"))
+        time.sleep(5)
 
 def dank_os_repair():
 
