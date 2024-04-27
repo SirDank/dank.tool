@@ -448,8 +448,6 @@ with open('autoplug/backup.yml', 'w', encoding='utf-8') as file:
 backup: 
   enable: false
   cool-down: 1440
-  include: 
-    enable: false
 ''')
 
 with open('autoplug/general.yml', 'w', encoding='utf-8') as file:
@@ -649,6 +647,95 @@ plugins:
     bukkit-id: 31054
 ''')
 
+with open("permissions.yml", "w", encoding="utf-8") as file:
+    file.write("""
+defaults:
+  permissions:
+    - playtime.check
+    - playtime.checkothers
+    - playtime.checktop
+    - playtime.uptime.auto
+    - afk
+    - back
+    - back.ondeath
+    - balance
+    - balance.others
+    - balancetop
+    - build
+    - chat.color
+    - chat.format
+    - chat.shout
+    - chat.question
+    - clearinventory
+    - compass
+    - depth
+    - delhome
+    - getpos
+    - geoip.show
+    - help
+    - helpop
+    - home
+    - home.others
+    - ignore
+    - info
+    - itemdb
+    - kit
+    - kits.tools
+    - list
+    - mail
+    - mail.send
+    - me
+    - motd
+    - msg
+    - msg.color
+    - nick
+    - near
+    - pay
+    - ping
+    - protect
+    - r
+    - rules
+    - renamehome
+    - realname
+    - seen
+    - sell
+    - sethome
+    - setxmpp
+    - signs.create.protection
+    - signs.create.trade
+    - signs.break.protection
+    - signs.break.trade
+    - signs.use.balance
+    - signs.use.buy
+    - signs.use.disposal
+    - signs.use.enchant
+    - signs.use.free
+    - signs.use.gamemode
+    - signs.use.heal
+    - signs.use.info
+    - signs.use.kit
+    - signs.use.mail
+    - signs.use.protection
+    - signs.use.repair
+    - signs.use.sell
+    - signs.use.time
+    - signs.use.trade
+    - signs.use.warp
+    - signs.use.weather
+    - spawn
+    - suicide
+    - time
+    - tpa
+    - tpaccept
+    - tpahere
+    - tpdeny
+    - warp
+    - warp.list
+    - world
+    - worth
+    - xmpp
+""")
+
 # start server and shutdown server for optimizing the below settings and configuring
 
 configs = {
@@ -726,7 +813,7 @@ configs = {
         "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
         "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
         "use-bukkit-permissions: true": "use-bukkit-permissions: false",
-        "  - afk": "  - afk\n  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime",
+        "  - afk": "  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime\n  - afk",
     },
 
     #"plugins/Log4JExploitFix/config.yml": {
