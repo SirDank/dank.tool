@@ -687,7 +687,7 @@ def dank_clear_icons():
 def dank_winrar_patcher():
 
     cls()
-    path = os.path.expandvars(r"%appdata%\\WinRAR")
+    path = os.path.expandvars("%appdata%\\WinRAR")
 
     def patch():
         os.chdir(path)
@@ -731,7 +731,7 @@ if __name__ == "__main__":
 
     if ONLINE_MODE:
 
-        print(clr(f"\n  - {_translate('Downloading modules')}..."))
+        print(clr(f"\n  - {_translate('Downloading modules...')}"))
 
         if not os.path.isdir("__modules__"): os.mkdir("__modules__")
 
@@ -1017,13 +1017,13 @@ if __name__ == "__main__":
                             else:
                                 break
                         except Exception as exc:
-                            input(clr(f"\n  > {_translate(f'Failed to get latest version! {exc} | Press [ENTER] to try again')}... ",2))
+                            input(clr(f"\n  > {_translate(f'Failed to get latest version! {exc} | Press [ENTER] to try again...')} ",2))
                             rm_line(); rm_line()
 
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode(); break
                         except Exception as exc:
-                            input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again')}... ",2))
+                            input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again...')} ",2))
                             rm_line(); rm_line()
 
                 else:
@@ -1040,13 +1040,13 @@ if __name__ == "__main__":
 
             if code == "404: Not Found":
                 if PROJECT.startswith('_'):
-                    print(clr(f"\n  - {_translate(f'{PROJECT[1:]} has been disabled! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {_translate(f'{PROJECT[1:]} has been disabled! Returning to menu in 5 seconds...')}",2))
                 else:
-                    print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds')}...",2))
+                    print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds...')}",2))
                 time.sleep(5)
             else:
                 cls(); exec(code)
-                cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds')}..."))
+                cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
                 time.sleep(3)
 
         except:
@@ -1066,7 +1066,7 @@ if __name__ == "__main__":
                         requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again')}... ",2))
+                        input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ",2))
                         rm_line(); rm_line()
                 print(clr(f"\n  > {_translate('Error Reported! If it is a logic error, it will be fixed soon!')}"))
 
