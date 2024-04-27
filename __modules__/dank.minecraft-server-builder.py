@@ -294,8 +294,8 @@ def main_one():
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
               + github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
-              + github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Iris']) \
               + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
+              #+ github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
               #+ github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
               #+ github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
 
