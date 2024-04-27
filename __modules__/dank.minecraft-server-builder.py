@@ -432,12 +432,6 @@ sudo apt update
 sudo apt install temurin-{latest_java_version}-jre
 """.encode().replace(b'\r\n',b'\n'))
 
-with open('quick_chmod.sh', 'wb') as file:
-    file.write("""
-#!/bin/sh
-sudo chmod +x *.sh
-""".encode().replace(b'\r\n',b'\n'))
-
 # creating autoplug configs
 
 with open('autoplug/logger.yml', 'w', encoding='utf-8') as file:
@@ -452,6 +446,9 @@ with open('autoplug/backup.yml', 'w', encoding='utf-8') as file:
     file.write('''
 backup: 
   enable: false
+  cool-down: 1440
+  include: 
+    enable: false
 ''')
 
 with open('autoplug/general.yml', 'w', encoding='utf-8') as file:
@@ -776,7 +773,6 @@ def main_two():
     string = f'''
 
   [ Scripts ]
-  - quick_chmod.sh : {translate('Script to make all .sh files executable')}
   - quick_install_java.cmd / quick_install_java.sh : {translate('Script to install Temurin JRE')}
   - mc-anti-malware.cmd / mc-anti-malware.sh : {translate('Script to start mc-anti-malware')}
   - start_server.cmd / start_server.sh : {translate('Script to start your server')}
@@ -872,7 +868,7 @@ def main_two():
     string = f'''
   - {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 
-  - {translate('After you move the folder to a linux system, run "sudo chmod +x quick_chmod.sh; ./quick_chmod.sh" to make all .sh files executable')}
+  - {translate('After you move the folder to a linux system, run "sudo chmod +x *.sh" to make all .sh files executable')}
 
   - {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
