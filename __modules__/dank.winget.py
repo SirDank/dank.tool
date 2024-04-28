@@ -16,7 +16,7 @@ def winget_installed():
 def print_banner():
     banner = "\n\n   _         _           _             _   \n _| |___ ___| |_   _ _ _|_|___ ___ ___| |_ \n| . | .'|   | '_|_| | | | |   | . | -_|  _|\n|___|__,|_|_|_,_|_|_____|_|_|_|_  |___|_|  \n                              |___|        \n\n\n"
     cls(); print(clr(align(banner),4,colours=(red, red_dim)))
-    print(clr("  [ Commands ]\n\n  - search NAME (to find software, winget only)\n\n  - installed (installed software, winget only)\n\n  - updates\n\n  - clear (refresh screen)\n\n  - exit\n"))
+    print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
 def handle_response(cmd, results, mode):
 
