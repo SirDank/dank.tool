@@ -8,7 +8,7 @@ from dankware import red, red_dim, green_bright
 
 def winget_installed():
     try:
-        result = subprocess.run(['winget', '--info'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        result = subprocess.run(['winget', '--info'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
         return bool(result.returncode == 0)
     except FileNotFoundError:
         return False
@@ -56,11 +56,11 @@ def handle_response(cmd, results, mode):
             print(clr("\n  - Type number to update.\n"))
 
 def print_info(id):
-    cmd = subprocess.run(['winget', 'show', '--id', id], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+    cmd = subprocess.run(['winget', 'show', '--id', id], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
     if cmd.returncode == 0:
         print(clr(cmd.stdout.decode('utf-8')))
     else:
-        print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
+        print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
 def main():
 
@@ -72,25 +72,25 @@ def main():
         cmd = input(clr('  > ') + green_bright)
 
         if cmd.lower().startswith('search '):
-            cmd = subprocess.run(['winget', 'search', '--accept-source-agreements', cmd[7:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            cmd = subprocess.run(['winget', 'search', '--accept-source-agreements', cmd[7:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
                 handle_response(cmd, results, 'search')
             else:
-                print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
+                print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
-        elif cmd.lower().startswith('installed'): 
-            cmd = subprocess.run(['winget', 'list', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        elif cmd.lower().startswith('installed'):
+            cmd = subprocess.run(['winget', 'list', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
                 handle_response(cmd, results, 'installed')
             else:
-                print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
+                print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
         elif cmd.lower().startswith('updates'):
-            cmd = subprocess.run(['winget', 'upgrade', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            cmd = subprocess.run(['winget', 'upgrade', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
                 handle_response(cmd, results, 'updates')
             else:
-                print(clr(f"\n  [ERROR]: {cmd.stderr.decode('utf-8')}\n",2))
+                print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
         elif cmd.isdigit():
 
