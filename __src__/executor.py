@@ -17,25 +17,22 @@ import sys
 import time
 import json
 import shutil
+import psutil
 import ctypes
-import winreg
-import sqlite3
 import requests
 import pyminizip
 import subprocess
 import tkinter as tk
 from locale import getlocale
-from win11toast import notify
 from psutil import process_iter
 from playsound import playsound
 from translatepy import Translator
 from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
-from pynput.keyboard import Key, Listener
-from pynput.mouse import Button, Controller
 from mcstatus import JavaServer, BedrockServer
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, title, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, file_selector, folder_selector, get_path
+from dankware.tkinter import file_selector, folder_selector
+from dankware import cls, clr, title, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, get_path
 from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
 
 # required packages for dank.game.py
@@ -51,12 +48,18 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from pypresence import Presence
 from packaging.version import parse
 
+# windows specific
+
+if os.name == "nt":
+    import winreg
+    from win11toast import notify
+
 # variables
 
-DANK_TOOL_VERSION = "3.2.4"
+DANK_TOOL_VERSION = "3.2.5"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
-headers = {"User-Agent": "dank.tool"}
+headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
 
 os.chdir(os.path.dirname(__file__))
@@ -78,6 +81,7 @@ def settings_json():
             "dev-branch": "0",
             "force-update": "0",
             "force-translate": "0",
+            "disable-translate": "0",
             "force-startup-audio": "0",
             "disable-startup-audio": "0",
         }
@@ -85,13 +89,21 @@ def settings_json():
     if not os.path.isfile('settings.json'):
         overwrite = True
     else:
-        with open('settings.json', 'r', encoding='utf-8') as _:
-            data = json.loads(_.read())
+        with open('settings.json', 'r', encoding='utf-8') as file:
+            data = json.loads(file.read())
         for key in default_settings:
             if key not in data:
                 overwrite = True
             else:
                 default_settings[key] = data[key]
+
+    default_settings["force-translate"] = ("0" if not os.path.isfile("force-translate") else "1")
+    default_settings["disable-translate"] = ("0" if not os.path.isfile("disable-translate") else "1")
+    default_settings["force-startup-audio"] = ("0" if not os.path.isfile("force-startup-audio") else "1")
+    default_settings["disable-startup-audio"] = ("0" if not os.path.isfile("disable-startup-audio") else "1")
+
+    if not overwrite and default_settings != data:
+        overwrite = True
 
     if overwrite:
         with open('settings.json', 'w', encoding='utf-8') as file:
@@ -132,10 +144,10 @@ def latest_dank_tool_version():
                     print(clr("\n  - Please do not use the dev-branch, it is meant for testing/debugging only!",2))
                     BRANCH = "main"
                     os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
-                    with open('settings.json', 'r', encoding='utf-8') as _:
-                        tmp = _.read().replace('"dev-branch": "1"', '"dev-branch": "0"')
-                    with open('settings.json', 'w', encoding='utf-8') as _:
-                        _.write(tmp); del tmp
+                    with open('settings.json', 'r', encoding='utf-8') as file:
+                        tmp = file.read().replace('"dev-branch": "1"', '"dev-branch": "0"')
+                    with open('settings.json', 'w', encoding='utf-8') as file:
+                        file.write(tmp); del tmp
                 else:
                     break
             os.environ['DANK_TOOL_ONLINE'] = "1"
@@ -196,41 +208,44 @@ else: # LATEST VERSION IS LOWER THAN CURRENT VERSION
 
 # check windows language
 
-def check_windows_language():
+def check_system_language():
 
-    locale_name = getlocale()[0]
+    locale_name = str(getlocale()[0])
     if '-' in locale_name and '_' not in locale_name:
-        locale_name = locale_name.split('-')[0]
+        locale_name = locale_name.split('-',1)[0]
     elif '_' in locale_name and '-' not in locale_name:
-        locale_name = locale_name.split('_')[0]
+        locale_name = locale_name.split('_',1)[0]
     else:
         for _ in locale_name:
             if _ == '-':
-                locale_name = locale_name.split('-')[0]
+                locale_name = locale_name.split('-',1)[0]
                 break
             if _ == '_':
-                locale_name = locale_name.split('_')[0]
+                locale_name = locale_name.split('_',1)[0]
                 break
 
     if not locale_name.lower().startswith('en'):
         if int(DANK_TOOL_SETTINGS['force-translate']):
             os.environ['DANK_TOOL_LANG'] = locale_name
-        else:
+        elif not int(DANK_TOOL_SETTINGS['disable-translate']):
             translator = Translator()
-            result = translator.translate("Would you like to enable the translate feature?", source_language='en', destination_language=locale_name).result
-            print(clr(f"\n  - Your windows language is set to '{cyan}{locale_name}'!"))
+            result = translator.translate("Would you like to enable the translate feature?", locale_name, 'en').result
+            print(clr(f"\n  - Your system language is set to '{cyan}{locale_name}'!"))
             if input(clr(f"\n  > {result} [y/n]: ", colour_one=cyan) + cyan).lower() == 'y':
+                result = translator.translate("You can force enable the translate feature in the settings menu", locale_name, 'en').result
+                print(clr(f"\n  > {result}!"))
                 os.environ['DANK_TOOL_LANG'] = locale_name
+                time.sleep(6.5)
             else:
                 os.environ['DANK_TOOL_LANG'] = "en"
     else:
         os.environ['DANK_TOOL_LANG'] = "en"
 
 if ONLINE_MODE:
-    check_windows_language()
+    check_system_language()
 else:
     os.environ['DANK_TOOL_LANG'] = "en"
-del check_windows_language
+del check_system_language
 
 # get and save dank.tool.py
 
@@ -259,29 +274,34 @@ else:
 
 def dank_tool_discord_rpc():
 
-    start = int(time.time())
+    os.environ['DISCORD_RPC'] = "on the main menu"
+    fail_counter = 0
+
     while True:
+        if fail_counter >= 3: break
         try:
-            RPC.update(
-                large_image = "dankware",
-                large_text = "dankware",
-                details = f"[ dank.tool {DANK_TOOL_VERSION} ]",
-                state = os.environ['DISCORD_RPC'],
-                start = start,
-                buttons = [{"label": "Download", "url": "https://github.com/SirDank/dank.tool"}, {"label": "Discord", "url": "https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god"}]
-            )
-            time.sleep(15)
-        except: break
+            RPC = Presence("1028269752386326538")
+            RPC.connect()
+            fail_counter = 0
+            start = int(time.time())
+            while True:
+                try:
+                    RPC.update(
+                        large_image = "dankware",
+                        large_text = "dankware",
+                        details = f"[ dank.tool {DANK_TOOL_VERSION} ]",
+                        state = os.environ['DISCORD_RPC'],
+                        start = start,
+                        buttons = [{"label": "Download", "url": "https://github.com/SirDank/dank.tool"}, {"label": "Discord", "url": "https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god"}]
+                    )
+                    time.sleep(15)
+                except: break
+        except:
+            fail_counter += 1
+            time.sleep(60)
 
 if ONLINE_MODE:
-    print(clr("\n  - Trying to set discord rpc... (if this freezes, restart discord)"))
-    try:
-        os.environ['DISCORD_RPC'] = "on the main menu"
-        RPC = Presence("1028269752386326538")
-        RPC.connect()
-        _executor.submit(dank_tool_discord_rpc)
-    except: pass
-    rm_line(); rm_line()
+    _executor.submit(dank_tool_discord_rpc)
 else:
     del dank_tool_discord_rpc
 
@@ -292,7 +312,7 @@ def dank_tool_runs_counter():
     fail_counter = 0
     session = requests.Session()
     while True:
-        if fail_counter > 3: break
+        if fail_counter >= 3: break
         try: session.get("https://dank-site.onrender.com/counter?id=dank.tool&hit=true", headers=headers, timeout=3); break
         except: fail_counter += 1
         time.sleep(60)
@@ -310,7 +330,7 @@ def dank_tool_chatroom():
     fail_counter = 0
     session = requests.Session()
     while True:
-        if fail_counter > 2: break
+        if fail_counter >= 3: break
         try: session.post("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3); fail_counter = 0 # do not add a break here! (keeps user validated)
         except: fail_counter += 1
         time.sleep(240)
@@ -347,12 +367,12 @@ except:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION} | OFFLINE_SRC: {bool(OFFLINE_SRC)} | BRANCH: {BRANCH}\n\n{err_message}```"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))
                 rm_line(); rm_line()
-        print(clr("\n  - Error Reported! If it is an OS error, Please run as admin and try again!\n\n  - If it is a logic error, it will be fixed soon!"))
+        print(clr("\n  - Error Reported! If it is a logic error, it will be fixed soon!"))
 
     input(clr("\n  > Press [ENTER] to EXIT... "))
     os.system("taskkill /f /t /im dank.tool.exe")
