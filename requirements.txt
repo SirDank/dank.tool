@@ -3,7 +3,6 @@ mcstatus
 packaging
 psutil
 pyminizip
-pynput
 pypresence
 python-dateutil
 requests
