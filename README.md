@@ -53,11 +53,11 @@
 
 - When on the main menu, you can resize the window to your preferred size and then enter `refresh` as input to re-align the UI.
 
-- If you want the startup animation and music to be played on every run, enable `force-audio` in settings.
+- If you want the startup animation and music to be played on every run, enable `force-startup-audio` in settings.
 
-- Do not enable `offline-src`, `offline_mode`, `dev-branch` in settings as they are not meant for normal users.
+- Do not enable `offline-src`, `offline-mode` or `dev-branch` in settings as they are only meant for developers.
 
-- Documentation for developers can be found at the bottom.
+- Documentation for developers can be found [here](https://github.com/SirDank/dank.tool#-danktool-documentation--for-devs--).
 
 ## ♦️ To Do ♦️
 
@@ -108,7 +108,8 @@
 - [x] Add ViaVersion / ViaBackwards / ViaRewind
 - [ ] Add datapacks ( based on mc version )
 - [ ] Add GeyserMC / Floodgate Options
-- [ ] Add Mohist Options
+- [ ] Add Mohist / Banner Options
+- [ ] Add simple / advanced modes ( full rework )
 - [ ] Maybe add a super simple web panel to only display stats
 
 ## ♦️ History ♦️

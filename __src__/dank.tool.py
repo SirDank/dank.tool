@@ -196,8 +196,11 @@ def set_globals_one():
     DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
     DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
     ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
-    DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
-    DANK_TOOL_LANG = ('' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG)
+    try:
+        DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
+        DANK_TOOL_LANG = ('' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG)
+    except:
+        DANK_TOOL_LANG = ''
     BRANCH = ("main" if not DEV_BRANCH else "dev")
     headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 
