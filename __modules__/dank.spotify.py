@@ -1,8 +1,9 @@
 import os
 import time
+from rich.align import Align
+from dankware import cls, clr
+from rich.console import Console
 from translatepy import Translator
-from dankware import cls, clr, align
-from dankware import green, green_dim, yellow, yellow_dim
 
 def translate(text):
     if DANK_TOOL_LANG:
@@ -30,7 +31,11 @@ def main():
     banner1 = '\n\n .oooooo..o          amd64fox\'s      .   ooooooo  ooooo \nd8P\'    `Y8                        .o8    `8888    d8\'  \nY88bo.      oo.ooooo.   .ooooo.  .o888oo    Y888..8P    \n `"Y8888o.   888\' `88b d88\' `88b   888       `8888\'     \n     `"Y88b  888   888 888   888   888      .8PY888.    \noo     .d8P  888   888 888   888   888 .   d8\'  `888b   \n8""88888P\'   888bod8P\' `Y8bod8P\'   "888" o888o  o88888o \n             888                                        \n            o888o                                       \n'
     banner2 = '\nMP""""""`MM          oo                     dP   oo .8888b          \nM  mmmmm..M                                 88      88   "          \nM.      `YM 88d888b. dP .d8888b. .d8888b. d8888P dP 88aaa  dP    dP \nMMMMMMM.  M 88\'  `88 88 88\'  `"" 88ooood8   88   88 88     88    88 \nM. .MMM\'  M 88.  .88 88 88.  ... 88.  ...   88   88 88     88.  .88 \nMb.     .dM 88Y888P\' dP `88888P\' `88888P\'   dP   dP dP     `8888P88 \nMMMMMMMMMMM 88                                                  .88 \n            dP                                              d8888P  \n\n\n'
 
-    cls(); print(align(clr(banner1,4,colours=(green, green_dim)) + align(clr('+')) + align(clr(banner2,4,colours=(yellow, yellow_dim)))))
+    cls()
+    console = Console(highlight=False)
+    console.print(Align.center(banner1), style="blink green3")
+    console.print(Align.center("+"), style="blink red")
+    console.print(Align.center(banner2), style="blink dark_orange")
     print(clr(f"\n  - {translate('Credits to amd64fox & spicetify contributors!')}"))
     input(clr(f"\n  > {translate('Hit [ ENTER ] to begin installation...')} "))
 

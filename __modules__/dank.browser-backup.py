@@ -5,12 +5,13 @@ import zipfile
 import datetime
 from psutil import process_iter
 from translatepy import Translator
-from dankware import red, red_dim
-from dankware import cls, clr, err, align, rm_line, is_admin, export_registry_keys, get_path
+from dankware import cls, clr, err, rm_line, is_admin, export_registry_keys, get_path, red
 
 from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
+from rich.align import Align
+from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeRemainingColumn, TimeElapsedColumn
 
 def translate(text):
@@ -124,7 +125,7 @@ def main():
 
     # banner, check if admin
 
-    cls(); banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
+    cls()
     try:
         if not is_admin():
             raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
@@ -145,7 +146,8 @@ def main():
     for _, browser in enumerate(browsers):
         to_print += f"\n  - [{_+1}] {browser}"
 
-    print(align(clr(banner,4,colours=(red, red_dim))))
+    banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
+    Console().print(Align.center(banner), style="blink red", highlight=False)
     print(clr(to_print))
 
     print("")

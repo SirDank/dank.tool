@@ -11,6 +11,7 @@ import time
 import datetime
 import requests
 from rich.panel import Panel
+from rich.align import Align
 from win11toast import notify
 from rich.columns import Columns
 from rich.console import Console
@@ -18,8 +19,8 @@ from translatepy import Translator
 from packaging.version import parse
 from dateutil.tz import tzlocal, tzutc
 from concurrent.futures import ThreadPoolExecutor
-from dankware import align, cls, clr, title, get_duration, multithread, err, rm_line
-from dankware import white, white_bright, green, green_bright, red, red_normal, red_dim
+from dankware import cls, clr, title, get_duration, multithread, err, rm_line
+from dankware import white, white_bright, green, green_bright, red, red_normal
 
 os.chdir(os.path.dirname(__file__))
 
@@ -50,14 +51,19 @@ def dank_tool_installer():
 
 def dank_tool_banner():
 
-    banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'    
-    cls(); print(align(clr(banner,4,colours=(red, red_dim)) + f"\n{white_bright}s i r {red_normal}. {white_bright}d a n k {red_normal}💕"))
+    cls()
+    banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
+    console = Console(highlight=False)
+    console.print(Align.center(banner), style="blink red")
+    console.print(Align.center("\n[white]s i r [red]. [white]d a n k [red]💕"), style="blink")
 
 # handle KeyboardInterrupt
 
 def print_warning_symbol():
 
-    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}        ██          {white_bright}██████{red_normal}          ██        \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}    ██              {white_bright}██████{red_normal}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}██                  {white_bright}██████{red_normal}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n\n'))
+    cls()
+    banner = '\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [white]██████[red]      ██            \n[red]            ██      [white]██████[red]      ██            \n[red]          ██        [white]██████[red]        ██          \n[red]          ██        [white]██████[red]        ██          \n[red]        ██          [white]██████[red]          ██        \n[red]      ██            [white]██████[red]            ██      \n[red]      ██            [white]██████[red]            ██      \n[red]    ██              [white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [white]██████[red]                ██  \n[red]  ██                [white]██████[red]                ██  \n[red]██                  [white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n'
+    Console().print(Align.center(banner), style="blink", highlight=False)
 
 # get commit date & time
 
