@@ -5,21 +5,25 @@ import shutil
 import requests
 import subprocess
 from random import randint
+from rich.align import Align
+from rich.console import Console
 from translatepy import Translator
-from dankware import white_normal, white_bright, red, red_normal, red_dim
-from dankware import title, rm_line, align, cls, clr, github_file_selector, multithread, sys_open, err, get_path
+from dankware import title, rm_line, cls, clr, github_file_selector, multithread, sys_open, err, get_path, white_bright, red
 
 headers = {'User-Agent': ('dank.tool' if "DANK_TOOL_VERSION" not in os.environ else f'dank.tool {os.environ["DANK_TOOL_VERSION"]}'), 'Content-Type': 'application/json'}
 
 # banners
 
 def print_banner():
+    cls()
     banner = "\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n\n\n"
-    cls(); print(align(clr(banner,4,colours=(red, red_dim))))
+    Console().print(Align.center(banner), style="blink red", highlight=False)
 
 def print_read_me():
+    cls()
     read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
-    cls(); print(align(read_me.replace(":",f"{white_normal}:").replace("+",f"{white_bright}+").replace("#",f"{red_normal}#")))
+    read_me = read_me.replace(":", "[white]:[/white]").replace("+", "[white]+[/white]").replace("#", "[red]#[/red]")
+    Console().print(Align.center(read_me), style='blink', highlight=False)
 
 # translator
 
@@ -873,7 +877,7 @@ def main_two():
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
     complete_banner = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
-    cls(); print(align(clr(complete_banner,4))); time.sleep(5)
+    cls(); Console().print(Align.center(complete_banner), style="blink red", highlight=False); time.sleep(5)
     #sys_open('https://allmylinks.com/sir-dankenstein')
 
 main_two()

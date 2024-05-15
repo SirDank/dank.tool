@@ -1,10 +1,10 @@
 import os
 import subprocess
 from rich.panel import Panel
+from rich.align import Align
 from rich.columns import Columns
 from rich.console import Console
-from dankware import cls, clr, align, rm_line
-from dankware import red, red_dim, green_bright
+from dankware import cls, clr, rm_line, green_bright
 
 def winget_installed():
     try:
@@ -14,8 +14,9 @@ def winget_installed():
         return False
 
 def print_banner():
+    cls()
     banner = "\n\n   _         _           _             _   \n _| |___ ___| |_   _ _ _|_|___ ___ ___| |_ \n| . | .'|   | '_|_| | | | |   | . | -_|  _|\n|___|__,|_|_|_,_|_|_____|_|_|_|_  |___|_|  \n                              |___|        \n\n\n"
-    cls(); print(clr(align(banner),4,colours=(red, red_dim)))
+    Console().print(Align.center(banner), style="blink red", highlight=False)
     print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
 def handle_response(cmd, results, mode):

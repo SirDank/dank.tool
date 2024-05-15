@@ -1,7 +1,9 @@
 import os
 import requests
+from rich.align import Align
+from rich.console import Console
 from translatepy import Translator
-from dankware import cls, clr, align, rm_line, red, red_dim
+from dankware import cls, clr, rm_line
 
 def translate(text):
     if DANK_TOOL_LANG:
@@ -31,10 +33,11 @@ def main():
         os.mkdir('netlimiter')
     os.chdir('netlimiter')
 
+    cls()
     session = requests.Session()
     headers = {"User-Agent": f"dank.tool {os.environ['DANK_TOOL_VERSION']}"}
     banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
-    cls(); print(clr(align(banner),4,colours=(red, red_dim)))
+    Console().print(Align.center(banner), style="blink red", highlight=False)
     print(clr(f"\n  - {translate('Credits to Baseult!')}"))
 
     # main
