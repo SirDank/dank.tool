@@ -22,7 +22,7 @@ def print_banner():
 def print_read_me():
     cls()
     read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
-    read_me = read_me.replace(":", "[white]:[/white]").replace("+", "[white]+[/white]").replace("#", "[red]#[/red]")
+    read_me = read_me.replace(":", "[bright_white]:[/bright_white]").replace("+", "[bright_white]+[/bright_white]").replace("#", "[red]#[/red]")
     Console().print(Align.center(read_me), style='blink', highlight=False)
 
 # translator
