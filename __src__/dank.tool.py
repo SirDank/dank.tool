@@ -55,7 +55,7 @@ def dank_tool_banner():
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
     console = Console(highlight=False)
     console.print(Align.center(banner), style="blink red")
-    console.print(Align.center("\n[white]s i r [red]. [white]d a n k [red]💕"), style="blink")
+    console.print(Align.center("[white]s i r [red]. [white]d a n k [red]💕"), style="blink")
 
 # handle KeyboardInterrupt
 
@@ -1060,14 +1060,17 @@ if __name__ == "__main__":
 
         except:
 
-            err_message = err(sys.exc_info())
+            err_message = err(sys.exc_info(), 'mini')
             print(clr(err_message, 2))
 
             if "Error Type: SystemExit" in err_message:
                 os.system("taskkill /f /t /im dank.tool.exe")
+            elif "Error Type: EOFError" in err_message:
+                print_warning_symbol()
+                print(clr(f"\n  - {_translate('No input provided!')}"))
             elif "Error Type: KeyboardInterrupt" in err_message:
                 print_warning_symbol()
-                print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]')}!"))
+                print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]!')}"))
 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
