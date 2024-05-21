@@ -1066,12 +1066,12 @@ if __name__ == "__main__":
             err_message = err(sys.exc_info(), 'mini')
             print(clr(err_message, 2))
 
-            if "Error Type: SystemExit" in err_message:
+            if "- SystemExit" in err_message:
                 os.system("taskkill /f /t /im dank.tool.exe")
-            elif "Error Type: EOFError" in err_message:
+            elif "- EOFError" in err_message:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('No input provided!')}"))
-            elif "KeyboardInterrupt" in err_message:
+            elif "- KeyboardInterrupt" in err_message:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]!')}"))
 
