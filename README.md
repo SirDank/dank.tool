@@ -284,6 +284,8 @@
 # 🚨 World Exploration Game 🚨 [ WIP ]
 
 - This game is in early development, expect bugs!
+- If the ground is not visible, restart the game!
+- You might need to use max brightness!
 - Game updates might be slow!
 - Built using [Ursina Engine](https://github.com/pokepetter/ursina)!
 
