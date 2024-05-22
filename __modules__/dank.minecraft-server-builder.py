@@ -195,7 +195,7 @@ def main_one():
         'world/datapacks',
         'world_nether/datapacks',
         'world_the_end/datapacks',
-        'plugins/Iris/packs',
+        #'plugins/Iris/packs',
         'plugins/BetterStructures/imports',
         'plugins/BetterStructures/schematics/default',
         'plugins/BetterStructures/schematics/exploration',
@@ -258,7 +258,7 @@ def main_one():
         "TabTPS": 82528,
         #"TreeAssist": 67436,
         #"SmoothTimber": 39965,
-        "LevelledMobs": 74304,
+        #"LevelledMobs": 74304, # scaling needs to be improved
         "PlayTime": 26016,
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
@@ -297,8 +297,8 @@ def main_one():
 
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
-              + github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
+              #+ github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               #+ github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
               #+ github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
               #+ github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
@@ -735,19 +735,19 @@ configs = {
     #    "enabled: false": "enabled: true"
     #},
 
-    "plugins/LevelledMobs/rules.yml": {
-        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%%mob-lvl% &r%health-indicator%",
-        "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%%mob-lvl%&8 &f%entity-health-rounded%",
-        "&8&l༺ &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "&f%entity-health-rounded% %tiered%%heart_symbol%",
-        "- nametag_using_numbers": "#- nametag_using_numbers",
-        "#- nametag_using_indicator": "- nametag_using_indicator",
-        "- weighted_random_Levelling": "#- weighted_random_Levelling",
-        "#- ycoord_Levelling": "- ycoord_Levelling",
-    },
+    #"plugins/LevelledMobs/rules.yml": {
+    #    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%%mob-lvl% &r%health-indicator%",
+    #    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%%mob-lvl%&8 &f%entity-health-rounded%",
+    #    "&8&l༺ &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "&f%entity-health-rounded% %tiered%%heart_symbol%",
+    #    "- nametag_using_numbers": "#- nametag_using_numbers",
+    #    "#- nametag_using_indicator": "- nametag_using_indicator",
+    #    "- weighted_random_Levelling": "#- weighted_random_Levelling",
+    #    "#- ycoord_Levelling": "- ycoord_Levelling",
+    #},
 
-    "plugins/LevelledMobs/settings.yml": {
-        "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
-    },
+    #"plugins/LevelledMobs/settings.yml": {
+    #    "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
+    #},
 
     #"plugins/NeoPerformance/performanceConfig.yml": {
     #    "broadcastHalt: false": "broadcastHalt: true",
@@ -819,24 +819,24 @@ def main_two():
   - {translate('Follow these steps to enable custom world generation')}:
 
   [1] {translate('Start the server again using the following command')}: .start
-  [2] {translate('Copy and paste the following command')}: iris create name=world-iris seed={randint(1,9999999999)}
+  [2] {translate('After it has properly started, copy and paste the following command')}: iris create name=world-iris seed={randint(1,9999999999)}
   [3] {translate('Wait for it to complete then stop the server using the following command')}: .stop
 
   > {translate('Press [ ENTER ] after you have followed the steps...')} '''
 
-    while not os.path.isdir("world-iris"):
-        print_read_me(); input(clr(string))
+    #while not os.path.isdir("world-iris"):
+    #    print_read_me(); input(clr(string))
 
-    shutil.move("world/datapacks", "world-iris/datapacks")
-    shutil.rmtree("world")
-    os.rename("world_nether", "world-iris_nether")
-    os.rename("world_the_end", "world-iris_the_end")
+    #shutil.move("world/datapacks", "world-iris/datapacks")
+    #shutil.rmtree("world")
+    #os.rename("world_nether", "world-iris_nether")
+    #os.rename("world_the_end", "world-iris_the_end")
 
-    with open('server.properties', 'r', encoding='utf-8') as file:
-        data = file.read().replace("level-name=world", "level-name=world-iris")
+    #with open('server.properties', 'r', encoding='utf-8') as file:
+    #    data = file.read().replace("level-name=world", "level-name=world-iris")
 
-    with open('server.properties', 'w', encoding='utf-8') as file:
-        file.write(data)
+    #with open('server.properties', 'w', encoding='utf-8') as file:
+    #    file.write(data)
 
     if playit:
 
