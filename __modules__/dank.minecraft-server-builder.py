@@ -61,7 +61,7 @@ def main_one():
 
     while True:
         try:
-            latest_java_version = "17"
+            latest_java_version = "21"
             #latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
@@ -422,7 +422,7 @@ java -jar MCAntiMalware.jar
 with open('quick_install_java.cmd', 'w', encoding='utf-8') as file:
     file.write(f'''@echo off
 title Java {latest_java_version} Installer
-winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE
+winget install --accept-source-agreements EclipseAdoptium.Temurin.{latest_java_version}.JRE
 pause
 ''')
 
