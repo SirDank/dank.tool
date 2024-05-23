@@ -267,7 +267,7 @@ def main_one():
         "BetterStructures": 103241,
         "EliteMobs": 40090,
         "SilkSpawners": 60063,
-        "Fancy Physics": 110500
+        "FancyPhysics": 110500
     }
 
     bukkit_plugins = [
@@ -759,10 +759,10 @@ configs = {
         "break-permissions: true": "break-permissions: false",
     },
 
-    "plugins/PhysicsToGo/config.yml": {
-        "tree-regeneration: true": "tree-regeneration: false",
-        "explosive-regeneration: true": "explosive-regeneration: false"
-    },
+    #"plugins/PhysicsToGo/config.yml": {
+    #    "tree-regeneration: true": "tree-regeneration: false",
+    #    "explosive-regeneration: true": "explosive-regeneration: false"
+    #},
 
     "plugins/BetterStructures/config.yml": {
         "warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"
