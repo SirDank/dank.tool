@@ -214,7 +214,7 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ('server-icon.png'):
+    for file in ['server-icon.png']:
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(file)
 
@@ -339,15 +339,6 @@ def main_one():
             time_taken = int(time.time()-start_time)
             break
         except: input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); cls()
-
-    # begin single threaded downloader
-
-    #print(clr(f"\n  - {translate('Downloading... [ this might take a few minutes ]')}\n"))
-    #start_time = time.time()
-    #for url, file_name in zip(to_download_urls, to_download_file_names):
-    #    file_downloader(url, file_name)
-    #multithread(file_downloader, 1, tuple(to_download_urls), tuple(to_download_file_names)) # single threaded with progress bar
-    #time_taken = int(time.time()-start_time)
 
     print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds...')}")); time.sleep(3)
 
