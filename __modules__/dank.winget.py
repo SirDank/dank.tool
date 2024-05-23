@@ -23,8 +23,11 @@ def handle_response(cmd, results, mode):
 
     indexes = [0]
     cmd = cmd.stdout.decode('utf-8').splitlines()
-    while not cmd[0].startswith('Name'):
-        cmd = cmd[1:]
+    try:
+        while not cmd[0].startswith('Name'):
+            cmd = cmd[1:]
+    except IndexError as exc:
+        raise RuntimeError(f"Error parsing response!\n\n{cmd}") from exc
 
     try:
         for char in ('I', 'V', 'A', 'S'):
