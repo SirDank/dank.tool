@@ -422,7 +422,7 @@ java -jar MCAntiMalware.jar
 with open('quick_install_java.cmd', 'w', encoding='utf-8') as file:
     file.write(f'''@echo off
 title Java {latest_java_version} Installer
-winget install --accept-source-agreements EclipseAdoptium.Temurin.{latest_java_version}.JRE
+winget install --accept-source-agreements --interactive --id EclipseAdoptium.Temurin.{latest_java_version}.JRE
 pause
 ''')
 
