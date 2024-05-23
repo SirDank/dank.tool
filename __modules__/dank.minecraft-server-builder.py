@@ -1,7 +1,6 @@
 import os
 import sys
 import time
-import shutil
 import requests
 import subprocess
 from random import randint
@@ -267,6 +266,8 @@ def main_one():
         "ChatFeelings": 12987,
         "BetterStructures": 103241,
         "EliteMobs": 40090,
+        "SilkSpawners": 60063,
+        "Fancy Physics": 110500
     }
 
     bukkit_plugins = [
@@ -297,7 +298,7 @@ def main_one():
 
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
-              + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
+              #+ github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
               #+ github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               #+ github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
               #+ github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
@@ -696,6 +697,7 @@ configs = {
         # "view-distance=10": "view-distance=8",
         # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f",
         "spawn-protection=16": "spawn-protection=0",
+        "max-world-size=29999984": "max-world-size=1000500",
     },
 
     "spigot.yml": {
