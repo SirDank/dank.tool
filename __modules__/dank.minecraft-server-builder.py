@@ -191,10 +191,10 @@ def main_one():
     # create folders
 
     for folder in (
+        'autoplug',
         'world/datapacks',
         'world_nether/datapacks',
         'world_the_end/datapacks',
-        #'plugins/Iris/packs',
         'plugins/BetterStructures/imports',
         'plugins/BetterStructures/schematics/default',
         'plugins/BetterStructures/schematics/exploration',
@@ -202,8 +202,7 @@ def main_one():
         'plugins/BetterStructures/elitemobs/powers/BetterStructures Free Elite Shrines',
         'plugins/BetterStructures/elitemobs/customitems/BetterStructures Free Elite Shrines',
         'plugins/BetterStructures/elitemobs/custombosses/BetterStructures Free Elite Shrines',
-        'plugins/EliteMobs/imports',
-        'autoplug'): # 'datapacks_backup'
+        'plugins/EliteMobs/imports'):
         try: os.makedirs(folder)
         except: pass
 
@@ -211,32 +210,26 @@ def main_one():
 
     cls(); print(clr(f"\n  - {translate('Preparing Downloads...')}"))
     to_download_urls, to_download_file_names = [], []
+    url = "https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder"
 
     # github server-builder files and plugins
 
-    for file in ('server-icon.png', 'log4j2_17-111.xml', 'log4j2_112-116.xml'): # 'PublicCrafters.jar' 4.13.5
-        to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
-        if file.endswith('.jar'): to_download_file_names.append(f"plugins/{file}")
-        else: to_download_file_names.append(file)
+    for file in ('server-icon.png'):
+        to_download_urls.append(f"{url}/{file}")
+        to_download_file_names.append(file)
+
+    if extra_flag:
+        for file in ('log4j2_17-111.xml', 'log4j2_112-116.xml'):
+            to_download_urls.append(f"{url}/{file}")
+            to_download_file_names.append(file)
 
     for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines Pack.zip'):
-        to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
+        to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
     for file in ('Adventurers_Guild.zip', 'em_dark_cathedral.zip', 'em_enchantment_sanctums_free.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks.zip', 'em_hallosseum.zip', 'em_id_the_cave.zip', 'em_id_the_climb.zip', 'em_id_the_mines.zip', 'em_knights_castle_v6.zip', 'em_north_pole.zip', 'em_sewers.zip', 'em_shadow_of_the_binder_of_worlds.zip', 'em_the_binder_of_worlds.zip', 'em_the_steamworks.zip'):
-        to_download_urls.append(f"https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder/{file}")
+        to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
-
-    # iris packs
-
-    '''
-    for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
-        
-        if file == 'overworld': tmp_name = 'stable'
-        else: tmp_name = 'main'
-        to_download_urls.append(f"https://github.com/IrisDimensions/{file}/archive/refs/heads/{tmp_name}.zip")
-        to_download_file_names.append(f"plugins/Iris/packs/{file}.zip")
-    '''
 
     # spigot / bukkit plugins
 
@@ -274,14 +267,10 @@ def main_one():
         "worldguard"
     ]
 
-    for _ in ("1.7", "1.8", "1.9", "1.10", "1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17", "1.18"):
-        if version.startswith(_):
-            spigot_plugins["Log4JExploitFix"] = 98243
-            break
-
+    if extra_flag:
+        spigot_plugins["Log4JExploitFix"] = 98243
     if playit:
         spigot_plugins["playit-gg"] = 105566
-
     if install_Via:
         spigot_plugins["ViaVersion"] = 19254
         spigot_plugins["ViaBackwards"] = 27448
@@ -322,7 +311,6 @@ def main_one():
     to_download_file_names.append("purpur.jar")
 
     def file_downloader(url, file_name):
-
         while True:
             try:
                 response = requests.get(url, headers=headers, timeout=3, allow_redirects=True)
@@ -363,27 +351,6 @@ def main_one():
 
     print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds...')}")); time.sleep(3)
 
-    # unpacking downloaded archives
-
-    '''
-    print(clr(f"\n  - {translate('Unpacking...')}"))
-    
-    for file in ['theend', 'overworld', 'deepwoods']: # 'newhorizons'
-
-        if file == 'overworld': tmp_name = 'stable'
-        else: tmp_name = 'main'
-
-        shutil.unpack_archive(f'plugins/Iris/packs/{file}.zip', 'plugins/Iris/packs', 'zip')
-        time.sleep(1)
-        try: os.rename(f'plugins/Iris/packs/{file}-{tmp_name}', f'plugins/Iris/packs/{file}')
-        except:
-            while os.path.exists(f'plugins/Iris/packs/{file}-{tmp_name}'):
-                string = translate(f'ERROR! Please manually rename "plugins/Iris/packs/{file}-{tmp_name}" to "plugins/Iris/packs/{file}"\n\n  > Press [ ENTER ] after this')
-                input(clr(f"\n  > {string}... ",2))
-        try: os.remove(f'plugins/Iris/packs/{file}.zip')
-        except: pass
-    '''
-
 main_one()
 
 # creating local files
@@ -408,8 +375,8 @@ java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
 with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as file:
-    file.write(f'''@echo off
-title Minecraft Anti-Malware [ {name} - {version} ]
+    file.write('''@echo off
+title Minecraft Anti-Malware
 java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
@@ -650,6 +617,15 @@ plugins:
   WorldGuard:
     exclude: false
     bukkit-id: 31054
+  FancyPhysics:
+    spigot-id: 110500
+    alternatives: 
+      github: 
+        repo-name: max1mde/FancyPhysics
+        asset-name: FancyPhysics
+  SilkSpawners_v2:
+    exclude: false
+    spigot-id: 60063
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
@@ -669,12 +645,6 @@ configs = {
         "fix-climbing-bypassing-cramming-rule: false": "fix-climbing-bypassing-cramming-rule: true",
         "non-player-arrow-despawn-rate: default": "non-player-arrow-despawn-rate: 20",
         "creative-arrow-despawn-rate: default": "creative-arrow-despawn-rate: 20",
-    },
-
-    "pufferfish.yml": {
-        "dab:\n  enabled: false\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 8": "dab:\n  enabled: true\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 7",
-        "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
-        #"max-loads-per-projectile: 10": "max-loads-per-projectile: 8",
     },
 
     "purpur.yml": {
@@ -703,12 +673,18 @@ configs = {
     "spigot.yml": {
         "merge-radius:\n      item: 2.5\n      exp: 3.0": "merge-radius:\n      item: 3.5\n      exp: 4.0",
         # "mob-spawn-range: 8": "mob-spawn-range: 2",
-        "entity-activation-range\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
+        "entity-activation-range:\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range:\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
     },
 
     "bukkit.yml": {
         "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 1\n  water-spawns: 1\n  water-ambient-spawns: 1\n  water-underground-creature-spawns: 1\n  axolotl-spawns: 1\n  ambient-spawns: 1": "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 10\n  water-spawns: 400\n  water-ambient-spawns: 400\n  water-underground-creature-spawns: 400\n  axolotl-spawns: 400\n  ambient-spawns: 400",
     },
+
+    #"pufferfish.yml": {
+    #    "dab:\n  enabled: false\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 8": "dab:\n  enabled: true\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 7",
+    #    "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
+    #    #"max-loads-per-projectile: 10": "max-loads-per-projectile: 8",
+    #},
 
     # plugins
 
@@ -718,10 +694,6 @@ configs = {
         "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
     },
 
-    #"plugins/Corpses/config.yml": {
-    #    "secondsToDisappear: 300": "secondsToDisappear: 3600",
-    #},
-
     "plugins/Essentials/config.yml": {
         "nickname-prefix: '~'": "nickname-prefix: ''",
         "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
@@ -730,11 +702,19 @@ configs = {
         "format: '<{DISPLAYNAME}> {MESSAGE}'": "format: '&6[&a{DISPLAYNAME}&6] ➤ &b{MESSAGE}'",
         "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
         "use-bukkit-permissions: true": "use-bukkit-permissions: false",
-        "  - afk": "  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime\n  - afk",
+        "player-commands:\n": "player-commands:\n  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime\n",
     },
 
-    #"plugins/Log4JExploitFix/config.yml": {
-    #    "enabled: false": "enabled: true"
+    "plugins/ntdLuckyBlock/config.yml": {
+        "break-permissions: true": "break-permissions: false",
+    },
+
+    "plugins/BetterStructures/config.yml": {
+        "warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"
+    }
+
+    #"plugins/Corpses/config.yml": {
+    #    "secondsToDisappear: 300": "secondsToDisappear: 3600",
     #},
 
     #"plugins/LevelledMobs/rules.yml": {
@@ -755,23 +735,18 @@ configs = {
     #    "broadcastHalt: false": "broadcastHalt: true",
     #},
 
-    "plugins/ntdLuckyBlock/config.yml": {
-        "break-permissions: true": "break-permissions: false",
-    },
-
     #"plugins/PhysicsToGo/config.yml": {
     #    "tree-regeneration: true": "tree-regeneration: false",
     #    "explosive-regeneration: true": "explosive-regeneration: false"
     #},
 
-    "plugins/BetterStructures/config.yml": {
-        "warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"
-    }
-
 }
 
 if cracked:
     configs["server.properties"]["online-mode=true"] = "online-mode=false"
+
+if extra_flag:
+    configs["plugins/Log4JExploitFix/config.yml"] = {"enabled: false": "enabled: true"}
 
 def main_two():
 
