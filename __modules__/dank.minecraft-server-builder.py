@@ -260,7 +260,8 @@ def main_one():
         "BetterStructures": 103241,
         "EliteMobs": 40090,
         "SilkSpawners": 60063,
-        "FancyPhysics": 110500
+        "FancyPhysics": 110500,
+        "TerraformGenerator": 75132
     }
 
     bukkit_plugins = [
@@ -714,7 +715,8 @@ configs = {
     },
 
     "plugins/FancyPhysics/config.yml": {
-        "DamageParticles: true": "DamageParticles: false"
+        "DamageParticles: true": "DamageParticles: false",
+        "MaxAmount: 4000": "MaxAmount: 500"
     }
 
     #"plugins/Corpses/config.yml": {
