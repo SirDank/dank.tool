@@ -392,6 +392,7 @@ pause
 with open('quick_install_java.sh', 'wb') as file:
     file.write(f"""
 #!/bin/sh
+sudo apt update
 sudo apt install -y wget apt-transport-https
 sudo mkdir -p /etc/apt/keyrings
 sudo wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee /etc/apt/keyrings/adoptium.asc
@@ -663,6 +664,7 @@ configs = {
         # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f",
         "spawn-protection=16": "spawn-protection=0",
         "max-world-size=29999984": "max-world-size=1000500",
+        "enforce-secure-profile=true": "enforce-secure-profile=false"
     },
 
     "spigot.yml": {
