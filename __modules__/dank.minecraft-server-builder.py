@@ -245,7 +245,6 @@ def main_one():
         #"NeoPerformance": 103183, # removed from spigot? # disabled config
         #"PlayerNPC": 93625,
         "ProtocolLib": 1997,
-        "SkinRestorer": 2124,
         "Spark": 57242,
         "TabTPS": 82528,
         #"TreeAssist": 67436,
@@ -269,6 +268,8 @@ def main_one():
         "worldguard"
     ]
 
+    if cracked:
+        spigot_plugins["SkinRestorer"] = 2124
     if extra_flag:
         spigot_plugins["Log4JExploitFix"] = 98243
     if playit:
