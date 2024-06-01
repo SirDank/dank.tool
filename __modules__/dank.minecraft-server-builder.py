@@ -628,6 +628,8 @@ plugins:
 
 # start server and shutdown server for optimizing the below settings and configuring
 
+resource_pack_sha1 = requests.get("https://raw.githubusercontent.com/SirDank/dank.resource-pack/main/sha1.txt", timeout=3).content.decode()
+
 configs = {
 
     # server configs
@@ -658,12 +660,12 @@ configs = {
         "motd=A Minecraft Server": f"motd=\\u00A7a{motd_spaces}---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\\{motd_spaces}\\n         \\u00A7l\\u00A7m\\u00A76-----\\u00A7r\\u00A78[ \\u00A74Made with \\u00A7cdank\\u00A7f.\\u00A7ctool \\u00A78]\\u00A7l\\u00A7m\\u00A76-----",
         "server-name=Unknown Server": f"server-name={name}",
         #"require-resource-pack=false": "require-resource-pack=true",
-        #'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
-        #"resource-pack=": "resource-pack=https://github.com/SirDank/dank.resource-pack/raw/main/dank.resource-pack.zip",
+        'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
+        "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resource-pack/raw/main/dank.resource-pack.zip",
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
         # "view-distance=10": "view-distance=8",
-        # "resource-pack-sha1=": "resource-pack-sha1=3c0e42f1e8194fb47475558a9e827a3128adef2f",
+        "resource-pack-sha1=": f"resource-pack-sha1={resource_pack_sha1}",
         "spawn-protection=16": "spawn-protection=0",
         "max-world-size=29999984": "max-world-size=1000500",
         "enforce-secure-profile=true": "enforce-secure-profile=false"
