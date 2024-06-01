@@ -243,7 +243,7 @@ def main_one():
         #"Chunky": 81534,
         #"Corpses": 96774, # breaks on latest # disabled config
         #"NeoPerformance": 103183, # removed from spigot? # disabled config
-        "PLayerNPC": 93625,
+        "PlayerNPC": 93625,
         "ProtocolLib": 1997,
         "SkinRestorer": 2124,
         "Spark": 57242,
@@ -261,7 +261,8 @@ def main_one():
         "EliteMobs": 40090,
         "SilkSpawners": 60063,
         "FancyPhysics": 110500,
-        "TerraformGenerator": 75132
+        "TerraformGenerator": 75132,
+        "Graves": 74208,
     }
 
     bukkit_plugins = [
