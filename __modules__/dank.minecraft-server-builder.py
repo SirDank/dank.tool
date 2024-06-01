@@ -243,7 +243,7 @@ def main_one():
         #"Chunky": 81534,
         #"Corpses": 96774, # breaks on latest # disabled config
         #"NeoPerformance": 103183, # removed from spigot? # disabled config
-        "PlayerNPC": 93625,
+        #"PlayerNPC": 93625,
         "ProtocolLib": 1997,
         "SkinRestorer": 2124,
         "Spark": 57242,
