@@ -47,7 +47,7 @@ def dank_tool_installer():
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
 
-# print randomly coloured and aligned banner
+# print coloured and aligned banner
 
 def dank_tool_banner():
 
@@ -56,6 +56,14 @@ def dank_tool_banner():
     console = Console(highlight=False)
     console.print(Align.center(banner), style="blink red")
     console.print(Align.center("[bright_white]s i r [red]. [bright_white]d a n k [red]💕\n"), style="blink")
+
+def palestine_banner():
+
+    cls()
+    banner = '\n[red]###[black]###########################################\n[red]#####[black]#########################################\n[red]########[black]######################################\n[red]##########[black]####################################\n[red]############[white]##################################\n[red]##############[white]################################\n[red]################[white]##############################\n[red]##############[white]################################\n[red]############[white]##################################\n[red]##########[green]####################################\n[red]########[green]######################################\n[red]#####[green]#########################################\n[red]###[green]###########################################\n'
+    console = Console(highlight=False)
+    console.print(Align.center(banner), style="blink")
+    console.print(Align.center("[white]U S E [red]. [white]Y O U R [red]. [white]V O I C E\n"), style="blink")
 
 # handle KeyboardInterrupt
 
@@ -101,13 +109,13 @@ def get_menu_request_responses(task_id, request_key):
             except:
                 pass
 
-        case 2: # get motd
+        case 2: # get motm
             try:
-                motd = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motd.txt", headers=headers, timeout=3).content.decode()
-                motd = clr(motd, colour_one=green_bright)
+                motm = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
+                motm = clr(motm, colour_one=green_bright)
             except:
-                motd = f"{red_normal}⚠️"
-            menu_request_responses[request_key] = motd
+                motm = f"{red_normal}⚠️"
+            menu_request_responses[request_key] = motm
 
         case 3: # get chatroom user count
             try:
@@ -287,12 +295,7 @@ def set_globals_two():
 
         global online_modules
 
-        stats = f" [ dankware runs: {green_bright}{menu_request_responses['dankware_runs']} | dank.tool runs: {green_bright}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
-        #try: stats = f" [ dankware runs: {green}{menu_request_responses['dankware_runs']} | dank.tool runs: {green}{menu_request_responses['danktool_runs']} | motd: {menu_request_responses['motd']} ]"
-        #except Exception as exc:
-        #    try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, data={"text": f"```<--- 🚨🚨🚨 --->\n\n  - Error: {exc}\n\n  - Data:\n\n{json.dumps(menu_request_responses, indent=2)}```"})
-        #    except: pass
-        #    stats = " [ ERROR ON STATS ⚠️ ]"
+        stats = f" [ dankware runs: {green_bright}{menu_request_responses['dankware_runs']} | dank.tool runs: {green_bright}{menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
 
         online_modules = {
 
@@ -738,6 +741,8 @@ if __name__ == "__main__":
 
     set_globals_one()
     _translator = Translator()
+    palestine_banner() # 🍉
+    time.sleep(3) # 🍉
 
     # multithreaded requests responses, download modules / assets
 
@@ -810,7 +815,7 @@ if __name__ == "__main__":
         request_keys = (
             "dankware_runs",
             "danktool_runs",
-            "motd",
+            "motm",
             "chatroom_user_count"
         )
 
