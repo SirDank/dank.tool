@@ -116,7 +116,7 @@ def main_one():
 
     string = translate('The following plugins allow older / newer clients to join your server')
     print_read_me(); print(clr(f"\n  - {string}!"))
-    print("")
+    print(clr(f"\n  - {translate('If you do not know what to choose here, type:')} \"n\"\n"))
     while True:
         install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
         match install_Via:
