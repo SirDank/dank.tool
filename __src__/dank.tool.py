@@ -80,13 +80,13 @@ def updated_on(url, dankware_module = True):
 
         response = requests.get(url, headers=headers, timeout=3).json()
         if not response:
-            return "[ unreleased ]"
+            return "[red1][[red] unreleased [red1]]"
 
         date, time = response[0]["commit"]["author"]["date"].split("T")
         date = date.split("-")
         time = time.replace("Z","").split(":")
         date_time_data = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
-        return f"[bright_green]{get_duration(date_time_data, datetime.datetime.now(tzlocal()), interval='dynamic-mini')}" # 🔄
+        return f"[bright_green]🔄 {get_duration(date_time_data, datetime.datetime.now(tzlocal()), interval='dynamic-mini')} ago"
 
     except: return "" # [red1]⚠️
 
@@ -364,12 +364,12 @@ def set_globals_two():
                     'rpc': _translate("installing spotx and spicetify")
                 },
 
-                #'Vencord Installer': {
-                #    'info': menu_request_responses["Vencord"],
-                #    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
-                #    'project': "dank.vencord",
-                #    'rpc': _translate("installing vencord")
-                #},
+                'Vencord': {
+                    'info': "",
+                    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
+                    'project': "dank.vencord",
+                    'rpc': _translate("installing vencord")
+                },
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["NetLimiter"],
@@ -1086,6 +1086,9 @@ if __name__ == "__main__":
                     continue
                 case "dank.clear-icons":
                     dank_clear_icons()
+                    continue
+                case "dank.vencord":
+                    cls(); os.system("winget install --interactive --id Vendicated.Vencord")
                     continue
                 case "dank.netlimiter":
                     dank_netlimiter()
