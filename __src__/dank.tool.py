@@ -569,7 +569,7 @@ def dank_win_activate():
     print(clr(f"\n  - {_translate('Credits to massgravel team!')}"))
     input(clr(f"\n  > {_translate('Hit [ ENTER ] to begin Microsoft-Activation-Script...')} "))
     cls(); print(clr(f"\n  - {_translate('Exit inside the MAS window to return to the menu...')}"))
-    os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
+    os.system('powershell -Command "irm https://get.activated.win | iex"')
 
 def dank_os_repair():
 
