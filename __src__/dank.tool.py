@@ -509,7 +509,7 @@ def dank_tool_settings():
                 counter += 1
             choice = input(clr("\n  > Choice: ") + red).lower()
 
-            if choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
+            if choice is not None and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
                 choice = int(choice)
                 if not choice: break
@@ -742,7 +742,7 @@ if __name__ == "__main__":
     set_globals_one()
     _translator = Translator()
     palestine_banner() # 🍉
-    time.sleep(3) # 🍉
+    time.sleep(2) # 🍉
 
     # multithreaded requests responses, download modules / assets
 
