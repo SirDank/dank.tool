@@ -243,13 +243,10 @@ def main_one():
         #"Chunky": 81534,
         #"Corpses": 96774, # breaks on latest # disabled config
         #"NeoPerformance": 103183, # removed from spigot? # disabled config
-        #"PlayerNPC": 93625,
         "ProtocolLib": 1997,
         "Spark": 57242,
         "TabTPS": 82528,
-        #"TreeAssist": 67436,
-        #"SmoothTimber": 39965,
-        #"LevelledMobs": 74304, # scaling needs to be improved
+        #"LevelledMobs": 74304, # scaling needs to be improved, too difficult
         "PlayTime": 26016,
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
