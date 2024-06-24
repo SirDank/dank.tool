@@ -22,8 +22,6 @@ from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, title, get_duration, multithread, err, rm_line
 from dankware import white, white_bright, green, green_bright, red, red_normal
 
-os.chdir(os.path.dirname(__file__))
-
 def set_title():
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
 
@@ -161,7 +159,6 @@ def print_modules():
 
     dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
     user_renderables = []
-    console = Console()
     counter = 1
 
     # online modules
@@ -179,14 +176,13 @@ def print_modules():
         user_renderables.append(f"[b][bright_white]{counter} [bright_cyan]- [bright_white]{_title}[/b]")
         counter += 1
 
-    console.print(Panel(title="[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True))
+    Console().print(Panel(title="[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True), highlight=False)
     print()
 
 def print_category_modules(modules):
 
     dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
     user_renderables = []
-    console = Console()
     counter = 1
 
     # category modules
@@ -197,7 +193,7 @@ def print_category_modules(modules):
             user_renderables.append(f"[b][bright_white]{counter} [red1]- [bright_white]{_title}[/b] {module['info']}")
             counter += 1
 
-    console.print(Panel(title="[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True))
+    Console().print(Panel(title="[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True), highlight=False)
     print()
 
 # set globals
@@ -367,6 +363,13 @@ def set_globals_two():
                     'project': "dank.spotify",
                     'rpc': _translate("installing spotx and spicetify")
                 },
+
+                #'Vencord Installer': {
+                #    'info': menu_request_responses["Vencord"],
+                #    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
+                #    'project': "dank.vencord",
+                #    'rpc': _translate("installing vencord")
+                #},
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["NetLimiter"],
@@ -559,6 +562,15 @@ def dank_tool_settings():
         cls(); print(clr("\n  - settings.json missing!"))
         time.sleep(5)
 
+def dank_win_activate():
+
+    banner = "\n\n                                                          __    _______ _______ _______ \n.--------.---.-.-----.-----.-----.----.---.-.--.--.-----.|  |  |   |   |   _   |     __|\n|        |  _  |__ --|__ --|  _  |   _|  _  |  |  |  -__||  |__|       |       |__     |\n|__|__|__|___._|_____|_____|___  |__| |___._|\\___/|_____||__|__|__|_|__|___|___|_______|\n                           |_____|                                                      \n"
+    cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
+    print(clr(f"\n  - {_translate('Credits to massgravel team!')}"))
+    input(clr(f"\n  > {_translate('Hit [ ENTER ] to begin Microsoft-Activation-Script...')} "))
+    cls(); print(clr(f"\n  - {_translate('Exit inside the MAS window to return to the menu...')}"))
+    os.system('powershell -Command "irm https://massgrave.dev/get | iex"')
+
 def dank_os_repair():
 
     cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
@@ -696,6 +708,69 @@ def dank_clear_icons():
 
         rm_line()
 
+def dank_netlimiter():
+
+    # dir
+
+    os.chdir(os.path.dirname(__file__))
+    if not os.path.isdir('netlimiter'):
+        os.mkdir('netlimiter')
+    os.chdir('netlimiter')
+
+    session = requests.Session()
+    banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
+    cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
+    print(clr(f"\n  - {_translate('Credits to Baseult!')}"))
+
+    # main
+
+    if os.path.isfile(r"C:\Program Files\Locktime Software\NetLimiter\NetLimiter.dll"):
+        print(clr(f"\n  - {_translate('NetLimiter found!')}"))
+    else:
+        print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
+        url = 'https://download.netlimiter.com' + session.get("https://www.netlimiter.com/download").content.decode().split('https://download.netlimiter.com',1)[1].split('"',1)[0]
+        data = session.get(url, headers=headers).content
+        with open('netlimiter.exe', 'wb') as file:
+            file.write(data)
+
+        os.system('netlimiter.exe')
+        input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
+
+    sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]['sha']
+
+    def get_patcher():
+        data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers).content
+        print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
+        while True:
+            try:
+                with open('netlimiter-patcher.exe', 'wb') as file:
+                    file.write(data)
+                print(clr(f"\n  - {_translate('NetLimiter-Patcher saved successfully!')}"))
+                break
+            except Exception as exc:
+                input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
+                rm_line(); rm_line()
+
+    if os.path.isfile('netlimiter-patcher.exe'):
+        with open('sha.txt', 'r', encoding='utf-8') as file:
+            _sha = file.read()
+        if _sha == sha:
+            print(clr(f"\n  - {_translate('NetLimiter-Patcher is up-to-date!')}"))
+        else:
+            print(clr(f"\n  - {_translate('Updating NetLimiter-Patcher...')}"))
+            get_patcher()
+            with open('sha.txt', 'w', encoding='utf-8') as file:
+                file.write(sha)
+    else:
+        print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
+        get_patcher()
+        with open('sha.txt', 'w', encoding='utf-8') as file:
+            file.write(sha)
+
+    input(clr(f"\n  > {_translate('Hit [ ENTER ] to start NetLimiter-Patcher...')} "))
+    cls(); print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
+    os.system('netlimiter-patcher.exe')
+
 def dank_winrar_patcher():
 
     cls()
@@ -739,6 +814,7 @@ def dank_winrar_patcher():
 
 if __name__ == "__main__":
 
+    os.chdir(os.path.dirname(__file__))
     set_globals_one()
     _translator = Translator()
     palestine_banner() # 🍉
@@ -883,6 +959,10 @@ if __name__ == "__main__":
 
         del request_keys, request_keys_api, github_api
 
+    else:
+
+        del dank_win_activate, dank_netlimiter
+
     del updated_on, download_assets, download_offline_modules, get_menu_request_responses
 
     # main
@@ -995,6 +1075,9 @@ if __name__ == "__main__":
                 case "dank.tool settings":
                     dank_tool_settings()
                     continue
+                case "dank.win-activate":
+                    dank_win_activate()
+                    continue
                 case "dank.os-repair":
                     dank_os_repair()
                     continue
@@ -1003,6 +1086,9 @@ if __name__ == "__main__":
                     continue
                 case "dank.clear-icons":
                     dank_clear_icons()
+                    continue
+                case "dank.netlimiter":
+                    dank_netlimiter()
                     continue
                 case "dank.winrar":
                     dank_winrar_patcher()
