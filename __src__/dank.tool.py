@@ -364,12 +364,12 @@ def set_globals_two():
                     'rpc': _translate("installing spotx and spicetify")
                 },
 
-                'Vencord': {
-                    'info': "",
-                    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
-                    'project': "dank.vencord",
-                    'rpc': _translate("installing vencord")
-                },
+                #'Vencord': {
+                #    'info': "",
+                #    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
+                #    'project': "dank.vencord",
+                #    'rpc': _translate("installing vencord")
+                #},
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["NetLimiter"],
@@ -1087,9 +1087,9 @@ if __name__ == "__main__":
                 case "dank.clear-icons":
                     dank_clear_icons()
                     continue
-                case "dank.vencord":
-                    cls(); os.system("winget install --interactive --id Vendicated.Vencord")
-                    continue
+                #case "dank.vencord":
+                #    cls(); os.system('winget install --accept-source-agreements --interactive --id Vendicated.Vencord')
+                #    continue
                 case "dank.netlimiter":
                     dank_netlimiter()
                     continue
