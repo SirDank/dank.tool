@@ -350,16 +350,14 @@ player.position = (0, 100, 0)
 first_load()
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
-
 sequence_2 = Sequence(Func(reset_render_grid), Wait(0.25), loop=True)
 sequence_3 = Sequence(Func(render_loop), Wait(0.005), loop=True)
-
 sequence_4 = Sequence(Func(reset_collision_grid), Wait(0.25), loop=True)
 sequence_5 = Sequence(Func(collision_loop), Wait(0.05), loop=True)
-
 sequence_6 = Sequence(Func(unload), Wait(1), loop=True)
 
 sequence_1.start()
+Wait(5)
 sequence_2.start()
 sequence_3.start()
 sequence_4.start()
