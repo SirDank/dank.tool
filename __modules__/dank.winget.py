@@ -30,14 +30,14 @@ def handle_response(cmd, results, mode):
         while not cmd[0].startswith('Name'):
             cmd = cmd[1:]
     except IndexError as exc:
-        raise RuntimeError(f"Error parsing response! cmd: {cmd}") from exc
+        raise RuntimeError(f"Error parsing response!\n  - cmd: {cmd}\n  - results: {results}\n  - mode: {mode}") from exc
 
     try:
-        for char in ('I', 'V', 'A', 'S'):
+        for char in ('I', 'V', 'M', 'S'):
             if char in cmd[0]:
                 indexes.append(cmd[0].index(char))
     except Exception as exc:
-        raise RuntimeError(f"Error parsing response! cmd: {cmd}") from exc
+        raise RuntimeError(f"Error parsing response!\n  - cmd: {cmd}\n  - results: {results}\n  - mode: {mode}") from exc
 
     results.clear()
     cmd = cmd[2:]
