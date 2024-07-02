@@ -133,7 +133,8 @@ def get_menu_request_responses_api(task_id, request_key):
                 case 0: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=.&page=1&per_page=1"
                 case 1: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
                 case 2: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=.&page=1&per_page=1"
-                case 3: url = "https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1"
+                case 3: url = "https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=.&page=1&per_page=1"
+                case 4: url = "https://api.github.com/repos/Vendicated/Vencord/commits?path=.&page=1&per_page=1"
             menu_request_responses[request_key] = updated_on(url, False)
 
         case _: # get last update time for modules based on internal repo
@@ -364,12 +365,12 @@ def set_globals_two():
                     'rpc': _translate("installing spotx and spicetify")
                 },
 
-                #'Vencord': {
-                #    'info': "",
-                #    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
-                #    'project': "dank.vencord",
-                #    'rpc': _translate("installing vencord")
-                #},
+                'Vencord': {
+                    'info': menu_request_responses["Vencord"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
+                    'project': "dank.vencord",
+                    'rpc': _translate("installing vencord")
+                },
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["NetLimiter"],
@@ -708,68 +709,124 @@ def dank_clear_icons():
 
         rm_line()
 
-def dank_netlimiter():
+def dank_github_software(software):
 
     # dir
 
-    os.chdir(os.path.dirname(__file__))
-    if not os.path.isdir('netlimiter'):
-        os.mkdir('netlimiter')
-    os.chdir('netlimiter')
+    if os.path.isdir(f"C:\\Users\\{os.getlogin()}\\Downloads"):
+        os.chdir(f"C:\\Users\\{os.getlogin()}\\Downloads")
+    else:
+        os.chdir(os.path.expandvars("%temp%"))
 
     session = requests.Session()
-    banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
+    match software:
+        case 'netlimiter':
+            banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
+        case 'vencord':
+            banner = "\n\n                                                                         \n                                                                     _|  \n _|      _|    _|_|    _|_|_|      _|_|_|    _|_|    _|  _|_|    _|_|_|  \n _|      _|  _|_|_|_|  _|    _|  _|        _|    _|  _|_|      _|    _|  \n   _|  _|    _|        _|    _|  _|        _|    _|  _|        _|    _|  \n     _|        _|_|_|  _|    _|    _|_|_|    _|_|    _|          _|_|_|  \n\n\n"
     cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
-    print(clr(f"\n  - {_translate('Credits to Baseult!')}"))
 
     # main
 
-    if os.path.isfile(r"C:\Program Files\Locktime Software\NetLimiter\NetLimiter.dll"):
-        print(clr(f"\n  - {_translate('NetLimiter found!')}"))
-    else:
-        print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
-        url = 'https://download.netlimiter.com' + session.get("https://www.netlimiter.com/download").content.decode().split('https://download.netlimiter.com',1)[1].split('"',1)[0]
-        data = session.get(url, headers=headers).content
-        with open('netlimiter.exe', 'wb') as file:
-            file.write(data)
-
-        os.system('netlimiter.exe')
-        input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
-
-    sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]['sha']
+    match software:
+        case 'netlimiter':
+            print(clr(f"\n  - {_translate('Credits to')} Baseult!"))
+            if os.path.isfile(r"C:\Program Files\Locktime Software\NetLimiter\NetLimiter.dll"):
+                print(clr(f"\n  - {_translate('NetLimiter found!')}"))
+            else:
+                print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
+                url = 'https://download.netlimiter.com' + session.get("https://www.netlimiter.com/download").content.decode().split('https://download.netlimiter.com',1)[1].split('"',1)[0]
+                data = session.get(url, headers=headers).content
+                with open('netlimiter.exe', 'wb') as file:
+                    file.write(data)
+                os.system('netlimiter.exe')
+                input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
+            sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]['sha']
+        case 'vencord':
+            print(clr(f"\n  - {_translate('Credits to')} Vendicated!"))
+            if os.path.isfile(r"C:\Users\SirDank\AppData\Local\Discord\Update.exe"):
+                print(clr(f"\n  - {_translate('Discord found!')}"))
+            else:
+                print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}"))
+                os.system("winget install --accept-source-agreements --interactive --id Discord.Discord")
+                input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
+            asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
+            browser_download_url = asset["browser_download_url"]
+            version = browser_download_url.split('/')[-2]
 
     def get_patcher():
-        data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers).content
-        print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
-        while True:
-            try:
-                with open('netlimiter-patcher.exe', 'wb') as file:
-                    file.write(data)
-                print(clr(f"\n  - {_translate('NetLimiter-Patcher saved successfully!')}"))
-                break
-            except Exception as exc:
-                input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
-                rm_line(); rm_line()
+        match software:
+            case 'netlimiter':
+                data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers).content
+                print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
+                while True:
+                    try:
+                        with open('netlimiter-patcher.exe', 'wb') as file:
+                            file.write(data)
+                        print(clr(f"\n  - {_translate('NetLimiter-Patcher saved successfully!')}"))
+                        break
+                    except Exception as exc:
+                        input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
+                        rm_line(); rm_line()
+            case 'vencord':
+                data = session.get(browser_download_url, headers=headers).content
+                print(clr(f"\n  - {_translate('Vencord downloaded successfully!')}"))
+                while True:
+                    try:
+                        with open('vencord.exe', 'wb') as file:
+                            file.write(data)
+                        print(clr(f"\n  - {_translate('Vencord saved successfully!')}"))
+                        break
+                    except Exception as exc:
+                        input(clr(f"\n  > {_translate('Failed to save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
+                        rm_line(); rm_line()
 
-    if os.path.isfile('netlimiter-patcher.exe'):
-        with open('sha.txt', 'r', encoding='utf-8') as file:
-            _sha = file.read()
-        if _sha == sha:
-            print(clr(f"\n  - {_translate('NetLimiter-Patcher is up-to-date!')}"))
-        else:
-            print(clr(f"\n  - {_translate('Updating NetLimiter-Patcher...')}"))
-            get_patcher()
-            with open('sha.txt', 'w', encoding='utf-8') as file:
-                file.write(sha)
-    else:
-        print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
-        get_patcher()
-        with open('sha.txt', 'w', encoding='utf-8') as file:
-            file.write(sha)
+    match software:
+        case 'netlimiter':
+            if os.path.isfile('netlimiter-patcher.exe'):
+                with open('netlimiter-patcher-sha.txt', 'r', encoding='utf-8') as file:
+                    _sha = file.read()
+                if _sha == sha:
+                    print(clr(f"\n  - {_translate('NetLimiter-Patcher is up-to-date!')}"))
+                else:
+                    print(clr(f"\n  - {_translate('Updating NetLimiter-Patcher...')}"))
+                    get_patcher()
+                    with open('netlimiter-patcher-sha.txt', 'w', encoding='utf-8') as file:
+                        file.write(sha)
+            else:
+                print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
+                get_patcher()
+                with open('netlimiter-patcher-sha.txt', 'w', encoding='utf-8') as file:
+                    file.write(sha)
+        case 'vencord':
+            if os.path.isfile('vencord.exe'):
+                with open('vencord-version.txt', 'r', encoding='utf-8') as file:
+                    _version = file.read()
+                if _version == version:
+                    print(clr(f"\n  - {_translate('Vencord is up-to-date!')}"))
+                else:
+                    print(clr(f"\n  - {_translate('Updating Vencord...')}"))
+                    get_patcher()
+                    with open('vencord-version.txt', 'w', encoding='utf-8') as file:
+                        file.write(version)
+            else:
+                print(clr(f"\n  - {_translate('Downloading Vencord...')}"))
+                get_patcher()
+                with open('vencord-version.txt', 'w', encoding='utf-8') as file:
+                    file.write(version)
 
-    input(clr(f"\n  > {_translate('Hit [ ENTER ] to start NetLimiter-Patcher...')} "))
+    print(clr(f"\n  - {_translate('You may need to exclude the patcher from your antivirus for it to work!')}"))
+    match software:
+        case 'netlimiter':
+            input(clr(f"\n  > {_translate('Hit [ ENTER ] to start NetLimiter-Patcher...')} "))
+        case 'vencord':
+            input(clr(f"\n  > {_translate('Hit [ ENTER ] to start Vencord...')} "))
     cls(); print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
-    os.system('netlimiter-patcher.exe')
+    match software:
+        case 'netlimiter':
+            os.system('netlimiter-patcher.exe')
+        case 'vencord':
+            os.system('vencord.exe')
 
 def dank_winrar_patcher():
 
@@ -900,6 +957,7 @@ if __name__ == "__main__":
             "Spicetify",
             "Microsoft-Activation-Scripts",
             "NetLimiter",
+            "Vencord",
             "dank.minecraft-server-builder",
             "dank.minecraft-server-scanner",
             #"dank.auto-clicker",
@@ -961,7 +1019,7 @@ if __name__ == "__main__":
 
     else:
 
-        del dank_win_activate, dank_netlimiter
+        del dank_win_activate, dank_github_software
 
     del updated_on, download_assets, download_offline_modules, get_menu_request_responses
 
@@ -1087,11 +1145,11 @@ if __name__ == "__main__":
                 case "dank.clear-icons":
                     dank_clear_icons()
                     continue
-                #case "dank.vencord":
-                #    cls(); os.system('winget install --accept-source-agreements --interactive --id Vendicated.Vencord')
-                #    continue
+                case "dank.vencord":
+                    dank_github_software("vencord")
+                    continue
                 case "dank.netlimiter":
-                    dank_netlimiter()
+                    dank_github_software("netlimiter")
                     continue
                 case "dank.winrar":
                     dank_winrar_patcher()
