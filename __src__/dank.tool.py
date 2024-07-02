@@ -128,7 +128,7 @@ def get_menu_request_responses(task_id, request_key):
 def get_menu_request_responses_api(task_id, request_key):
 
     match task_id:
-        case 0 | 1 | 2 | 3: # get last update time for modules based on external repos
+        case 0 | 1 | 2 | 3 | 4: # get last update time for modules based on external repos
             match task_id:
                 case 0: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=.&page=1&per_page=1"
                 case 1: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
