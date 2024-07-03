@@ -1,19 +1,5 @@
 <p align="center">
-  <a href="https://github.com/SirDank/dank.tool">
-    <img width="800" alt="dank.tool banner" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/SirDank/dankware">
-    <img width="800" alt="dankware" src="https://github.com/SirDank/dank.tool/assets/52797753/f4a2313f-19af-4413-a559-5c97915d9a9d">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/SirDank/dank.tool">
-    <img width="800" alt="dank.tool red" src="https://github.com/SirDank/dank.tool/assets/52797753/d4830eb1-d606-4906-a2fb-9256eb7733fd">
-  </a>
+<a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="__wallpapers__/red.png"></a><br>
 </p>
 
 <p align="center">
