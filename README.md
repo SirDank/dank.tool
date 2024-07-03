@@ -1,9 +1,4 @@
 <p align="center">
-  <b>~ Visits ~</b><br><br>
-  <img src="https://profile-counter.glitch.me/dank.tool/count.svg">
-</p>
-
-<p align="center">
   <a href="https://github.com/SirDank/dank.tool">
     <img width="800" alt="dank.tool banner" src="https://user-images.githubusercontent.com/52797753/192086704-35f5a0db-3c5d-4782-95a9-6e2756cc8528.png">
   </a>
@@ -19,6 +14,11 @@
   <a href="https://github.com/SirDank/dank.tool">
     <img width="800" alt="dank.tool red" src="https://github.com/SirDank/dank.tool/assets/52797753/d4830eb1-d606-4906-a2fb-9256eb7733fd">
   </a>
+</p>
+
+<p align="center">
+  <b>~ Visits ~</b><br><br>
+  <img src="https://profile-counter.glitch.me/dank.tool/count.svg">
 </p>
 
 <h1 align="center">🚨 SirDank's dank.tool 🚨</h1>
