@@ -114,6 +114,10 @@
 <h1 align="center">🚨 Most Advanced Minecraft Server Builder 🚨</h1>
 
 <p align="center">
+  <img width="800" alt="minecraft server builder preview" src="https://github.com/SirDank/dank.tool/assets/52797753/60cd8cf0-8cc2-4252-a8e9-9a23c6af2d2c">
+</p>
+
+<p align="center">
   <em>Build and host a fully optimized Minecraft Purpur server locally without port-forwarding!</em>
 </p>
 
@@ -129,9 +133,6 @@
   <li>Comprehensive documentation and community forums for troubleshooting and sharing customizations.</li>
 </ul>
 
-<p align="center">
-  <img width="800" alt="minecraft server builder preview" src="https://github.com/SirDank/dank.tool/assets/52797753/60cd8cf0-8cc2-4252-a8e9-9a23c6af2d2c">
-</p>
 
 <h2 align="center">♦️ To Do ♦️</h2>
 
