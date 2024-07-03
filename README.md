@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="__wallpapers__/red.png"></a><br>
+<a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/1.png"></a><br>
 </p>
 
 <p align="center">
