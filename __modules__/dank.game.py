@@ -1,7 +1,8 @@
 import os
 from ursina import *
 from dankware import cls, clr
-from numpy.random import choice, randint
+from numpy.random import randint
+from numpy.random import choice as randchoice
 from ursina.scripts.smooth_follow import SmoothFollow
 from ursina.prefabs.first_person_controller import FirstPersonController
 
@@ -101,7 +102,7 @@ def generate_vertices(x, z):
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
         avg = (vert_0_y + vert_1_y + vert_3_y)/3
-        vert_2_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -111,9 +112,9 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x-1, z)]['vertices'][1][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
         avg = (vert_0_y + vert_3_y)/2
-        vert_1_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_1_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         avg = (vert_0_y + vert_1_y + vert_3_y)/3
-        vert_2_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -123,19 +124,19 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         avg = (vert_0_y + vert_1_y)/2
-        vert_2_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
         avg = (vert_0_y + vert_1_y + vert_2_y)/3
-        vert_3_y = choice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #choice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        vert_3_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
         new_vertices[3][1] = vert_3_y
 
     else:
-        new_vertices[0][1] = choice([0, .1, .2, -.1, -.2])
-        new_vertices[1][1] = choice([0, .1, .2, -.1, -.2])
-        new_vertices[2][1] = choice([0, .1, .2, -.1, -.2])
-        new_vertices[3][1] = choice([0, .1, .2, -.1, -.2])
+        new_vertices[0][1] = randchoice([0, .1, .2, -.1, -.2])
+        new_vertices[1][1] = randchoice([0, .1, .2, -.1, -.2])
+        new_vertices[2][1] = randchoice([0, .1, .2, -.1, -.2])
+        new_vertices[3][1] = randchoice([0, .1, .2, -.1, -.2])
 
     global lowest_y, highest_y
     lowest_y = min(lowest_y, new_vertices[0][1], new_vertices[1][1], new_vertices[2][1], new_vertices[3][1]) # pylint: disable=used-before-assignment
@@ -170,11 +171,11 @@ def create_entity(pos, vertices):
 
     mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs)
     mesh.generate_normals(smooth=True)
-    entity = Entity(model=mesh, collider="mesh", texture=choice(textures, p=weights), ignore=True)
+    entity = Entity(model=mesh, collider="mesh", texture=randchoice(textures, p=weights), ignore=True)
     entity.collision = False
     terrain[pos]['entities'].append(entity)
 
-    if choice([0, 1], p=[0.99, 0.01]):
+    if randchoice([0, 1], p=[0.99, 0.01]):
 
         _vertices = vertices.copy()
         _vertices[0][1] += 0.01
@@ -184,16 +185,16 @@ def create_entity(pos, vertices):
 
         mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
         mesh.generate_normals(smooth=True)
-        entity = Entity(model=mesh, collider="mesh", texture=choice(leaves), ignore=True)
+        entity = Entity(model=mesh, collider="mesh", texture=randchoice(leaves), ignore=True)
         entity.collision = False
         terrain[pos]['entities'].append(entity)
 
-    elif choice([0, 1], p=[0.98, 0.02]):
+    elif randchoice([0, 1], p=[0.98, 0.02]):
 
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
         z_rot = randint(-5, +5)
-        tree_height = choice(tree_heights)
+        tree_height = randchoice(tree_heights)
         leaves_level_start = tree_height-3
         leaves_level_current = 1
         next_pos = Vec3(pos[0], min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), pos[1])
