@@ -10,6 +10,7 @@ import json
 import time
 import datetime
 import requests
+from types import NoneType
 from rich.panel import Panel
 from rich.align import Align
 from win11toast import notify
@@ -513,7 +514,7 @@ def dank_tool_settings():
                 counter += 1
             choice = input(clr("\n  > Choice: ") + red).lower()
 
-            if choice is not None and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
+            if not isinstance(choice, NoneType) and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
                 choice = int(choice)
                 if not choice: break
