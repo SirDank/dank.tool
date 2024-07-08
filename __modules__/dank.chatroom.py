@@ -166,7 +166,7 @@ def chatroom_input():
         elif len(msg) > 200:
             print(clr("[dank.tool] > Message longer than 200 characters!",2))
 
-        elif msg.lower() == "exit":
+        elif msg.lower() in ("exit", ".exit"):
             print(clr("[dank.tool] > Did you mean /exit?",2))
 
         else:
