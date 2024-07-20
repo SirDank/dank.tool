@@ -902,7 +902,7 @@ def dank_revo_patcher():
     path = os.path.expandvars("%ProgramData%\\VS Revo Group\\Revo Uninstaller Pro")
 
     def patch():
-        with open("__assets__/dank.revo-uninstaller/revouninstallerpro5.lic", 'r', encoding='utf-8') as file:
+        with open("__assets__/dank.revo-uninstaller/revouninstallerpro5.lic", 'rb') as file:
             key = file.read()
         try: os.chdir(path)
         except FileNotFoundError:
@@ -910,7 +910,7 @@ def dank_revo_patcher():
             os.chdir(path)
         if os.path.isfile("revouninstallerpro5.lic"):
             try:
-                with open("revouninstallerpro5.lic", 'r', encoding='utf-8') as file:
+                with open("revouninstallerpro5.lic", 'rb') as file:
                     existing_data = file.read()
             except UnicodeDecodeError:
                 print(clr(f"\n  - {_translate('Failed to read revouninstallerpro5.lic!')}",2))
@@ -923,11 +923,11 @@ def dank_revo_patcher():
                     if os.path.isfile("revouninstallerpro5.lic.bak"):
                         os.remove("revouninstallerpro5.lic.bak")
                     os.rename("revouninstallerpro5.lic", "revouninstallerpro5.lic.bak")
-                    with open("revouninstallerpro5.lic", 'w', encoding='utf-8') as file:
+                    with open("revouninstallerpro5.lic", 'wb') as file:
                         file.write(key)
                     print(clr(f"\n  - {_translate('RevoUninstallerPro patched!')}"))
         else:
-            with open("revouninstallerpro5.lic", 'w', encoding='utf-8') as file:
+            with open("revouninstallerpro5.lic", 'wb') as file:
                 file.write(key)
             print(clr(f"\n  - {_translate('RevoUninstallerPro patched!')}"))
         os.chdir(os.path.dirname(__file__))
