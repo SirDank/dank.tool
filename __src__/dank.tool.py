@@ -836,7 +836,11 @@ def dank_github_software(software):
             input(clr(f"\n  > {_translate('Hit [ ENTER ] to start NetLimiter-Patcher...')} "))
         case 'vencord':
             input(clr(f"\n  > {_translate('Hit [ ENTER ] to start Vencord...')} "))
-    cls(); print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
+    cls()
+    if software == 'vencord':
+        print(clr(f"\n  - {_translate('Click Install')}"))
+        print(clr(f"\n  - {_translate('Click Install OpenAsar')}"))
+    print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
     match software:
         case 'netlimiter':
             os.system('netlimiter-patcher.exe')
