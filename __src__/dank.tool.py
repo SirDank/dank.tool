@@ -300,7 +300,7 @@ def set_globals_two():
 
         global online_modules
 
-        stats = f" [ dankware runs: {green_bright}{menu_request_responses['dankware_runs']} | dank.tool runs: {green_bright}{menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
+        stats = f" [ dankware runs: {menu_request_responses['dankware_runs']} | dank.tool runs: {menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
 
         online_modules = {
 
@@ -1055,6 +1055,10 @@ if __name__ == "__main__":
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
+
+        for _ in ("dankware_runs", "danktool_runs"): # don't add motm
+            if '⚠️' not in menu_request_responses[_]:
+                menu_request_responses[_] = green_bright + menu_request_responses[_]
 
         # hourly limit on github api
 
