@@ -255,7 +255,7 @@ def set_globals_one():
                 'rpc': "patching winrar"
             },
 
-            'RevoUninstallerPro': {
+            'Revo Uninstaller Pro': {
                 'info': '',
                 'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛",
                 'project': "dank.revo-uninstaller",
@@ -394,7 +394,7 @@ def set_globals_two():
                     'rpc': _translate("patching winrar")
                 },
 
-                'RevoUninstallerPro': {
+                'Revo Uninstaller Pro': {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛",
                     'project': "dank.revo-uninstaller",
