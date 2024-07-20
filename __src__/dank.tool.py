@@ -255,6 +255,13 @@ def set_globals_one():
                 'rpc': "patching winrar"
             },
 
+            'RevoUninstallerPro': {
+                'info': '',
+                'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛",
+                'project': "dank.revo-uninstaller",
+                'rpc': "patching revo uninstaller pro"
+            },
+
             'category': True
         },
 
@@ -363,21 +370,21 @@ def set_globals_two():
                     'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
                     'project': "dank.spotify",
-                    'rpc': _translate("installing spotx and spicetify")
+                    'rpc': _translate("patching spotify using spotx and spicetify")
                 },
 
                 'Vencord': {
                     'info': menu_request_responses["Vencord"],
                     'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
                     'project': "dank.vencord",
-                    'rpc': _translate("installing vencord")
+                    'rpc': _translate("patching discord using vencord")
                 },
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["NetLimiter"],
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛",
                     'project': "dank.netlimiter",
-                    'rpc': _translate("installing netlimiter pro")
+                    'rpc': _translate("patching netlimiter pro")
                 },
 
                 'WinRAR': {
@@ -385,6 +392,13 @@ def set_globals_two():
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛",
                     'project': "dank.winrar",
                     'rpc': _translate("patching winrar")
+                },
+
+                'RevoUninstallerPro': {
+                    'info': '',
+                    'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛",
+                    'project': "dank.revo-uninstaller",
+                    'rpc': _translate("patching revo uninstaller pro")
                 },
 
                 'category': True
@@ -835,12 +849,14 @@ def dank_winrar_patcher():
     path = os.path.expandvars("%appdata%\\WinRAR")
 
     def patch():
+        with open("__assets__/dank.winrar/rarreg_1.key", 'r', encoding='utf-8') as file:
+            key1 = file.read()
+        with open("__assets__/dank.winrar/rarreg_2.key", 'r', encoding='utf-8') as file:
+            key2 = file.read()
         try: os.chdir(path)
         except FileNotFoundError:
             os.makedirs(path)
             os.chdir(path)
-        data1 = "RAR registration data\nWinRAR\nUnlimited Company License\nUID=4b914fb772c8376bf571\n6412212250f5711ad072cf351cfa39e2851192daf8a362681bbb1d\ncd48da1d14d995f0bbf960fce6cb5ffde62890079861be57638717\n7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565\nb41bcf56929486b8bcdac33d50ecf773996052598f1f556defffbd\n982fbe71e93df6b6346c37a3890f3c7edc65d7f5455470d13d1190\n6e6fb824bcf25f155547b5fc41901ad58c0992f570be1cf5608ba9\naef69d48c864bcd72d15163897773d314187f6a9af350808719796"
-        data2 = "RAR registration data\nTechTools.net\nUnlimited Company License\nUID=be495af2e04c51526b85\n64122122506b85be56d054210a35c74d3d4b85c98b58c1c03635b4\n931f702fd05f10d8593c60fce6cb5ffde62890079861be57638717\n7131ced835ed65cc743d9777f2ea71a8e32c7e593cf66794343565\nb41bcf56929486b8bcdac33d50ecf77399607b61cbd4c7c227f192\n2b3291c3cf4822a590ea57181b47bfe6cf92ddc40a7de2d2796819\n1781857ba6b1b67a2b15bc5f9dfb682cca338eaa5c606da560397f\n6c6efc340004788adcfe55aa8c331391a95957b7e7401955721377"
         if os.path.isfile("rarreg.key"):
             try:
                 with open("rarreg.key", 'r', encoding='utf-8') as file:
@@ -848,7 +864,7 @@ def dank_winrar_patcher():
             except UnicodeDecodeError:
                 print(clr(f"\n  - {_translate('Failed to read rarreg.key!')}",2))
                 existing_data = None
-            if existing_data in (data1, data2):
+            if existing_data in (key1, key2):
                 print(clr(f"\n  - {_translate('WinRAR already patched!')}"))
             else:
                 print(clr(f"\n  - {_translate('WinRAR already activated? (found rarreg.key)')}"))
@@ -857,21 +873,70 @@ def dank_winrar_patcher():
                         os.remove("rarreg.key.bak")
                     os.rename("rarreg.key", "rarreg.key.bak")
                     with open("rarreg.key", 'w', encoding='utf-8') as file:
-                        file.write(data1)
+                        file.write(key1)
                     print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         else:
             with open("rarreg.key", 'w', encoding='utf-8') as file:
-                file.write(data1)
+                file.write(key1)
             print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         os.chdir(os.path.dirname(__file__))
 
     if os.path.isdir(path):
         patch()
     else:
-        print(clr(f"\n  - {_translate('WinRAR not installed!')}\n\n  - {_translate('Downloading WinRAR...')}"))
-        os.system("winget install --interactive --id RARLab.WinRAR")
-        input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
+        print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
+        if ONLINE_MODE:
+            print(clr(f"\n  - {_translate('Downloading WinRAR...')}"))
+            os.system("winget install --accept-source-agreements --interactive --id RARLab.WinRAR")
+            input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
+            patch()
+    input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
+
+def dank_revo_patcher():
+
+    cls()
+    path = os.path.expandvars("%ProgramData%\\VS Revo Group\\Revo Uninstaller Pro")
+
+    def patch():
+        with open("__assets__/dank.revo-uninstaller/revouninstallerpro5.lic", 'r', encoding='utf-8') as file:
+            key = file.read()
+        try: os.chdir(path)
+        except FileNotFoundError:
+            os.makedirs(path)
+            os.chdir(path)
+        if os.path.isfile("revouninstallerpro5.lic"):
+            try:
+                with open("revouninstallerpro5.lic", 'r', encoding='utf-8') as file:
+                    existing_data = file.read()
+            except UnicodeDecodeError:
+                print(clr(f"\n  - {_translate('Failed to read revouninstallerpro5.lic!')}",2))
+                existing_data = None
+            if existing_data == key:
+                print(clr(f"\n  - {_translate('RevoUninstallerPro already patched!')}"))
+            else:
+                print(clr(f"\n  - {_translate('RevoUninstallerPro already activated? (found revouninstallerpro5.lic)')}"))
+                if input(clr(f"\n  > {_translate('Would you like to patch RevoUninstallerPro anyway?')} [y/n]: ") + red).lower() == 'y':
+                    if os.path.isfile("revouninstallerpro5.lic.bak"):
+                        os.remove("revouninstallerpro5.lic.bak")
+                    os.rename("revouninstallerpro5.lic", "revouninstallerpro5.lic.bak")
+                    with open("revouninstallerpro5.lic", 'w', encoding='utf-8') as file:
+                        file.write(key)
+                    print(clr(f"\n  - {_translate('RevoUninstallerPro patched!')}"))
+        else:
+            with open("revouninstallerpro5.lic", 'w', encoding='utf-8') as file:
+                file.write(key)
+            print(clr(f"\n  - {_translate('RevoUninstallerPro patched!')}"))
+        os.chdir(os.path.dirname(__file__))
+
+    if os.path.isdir(path):
         patch()
+    else:
+        print(clr(f"\n  - {_translate('RevoUninstallerPro not installed!')}"))
+        if ONLINE_MODE:
+            print(clr(f"\n  - {_translate('Downloading RevoUninstallerPro...')}"))
+            os.system("winget install --accept-source-agreements --interactive --id RevoUninstaller.RevoUninstallerPro")
+            input(clr(f"\n  > {_translate('Press [ENTER] after installing RevoUninstallerPro to start patching...')} "))
+            patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
 if __name__ == "__main__":
@@ -899,6 +964,9 @@ if __name__ == "__main__":
         # download assets
 
         if not os.path.isdir("ursina"): os.mkdir("ursina")
+        if not os.path.isdir("__assets__"): os.mkdir("__assets__")
+        for _ in ("dank.winrar", "dank.revo-uninstaller"):
+            if not os.path.isdir(f"__assets__/{_}"): os.mkdir(f"__assets__/{_}")
         if not os.path.isfile("ursina/assets.json"):
             with open("ursina/assets.json", "w", encoding="utf-8") as _:
                 _.write("{}")
@@ -914,6 +982,11 @@ if __name__ == "__main__":
         asset_urls = []
         file_names = []
 
+        for _ in ("dank.winrar/rarreg_1.key", "dank.winrar/rarreg_2.key", "dank.revo-uninstaller/revouninstallerpro5.lic"):
+            if not os.path.isfile(f"__assets__/{_}"):
+                asset_urls.append(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/{_}")
+                file_names.append(f"__assets__/{_}")
+
         for folder in latest_assets_json:
             if not os.path.isdir(f"ursina/{folder}"):
                 os.makedirs(f"ursina/{folder}")
@@ -926,7 +999,7 @@ if __name__ == "__main__":
 
         if asset_urls:
 
-            print(clr(f"\n  - {_translate('Downloading game assets...')}\n"))
+            print(clr(f"\n  - {_translate('Downloading assets...')}\n"))
 
             while True:
                 try:
@@ -1159,6 +1232,9 @@ if __name__ == "__main__":
                 case "dank.winrar":
                     dank_winrar_patcher()
                     continue
+                case "dank.revo-uninstaller":
+                    dank_revo_patcher()
+                    continue
 
             if LOCAL_MODULE: # get src from local_module
 
@@ -1175,19 +1251,19 @@ if __name__ == "__main__":
 
                 if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{PROJECT}.py') ): # OFFLINE_SRC / ONLINE_MODE defined in executor.py
 
-                    # check for update before getting src
+                    # [NOTE] check for update before getting src ( enable this for a short while before release )
 
-                    while True:
-                        try:
-                            LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
-                            if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
-                                cls(); print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
-                                dank_tool_installer()
-                            else:
-                                break
-                        except Exception as exc:
-                            input(clr(f"\n  > {_translate(f'Failed to get latest version! {exc} | Press [ENTER] to try again...')} ",2))
-                            rm_line(); rm_line()
+                    #while True:
+                    #    try:
+                    #        LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
+                    #        if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
+                    #            cls(); print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
+                    #            dank_tool_installer()
+                    #        else:
+                    #            break
+                    #    except Exception as exc:
+                    #        input(clr(f"\n  > {_translate(f'Failed to get latest version! {exc} | Press [ENTER] to try again...')} ",2))
+                    #        rm_line(); rm_line()
 
                     while True:
                         try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode(); break
