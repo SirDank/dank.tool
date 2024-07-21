@@ -918,8 +918,8 @@ def dank_revo_patcher():
             if existing_data == key:
                 print(clr(f"\n  - {_translate('RevoUninstallerPro already patched!')}"))
             else:
-                print(clr(f"\n  - {_translate('RevoUninstallerPro already activated? (found revouninstallerpro5.lic)')}"))
-                if input(clr(f"\n  > {_translate('Would you like to patch RevoUninstallerPro anyway?')} [y/n]: ") + red).lower() == 'y':
+                print(clr(f"\n  - {_translate('RevoUninstaller installed? (found revouninstallerpro5.lic)')}"))
+                if input(clr(f"\n  > {_translate('Would you like to patch RevoUninstallerPro?')} [y/n]: ") + red).lower() == 'y':
                     if os.path.isfile("revouninstallerpro5.lic.bak"):
                         os.remove("revouninstallerpro5.lic.bak")
                     os.rename("revouninstallerpro5.lic", "revouninstallerpro5.lic.bak")
