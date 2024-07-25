@@ -100,7 +100,7 @@ def main():
                     handle_response(cmd, results, 'updates')
                 else:
                     handle_response(cmd, results, 'update-all')
-                    max = results.keys()[-1]
+                    max = len(results)
                     for key, value in results.items():
                         print(clr(f"\n  - [{key}/{max}] Updating {value['name']}...\n"))
                         os.system(f"winget upgrade --interactive --id {value['id']}")
