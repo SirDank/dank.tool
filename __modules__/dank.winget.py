@@ -17,7 +17,7 @@ def print_banner():
     cls()
     banner = "\n\n   _         _           _             _   \n _| |___ ___| |_   _ _ _|_|___ ___ ___| |_ \n| . | .'|   | '_|_| | | | |   | . | -_|  _|\n|___|__,|_|_|_,_|_|_____|_|_|_|_  |___|_|  \n                              |___|        \n\n\n"
     Console().print(Align.center(banner), style="blink red", highlight=False)
-    print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - clear (refresh screen)\n\n  - exit\n"))
+    print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - update-all\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
 def handle_response(cmd, results, mode):
 
@@ -93,9 +93,10 @@ def main():
                 print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
         elif cmd.lower().startswith('updates') or cmd.lower().startswith('update-all'):
+            choice = cmd.lower()
             cmd = subprocess.run(['winget', 'upgrade', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
-                if not cmd.lower().startswith('update-all'):
+                if not choice.startswith('update-all'):
                     handle_response(cmd, results, 'updates')
                 else:
                     handle_response(cmd, results, 'update-all')
