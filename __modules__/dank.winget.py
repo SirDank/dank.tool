@@ -92,10 +92,17 @@ def main():
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
-        elif cmd.lower().startswith('updates'):
+        elif cmd.lower().startswith('updates') or cmd.lower().startswith('update-all'):
             cmd = subprocess.run(['winget', 'upgrade', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
-                handle_response(cmd, results, 'updates')
+                if not cmd.lower().startswith('update-all'):
+                    handle_response(cmd, results, 'updates')
+                else:
+                    handle_response(cmd, results, 'update-all')
+                    for value in results.values():
+                        print(clr(f"\n  Updating {value['name']}...\n"))
+                        os.system(f"winget upgrade --interactive --id {value['id']}")
+                    print()
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
