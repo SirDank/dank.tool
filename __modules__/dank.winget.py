@@ -100,10 +100,10 @@ def main():
                     handle_response(cmd, results, 'updates')
                 else:
                     handle_response(cmd, results, 'update-all')
-                    max = len(results)
-                    for key, value in results.items():
-                        print(clr(f"\n  - [{key}/{max}] Updating {value['name']}...\n"))
-                        os.system(f"winget upgrade --interactive --id {value['id']}")
+                    max = len(results) - 1
+                    for index in range(1, max + 1):
+                        print(clr(f"\n  - [{index}/{max}] Updating {results[index]['name']}...\n"))
+                        os.system(f"winget upgrade --interactive --id {results[index]['id']}")
                     print()
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
