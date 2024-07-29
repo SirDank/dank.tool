@@ -531,6 +531,7 @@ def dank_tool_settings():
             if not isinstance(choice, NoneType) and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
                 choice = int(choice)
+                if not choice: break
                 settings = list(settings.items())
                 setting_key = settings[choice - 1][0]
                 setting_value = int(settings[choice - 1][1])
