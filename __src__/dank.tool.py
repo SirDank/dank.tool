@@ -517,7 +517,7 @@ def dank_tool_settings():
 
         while True:
 
-            cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - do not use: offline-src, offline-mode, dev-branch!\n\n  [0] Return to menu"))
+            cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
 
             with open("settings.json", "r", encoding="utf-8") as file:
                 settings = json.loads(file.read())
@@ -534,23 +534,22 @@ def dank_tool_settings():
                 if not choice: break
                 settings = list(settings.items())
                 setting_key = settings[choice - 1][0]
-                setting_value = int(settings[choice - 1][1])
-                settings[choice - 1] = (setting_key, str(int(not setting_value)))
+                settings[choice - 1] = (setting_key, str(int(not int(settings[choice - 1][1]))))
                 settings = dict(settings)
 
-                if setting_value:
+                if int(settings[setting_key]):
                     match setting_key:
                         case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
                             with open(setting_key, "w", encoding="utf-8") as file:
                                 file.write("")
                             if "force" in setting_key:
                                 setting_key = setting_key.replace('force', 'disable')
-                                if os.path.exists(setting_key):
+                                if os.path.isfile(setting_key):
                                     os.remove(setting_key)
                                 settings[setting_key] = "0"
                             elif "disable" in setting_key:
                                 setting_key = setting_key.replace('disable', 'force')
-                                if os.path.exists(setting_key):
+                                if os.path.isfile(setting_key):
                                     os.remove(setting_key)
                                 settings[setting_key] = "0"
 
@@ -558,7 +557,7 @@ def dank_tool_settings():
                             with open("compatibility-mode", "w", encoding="utf-8") as file:
                                 file.write("")
                 else:
-                    if os.path.exists(setting_key):
+                    if os.path.isfile(setting_key):
                         os.remove(setting_key)
 
                 with open("settings.json", "w", encoding="utf-8") as file:
