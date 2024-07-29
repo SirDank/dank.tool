@@ -532,32 +532,33 @@ def dank_tool_settings():
 
                 choice = int(choice)
                 settings = list(settings.items())
-                setting_choice = settings[choice - 1][0]
-                settings[choice - 1] = (setting_choice, str(int(not int(settings[choice - 1][1]))))
+                setting_key = settings[choice - 1][0]
+                setting_value = settings[choice - 1][1]
+                settings[choice - 1] = (setting_key, str(int(not int(setting_value))))
                 settings = dict(settings)
 
-                if choice:
-                    match setting_choice:
+                if setting_value:
+                    match setting_key:
                         case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
-                            with open(setting_choice, "w", encoding="utf-8") as file:
+                            with open(setting_key, "w", encoding="utf-8") as file:
                                 file.write("")
-                            if "force" in setting_choice:
-                                setting_choice = setting_choice.replace('force', 'disable')
-                                if os.path.exists(setting_choice):
-                                    os.remove(setting_choice)
-                                settings[setting_choice] = "0"
-                            elif "disable" in setting_choice:
-                                setting_choice = setting_choice.replace('disable', 'force')
-                                if os.path.exists(setting_choice):
-                                    os.remove(setting_choice)
-                                settings[setting_choice] = "0"
+                            if "force" in setting_key:
+                                setting_key = setting_key.replace('force', 'disable')
+                                if os.path.exists(setting_key):
+                                    os.remove(setting_key)
+                                settings[setting_key] = "0"
+                            elif "disable" in setting_key:
+                                setting_key = setting_key.replace('disable', 'force')
+                                if os.path.exists(setting_key):
+                                    os.remove(setting_key)
+                                settings[setting_key] = "0"
 
                         case "compatibility-mode":
                             with open("compatibility-mode", "w", encoding="utf-8") as file:
                                 file.write("")
                 else:
-                    if os.path.exists(setting_choice):
-                        os.remove(setting_choice)
+                    if os.path.exists(setting_key):
+                        os.remove(setting_key)
 
                 with open("settings.json", "w", encoding="utf-8") as file:
                     file.write(json.dumps(settings, indent=4))
