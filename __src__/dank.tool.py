@@ -531,41 +531,33 @@ def dank_tool_settings():
             if not isinstance(choice, NoneType) and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
                 choice = int(choice)
-                if not choice: break
-
                 settings = list(settings.items())
-                settings[choice - 1] = (settings[choice - 1][0], str(int(not int(settings[choice - 1][1]))))
-                choice = settings[choice - 1][0]
+                setting_choice = settings[choice - 1][0]
+                settings[choice - 1] = (setting_choice, str(int(not int(settings[choice - 1][1]))))
                 settings = dict(settings)
 
-                match choice:
-                    case "force-startup-audio":
-                        with open("force-startup-audio", "w", encoding="utf-8") as file:
-                            file.write("")
-                        if os.path.exists("disable-startup-audio"):
-                            os.remove("disable-startup-audio")
-                        settings["disable-startup-audio"] = "0"
+                if choice:
+                    match setting_choice:
+                        case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
+                            with open(setting_choice, "w", encoding="utf-8") as file:
+                                file.write("")
+                            if "force" in setting_choice:
+                                setting_choice = setting_choice.replace('force', 'disable')
+                                if os.path.exists(setting_choice):
+                                    os.remove(setting_choice)
+                                settings[setting_choice] = "0"
+                            elif "disable" in setting_choice:
+                                setting_choice = setting_choice.replace('disable', 'force')
+                                if os.path.exists(setting_choice):
+                                    os.remove(setting_choice)
+                                settings[setting_choice] = "0"
 
-                    case "disable-startup-audio":
-                        with open("disable-startup-audio", "w", encoding="utf-8") as file:
-                            file.write("")
-                        if os.path.exists("force-startup-audio"):
-                            os.remove("force-startup-audio")
-                        settings["force-startup-audio"] = "0"
-
-                    case "force-translate":
-                        with open("force-translate", "w", encoding="utf-8") as file:
-                            file.write("")
-                        if os.path.exists("disable-translate"):
-                            os.remove("disable-translate")
-                        settings["disable-translate"] = "0"
-
-                    case "disable-translate":
-                        with open("disable-translate", "w", encoding="utf-8") as file:
-                            file.write("")
-                        if os.path.exists("force-translate"):
-                            os.remove("force-translate")
-                        settings["force-translate"] = "0"
+                        case "compatibility-mode":
+                            with open("compatibility-mode", "w", encoding="utf-8") as file:
+                                file.write("")
+                else:
+                    if os.path.exists(setting_choice):
+                        os.remove(setting_choice)
 
                 with open("settings.json", "w", encoding="utf-8") as file:
                     file.write(json.dumps(settings, indent=4))
