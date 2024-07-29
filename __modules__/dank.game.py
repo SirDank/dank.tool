@@ -8,9 +8,7 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
 
-try:
-    os.environ['DANK_TOOL_VERSION']
-except:
+if 'DANK_TOOL_VERSION' not in os.environ:
     os.chdir(os.path.dirname(__file__))
     # this does not work for some reason!
     #os.chdir("..")
