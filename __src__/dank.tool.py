@@ -533,8 +533,8 @@ def dank_tool_settings():
                 choice = int(choice)
                 settings = list(settings.items())
                 setting_key = settings[choice - 1][0]
-                setting_value = settings[choice - 1][1]
-                settings[choice - 1] = (setting_key, str(int(not int(setting_value))))
+                setting_value = int(settings[choice - 1][1])
+                settings[choice - 1] = (setting_key, str(int(not setting_value)))
                 settings = dict(settings)
 
                 if setting_value:
