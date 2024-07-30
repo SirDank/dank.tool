@@ -38,9 +38,14 @@ except:
 
 # download update
 
+if 'DANK_TOOL_DEV_BRANCH' in os.environ and int(os.environ['DANK_TOOL_DEV_BRANCH']):
+    branch = 'dev'
+else:
+    branch = 'main'
+
 print(clr("\n  - Downloading dank.tool.zip..."))
 while True:
-    try: data = session.get("https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip", timeout=3, allow_redirects=True).content; break
+    try: data = session.get(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip", timeout=3, allow_redirects=True).content; break
     except Exception as exc:
         input(clr(f"\n  > Failed to download! {exc} | Press [ENTER] to try again... ",2))
         rm_line(); rm_line()
@@ -50,8 +55,8 @@ try:
         _.write(data); del data
 except:
     cls()
-    if input(clr("\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
-        os.system("start https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip")
+    if input(clr(f"\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
+        os.system(f"start https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
     sys.exit("Failed to save file!")
 
 # extract and execute installer
