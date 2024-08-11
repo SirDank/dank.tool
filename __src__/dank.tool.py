@@ -755,7 +755,7 @@ def dank_github_software(software):
             if os.path.isfile(r"C:\Users\SirDank\AppData\Local\Discord\Update.exe"):
                 print(clr(f"\n  - {_translate('Discord found!')}"))
             else:
-                print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}"))
+                print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}\n"))
                 os.system("winget install --accept-source-agreements --interactive --id Discord.Discord")
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
             asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
@@ -883,7 +883,7 @@ def dank_winrar_patcher():
     else:
         print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
         if ONLINE_MODE:
-            print(clr(f"\n  - {_translate('Downloading WinRAR...')}"))
+            print(clr(f"\n  - {_translate('Downloading WinRAR...')}\n"))
             os.system("winget install --accept-source-agreements --interactive --id RARLab.WinRAR")
             input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
             patch()
@@ -930,7 +930,7 @@ def dank_revo_patcher():
     else:
         print(clr(f"\n  - {_translate('RevoUninstallerPro not installed!')}"))
         if ONLINE_MODE:
-            print(clr(f"\n  - {_translate('Downloading RevoUninstallerPro...')}"))
+            print(clr(f"\n  - {_translate('Downloading RevoUninstallerPro...')}\n"))
             os.system("winget install --accept-source-agreements --interactive --id RevoUninstaller.RevoUninstallerPro")
             input(clr(f"\n  > {_translate('Press [ENTER] after installing RevoUninstallerPro to start patching...')} "))
             patch()
