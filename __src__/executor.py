@@ -24,8 +24,10 @@ import pyminizip
 import subprocess
 import tkinter as tk
 from locale import getlocale
+from rich.align import Align
 from psutil import process_iter
 from playsound import playsound
+from rich.console import Console
 from translatepy import Translator
 from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
@@ -54,18 +56,6 @@ if os.name == "nt":
     import winreg
     from win11toast import notify
 
-# variables
-
-DANK_TOOL_VERSION = "3.2.5"
-session = requests.Session()
-_executor = ThreadPoolExecutor(10)
-headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
-os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
-
-os.chdir(os.path.dirname(__file__))
-title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
-print(clr(f"\n  - Version: {DANK_TOOL_VERSION}"))
-
 # rediect stderr to a file
 #if not os.path.exists('__logs__'): os.mkdir('__logs__')
 #sys.stderr = open('__logs__/dank.tool.log', 'w', encoding='utf-8')
@@ -76,15 +66,16 @@ def settings_json():
 
     overwrite = False
     default_settings = {
-            "offline-src": "0",
-            "offline-mode": "0",
-            "dev-branch": "0",
-            "force-update": "0",
-            "force-translate": "0",
-            "disable-translate": "0",
-            "force-startup-audio": "0",
-            "disable-startup-audio": "0",
-        }
+        "offline-src": "0",
+        "offline-mode": "0",
+        "dev-branch": "0",
+        "force-update": "0",
+        "force-translate": "0",
+        "disable-translate": "0",
+        "compatibility-mode": "0",
+        "force-startup-audio": "0",
+        "disable-startup-audio": "0",
+    }
 
     if not os.path.isfile('settings.json'):
         overwrite = True
@@ -97,10 +88,11 @@ def settings_json():
             else:
                 default_settings[key] = data[key]
 
-    default_settings["force-translate"] = ("0" if not os.path.isfile("force-translate") else "1")
-    default_settings["disable-translate"] = ("0" if not os.path.isfile("disable-translate") else "1")
-    default_settings["force-startup-audio"] = ("0" if not os.path.isfile("force-startup-audio") else "1")
-    default_settings["disable-startup-audio"] = ("0" if not os.path.isfile("disable-startup-audio") else "1")
+    default_settings["force-translate"] = ("1" if os.path.isfile("force-translate") else "0")
+    default_settings["disable-translate"] = ("1" if os.path.isfile("disable-translate") else "0")
+    default_settings["compatibility-mode"] = ("1" if os.path.isfile("compatibility-mode") else "0")
+    default_settings["force-startup-audio"] = ("1" if os.path.isfile("force-startup-audio") else "0")
+    default_settings["disable-startup-audio"] = ("1" if os.path.isfile("disable-startup-audio") else "0")
 
     if not overwrite and default_settings != data:
         overwrite = True
@@ -114,17 +106,75 @@ del settings_json
 
 with open('settings.json', 'r', encoding='utf-8') as _:
     DANK_TOOL_SETTINGS = json.loads(_.read())
+os.environ['DANK_TOOL_COMPATIBILITY_MODE'] = DANK_TOOL_SETTINGS['compatibility-mode']
 os.environ['DANK_TOOL_OFFLINE_SRC'] = DANK_TOOL_SETTINGS['offline-src']
 os.environ['DANK_TOOL_DEV_BRANCH'] = DANK_TOOL_SETTINGS['dev-branch']
 OFFLINE_SRC = int(DANK_TOOL_SETTINGS['offline-src'])
 DEV_BRANCH = int(DANK_TOOL_SETTINGS['dev-branch'])
 BRANCH = ("main" if not DEV_BRANCH else "dev")
 
+# compatability mode
+
+if int(DANK_TOOL_SETTINGS['compatibility-mode']) or (os.getlogin() == 'xuser' and os.getenv("COMPUTERNAME") == 'LOCALHOST'):
+
+    # https://no-color.org/
+    os.environ['NO_COLOR'] = '1'
+    import dankware
+    dankware.reset = ''
+    dankware.black = ''
+    dankware.blue = ''
+    dankware.cyan = ''
+    dankware.green = ''
+    dankware.magenta = ''
+    dankware.red = ''
+    dankware.white = ''
+    dankware.yellow = ''
+    dankware.black_bright = ''
+    dankware.blue_bright = ''
+    dankware.cyan_bright = ''
+    dankware.green_bright = ''
+    dankware.magenta_bright = ''
+    dankware.red_bright = ''
+    dankware.white_bright = ''
+    dankware.yellow_bright = ''
+    dankware.black_normal = ''
+    dankware.blue_normal = ''
+    dankware.cyan_normal = ''
+    dankware.green_normal = ''
+    dankware.magenta_normal = ''
+    dankware.red_normal = ''
+    dankware.white_normal = ''
+    dankware.yellow_normal = ''
+    dankware.black_dim = ''
+    dankware.blue_dim = ''
+    dankware.cyan_dim = ''
+    dankware.green_dim = ''
+    dankware.magenta_dim = ''
+    dankware.red_dim = ''
+    dankware.white_dim = ''
+    dankware.yellow_dim = ''
+    dankware.clr = lambda *args: args[0]
+    from dankware import clr, reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim # pylint: disable=reimported
+
+# variables
+
+DANK_TOOL_VERSION = "3.2.6"
+session = requests.Session()
+_executor = ThreadPoolExecutor(10)
+headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
+os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
+
+os.chdir(os.path.dirname(__file__))
+title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
+print(clr(f"\n  - Version: {DANK_TOOL_VERSION}"))
+
 # handle KeyboardInterrupt
 
 def print_warning_symbol():
 
-    cls(); print(align(f'\n\n{red}                      ██                      \n{red}                    ██  ██                    \n{red}                  ██      ██                  \n{red}                ██          ██                \n{red}                ██          ██                \n{red}              ██              ██              \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}            ██      {white_bright}██████{red_normal}      ██            \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}          ██        {white_bright}██████{red_normal}        ██          \n{red}        ██          {white_bright}██████{red_normal}          ██        \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}      ██            {white_bright}██████{red_normal}            ██      \n{red}    ██              {white_bright}██████{red_normal}              ██    \n{red}    ██                                  ██    \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}  ██                {white_bright}██████{red_normal}                ██  \n{red}██                  {white_bright}██████{red_normal}                  ██\n{red}██                                          ██\n{red}  ██████████████████████████████████████████  \n\n'))
+    cls()
+    banner = '\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [bright_white]██████[red]      ██            \n[red]            ██      [bright_white]██████[red]      ██            \n[red]          ██        [bright_white]██████[red]        ██          \n[red]          ██        [bright_white]██████[red]        ██          \n[red]        ██          [bright_white]██████[red]          ██        \n[red]      ██            [bright_white]██████[red]            ██      \n[red]      ██            [bright_white]██████[red]            ██      \n[red]    ██              [bright_white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [bright_white]██████[red]                ██  \n[red]  ██                [bright_white]██████[red]                ██  \n[red]██                  [bright_white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n'
+    Console().print(Align.center(banner), style="blink", highlight=False)
 
 # get latest version number
 
@@ -205,6 +255,9 @@ elif LATEST_VERSION == "0":
 
 else: # LATEST VERSION IS LOWER THAN CURRENT VERSION
     print(clr("\n  - Development Version!"))
+
+if OFFLINE_SRC:
+    print(clr("\n  - Offline SRC!"))
 
 # check windows language
 
@@ -352,11 +405,16 @@ try: exec(code)
 except:
 
     cls()
-    err_message = err(sys.exc_info())
+    err_message = err(sys.exc_info(), 'mini')
     print(clr(err_message, 2))
     LATEST_VERSION = latest_dank_tool_version()
 
-    if "Error Type: KeyboardInterrupt" in err_message:
+    if "- SystemExit" in err_message:
+        os.system("taskkill /f /t /im dank.tool.exe")
+    elif "- EOFError" in err_message:
+        print_warning_symbol()
+        print(clr("\n  - No input provided!"))
+    elif "- KeyboardInterrupt" in err_message:
         print_warning_symbol()
         print(clr("\n  - Please select text first and then use [ CTRL + C ]!"))
 
@@ -367,7 +425,7 @@ except:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION} | OFFLINE_SRC: {bool(OFFLINE_SRC)} | BRANCH: {BRANCH}\n\n{err_message}```"})
+                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{err_message}```"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))
