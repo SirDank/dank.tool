@@ -58,7 +58,7 @@ def dank_tool_banner():
 
 def palestine_banner():
 
-    cls()
+    #cls()
     banner = '\n[red]###[black]###########################################\n[red]#####[black]#########################################\n[red]########[black]######################################\n[red]##########[black]####################################\n[red]############[white]##################################\n[red]##############[white]################################\n[red]################[white]##############################\n[red]##############[white]################################\n[red]############[white]##################################\n[red]##########[green]####################################\n[red]########[green]######################################\n[red]#####[green]#########################################\n[red]###[green]###########################################\n'
     console = Console(highlight=False)
     console.print(Align.center(banner), style="blink")
@@ -942,7 +942,6 @@ if __name__ == "__main__":
     set_globals_one()
     _translator = Translator()
     palestine_banner() # 🍉
-    time.sleep(2) # 🍉
 
     # multithreaded requests responses, download modules / assets
 
