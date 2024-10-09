@@ -191,8 +191,14 @@ def main():
     os.chdir('dank.mc-server-scanner')
 
     if os.path.isfile('scan_count.txt'):
-        if os.path.isfile('scan_count_java.txt'):
-            os.remove('scan_count_java.txt')
+        while True:
+            try:
+                if os.path.isfile('scan_count_java.txt'):
+                    os.remove('scan_count_java.txt')
+                break
+            except PermissionError:
+                input(clr(f"\n  > {translate('Failed to delete')} {os.path.join(os.getcwd(), 'scan_count_java.txt')}! {translate('Please delete it manually and then hit [ ENTER ] to try again... ')}\n",2))
+                rm_line(); rm_line(); rm_line()
         os.rename('scan_count.txt','scan_count_java.txt')
     if not os.path.isfile('scan_count_java.txt'):
         with open('scan_count.txt','w',encoding='utf-8') as file:
@@ -210,11 +216,20 @@ def main():
             for __ in file.read().splitlines():
                 try: saved[__.split(' | ',1)[0]] = None
                 except: pass
+    cls()
 
     # remove old files
 
     for _ in ('scanned.txt', 'java_scanned.txt', 'java_scanned.json', 'bedrock_scanned.txt', 'bedrock_scanned.json', 'java_scanned_ips.db', 'bedrock_scanned_ips.db'):
-        if os.path.isfile(_): os.remove(_)
+        while True:
+            try:
+                if os.path.isfile(_):
+                    os.remove(_)
+                break
+            except PermissionError:
+                input(clr(f"\n  > {translate('Failed to delete')} {os.path.join(os.getcwd(), _)}! {translate('Please delete it manually and then hit [ ENTER ] to try again... ')}\n",2))
+                rm_line(); rm_line(); rm_line()
+    cls()
 
     # generate and check ips on multiple threads in batches
 
