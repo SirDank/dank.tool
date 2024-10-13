@@ -81,7 +81,7 @@ def main():
         if cmd.lower().startswith('search '):
             cmd = subprocess.run(['winget', 'search', '--accept-source-agreements', cmd[7:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
-                if len(cmd) > 0:
+                if len(cmd.stdout.decode('utf-8').splitlines()) > 0:
                     handle_response(cmd, results, 'search')
                 else:
                     print(clr("\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",2))
@@ -91,7 +91,7 @@ def main():
         elif cmd.lower().startswith('installed'):
             cmd = subprocess.run(['winget', 'list', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
-                if len(cmd) > 0:
+                if len(cmd.stdout.decode('utf-8').splitlines()) > 0:
                     handle_response(cmd, results, 'installed')
                 else:
                     print(clr("\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",2))
@@ -102,7 +102,7 @@ def main():
             choice = cmd.lower()
             cmd = subprocess.run(['winget', 'upgrade', '--accept-source-agreements'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
             if cmd.returncode == 0:
-                if len(cmd) > 0:
+                if len(cmd.stdout.decode('utf-8').splitlines()) > 0:
                     if not choice.startswith('update-all'):
                         handle_response(cmd, results, 'updates')
                     else:
