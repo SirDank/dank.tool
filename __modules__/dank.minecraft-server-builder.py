@@ -234,10 +234,10 @@ def main_one():
     # spigot / bukkit plugins
 
     spigot_plugins = {
-        #"dankchatroom": 112398, Needs to be updated
+        #"dankchatroom": 112398, # Needs to be updated
         #"ActionHealth": 2661,
         "BetterSleeping": 60837,
-        "BloodEffect": 90955,
+        #"BloodEffect": 90955, # Broken
         "BloodFading": 99263,
         "ChestSort": 59773,
         #"Chunky": 81534,
@@ -247,7 +247,7 @@ def main_one():
         "Spark": 57242,
         "TabTPS": 82528,
         #"LevelledMobs": 74304, # scaling needs to be improved, too difficult
-        "PlayTime": 26016,
+        #"PlayTime": 26016, # Broken
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
         #"Multiverse-Core": 390,
@@ -782,7 +782,7 @@ def main_two():
     with open('readme.txt', 'w', encoding='utf-8') as file:
         file.write(string)
 
-    print_read_me(); input(clr(f"  - {translate('Start the server using: start_server.cmd ( it will stop automatically on the first run ) to generate config files to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration...')} "))
+    print_read_me(); input(clr(f"  - {translate('Start the server using: start_server.cmd, then use the [.stop both] command to generate configs to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration...')} "))
 
     def config_updater(path):
         with open(path, 'r', encoding='utf-8') as file:
