@@ -470,7 +470,10 @@ def set_globals_two():
             }
         }
 
-    else: stats = ""
+    else:
+
+        stats = ""
+        online_modules = {}
 
 # translator
 
