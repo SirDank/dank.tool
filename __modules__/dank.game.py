@@ -63,8 +63,8 @@ textures = {
 }
 weights = tuple(textures.values())
 textures = tuple(textures)
-tree_log = load_texture("acacia_log")
-tree_leaves = load_texture("azalea_leaves")
+tree_log_texture = load_texture("acacia_log")
+tree_leaves_texture = load_texture("azalea_leaves")
 leaves = tuple([
     load_texture("mangrove_leaves_inventory"),
     load_texture("azalea_leaves"),
@@ -197,7 +197,7 @@ terrain = {}
 for x in range(-world_size, world_size+1):
     for z in range(-world_size, world_size+1):
         terrain[(x, z)] = {}
-        terrain[(x, z)]['entities'] = None
+        terrain[(x, z)]['entities'] = []
         terrain[(x, z)]['vertices'] = generate_vertices(x, z)
 del generate_vertices
 
@@ -249,7 +249,7 @@ def create_entity(pos, vertices):
         tree = Entity()
 
         for _ in range(tree_height):
-            log = Entity(model="cube", collider="box", texture=tree_log, position=next_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
+            log = Entity(model="cube", collider="box", texture=tree_log_texture, position=next_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
             log.collision = False
             if _ > leaves_level_start:
                 match leaves_level_current:
@@ -259,11 +259,11 @@ def create_entity(pos, vertices):
                         left_2 = log.left + log.left
                         right_2 = log.right + log.right
                         for _pos in [log.back + left_2, left_2, log.forward + left_2, back_2 + log.left, forward_2 + log.left, back_2, forward_2, back_2 + log.right, forward_2 + log.right, log.back + right_2, right_2, log.forward + right_2]:
-                            leaf = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
+                            leaf = Entity(model="cube", texture=tree_leaves_texture, position=next_pos + _pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
                             leaf.collision = False
                     case 2:
                         for _pos in [log.back + log.left, log.left, log.forward + log.left, log.back, log.forward, log.back + log.right, log.right, log.forward + log.right]:
-                            leaf = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
+                            leaf = Entity(model="cube", texture=tree_leaves_texture, position=next_pos + _pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
                             leaf.collision = False
                 leaves_level_current += 1
             y_rot = randint(y_rot - 5, y_rot + 5)
@@ -359,7 +359,7 @@ def unload():
         if pos not in render_grid:
             for entity in terrain[pos]['entities']:
                 _ = destroy(entity)
-            terrain[pos]['entities'] = None
+            terrain[pos]['entities'].clear()
             to_delete.append(pos)
         elif pos not in collision_grid:
             for entity in terrain[pos]['entities']:
