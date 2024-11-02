@@ -28,7 +28,7 @@ input(clr("""\n  [ DISCLAIMER ]
   
   - WASD to move
   - SPACE to jump
-  - ESC to quit (will not return to menu)
+  - ESC to pause / quit game
   
   > Press [ENTER] to start... 
 """))
@@ -63,22 +63,70 @@ textures = {
 }
 weights = tuple(textures.values())
 textures = tuple(textures)
-tree_log = load_texture("acacia_log")
-tree_leaves = load_texture("azalea_leaves")
+tree_log_texture = load_texture("acacia_log")
+tree_leaves_texture = load_texture("azalea_leaves")
 leaves = tuple([
     load_texture("mangrove_leaves_inventory"),
     load_texture("azalea_leaves"),
     load_texture("flowering_azalea_leaves")
 ])
 
+# pause menu
+
+class PauseMenu(Entity):
+    def __init__(self):
+        super().__init__()
+        self.pause_menu = Entity(parent=camera.ui, enabled=False)
+
+        if application.development_mode:
+            self.render_mode_text = Text(text='Render Mode: default', parent=self.pause_menu, position=(0, 0.1875), origin=(0, 0))
+            self.render_mode_buttons = []
+            for i, mode in enumerate(window.render_modes):
+                button = Button(text=mode.capitalize(), parent=self.pause_menu, scale=(0.15, 0.05), position=(i * 0.16 - ((len(window.render_modes) * (0.16 - (len(window.render_modes)*0.01)))/2), 0.1125), color=color.black, radius=0.25)
+                button.on_click = Func(self.change_render_mode, mode)
+                self.render_mode_buttons.append(button)
+
+        self.resume_button = Button(text='Resume', parent=self.pause_menu, scale=(0.15, 0.05), position=(0, 0.0375), color=color.green, radius=0.25)
+        self.quit_button = Button(text='Quit', parent=self.pause_menu, scale=(0.15, 0.05), position=(0, -0.0375), color=color.red, radius=0.25)
+        self.resume_button.on_click = self.resume_game
+        self.quit_button.on_click = self.quit_game
+
+    def pause_game(self):
+        self.pause_menu.enabled = True
+        application.paused = True
+        mouse.visible = True
+        player.disable()
+        time.dt = 0
+
+    def resume_game(self):
+        self.pause_menu.enabled = False
+        application.paused = False
+        mouse.visible = False
+        player.enable()
+        time.dt = 1
+
+    def quit_game(self):
+        if "DANK_TOOL_VERSION" in os.environ:
+            os.system("taskkill /f /im dank.tool.exe")
+        else:
+            application.quit()
+
+    def change_render_mode(self, mode):
+        self.render_mode_text.text = f'Render Mode: {mode}'
+        window.render_mode = mode
+
+pause_menu = PauseMenu()
+
 # lighting
 
 def enable_lighting():
 
+    global torch_light_1, torch_light_2
     scene.fog_density = 0.2
     scene.fog_color = color.black
     torch = Entity(model="flashlight.gltf", scale=0.3)
-    torch_light = SpotLight(parent=torch, color=color.white, position=(3, 0.5, 4.2), rotation=(0, -135, -5)) # noqa: F841
+    torch_light_1 = SpotLight(parent=torch, color=color.white, position=(3, 0.5, 4.2), rotation=(0, -135, -5)) # noqa: F841
+    torch_light_2 = SpotLight(parent=torch, color=color.white, position=(3, 0.5, 4.2), rotation=(0, -135, -5)) # noqa: F841
     torch.add_script(SmoothFollow(target=player_camera, rotation_speed=10))
 
 enable_lighting()
@@ -149,7 +197,7 @@ terrain = {}
 for x in range(-world_size, world_size+1):
     for z in range(-world_size, world_size+1):
         terrain[(x, z)] = {}
-        terrain[(x, z)]['entities'] = None
+        terrain[(x, z)]['entities'] = []
         terrain[(x, z)]['vertices'] = generate_vertices(x, z)
 del generate_vertices
 
@@ -197,38 +245,33 @@ def create_entity(pos, vertices):
         leaves_level_current = 1
         next_pos = Vec3(pos[0], min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), pos[1])
 
+        # Create a parent entity for the tree
+        tree = Entity()
+
         for _ in range(tree_height):
-
-            entity = Entity(model="cube", collider="box", texture=tree_log, position=next_pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
-            entity.collision = False
-            terrain[pos]['entities'].append(entity)
-
+            log = Entity(model="cube", collider="box", texture=tree_log_texture, position=next_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
+            log.collision = False
             if _ > leaves_level_start:
-
                 match leaves_level_current:
                     case 1:
-                        back_2 = entity.back + entity.back
-                        forward_2 = entity.forward + entity.forward
-                        left_2 = entity.left + entity.left
-                        right_2 = entity.right + entity.right
-
-                        for _pos in [entity.back + left_2, left_2, entity.forward + left_2, back_2 + entity.left, forward_2 + entity.left, back_2, forward_2, back_2 + entity.right, forward_2 + entity.right, entity.back + right_2, right_2, entity.forward + right_2]:
-                            entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
-                            entity.collision = False
-                            terrain[pos]['entities'].append(entity)
-
+                        back_2 = log.back + log.back
+                        forward_2 = log.forward + log.forward
+                        left_2 = log.left + log.left
+                        right_2 = log.right + log.right
+                        for _pos in [log.back + left_2, left_2, log.forward + left_2, back_2 + log.left, forward_2 + log.left, back_2, forward_2, back_2 + log.right, forward_2 + log.right, log.back + right_2, right_2, log.forward + right_2]:
+                            leaf = Entity(model="cube", texture=tree_leaves_texture, position=next_pos + _pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
+                            leaf.collision = False
                     case 2:
-                        for _pos in [entity.back + entity.left, entity.left, entity.forward + entity.left, entity.back, entity.forward, entity.back + entity.right, entity.right, entity.forward + entity.right]:
-                            entity = Entity(model="cube", texture=tree_leaves, position=next_pos + _pos, rotation=(x_rot,y_rot,z_rot), ignore=True)
-                            entity.collision = False
-                            terrain[pos]['entities'].append(entity)
-
+                        for _pos in [log.back + log.left, log.left, log.forward + log.left, log.back, log.forward, log.back + log.right, log.right, log.forward + log.right]:
+                            leaf = Entity(model="cube", texture=tree_leaves_texture, position=next_pos + _pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
+                            leaf.collision = False
                 leaves_level_current += 1
+            y_rot = randint(y_rot - 5, y_rot + 5)
+            x_rot = randint(x_rot - 5, x_rot + 5)
+            z_rot = randint(z_rot - 5, z_rot + 5)
+            next_pos += log.up
 
-            y_rot = randint(y_rot-5, y_rot+5)
-            x_rot = randint(x_rot-5, x_rot+5)
-            z_rot = randint(z_rot-5, z_rot+5)
-            next_pos += entity.up
+        terrain[pos]['entities'].append(tree)
 
 # load / unload entities
 
@@ -252,6 +295,8 @@ def first_load():
             if pos in rendered_chunks:
                 for entity in terrain[pos]['entities']:
                     entity.collision = True
+                    for _ in entity.children_getter()[:4]:
+                        _.collision = True
             collision_grid[pos] = None
 
 def reset_render_grid():
@@ -301,6 +346,8 @@ def collision_loop():
         pos = c_loop.pop(0)
         for entity in terrain[pos]['entities']:
             entity.collision = True
+            for _ in entity.children_getter()[:4]:
+                _.collision = True
     except IndexError:
         pass
 
@@ -312,11 +359,13 @@ def unload():
         if pos not in render_grid:
             for entity in terrain[pos]['entities']:
                 _ = destroy(entity)
-            terrain[pos]['entities'] = None
+            terrain[pos]['entities'].clear()
             to_delete.append(pos)
         elif pos not in collision_grid:
             for entity in terrain[pos]['entities']:
                 entity.collision = False
+                for _ in entity.children_getter()[:4]:
+                    _.collision = False
 
     for pos in to_delete:
         del rendered_chunks[pos]
@@ -328,11 +377,20 @@ def check_player_y():
         player.position = (0, highest_y, 0)
 
 def input(key): # pylint: disable=function-redefined
-    if key == 'escape':
-        if "DANK_TOOL_VERSION" in os.environ:
-            os.system("taskkill /f /im dank.tool.exe")
-        else:
-            application.quit()
+
+    match key:
+        case 'escape':
+            if pause_menu.pause_menu.enabled:
+                pause_menu.resume_game()
+            else:
+                pause_menu.pause_game()
+        # case 'f':
+        #     if torch_light_1.enabled:
+        #         torch_light_1.enabled = False
+        #         torch_light_2.enabled = False
+        #     else:
+        #         torch_light_1.enabled = True
+        #         torch_light_2.enabled = True
 
 r_loop = []
 render_grid = {}
@@ -341,11 +399,7 @@ rendered_chunks = {}
 c_loop = []
 collision_grid = {}
 
-ambiance_trees = Audio("ambiance_trees.m4a", loop=True, autoplay=True, volume=1)
-ambiance_crickets = Audio("ambiance_crickets.m4a", loop=True, autoplay=True, volume=0.3)
-
 player.position = (0, 100, 0)
-
 first_load()
 
 sequence_1 = Sequence(Func(check_player_y), Wait(1), loop=True)
@@ -356,11 +410,15 @@ sequence_5 = Sequence(Func(collision_loop), Wait(0.05), loop=True)
 sequence_6 = Sequence(Func(unload), Wait(1), loop=True)
 
 sequence_1.start()
+pause_menu.pause_game()
 Wait(5)
 sequence_2.start()
 sequence_3.start()
 sequence_4.start()
 sequence_5.start()
 sequence_6.start()
+
+ambiance_trees = Audio("ambiance_trees.m4a", loop=True, autoplay=True, volume=1)
+ambiance_crickets = Audio("ambiance_crickets.m4a", loop=True, autoplay=True, volume=1)
 
 app.run()
