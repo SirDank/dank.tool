@@ -52,8 +52,7 @@ sky = Sky(texture='sky.png')
 world_size = 250 # n*2 x n*2
 render_dist = 15 # n*2 x n*2
 collision_dist = 2 # n*2 x n*2
-tree_heights = 10
-tree_heights = list(range(tree_heights - 3, tree_heights + 4))
+tree_heights = list(range(7, 14))
 textures = {
     load_texture("grass1"): 0.445,
     load_texture("grass2"): 0.445,
@@ -218,20 +217,7 @@ def create_entity(pos, vertices):
     terrain[pos]['entity'] = Entity(model=mesh, collider="mesh", texture=randchoice(textures, p=weights), ignore=True)
     terrain[pos]['entity'].collision = False
 
-    if randchoice([0, 1], p=[0.99, 0.01]):
-
-        _vertices = vertices.copy()
-        _vertices[0][1] += 0.01
-        _vertices[1][1] += 0.01
-        _vertices[2][1] += 0.01
-        _vertices[3][1] += 0.01
-
-        mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
-        mesh.generate_normals()
-        entity = Entity(model=mesh, collider="mesh", texture=randchoice(leaves), ignore=True, parent=terrain[pos]['entity'])
-        entity.collision = False
-
-    elif randchoice([0, 1], p=[0.98, 0.02]):
+    if randchoice([0, 1], p=[0.98, 0.02]) or world_size in pos or -world_size in pos:
 
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
@@ -266,6 +252,19 @@ def create_entity(pos, vertices):
             x_rot = randint(x_rot - 5, x_rot + 5)
             z_rot = randint(z_rot - 5, z_rot + 5)
             next_pos += log.up
+
+    elif randchoice([0, 1], p=[0.99, 0.01]):
+
+        _vertices = vertices.copy()
+        _vertices[0][1] += 0.01
+        _vertices[1][1] += 0.01
+        _vertices[2][1] += 0.01
+        _vertices[3][1] += 0.01
+
+        mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
+        mesh.generate_normals()
+        entity = Entity(model=mesh, collider="mesh", texture=randchoice(leaves), ignore=True, parent=terrain[pos]['entity'])
+        entity.collision = False
 
 # load / unload entities
 
