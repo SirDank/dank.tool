@@ -44,7 +44,7 @@ app = Ursina(
     #show_ursina_splash=True
 )
 
-#player = EditorCamera()
+# player = EditorCamera()
 player = FirstPersonController(speed=2.5)
 player_camera = Entity(parent=camera, position=(0.5, -0.5, 0.8), rotation=(0, 135, 5))
 sky = Sky(texture='sky.png')
@@ -52,8 +52,7 @@ sky = Sky(texture='sky.png')
 world_size = 250 # n*2 x n*2
 render_dist = 15 # n*2 x n*2
 collision_dist = 2 # n*2 x n*2
-tree_heights = 10
-tree_heights = list(range(tree_heights - 3, tree_heights + 4))
+tree_heights = list(range(7, 14))
 textures = {
     load_texture("grass1"): 0.445,
     load_texture("grass2"): 0.445,
@@ -148,7 +147,7 @@ def generate_vertices(x, z):
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
         avg = (vert_0_y + vert_1_y + vert_3_y)/3
-        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -158,9 +157,9 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x-1, z)]['vertices'][1][1]
         vert_3_y = terrain[(x-1, z)]['vertices'][2][1]
         avg = (vert_0_y + vert_3_y)/2
-        vert_1_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_1_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2])
         avg = (vert_0_y + vert_1_y + vert_3_y)/3
-        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_3_y, vert_3_y+.05, vert_3_y-.05])
+        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -170,9 +169,9 @@ def generate_vertices(x, z):
         vert_0_y = terrain[(x, z-1)]['vertices'][3][1]
         vert_1_y = terrain[(x, z-1)]['vertices'][2][1]
         avg = (vert_0_y + vert_1_y)/2
-        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        vert_2_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2])
         avg = (vert_0_y + vert_1_y + vert_2_y)/3
-        vert_3_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2]) #randchoice([vert_0_y, vert_0_y+.05, vert_0_y-.05, vert_1_y, vert_1_y+.05, vert_1_y-.05])
+        vert_3_y = randchoice([avg, avg+.1, avg+.2, avg-.1, avg-.2])
         new_vertices[0][1] = vert_0_y
         new_vertices[1][1] = vert_1_y
         new_vertices[2][1] = vert_2_y
@@ -197,7 +196,7 @@ terrain = {}
 for x in range(-world_size, world_size+1):
     for z in range(-world_size, world_size+1):
         terrain[(x, z)] = {}
-        terrain[(x, z)]['entities'] = []
+        terrain[(x, z)]['entity'] = None
         terrain[(x, z)]['vertices'] = generate_vertices(x, z)
 del generate_vertices
 
@@ -213,29 +212,12 @@ del start_time
 
 def create_entity(pos, vertices):
 
-    terrain[pos]['entities'] = []
-
     mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs)
-    mesh.generate_normals(smooth=True)
-    entity = Entity(model=mesh, collider="mesh", texture=randchoice(textures, p=weights), ignore=True)
-    entity.collision = False
-    terrain[pos]['entities'].append(entity)
+    mesh.generate_normals()
+    terrain[pos]['entity'] = Entity(model=mesh, collider="mesh", texture=randchoice(textures, p=weights), ignore=True)
+    terrain[pos]['entity'].collision = False
 
-    if randchoice([0, 1], p=[0.99, 0.01]):
-
-        _vertices = vertices.copy()
-        _vertices[0][1] += 0.01
-        _vertices[1][1] += 0.01
-        _vertices[2][1] += 0.01
-        _vertices[3][1] += 0.01
-
-        mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
-        mesh.generate_normals(smooth=True)
-        entity = Entity(model=mesh, collider="mesh", texture=randchoice(leaves), ignore=True)
-        entity.collision = False
-        terrain[pos]['entities'].append(entity)
-
-    elif randchoice([0, 1], p=[0.98, 0.02]):
+    if randchoice([0, 1], p=[0.98, 0.02]) or world_size in pos or -world_size in pos:
 
         y_rot = randint(0, 90)
         x_rot = randint(-5, +5)
@@ -246,7 +228,7 @@ def create_entity(pos, vertices):
         next_pos = Vec3(pos[0], min(vertices[0][1], vertices[1][1], vertices[2][1], vertices[3][1]), pos[1])
 
         # Create a parent entity for the tree
-        tree = Entity()
+        tree = Entity(ignore=True, parent=terrain[pos]['entity'])
 
         for _ in range(tree_height):
             log = Entity(model="cube", collider="box", texture=tree_log_texture, position=next_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree)
@@ -271,7 +253,18 @@ def create_entity(pos, vertices):
             z_rot = randint(z_rot - 5, z_rot + 5)
             next_pos += log.up
 
-        terrain[pos]['entities'].append(tree)
+    elif randchoice([0, 1], p=[0.99, 0.01]):
+
+        _vertices = vertices.copy()
+        _vertices[0][1] += 0.01
+        _vertices[1][1] += 0.01
+        _vertices[2][1] += 0.01
+        _vertices[3][1] += 0.01
+
+        mesh = Mesh(vertices=_vertices, triangles=triangles, uvs=uvs)
+        mesh.generate_normals()
+        entity = Entity(model=mesh, collider="mesh", texture=randchoice(leaves), ignore=True, parent=terrain[pos]['entity'])
+        entity.collision = False
 
 # load / unload entities
 
@@ -281,11 +274,10 @@ def first_load():
         for z in range(int(player.z) - render_dist, int(player.z) + render_dist + 1):
             pos = (x, z)
             if pos not in rendered_chunks and pos in terrain:
-                if not terrain[pos]['entities']:
+                if not terrain[pos]['entity']:
                     create_entity(pos, terrain[pos]['vertices'])
                 else:
-                    for entity in terrain[pos]['entities']:
-                        entity.enabled = True
+                    terrain[pos]['entity'].enabled = True
                 rendered_chunks[pos] = None
             render_grid[pos] = None
 
@@ -293,10 +285,11 @@ def first_load():
         for z in range(int(player.z) - collision_dist, int(player.z) + collision_dist + 1):
             pos = (x, z)
             if pos in rendered_chunks:
-                for entity in terrain[pos]['entities']:
-                    entity.collision = True
-                    for _ in entity.children_getter()[:4]:
-                        _.collision = True
+                terrain[pos]['entity'].collision = True
+                for _ in terrain[pos]['entity'].children_getter():
+                    _.collision = True
+                    for __ in _.children_getter()[:4]:
+                        __.collision = True
             collision_grid[pos] = None
 
 def reset_render_grid():
@@ -331,11 +324,10 @@ def render_loop():
 
     try:
         pos = r_loop.pop(0)
-        if not terrain[pos]['entities']:
+        if not terrain[pos]['entity']:
             create_entity(pos, terrain[pos]['vertices'])
         else:
-            for entity in terrain[pos]['entities']:
-                entity.enabled = True
+            terrain[pos]['entity'].enabled = True
         rendered_chunks[pos] = None
     except IndexError:
         pass
@@ -344,30 +336,31 @@ def collision_loop():
 
     try:
         pos = c_loop.pop(0)
-        for entity in terrain[pos]['entities']:
-            entity.collision = True
-            for _ in entity.children_getter()[:4]:
-                _.collision = True
+        terrain[pos]['entity'].collision = True
+        for _ in terrain[pos]['entity'].children_getter():
+            _.collision = True
+            for __ in _.children_getter()[:4]:
+                __.collision = True
     except IndexError:
         pass
 
 def unload():
 
-    to_delete = []
+    to_unload = []
 
     for pos in rendered_chunks:
         if pos not in render_grid:
-            for entity in terrain[pos]['entities']:
-                _ = destroy(entity)
-            terrain[pos]['entities'].clear()
-            to_delete.append(pos)
+            _ = destroy(terrain[pos]['entity'])
+            terrain[pos]['entity'] = None
+            to_unload.append(pos)
         elif pos not in collision_grid:
-            for entity in terrain[pos]['entities']:
-                entity.collision = False
-                for _ in entity.children_getter()[:4]:
-                    _.collision = False
+            terrain[pos]['entity'].collision = False
+            for _ in terrain[pos]['entity'].children_getter():
+                _.collision = False
+                for __ in _.children_getter()[:4]:
+                    __.collision = False
 
-    for pos in to_delete:
+    for pos in to_unload:
         del rendered_chunks[pos]
 
 # other stuff

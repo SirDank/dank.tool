@@ -87,15 +87,21 @@ def settings_json():
                 overwrite = True
             else:
                 default_settings[key] = data[key]
+        if default_settings != data:
+            overwrite = True
+
+    # winlator support
+
+    if not os.path.isfile("compatibility-mode"):
+        if (os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ)):
+            with open('compatibility-mode', 'w', encoding='utf-8') as file:
+                file.write('')
 
     default_settings["force-translate"] = ("1" if os.path.isfile("force-translate") else "0")
     default_settings["disable-translate"] = ("1" if os.path.isfile("disable-translate") else "0")
     default_settings["compatibility-mode"] = ("1" if os.path.isfile("compatibility-mode") else "0")
     default_settings["force-startup-audio"] = ("1" if os.path.isfile("force-startup-audio") else "0")
     default_settings["disable-startup-audio"] = ("1" if os.path.isfile("disable-startup-audio") else "0")
-
-    if not overwrite and default_settings != data:
-        overwrite = True
 
     if overwrite:
         with open('settings.json', 'w', encoding='utf-8') as file:
@@ -106,7 +112,6 @@ del settings_json
 
 with open('settings.json', 'r', encoding='utf-8') as _:
     DANK_TOOL_SETTINGS = json.loads(_.read())
-os.environ['DANK_TOOL_COMPATIBILITY_MODE'] = DANK_TOOL_SETTINGS['compatibility-mode']
 os.environ['DANK_TOOL_OFFLINE_SRC'] = DANK_TOOL_SETTINGS['offline-src']
 os.environ['DANK_TOOL_DEV_BRANCH'] = DANK_TOOL_SETTINGS['dev-branch']
 OFFLINE_SRC = int(DANK_TOOL_SETTINGS['offline-src'])
@@ -115,7 +120,7 @@ BRANCH = ("main" if not DEV_BRANCH else "dev")
 
 # compatability mode
 
-if int(DANK_TOOL_SETTINGS['compatibility-mode']) or (os.getlogin() == 'xuser' and os.getenv("COMPUTERNAME") == 'LOCALHOST'):
+if int(DANK_TOOL_SETTINGS['compatibility-mode']):
 
     # https://no-color.org/
     os.environ['NO_COLOR'] = '1'
