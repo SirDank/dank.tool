@@ -245,9 +245,8 @@ def main_one():
         #"NeoPerformance": 103183, # removed from spigot? # disabled config
         "ProtocolLib": 1997,
         "Spark": 57242,
-        "TabTPS": 82528,
         #"LevelledMobs": 74304, # scaling needs to be improved, too difficult
-        #"PlayTime": 26016, # Broken
+        #"PlayTime": 26016, # Broken, update to https://github.com/tbm00/PlayTime?
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
         #"Multiverse-Core": 390,
@@ -271,9 +270,6 @@ def main_one():
         spigot_plugins["Log4JExploitFix"] = 98243
     if playit:
         spigot_plugins["playit-gg"] = 105566
-    if install_Via:
-        spigot_plugins["ViaVersion"] = 19254
-        spigot_plugins["ViaBackwards"] = 27448
 
     for plugin, id in spigot_plugins.items():
         to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/download")
@@ -286,12 +282,14 @@ def main_one():
     # github plugins
 
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
-              + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit']) \
+              + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit-Paper']) \
+              + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
+              + (github_file_selector("ViaVersion/ViaVersion", "add", ['ViaVersion']) if install_Via else []) \
+              + (github_file_selector("ViaVersion/ViaBackwards", "add", ['ViaBackwards']) if install_Via else []) \
               #+ github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
               #+ github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               #+ github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
               #+ github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
-              #+ github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
 
     for file_url in file_urls:
         to_download_urls.append(file_url)
@@ -314,14 +312,18 @@ def main_one():
         while True:
             try:
                 response = requests.get(url, headers=headers, timeout=3, allow_redirects=True)
-                data = response.content
-                try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
-                except: size = "?"
-                with open(file_name,"wb") as file:
-                    file.write(data)
-                print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n")); break
+                break
             except:
-                print(clr(f"  > {translate('Failed')} [ {file_name} ] Retrying...\n",2))
+                print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n",2))
+        data = response.content
+        if not data.startswith('<!DOCTYPE html>'):
+            try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
+            except: size = "?"
+            with open(file_name,"wb") as file:
+                file.write(data)
+            print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
+        print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n",2))
+        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}```"})
 
     # disabled due to repeated error reports
 
@@ -867,7 +869,6 @@ def main_two():
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
     complete_banner = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
     cls(); Console().print(Align.center(complete_banner), style="blink red", highlight=False); time.sleep(5)
-    #sys_open('https://allmylinks.com/sir-dankenstein')
 
 main_two()
 
