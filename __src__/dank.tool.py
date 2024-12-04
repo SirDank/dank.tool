@@ -755,7 +755,7 @@ def dank_github_software(software):
             sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]['sha']
         case 'vencord':
             print(clr(f"\n  - {_translate('Credits to')} Vendicated!"))
-            if os.path.isfile(r"C:\Users\SirDank\AppData\Local\Discord\Update.exe"):
+            if os.path.isfile(f"C:\\Users\\{os.getlogin()}\\AppData\\Local\\Discord\\Update.exe"):
                 print(clr(f"\n  - {_translate('Discord found!')}"))
             else:
                 print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}\n"))
