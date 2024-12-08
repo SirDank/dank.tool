@@ -163,7 +163,7 @@ if int(DANK_TOOL_SETTINGS['compatibility-mode']):
 
 # variables
 
-DANK_TOOL_VERSION = "3.2.6"
+DANK_TOOL_VERSION = "3.2.7"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
