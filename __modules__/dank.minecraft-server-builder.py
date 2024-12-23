@@ -316,14 +316,15 @@ def main_one():
             except:
                 print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n",2))
         data = response.content
-        if not data.startswith('<!DOCTYPE html>'):
+        if not str(data).startswith('<!DOCTYPE html>'):
             try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
             except: size = "?"
             with open(file_name,"wb") as file:
                 file.write(data)
             print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
-        print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n",2))
-        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}```"})
+        else:
+            print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n",2))
+            requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}```"})
 
     # disabled due to repeated error reports
 
