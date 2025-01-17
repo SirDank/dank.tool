@@ -1145,7 +1145,7 @@ if __name__ == "__main__":
 
             _choice = input(clr("  > Choice: ") + red)
 
-            if _choice is not NoneType and _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
+            if not isinstance(_choice, NoneType) and _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
 
                 if int(_choice) <= len(modules):
                     _choice = modules[list(modules)[int(_choice) - 1]]
@@ -1163,7 +1163,7 @@ if __name__ == "__main__":
                         if __choice == '0':
                             print_modules()
                             break
-                        if __choice is not NoneType and __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
+                        if not isinstance(__choice, NoneType) and __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
                             _choice = _choice[list(_choice)[int(__choice) - 1]]
                             break
                         rm_line()
