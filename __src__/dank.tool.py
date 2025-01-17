@@ -1145,7 +1145,11 @@ if __name__ == "__main__":
 
             _choice = input(clr("  > Choice: ") + red)
 
-            if not isinstance(_choice, NoneType) and _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
+            if isinstance(_choice, NoneType):
+
+                os.system("taskkill /f /t /im dank.tool.exe")
+
+            elif _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
 
                 if int(_choice) <= len(modules):
                     _choice = modules[list(modules)[int(_choice) - 1]]
@@ -1163,7 +1167,7 @@ if __name__ == "__main__":
                         if __choice == '0':
                             print_modules()
                             break
-                        if not isinstance(__choice, NoneType) and __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
+                        if __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
                             _choice = _choice[list(_choice)[int(__choice) - 1]]
                             break
                         rm_line()
@@ -1176,7 +1180,7 @@ if __name__ == "__main__":
 
             else:
 
-                match _choice.lower():
+                match _choice.lower().strip():
                     case 'refresh': # re-align ui
                         print_modules()
                     case 'debug': # debug menu
