@@ -17,7 +17,7 @@ def winget_installed():
 
 def install_winget():
     file_name = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
-    url = github_file_selector('microsoft/winget-cli', 'add', ('.msixbundle'))[0]
+    url = github_file_selector('microsoft/winget-cli', 'add', ['.msixbundle'])[0]
     print(clr("\n  - Downloading..."))
     data = requests.get(url, headers={'User-Agent': ('dank.tool' if "DANK_TOOL_VERSION" not in os.environ else f'dank.tool {os.environ["DANK_TOOL_VERSION"]}'), 'Content-Type': 'application/json'}, timeout=3, allow_redirects=True).content
     print(clr("\n  - Downloaded!"))
