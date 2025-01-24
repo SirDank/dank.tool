@@ -1,10 +1,12 @@
 import os
+import requests
+import tempfile
 import subprocess
 from rich.panel import Panel
 from rich.align import Align
 from rich.columns import Columns
 from rich.console import Console
-from dankware import cls, clr, rm_line, green_bright
+from dankware import cls, clr, rm_line, github_file_selector, green_bright
 
 def winget_installed():
     try:
@@ -12,6 +14,17 @@ def winget_installed():
         return bool(result.returncode == 0)
     except FileNotFoundError:
         return False
+
+def install_winget():
+    file_name = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
+    url = github_file_selector('microsoft/winget-cli', 'add', ('.msixbundle'))[0]
+    print(clr("\n  - Downloading..."))
+    data = requests.get(url, headers={'User-Agent': ('dank.tool' if "DANK_TOOL_VERSION" not in os.environ else f'dank.tool {os.environ["DANK_TOOL_VERSION"]}'), 'Content-Type': 'application/json'}, timeout=3, allow_redirects=True).content
+    print(clr("\n  - Downloaded!"))
+    os.chdir(tempfile.gettempdir())
+    with open(file_name, "wb") as file:
+        file.write(data)
+    os.system(file_name)
 
 def print_banner():
     cls()
@@ -158,9 +171,11 @@ def main():
 if __name__ == "__main__":
 
     if os.name != 'nt':
-        input(clr("\n  - This module only works for Windows! Press ENTER to exit... ",2))
+        input(clr("\n  - This module only works for Windows! Press [ ENTER ] to exit... ",2))
     elif not winget_installed():
-        input(clr("\n  - This module requires winget to be installed! Press ENTER to exit... ",2))
+        input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))
+        install_winget()
+        main()
     else:
         main()
 
