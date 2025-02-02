@@ -1,18 +1,22 @@
 import os
 import time
 import json
+import socketio
 import requests
 import subprocess
 import tkinter as tk
 from win11toast import notify
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, align, rm_line, green_bright, red, white_normal
+from dankware import cls, clr, align, rm_line, green_bright, red, white_normal, blue_bright
+
+sio = socketio.Client()
 
 def chatroom_login():
 
     global username
     url = "https://dank-site.onrender.com/chatroom-login"
+    session.post("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3)
 
     while True:
 
@@ -56,126 +60,114 @@ def chatroom_login():
                         err_msg = f" [{red}Unauthorized! Try again in a minute!]"
                         rm_line(); rm_line()
                     case 200: # successfully created user
-                        cls(); print(clr(align(f"\n<---|[ Welcome [{username}]! ]|--->\n")))
+                        cls(); print(clr(align(f"\n<---|[ Welcome [{username}]! ]|--->\n\n")))
                         break
             break
 
         match response.status_code:
             case 200: # user already registered
                 username = response.content.decode()
-                cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n")))
+                cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n\n")))
                 break
             case 401: # unauthorized
                 cls(); input(clr("\n  > Unauthorized! Try again in a minute! Press [ENTER] to try again... ",2))
 
-def chat_grabber():
+def chatroom_connect():
 
-    global chat
-    global last_msg_id
-
-    session = requests.Session()
-    offline_msg = clr("[dank.tool] > You are currently offline!",2)
-
+    # print(clr("[dank.tool] trying to connect to the chatroom...", colour_two=green_bright))
     while running:
-        data = compress(json.dumps({"uuid": uuid, "msg_id": str(printed_msg_id)}).encode('utf-8'))
         try:
-            response = json.loads(decompress(session.get("https://dank-site.onrender.com/chatroom", headers=headers, data=data).content).decode('utf-8'))
-            chat = str(response["chat"]).splitlines()
-            last_msg_id = int(response["msg_id"])
+            sio.connect('https://dank-site.onrender.com', {'UUID': uuid})
+            # rm_line()
+            break
         except:
-            if len(chat) > 0 and chat[-1] != offline_msg: # pylint: disable=used-before-assignment
-                chat.append(offline_msg)
-                print(offline_msg)
-        time.sleep(5)
+            input(clr("  > Failed to connect! Press [ENTER] to try again... ",2))
+            rm_line()
 
-def chatroom_output():
+@sio.event
+def message(message: bytes):
 
-    global printed_msg_id
+    allow_notify = False
 
-    while running:
+    message = decompress(message).decode('utf-8')
+    if message.startswith("[dank.server]") and (message.endswith(" joined!") or message.endswith(" left!")):
+        allow_notify = True
+        print(clr(message, colour_two=blue_bright))
+    elif message.startswith("[dank.server]"):
+        print(clr(message, colour_two=green_bright))
+    elif message.startswith("[dank.server-error]"):
+        print(clr(message.replace('[dank.server-error]','[dank.server]',1),2))
+    elif message.startswith("[SirDank]"):
+        allow_notify = True
+        print(clr(message.replace("[SirDank]",f"[{green_bright}SirDank{red}]")))
+    elif message.startswith(f"[{username}]"):
+        print(clr(message))
+    else:
+        allow_notify = True
+        print(clr(message, colour_one=white_normal))
 
-        if printed_msg_id < last_msg_id and len(chat) > 0:
-
-            for _, line in enumerate(chat):
-
-                if notifications and not line.startswith(f"[{username}]"):
-
-                    executor.submit( # pylint: disable=used-before-assignment
-                        notify,
-                        line.split(" > ")[0].replace('[','[ ').replace(']',' ]'),
-                        line.split(" > ")[1],
-                        icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
-                    )
-
-                if line.startswith("[dank.server]"):
-                    chat[_] = clr(line, colour_two=green_bright)
-                elif line.startswith("[SirDank]"):
-                    chat[_] = clr(line.replace("[SirDank]",f"[{green_bright}SirDank{red}]"))
-                elif line.startswith(f"[{username}]"):
-                    chat[_] = clr(line)
-                else:
-                    chat[_] = clr(line, colour_one=white_normal)
-
-            print('\n'.join(chat))
-
-            printed_msg_id = last_msg_id
-
-        time.sleep(1)
+    if notifications and allow_notify:
+        executor.submit( # pylint: disable=used-before-assignment
+            notify,
+            message.split(" - ")[0].replace('[','[ ',1).replace(']',' ]',1),
+            message.split(" - ")[1],
+            icon = icon,
+        )
 
 def chatroom_input():
 
     global running
 
-    help_msg = clr("[dank.tool] > /help - show help\n[dank.tool] > /clear - clear chatroom\n[dank.tool] > /notify - enable/disable notifications\n[dank.tool] > /exit - exit chatroom", colour_two=green_bright)
+    help_msg = clr("[dank.tool] /help - show help\n[dank.tool] /clear - clear chat\n[dank.tool] /notify - enable/disable notifications\n[dank.tool] /users - online users\n[dank.tool] /exit - exit chatroom", colour_two=green_bright)
     print(help_msg)
 
     def handle_msg(event): # pylint: disable=unused-argument
 
         msg = entry.get()
-        msg_lower = msg.lower()
+        msg_lower = msg.strip().lower()
         entry.delete(0, tk.END)
         send_msg = False
 
         if msg == "": return
-        if msg.startswith("/"):
+        if msg_lower.startswith("/"):
 
-            if msg_lower in ["/exit", "/quit", "/bye", "/terminate"]:
+            if msg_lower in ("/exit", "/quit", "/bye", "/terminate"):
                 global running
                 running = False
 
-            elif msg_lower in ["/clear", "/cls"]:
-                cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n")))
+            elif msg_lower in ("/clear", "/cls"):
+                cls(); print(clr(align(f"\n<---|[ Welcome Back [{username}]! ]|--->\n\n")))
 
-            elif msg_lower in ["/notify", "/notifications"]:
+            elif msg_lower in ("/notify", "/notifications"):
                 global notifications
                 notifications = not notifications
-                print(clr(f"[dank.tool] > Notifications {'enabled' if notifications else 'disabled'}!", colour_two=green_bright))
+                print(clr(f"[dank.tool] Notifications {'enabled' if notifications else 'disabled'}!", colour_two=green_bright))
 
             elif msg_lower == "/help":
                 print(help_msg)
 
-            elif username == "SirDank":
+            elif msg_lower in ("/users") or username == "SirDank":
                 send_msg = True
-                if msg_lower == "/clear-all":
-                    global printed_msg_id
-                    printed_msg_id = 0
 
             else:
-                print(clr("[dank.tool] > Invalid command!",2))
+                print(clr("[dank.tool] Invalid command! Use /help to view a list of available commands!",2))
 
         elif len(msg) > 200:
-            print(clr("[dank.tool] > Message longer than 200 characters!",2))
+            print(clr("[dank.tool] Message longer than 200 characters!",2))
 
-        elif msg.lower() in ("exit", ".exit"):
-            print(clr("[dank.tool] > Did you mean /exit?",2))
+        elif msg_lower in ("exit", ".exit"):
+            print(clr("[dank.tool] Did you mean /exit?",2))
 
         else:
             send_msg = True
 
         if send_msg:
-            data = compress(json.dumps({"uuid": uuid, "msg": msg}).encode('utf-8'))
-            try: session.post("https://dank-site.onrender.com/chatroom", headers=headers, data=data)
-            except: print(clr("[dank.tool] > Failed to send!",2))
+            try:
+                sio.send(compress(msg.encode('utf-8')))
+            except:
+                print(clr("[dank.tool] Failed to send!",2))
+                global running
+                running = False
 
     def insert_emoji(event):
         entry.insert(tk.END, event.widget.cget("text"))
@@ -213,8 +205,9 @@ def chatroom_input():
     root.bind('<Button-1>', get_offset)
     root.bind("<B1-Motion>", move_window)
     root.protocol("WM_DELETE_WINDOW", on_closing)
-    root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
-    root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF0000", borderwidth=1) # hot-pink > #FF00FF
+    if icon:
+        root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
+    root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF0000", borderwidth=1)
 
     emoji_button = tk.Button(root, text="Emojis", command=toggle_emoji_panel, font=("Consolas", 12), fg="white", bg="#2B2B2B", activebackground="#3A3A3A")
     emoji_button.grid(row=0, column=1, sticky="e", padx=(5, 0))
@@ -226,7 +219,7 @@ def chatroom_input():
     emoji_frame = tk.Frame(root)
     for i, e in enumerate(["💀", "🗿", "💕", "🔥", "💣", "🤣", "😭", "😡", "😈", "👍"]):
         emoji_button = tk.Button(emoji_frame, text=e, font=("Consolas", 12), fg="white", bg="#2B2B2B", activebackground="#3A3A3A")
-        emoji_button.grid(row=i//5, column=i%5)  # adjust grid size as needed
+        emoji_button.grid(row=i//10, column=i%10)
         emoji_button.bind("<Button-1>", insert_emoji)
     emoji_frame.grid_remove()
 
@@ -235,34 +228,32 @@ def chatroom_input():
 
     root.destroy()
     running = False
-    print(clr("[dank.tool] > shutting down chatroom...", colour_two=green_bright))
+    print(clr("[dank.tool] shutting down chatroom...", colour_two=green_bright))
 
 def enable_notifications():
 
-    time.sleep(10)
+    time.sleep(5)
     global notifications
     notifications = True
     del globals()['enable_notifications']
 
 if __name__ == "__main__":
 
-    chat = []
-    last_msg_id = 0
-    printed_msg_id = 0
     notifications = False
     session = requests.Session()
     headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
     uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
+    icon = ({'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None)
 
     running = True
     chatroom_login()
-    executor = ThreadPoolExecutor(50)
-    executor.submit(chat_grabber)
-    executor.submit(chatroom_output)
+    executor = ThreadPoolExecutor(5)
+    chatroom_connect()
     executor.submit(enable_notifications)
     chatroom_input()
+    running = False
     executor.shutdown()
 
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('username', 'chat', 'last_msg_id', 'printed_msg_id', 'session', 'headers', 'uuid', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chat_grabber', 'chatroom_output', 'chatroom_input'):
+        for _ in ('username', 'session', 'headers', 'uuid', 'icon', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chatroom_connect', 'message', 'chatroom_input', 'sio'):
             if _ in globals(): del globals()[_]

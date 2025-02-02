@@ -11,4 +11,6 @@ win11toast
 translatepy
 playsound==1.2.2
 numpy
+socketio
+websocket-client
 https://github.com/pokepetter/ursina/archive/refs/heads/master.zip
