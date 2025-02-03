@@ -16,7 +16,6 @@ def chatroom_login():
 
     global username
     url = "https://dank-site.onrender.com/chatroom-login"
-    session.post("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3)
 
     while True:
 
@@ -72,18 +71,6 @@ def chatroom_login():
             case 401: # unauthorized
                 cls(); input(clr("\n  > Unauthorized! Try again in a minute! Press [ENTER] to try again... ",2))
 
-def chatroom_connect():
-
-    # print(clr("[dank.tool] trying to connect to the chatroom...", colour_two=green_bright))
-    while running:
-        try:
-            sio.connect('https://dank-site.onrender.com', {'UUID': uuid})
-            # rm_line()
-            break
-        except:
-            input(clr("  > Failed to connect! Press [ENTER] to try again... ",2))
-            rm_line()
-
 @sio.event
 def message(message: bytes):
 
@@ -98,7 +85,8 @@ def message(message: bytes):
     elif message.startswith("[dank.server-error]"):
         print(clr(message.replace('[dank.server-error]','[dank.server]',1),2))
     elif message.startswith("[SirDank]"):
-        allow_notify = True
+        if username != 'SirDank':
+            allow_notify = True
         print(clr(message.replace("[SirDank]",f"[{green_bright}SirDank{red}]")))
     elif message.startswith(f"[{username}]"):
         print(clr(message))
@@ -123,6 +111,8 @@ def chatroom_input():
 
     def handle_msg(event): # pylint: disable=unused-argument
 
+        global running
+
         msg = entry.get()
         msg_lower = msg.strip().lower()
         entry.delete(0, tk.END)
@@ -132,7 +122,6 @@ def chatroom_input():
         if msg_lower.startswith("/"):
 
             if msg_lower in ("/exit", "/quit", "/bye", "/terminate"):
-                global running
                 running = False
 
             elif msg_lower in ("/clear", "/cls"):
@@ -166,7 +155,6 @@ def chatroom_input():
                 sio.send(compress(msg.encode('utf-8')))
             except:
                 print(clr("[dank.tool] Failed to send!",2))
-                global running
                 running = False
 
     def insert_emoji(event):
@@ -248,7 +236,14 @@ if __name__ == "__main__":
     running = True
     chatroom_login()
     executor = ThreadPoolExecutor(5)
-    chatroom_connect()
+    while running:
+        try:
+            sio.connect('https://dank-site.onrender.com', {'UUID': uuid})
+            # rm_line()
+            break
+        except:
+            input(clr("  > Failed to connect! Press [ENTER] to try again... ",2))
+            rm_line()
     executor.submit(enable_notifications)
     chatroom_input()
     running = False
