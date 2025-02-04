@@ -241,7 +241,7 @@ if __name__ == "__main__":
     executor = ThreadPoolExecutor(5)
     while running:
         try:
-            sio.connect('https://dank-site.onrender.com', {'UUID': uuid})
+            sio.connect('https://dank-site.onrender.com', {'UUID': uuid}, retry=False)
             # rm_line()
             break
         except:
@@ -250,6 +250,7 @@ if __name__ == "__main__":
     executor.submit(enable_notifications)
     chatroom_input()
     running = False
+    sio.shutdown()
     executor.shutdown()
 
     if "DANK_TOOL_VERSION" in os.environ:
