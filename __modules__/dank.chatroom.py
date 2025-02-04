@@ -18,7 +18,6 @@ def chatroom_login():
 
     global username
     url = "https://dank-site.onrender.com/chatroom-login"
-    session.post("https://dank-site.onrender.com/chatroom-users", headers=headers) #
 
     while True:
 
