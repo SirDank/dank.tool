@@ -1196,13 +1196,13 @@ if __name__ == "__main__":
 
             match _choice['project']:
                 case "Discord Server":
-                    os.system('start https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god')
+                    os.system('start https://dank-site.onrender.com/discord')
                     continue
                 case "Telegram Group":
                     os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
                     continue
                 case "YouTube":
-                    os.system('start https://www.youtube.com/@dankware_')
+                    os.system('start https://dank-site.onrender.com/youtube')
                     continue
                 case "Website":
                     os.system('start https://dank-site.onrender.com/')

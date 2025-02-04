@@ -1,14 +1,16 @@
 import os
 import time
 import json
-import socketio
 import requests
+import socketio
 import subprocess
 import tkinter as tk
-from win11toast import notify
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, align, rm_line, green_bright, red, white_normal, blue_bright
+
+if os.name == "nt":
+    from win11toast import notify
 
 sio = socketio.Client()
 
@@ -16,6 +18,7 @@ def chatroom_login():
 
     global username
     url = "https://dank-site.onrender.com/chatroom-login"
+    session.post("https://dank-site.onrender.com/chatroom-users", headers=headers) #
 
     while True:
 
@@ -221,8 +224,9 @@ def chatroom_input():
 def enable_notifications():
 
     time.sleep(5)
-    global notifications
-    notifications = True
+    if os.name == "nt":
+        global notifications
+        notifications = True
     del globals()['enable_notifications']
 
 if __name__ == "__main__":
