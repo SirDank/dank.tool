@@ -17,7 +17,7 @@ sio = socketio.Client()
 def chatroom_login():
 
     global username
-    url = "https://dank-site.onrender.com/chatroom-login"
+    url = "https://dankware.onrender.com/chatroom-login"
 
     while True:
 
@@ -241,7 +241,7 @@ if __name__ == "__main__":
     executor = ThreadPoolExecutor(5)
     while running:
         try:
-            sio.connect('https://dank-site.onrender.com', {'UUID': uuid}, retry=False)
+            sio.connect('https://dankware.onrender.com', {'UUID': uuid}, retry=False, wait_timeout=10)
             # rm_line()
             break
         except:

@@ -41,7 +41,7 @@ def dank_tool_installer():
     try: exec(code)
     except:
         err_message = err(sys.exc_info())
-        try: requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+        try: requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
         except: pass
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
@@ -98,8 +98,8 @@ def get_menu_request_responses(task_id, request_key):
     match task_id:
         case 0 | 1: # get global runs
             match task_id:
-                case 0: url = "https://dank-site.onrender.com/counter?id=dankware&hit=false"
-                case 1: url = "https://dank-site.onrender.com/counter?id=dank.tool&hit=false"
+                case 0: url = "https://dankware.onrender.com/counter?id=dankware&hit=false"
+                case 1: url = "https://dankware.onrender.com/counter?id=dank.tool&hit=false"
             menu_request_responses[request_key] = f"{red_normal}⚠️"
             try:
                 result = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
@@ -118,7 +118,7 @@ def get_menu_request_responses(task_id, request_key):
 
         case 3: # get chatroom user count
             try:
-                result = requests.get("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
+                result = requests.get("https://dankware.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
                 if result.isdigit():
                     if result != "0": menu_request_responses[request_key] = result
                     else: menu_request_responses[request_key] = "1"
@@ -1196,16 +1196,16 @@ if __name__ == "__main__":
 
             match _choice['project']:
                 case "Discord Server":
-                    os.system('start https://dank-site.onrender.com/discord')
+                    os.system('start https://dankware.onrender.com/discord')
                     continue
                 case "Telegram Group":
                     os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
                     continue
                 case "YouTube":
-                    os.system('start https://dank-site.onrender.com/youtube')
+                    os.system('start https://dankware.onrender.com/youtube')
                     continue
                 case "Website":
-                    os.system('start https://dank-site.onrender.com/')
+                    os.system('start https://dankware.onrender.com/')
                     continue
 
             TITLE = _choice['title']
@@ -1318,7 +1318,7 @@ if __name__ == "__main__":
             elif ONLINE_MODE: # and not LOCAL_MODULE (removed to report all errors)
                 while True:
                     try:
-                        requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
+                        requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
                         break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ",2))

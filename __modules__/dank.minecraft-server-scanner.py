@@ -81,7 +81,7 @@ def check(ip, server):
                 json['city'] = response['city']
                 json['org'] = response['connection']['org']
                 json['domain'] = response['connection']['domain']
-            executor.submit(requests.post, f"https://dank-site.onrender.com/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json) # pylint: disable=used-before-assignment
+            executor.submit(requests.post, f"https://dankware.onrender.com/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json) # pylint: disable=used-before-assignment
         except: pass
 
         if server_type == "java":
@@ -132,10 +132,10 @@ def main():
     banner = '\n\n     _             _                                                              \n    | |           | |                                                             \n  _ | | ____ ____ | |  _   ____   ____ ___ ___  ____ ____ ____  ____   ____  ____ \n / || |/ _  |  _ \\| | / ) |    \\ / ___|___)___)/ ___) _  |  _ \\|  _ \\ / _  )/ ___)\n( (_| ( ( | | | | | |< ( _| | | ( (___   |___ ( (__( ( | | | | | | | ( (/ /| |    \n \\____|\\_||_|_| |_|_| \\_|_)_|_|_|\\____)  (___/ \\____)_||_|_| |_|_| |_|\\____)_|    \n\n'
     console = Console(highlight=False)
     console.print(Align.center(banner), style="blink red")
-    print(clr(f"\n  - Java Server List: https://dank-site.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dank-site.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
+    print(clr(f"\n  - Java Server List: https://dankware.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dankware.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"))
     match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
-        case "1": os.system("start https://dank-site.onrender.com/minecraft-java-servers")
-        case "2": os.system("start https://dank-site.onrender.com/minecraft-bedrock-servers")
+        case "1": os.system("start https://dankware.onrender.com/minecraft-java-servers")
+        case "2": os.system("start https://dankware.onrender.com/minecraft-bedrock-servers")
 
     cls(); console.print(Align.center(banner), style="blink red")
     print(clr(f"\n  - {translate('Start with 100 threads and note the performance impact.')}\n\n  - {translate('Generally should be smooth upto 500 threads, you might notice some performance impact above this value!')}\n\n  - {translate('Test it for the first time with 50000 IPs, it will take a few seconds to generate.')}"))
