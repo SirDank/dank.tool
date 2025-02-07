@@ -5,6 +5,7 @@ from dankware import cls, clr
 from numpy.random import randint
 from numpy.random import choice as randchoice
 from ursina.scripts.smooth_follow import SmoothFollow
+from ursina.prefabs.splash_screen import SplashScreen
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 cls()
@@ -42,8 +43,9 @@ app = Ursina(
     borderless=False,
     fullscreen=True,
     development_mode=False,
-    show_ursina_splash=True,
 )
+
+application.ursina_splash = SplashScreen('dankware.png')
 
 # player = EditorCamera()
 player = FirstPersonController(speed=2.5)
