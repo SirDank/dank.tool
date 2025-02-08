@@ -343,7 +343,7 @@ def main_one():
     while True:
         try:
             start_time = time.time()
-            multithread(file_downloader, 5, to_download_urls, to_download_file_names)
+            multithread(file_downloader, 5, to_download_urls, to_download_file_names, progress_bar=not ('COMPATIBILITY-MODE' in os.environ))
             time_taken = int(time.time()-start_time)
             break
         except: input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); cls()

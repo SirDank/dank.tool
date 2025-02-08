@@ -72,10 +72,11 @@ def settings_json():
         "disable-startup-audio": "0",
     }
 
-    # winlator support
+    # wine support
 
-    if (os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ)):
+    if (os.name == 'posix') or (os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ)):
         settings['compatibility-mode'] = "1"
+        os.environ['COMPATIBILITY-MODE'] = "1"
 
     if not os.path.isfile('settings.json'):
         overwrite = True
@@ -143,7 +144,7 @@ if int(DANK_TOOL_SETTINGS['compatibility-mode']):
     dankware.red_dim = ''
     dankware.white_dim = ''
     dankware.yellow_dim = ''
-    dankware.clr = lambda *args: args[0]
+    dankware.clr = lambda text, preset=None, colour_one=None, colour_two=None, colours=None: text
     from dankware import clr, reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim # pylint: disable=reimported
 
 # variables
