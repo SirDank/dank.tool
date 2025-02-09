@@ -66,16 +66,16 @@ def dank_tool_banner():
     cls()
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
     console = Console(highlight=False)
-    console.print(Align.center(banner), style="blink red")
-    console.print(Align.center("[bright_white]s i r [red]. [bright_white]d a n k [red]💕\n"), style="blink")
+    console.print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None))
+    console.print(Align.center("[bright_white]s i r [red]. [bright_white]d a n k [red]💕\n"), style=("blink" if not COMPATIBILITY_MODE else None))
 
 def palestine_banner():
 
     #cls()
     banner = '\n[red]###[black]###########################################\n[red]#####[black]#########################################\n[red]########[black]######################################\n[red]##########[black]####################################\n[red]############[white]##################################\n[red]##############[white]################################\n[red]################[white]##############################\n[red]##############[white]################################\n[red]############[white]##################################\n[red]##########[green]####################################\n[red]########[green]######################################\n[red]#####[green]#########################################\n[red]###[green]###########################################\n'
     console = Console(highlight=False)
-    console.print(Align.center(banner), style="blink")
-    console.print(Align.center("[white]U S E [red]. [white]Y O U R [red]. [white]V O I C E\n"), style="blink")
+    console.print(Align.center(banner), style=("blink" if not COMPATIBILITY_MODE else None))
+    console.print(Align.center("[white]U S E [red]. [white]Y O U R [red]. [white]V O I C E\n"), style=("blink" if not COMPATIBILITY_MODE else None))
 
 # handle KeyboardInterrupt
 
@@ -83,7 +83,7 @@ def print_warning_symbol():
 
     cls()
     banner = '\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [bright_white]██████[red]      ██            \n[red]            ██      [bright_white]██████[red]      ██            \n[red]          ██        [bright_white]██████[red]        ██          \n[red]          ██        [bright_white]██████[red]        ██          \n[red]        ██          [bright_white]██████[red]          ██        \n[red]      ██            [bright_white]██████[red]            ██      \n[red]      ██            [bright_white]██████[red]            ██      \n[red]    ██              [bright_white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [bright_white]██████[red]                ██  \n[red]  ██                [bright_white]██████[red]                ██  \n[red]██                  [bright_white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n'
-    Console().print(Align.center(banner), style="blink", highlight=False)
+    Console().print(Align.center(banner), style=("blink" if not COMPATIBILITY_MODE else None), highlight=False)
 
 # get commit date & time
 
@@ -572,7 +572,7 @@ def dank_tool_settings():
 def dank_win_activate():
 
     banner = "\n\n                                                          __    _______ _______ _______ \n.--------.---.-.-----.-----.-----.----.---.-.--.--.-----.|  |  |   |   |   _   |     __|\n|        |  _  |__ --|__ --|  _  |   _|  _  |  |  |  -__||  |__|       |       |__     |\n|__|__|__|___._|_____|_____|___  |__| |___._|\\___/|_____||__|__|__|_|__|___|___|_______|\n                           |_____|                                                      \n"
-    cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
+    cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
     print(clr(f"\n  - {_translate('Credits to massgravel team!')}"))
     input(clr(f"\n  > {_translate('Hit [ ENTER ] to begin Microsoft-Activation-Script...')} "))
     cls(); print(clr(f"\n  - {_translate('Exit inside the MAS window to return to the menu...')}"))
@@ -731,7 +731,7 @@ def dank_github_software(software):
             banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
         case 'vencord':
             banner = "\n\n                                                                         \n                                                                     _|  \n _|      _|    _|_|    _|_|_|      _|_|_|    _|_|    _|  _|_|    _|_|_|  \n _|      _|  _|_|_|_|  _|    _|  _|        _|    _|  _|_|      _|    _|  \n   _|  _|    _|        _|    _|  _|        _|    _|  _|        _|    _|  \n     _|        _|_|_|  _|    _|    _|_|_|    _|_|    _|          _|_|_|  \n\n\n"
-    cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
+    cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
 
     # main
 

@@ -170,7 +170,7 @@ def main():
 
 if __name__ == "__main__":
 
-    if os.name != 'nt':
+    if os.name != 'nt' or 'WINELOADER' in os.environ:
         input(clr("\n  - This module only works for Windows! Press [ ENTER ] to exit... ",2))
     elif not winget_installed():
         input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))

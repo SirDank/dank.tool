@@ -2,17 +2,19 @@ import os
 import time
 import json
 import requests
-import socketio
 import subprocess
 import tkinter as tk
+from socketio import Client
 from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, align, rm_line, green_bright, red, white_normal, blue_bright
 
-if os.name == "nt":
+windows = (os.name == "nt" and 'WINELOADER' not in os.environ)
+
+if windows:
     from win11toast import notify
 
-sio = socketio.Client()
+sio = Client()
 
 def chatroom_login():
 
@@ -223,7 +225,7 @@ def chatroom_input():
 def enable_notifications():
 
     time.sleep(5)
-    if os.name == "nt":
+    if windows:
         global notifications
         notifications = True
     del globals()['enable_notifications']
@@ -254,5 +256,5 @@ if __name__ == "__main__":
     executor.shutdown()
 
     if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('username', 'session', 'headers', 'uuid', 'icon', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chatroom_connect', 'message', 'chatroom_input', 'sio'):
+        for _ in ('username', 'session', 'headers', 'uuid', 'icon', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chatroom_connect', 'message', 'chatroom_input', 'sio', 'windows'):
             if _ in globals(): del globals()[_]

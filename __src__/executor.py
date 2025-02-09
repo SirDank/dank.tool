@@ -14,13 +14,23 @@
 
 import os
 import sys
+
+# rediect stderr to a file
+os.chdir(os.path.dirname(__file__))
+if os.path.isdir('__logs__'):
+    if os.path.isfile('__logs__/dank.tool.log'):
+        os.remove('__logs__/dank.tool.log')
+    file = open('__logs__/dank.tool.log', 'w', encoding='utf-8')
+    sys.stdout = file
+    sys.stderr = file
+
 import time
 import json
 import requests
-import socketio
 import websocket
 import pyminizip
 import tkinter as tk
+from socketio import Client
 from locale import getlocale
 from rich.align import Align
 from psutil import process_iter
@@ -30,8 +40,8 @@ from translatepy import Translator
 from dateutil.tz import tzlocal, tzutc
 from mcstatus import JavaServer, BedrockServer
 from concurrent.futures import ThreadPoolExecutor
-from dankware.tkinter import file_selector, folder_selector
 from dankware import cls, clr, title, err, rm_line, cyan
+from dankware.tkinter import file_selector, folder_selector
 
 # required packages for dank.game.py
 
@@ -48,12 +58,9 @@ from packaging.version import parse
 
 # windows specific
 
-if os.name == "nt":
+windows = (os.name == "nt" and 'WINELOADER' not in os.environ)
+if windows:
     from win11toast import notify
-
-# rediect stderr to a file
-#if not os.path.exists('__logs__'): os.mkdir('__logs__')
-#sys.stderr = open('__logs__/dank.tool.log', 'w', encoding='utf-8')
 
 # debug env variables
 
@@ -74,7 +81,7 @@ def settings_json():
 
     # wine support
 
-    if (os.name == 'posix') or (os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ)):
+    if (os.name == 'posix') or ('WINELOADER' in os.environ) or os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ):
         settings['compatibility-mode'] = "1"
         os.environ['COMPATIBILITY-MODE'] = "1"
 
@@ -155,7 +162,6 @@ _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
 
-os.chdir(os.path.dirname(__file__))
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  - Version: {DANK_TOOL_VERSION}"))
 
