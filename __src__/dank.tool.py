@@ -4,24 +4,37 @@
 
 ###################################################################################
 
+import datetime
+import json
 import os
 import sys
-import json
 import time
-import datetime
-import requests
+from concurrent.futures import ThreadPoolExecutor
 from types import NoneType
-from rich.panel import Panel
+import requests
+from dateutil.tz import tzlocal, tzutc
 from rich.align import Align
-from win11toast import notify
 from rich.columns import Columns
 from rich.console import Console
+from rich.panel import Panel
 from translatepy import Translator
-from packaging.version import parse
-from dateutil.tz import tzlocal, tzutc
-from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, title, get_duration, multithread, err, rm_line
-from dankware import white, white_bright, green, green_bright, red, red_normal
+from win11toast import notify
+from dankware import (
+    clr,
+    cls,
+    err,
+    get_duration,
+    get_path,
+    green,
+    green_bright,
+    multithread,
+    red,
+    red_normal,
+    rm_line,
+    title,
+    white,
+    white_bright,
+)
 
 def set_title():
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
@@ -53,16 +66,16 @@ def dank_tool_banner():
     cls()
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
     console = Console(highlight=False)
-    console.print(Align.center(banner), style="blink red")
-    console.print(Align.center("[bright_white]s i r [red]. [bright_white]d a n k [red]💕\n"), style="blink")
+    console.print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None))
+    console.print(Align.center("[bright_white]s i r [red]. [bright_white]d a n k [red]💕\n"), style=("blink" if not COMPATIBILITY_MODE else None))
 
 def palestine_banner():
 
     #cls()
     banner = '\n[red]###[black]###########################################\n[red]#####[black]#########################################\n[red]########[black]######################################\n[red]##########[black]####################################\n[red]############[white]##################################\n[red]##############[white]################################\n[red]################[white]##############################\n[red]##############[white]################################\n[red]############[white]##################################\n[red]##########[green]####################################\n[red]########[green]######################################\n[red]#####[green]#########################################\n[red]###[green]###########################################\n'
     console = Console(highlight=False)
-    console.print(Align.center(banner), style="blink")
-    console.print(Align.center("[white]U S E [red]. [white]Y O U R [red]. [white]V O I C E\n"), style="blink")
+    console.print(Align.center(banner), style=("blink" if not COMPATIBILITY_MODE else None))
+    console.print(Align.center("[white]U S E [red]. [white]Y O U R [red]. [white]V O I C E\n"), style=("blink" if not COMPATIBILITY_MODE else None))
 
 # handle KeyboardInterrupt
 
@@ -70,7 +83,7 @@ def print_warning_symbol():
 
     cls()
     banner = '\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [bright_white]██████[red]      ██            \n[red]            ██      [bright_white]██████[red]      ██            \n[red]          ██        [bright_white]██████[red]        ██          \n[red]          ██        [bright_white]██████[red]        ██          \n[red]        ██          [bright_white]██████[red]          ██        \n[red]      ██            [bright_white]██████[red]            ██      \n[red]      ██            [bright_white]██████[red]            ██      \n[red]    ██              [bright_white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [bright_white]██████[red]                ██  \n[red]  ██                [bright_white]██████[red]                ██  \n[red]██                  [bright_white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n'
-    Console().print(Align.center(banner), style="blink", highlight=False)
+    Console().print(Align.center(banner), style=("blink" if not COMPATIBILITY_MODE else None), highlight=False)
 
 # get commit date & time
 
@@ -202,12 +215,16 @@ def print_category_modules(modules):
 
 def set_globals_one():
 
-    global ONLINE_MODE, OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, DANK_TOOL_LANG, BRANCH, headers
+    global OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, ONLINE_MODE, COMPATIBILITY_MODE, DANK_TOOL_LANG, BRANCH, headers
 
-    OFFLINE_SRC = int(os.environ['DANK_TOOL_OFFLINE_SRC'])
-    DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
+    with open("settings.json", "r", encoding="utf-8") as file:
+        settings = json.loads(file.read())
+
+    OFFLINE_SRC = int(settings['offline-src'])
+    DEV_BRANCH = int(settings['dev-branch'])
     DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
     ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
+    COMPATIBILITY_MODE = int(settings['compatibility-mode'])
     try:
         DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
         DANK_TOOL_LANG = ('' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG)
@@ -428,13 +445,13 @@ def set_globals_two():
             #    'rpc': "running auto-clicker"
             #},
 
-            # _translate('Chatroom'): {
-            #     'info': menu_request_responses["chatroom_user_count"],
-            #     'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
-            #     'project': "dank.chatroom",
-            #     'rpc': _translate("chatting in the chatroom"),
-            #     'category': False
-            # },
+            _translate('Chatroom'): {
+                'info': menu_request_responses["chatroom_user_count"],
+                'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
+                'project': "dank.chatroom",
+                'rpc': _translate("chatting in the chatroom"),
+                'category': False
+            },
 
             'Discord / Telegram': {
 
@@ -516,68 +533,46 @@ def dank_tool_settings():
     except:
         runs = "?"
 
-    if os.path.isfile("settings.json"):
+    while True:
 
-        while True:
+        cls(); print(clr(f"\n  - Settings: [ {_translate('restart for all changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
 
-            cls(); print(clr(f"\n  - Settings: [ {_translate('restart for changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
+        with open("settings.json", "r", encoding="utf-8") as file:
+            settings = json.loads(file.read())
 
-            with open("settings.json", "r", encoding="utf-8") as file:
-                settings = json.loads(file.read())
+        counter = 1
+        for name, value in settings.items():
+            print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
+            counter += 1
+        choice = input(clr("\n  > Choice: ") + red).lower()
 
-            counter = 1
-            for name, value in settings.items():
-                print(clr(f"  [{counter}] {name}: {'True' if int(value) else 'False'}"))
-                counter += 1
-            choice = input(clr("\n  > Choice: ") + red).lower()
+        if not isinstance(choice, NoneType) and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
 
-            if not isinstance(choice, NoneType) and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
+            choice = int(choice)
+            if not choice: break
+            settings = list(settings.items())
+            setting_key = settings[choice - 1][0]
+            settings[choice - 1] = (setting_key, str(int(not int(settings[choice - 1][1]))))
+            settings = dict(settings)
 
-                choice = int(choice)
-                if not choice: break
-                settings = list(settings.items())
-                setting_key = settings[choice - 1][0]
-                settings[choice - 1] = (setting_key, str(int(not int(settings[choice - 1][1]))))
-                settings = dict(settings)
+            if int(settings[setting_key]):
+                match setting_key:
+                    case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
+                        if "force" in setting_key:
+                            settings[setting_key.replace('force', 'disable')] = "0"
+                        elif "disable" in setting_key:
+                            settings[setting_key.replace('disable', 'force')] = "0"
 
-                if int(settings[setting_key]):
-                    match setting_key:
-                        case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
-                            with open(setting_key, "w", encoding="utf-8") as file:
-                                file.write("")
-                            if "force" in setting_key:
-                                setting_key = setting_key.replace('force', 'disable')
-                                if os.path.isfile(setting_key):
-                                    os.remove(setting_key)
-                                settings[setting_key] = "0"
-                            elif "disable" in setting_key:
-                                setting_key = setting_key.replace('disable', 'force')
-                                if os.path.isfile(setting_key):
-                                    os.remove(setting_key)
-                                settings[setting_key] = "0"
+            with open("settings.json", "w", encoding="utf-8") as file:
+                file.write(json.dumps(settings, indent=4))
 
-                        case "compatibility-mode":
-                            with open("compatibility-mode", "w", encoding="utf-8") as file:
-                                file.write("")
-                else:
-                    if os.path.isfile(setting_key):
-                        os.remove(setting_key)
-
-                with open("settings.json", "w", encoding="utf-8") as file:
-                    file.write(json.dumps(settings, indent=4))
-
-            elif choice.lower() == "exit":
-                break
-
-    else:
-
-        cls(); print(clr("\n  - settings.json missing!"))
-        time.sleep(5)
+        elif choice.lower() == "exit":
+            break
 
 def dank_win_activate():
 
     banner = "\n\n                                                          __    _______ _______ _______ \n.--------.---.-.-----.-----.-----.----.---.-.--.--.-----.|  |  |   |   |   _   |     __|\n|        |  _  |__ --|__ --|  _  |   _|  _  |  |  |  -__||  |__|       |       |__     |\n|__|__|__|___._|_____|_____|___  |__| |___._|\\___/|_____||__|__|__|_|__|___|___|_______|\n                           |_____|                                                      \n"
-    cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
+    cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
     print(clr(f"\n  - {_translate('Credits to massgravel team!')}"))
     input(clr(f"\n  > {_translate('Hit [ ENTER ] to begin Microsoft-Activation-Script...')} "))
     cls(); print(clr(f"\n  - {_translate('Exit inside the MAS window to return to the menu...')}"))
@@ -724,10 +719,11 @@ def dank_github_software(software):
 
     # dir
 
-    if os.path.isdir(f"C:\\Users\\{os.getlogin()}\\Downloads"):
-        os.chdir(f"C:\\Users\\{os.getlogin()}\\Downloads")
+    path = os.path.join(os.environ['USERPROFILE'], 'Downloads')
+    if os.path.isdir(path):
+        os.chdir(path)
     else:
-        os.chdir(os.path.expandvars("%temp%"))
+        os.chdir(get_path('Temp'))
 
     session = requests.Session()
     match software:
@@ -735,7 +731,7 @@ def dank_github_software(software):
             banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
         case 'vencord':
             banner = "\n\n                                                                         \n                                                                     _|  \n _|      _|    _|_|    _|_|_|      _|_|_|    _|_|    _|  _|_|    _|_|_|  \n _|      _|  _|_|_|_|  _|    _|  _|        _|    _|  _|_|      _|    _|  \n   _|  _|    _|        _|    _|  _|        _|    _|  _|        _|    _|  \n     _|        _|_|_|  _|    _|    _|_|_|    _|_|    _|          _|_|_|  \n\n\n"
-    cls(); Console().print(Align.center(banner), style="blink red", highlight=False)
+    cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
 
     # main
 
@@ -1002,7 +998,7 @@ if __name__ == "__main__":
 
             while True:
                 try:
-                    multithread(download_assets, 50, asset_urls, file_names)
+                    multithread(download_assets, 50, asset_urls, file_names, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
                     input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
@@ -1045,7 +1041,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys)
+                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=not COMPATIBILITY_MODE)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
@@ -1077,7 +1073,7 @@ if __name__ == "__main__":
 
             while True:
                 try:
-                    multithread(get_menu_request_responses_api, 50, tuple(_ for _ in range(len(request_keys_api))), request_keys_api)
+                    multithread(get_menu_request_responses_api, 50, tuple(_ for _ in range(len(request_keys_api))), request_keys_api, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
                     input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
@@ -1116,12 +1112,12 @@ if __name__ == "__main__":
 
         # reset
 
-        set_globals_one()
-        set_globals_two()
-
         set_title()
         os.environ['DISCORD_RPC'] = "on the main menu"
         os.chdir(os.path.dirname(__file__))
+
+        set_globals_one()
+        set_globals_two()
 
         # print available modules
 

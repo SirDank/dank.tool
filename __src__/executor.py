@@ -14,28 +14,34 @@
 
 import os
 import sys
+
+# rediect stderr to a file
+os.chdir(os.path.dirname(__file__))
+if os.path.isdir('__logs__'):
+    if os.path.isfile('__logs__/dank.tool.log'):
+        os.remove('__logs__/dank.tool.log')
+    file = open('__logs__/dank.tool.log', 'w', encoding='utf-8')
+    sys.stdout = file
+    sys.stderr = file
+
 import time
 import json
-import shutil
-import psutil
-import ctypes
 import requests
+import websocket
 import pyminizip
-import subprocess
 import tkinter as tk
+from socketio import Client
 from locale import getlocale
 from rich.align import Align
 from psutil import process_iter
 from playsound import playsound
 from rich.console import Console
 from translatepy import Translator
-from gzip import compress, decompress
 from dateutil.tz import tzlocal, tzutc
 from mcstatus import JavaServer, BedrockServer
 from concurrent.futures import ThreadPoolExecutor
+from dankware import cls, clr, title, err, rm_line, cyan
 from dankware.tkinter import file_selector, folder_selector
-from dankware import cls, clr, title, err, multithread, align, github_downloads, github_file_selector, rm_line, random_ip, get_duration, sys_open, is_admin, export_registry_keys, get_path
-from dankware import reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim
 
 # required packages for dank.game.py
 
@@ -52,20 +58,16 @@ from packaging.version import parse
 
 # windows specific
 
-if os.name == "nt":
-    import winreg
+windows = (os.name == "nt" and 'WINELOADER' not in os.environ)
+if windows:
     from win11toast import notify
-
-# rediect stderr to a file
-#if not os.path.exists('__logs__'): os.mkdir('__logs__')
-#sys.stderr = open('__logs__/dank.tool.log', 'w', encoding='utf-8')
 
 # debug env variables
 
 def settings_json():
 
     overwrite = False
-    default_settings = {
+    settings = {
         "offline-src": "0",
         "offline-mode": "0",
         "dev-branch": "0",
@@ -77,43 +79,34 @@ def settings_json():
         "disable-startup-audio": "0",
     }
 
+    # wine support
+
+    if (os.name == 'posix') or ('WINELOADER' in os.environ) or os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ):
+        settings['compatibility-mode'] = "1"
+        os.environ['COMPATIBILITY-MODE'] = "1"
+
     if not os.path.isfile('settings.json'):
         overwrite = True
     else:
         with open('settings.json', 'r', encoding='utf-8') as file:
             data = json.loads(file.read())
-        for key in default_settings:
+        for key in settings:
             if key not in data:
                 overwrite = True
             else:
-                default_settings[key] = data[key]
-        if default_settings != data:
+                settings[key] = data[key]
+        if settings != data:
             overwrite = True
-
-    # winlator support
-
-    if not os.path.isfile("compatibility-mode"):
-        if (os.getlogin() == 'xuser' or ('USERNAME' in os.environ and os.environ['USERNAME'] == 'xuser') or ('NO_COLOR' in os.environ)):
-            with open('compatibility-mode', 'w', encoding='utf-8') as file:
-                file.write('')
-
-    default_settings["force-translate"] = ("1" if os.path.isfile("force-translate") else "0")
-    default_settings["disable-translate"] = ("1" if os.path.isfile("disable-translate") else "0")
-    default_settings["compatibility-mode"] = ("1" if os.path.isfile("compatibility-mode") else "0")
-    default_settings["force-startup-audio"] = ("1" if os.path.isfile("force-startup-audio") else "0")
-    default_settings["disable-startup-audio"] = ("1" if os.path.isfile("disable-startup-audio") else "0")
 
     if overwrite:
         with open('settings.json', 'w', encoding='utf-8') as file:
-            file.write(json.dumps(default_settings, indent=4))
+            file.write(json.dumps(settings, indent=4))
 
 settings_json()
 del settings_json
 
 with open('settings.json', 'r', encoding='utf-8') as _:
     DANK_TOOL_SETTINGS = json.loads(_.read())
-os.environ['DANK_TOOL_OFFLINE_SRC'] = DANK_TOOL_SETTINGS['offline-src']
-os.environ['DANK_TOOL_DEV_BRANCH'] = DANK_TOOL_SETTINGS['dev-branch']
 OFFLINE_SRC = int(DANK_TOOL_SETTINGS['offline-src'])
 DEV_BRANCH = int(DANK_TOOL_SETTINGS['dev-branch'])
 BRANCH = ("main" if not DEV_BRANCH else "dev")
@@ -158,18 +151,17 @@ if int(DANK_TOOL_SETTINGS['compatibility-mode']):
     dankware.red_dim = ''
     dankware.white_dim = ''
     dankware.yellow_dim = ''
-    dankware.clr = lambda *args: args[0]
+    dankware.clr = lambda text, preset=None, colour_one=None, colour_two=None, colours=None: text
     from dankware import clr, reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim # pylint: disable=reimported
 
 # variables
 
-DANK_TOOL_VERSION = "3.2.7"
+DANK_TOOL_VERSION = "3.2.8"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 os.environ['DANK_TOOL_VERSION'] = DANK_TOOL_VERSION
 
-os.chdir(os.path.dirname(__file__))
 title("𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 [ 𝚒𝚗𝚒𝚝𝚒𝚊𝚕𝚒𝚣𝚒𝚗𝚐 ]")
 print(clr(f"\n  - Version: {DANK_TOOL_VERSION}"))
 
@@ -190,7 +182,6 @@ def latest_dank_tool_version():
     if int(DANK_TOOL_SETTINGS['offline-mode']):
         LATEST_VERSION = "0"
         os.environ['DANK_TOOL_ONLINE'] = "0"
-        os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
     else:
         try:
             while True:
@@ -198,7 +189,6 @@ def latest_dank_tool_version():
                 if 'Not Found' in LATEST_VERSION:
                     print(clr("\n  - Please do not use the dev-branch, it is meant for testing/debugging only!",2))
                     BRANCH = "main"
-                    os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
                     with open('settings.json', 'r', encoding='utf-8') as file:
                         tmp = file.read().replace('"dev-branch": "1"', '"dev-branch": "0"')
                     with open('settings.json', 'w', encoding='utf-8') as file:
@@ -209,12 +199,12 @@ def latest_dank_tool_version():
         except:
             LATEST_VERSION = "0"
             os.environ['DANK_TOOL_ONLINE'] = "0"
-            os.environ['DANK_TOOL_DEV_BRANCH'] = "0"
     return LATEST_VERSION
 
 LATEST_VERSION = latest_dank_tool_version()
 ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
-DEV_BRANCH = int(os.environ['DANK_TOOL_DEV_BRANCH'])
+with open('settings.json', 'r', encoding='utf-8') as file:
+    DEV_BRANCH = int(json.loads(file.read())['dev-branch'])
 BRANCH = ("main" if not DEV_BRANCH else "dev")
 
 # version checker / updater
@@ -232,7 +222,7 @@ def dank_tool_installer():
     try: exec(code)
     except:
         err_message = err(sys.exc_info())
-        try: session.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+        try: session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
         except: pass
         input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(err_message)
@@ -371,7 +361,7 @@ def dank_tool_runs_counter():
     session = requests.Session()
     while True:
         if fail_counter >= 3: break
-        try: session.get("https://dank-site.onrender.com/counter?id=dank.tool&hit=true", headers=headers, timeout=3); break
+        try: session.get("https://dankware.onrender.com/counter?id=dank.tool&hit=true", headers=headers, timeout=3); break
         except: fail_counter += 1
         time.sleep(60)
     del globals()['dank_tool_runs_counter']
@@ -389,7 +379,7 @@ def dank_tool_chatroom():
     session = requests.Session()
     while True:
         if fail_counter >= 3: break
-        try: session.post("https://dank-site.onrender.com/chatroom-users", headers=headers, timeout=3); fail_counter = 0 # do not add a break here! (keeps user validated)
+        try: session.post("https://dankware.onrender.com/chatroom-users", headers=headers, timeout=3); fail_counter = 0 # do not add a break here! (keeps user validated)
         except: fail_counter += 1
         time.sleep(240)
     del globals()['dank_tool_chatroom']
@@ -430,7 +420,7 @@ except:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dank-site.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{err_message}```"})
+                requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{err_message}```"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))

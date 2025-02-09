@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import requests
 import pyminizip
 from colorama import Style, Fore
@@ -31,17 +32,20 @@ except: pass
 
 # change directory
 
+os.chdir(os.path.dirname(__file__))
+
+branch = 'main'
+if os.path.isfile('settings.json'):
+    with open("settings.json", "r", encoding="utf-8") as file:
+        try: branch = ('dev' if int(json.loads(file.read())['dev-branch']) else 'main')
+        except: pass
+
 try: os.chdir(os.path.join(os.environ['USERPROFILE'], 'Downloads')) # do not use get_path() here
 except:
     try: os.chdir(os.environ['TEMP']) # do not use get_path() here
     except: os.chdir("C:\\")
 
 # download update
-
-if 'DANK_TOOL_DEV_BRANCH' in os.environ and int(os.environ['DANK_TOOL_DEV_BRANCH']):
-    branch = 'dev'
-else:
-    branch = 'main'
 
 print(clr("\n  - Downloading dank.tool.zip..."))
 while True:
