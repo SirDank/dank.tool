@@ -18,7 +18,6 @@ from rich.columns import Columns
 from rich.console import Console
 from rich.panel import Panel
 from translatepy import Translator
-from win11toast import notify
 from dankware import (
     clr,
     cls,
@@ -35,6 +34,10 @@ from dankware import (
     white,
     white_bright,
 )
+
+WINDOWS = (os.name == "nt" and 'WINELOADER' not in os.environ)
+if WINDOWS:
+    from win11toast import notify
 
 def set_title():
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
@@ -225,11 +228,8 @@ def set_globals_one():
     DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
     ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
     COMPATIBILITY_MODE = int(settings['compatibility-mode'])
-    try:
-        DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
-        DANK_TOOL_LANG = ('' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG)
-    except:
-        DANK_TOOL_LANG = ''
+    DANK_TOOL_LANG = os.environ.get('DANK_TOOL_LANG', '')
+    DANK_TOOL_LANG = '' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG
     BRANCH = ("main" if not DEV_BRANCH else "dev")
     headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 
@@ -562,6 +562,12 @@ def dank_tool_settings():
                             settings[setting_key.replace('force', 'disable')] = "0"
                         elif "disable" in setting_key:
                             settings[setting_key.replace('disable', 'force')] = "0"
+                    case "offline-mode":
+                        os.environ['DANK_TOOL_ONLINE'] = "0"
+            else:
+                match setting_key:
+                    case "offline-mode":
+                        os.environ['DANK_TOOL_ONLINE'] = "1"
 
             with open("settings.json", "w", encoding="utf-8") as file:
                 file.write(json.dumps(settings, indent=4))
@@ -940,6 +946,7 @@ if __name__ == "__main__":
     os.chdir(os.path.dirname(__file__))
     set_globals_one()
     _translator = Translator()
+    _session = session = requests.Session()
     palestine_banner() # 🍉
 
     # multithreaded requests responses, download modules / assets
@@ -969,7 +976,7 @@ if __name__ == "__main__":
             local_assets_json = json.loads(_.read())
 
         while True:
-            try: latest_assets_json = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json(); break
+            try: latest_assets_json = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json(); break
             except Exception as exc:
                 input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
@@ -1102,11 +1109,12 @@ if __name__ == "__main__":
 
     # main
 
-    ThreadPoolExecutor().submit(notify, '[ SirDank ]',
-        _translate('Thank you for using my tool ❤️\nShare it with your friends!'),
-        icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
-        image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
-    )
+    if WINDOWS:
+        ThreadPoolExecutor().submit(notify, '[ SirDank ]',
+            _translate('Thank you for using my tool ❤️\nShare it with your friends!'),
+            icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
+            image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
+        )
 
     while True:
 
@@ -1258,7 +1266,7 @@ if __name__ == "__main__":
 
                     #while True:
                     #    try:
-                    #        LATEST_VERSION = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
+                    #        LATEST_VERSION = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
                     #        if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
                     #            cls(); print(clr(f"\n  - Update Found: {LATEST_VERSION}"))
                     #            dank_tool_installer()
@@ -1269,7 +1277,7 @@ if __name__ == "__main__":
                     #        rm_line(); rm_line()
 
                     while True:
-                        try: code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode(); break
+                        try: code = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode(); break
                         except Exception as exc:
                             input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again...')} ",2))
                             rm_line(); rm_line()
@@ -1314,7 +1322,7 @@ if __name__ == "__main__":
             elif ONLINE_MODE: # and not LOCAL_MODULE (removed to report all errors)
                 while True:
                     try:
-                        requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
+                        _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
                         break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ",2))
