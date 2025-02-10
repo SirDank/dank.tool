@@ -1120,12 +1120,12 @@ if __name__ == "__main__":
 
         # reset
 
-        set_title()
         os.environ['DISCORD_RPC'] = "on the main menu"
         os.chdir(os.path.dirname(__file__))
 
         set_globals_one()
         set_globals_two()
+        set_title()
 
         # print available modules
 

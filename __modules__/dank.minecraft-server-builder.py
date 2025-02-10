@@ -289,8 +289,8 @@ def main_one():
     file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
               + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit-Paper']) \
               + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
-              + (github_file_selector("ViaVersion/ViaVersion", "add", ['ViaVersion']) if install_Via else []) \
-              + (github_file_selector("ViaVersion/ViaBackwards", "add", ['ViaBackwards']) if install_Via else []) \
+              + (github_file_selector("ViaVersion/ViaVersion", "add", ['ViaVersion']) if install_Via else ()) \
+              + (github_file_selector("ViaVersion/ViaBackwards", "add", ['ViaBackwards']) if install_Via else ()) \
               #+ github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
               #+ github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
               #+ github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
