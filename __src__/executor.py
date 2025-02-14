@@ -53,13 +53,13 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 
 # required packages for executor.py
 
-from pypresence import Presence
 from packaging.version import parse
 
 # windows specific
 
-windows = (os.name == "nt" and 'WINELOADER' not in os.environ)
-if windows:
+WINDOWS = (os.name == "nt" and 'WINELOADER' not in os.environ)
+if WINDOWS:
+    from pypresence import Presence
     from win11toast import notify
 
 # debug env variables
@@ -348,7 +348,7 @@ def dank_tool_discord_rpc():
             fail_counter += 1
             time.sleep(60)
 
-if ONLINE_MODE:
+if ONLINE_MODE and WINDOWS:
     _executor.submit(dank_tool_discord_rpc)
 else:
     del dank_tool_discord_rpc
