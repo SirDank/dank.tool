@@ -239,11 +239,11 @@ def main_one():
     # spigot / bukkit plugins
 
     spigot_plugins = {
-        #"dankchatroom": 112398, # Needs to be updated
+        #"dankchatroom": 112398, # Outdated
         #"ActionHealth": 2661,
         "BetterSleeping": 60837,
         #"BloodEffect": 90955, # Broken
-        "BloodFading": 99263,
+        # "BloodFading": 99263, # Outdated
         "ChestSort": 59773,
         #"Chunky": 81534,
         #"Corpses": 96774, # breaks on latest # disabled config
@@ -251,7 +251,7 @@ def main_one():
         "ProtocolLib": 1997,
         "Spark": 57242,
         #"LevelledMobs": 74304, # scaling needs to be improved, too difficult
-        #"PlayTime": 26016, # Broken, update to https://github.com/tbm00/PlayTime?
+        #"PlayTime": 26016, # Outdated, update to https://github.com/tbm00/PlayTime?
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
         #"Multiverse-Core": 390,
@@ -262,11 +262,11 @@ def main_one():
         "SilkSpawners": 60063,
         "FancyPhysics": 110500,
         "TerraformGenerator": 75132,
-        "Graves": 74208,
+        "GravesX": 118271,
     }
 
     bukkit_plugins = [
-        "worldguard"
+        # "worldguard" # Currently causing issues (requires testing)
     ]
 
     if cracked:
