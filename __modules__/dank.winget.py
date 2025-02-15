@@ -71,9 +71,9 @@ def handle_response(cmd, results, mode):
         case 'search':
             print(clr("\n  - Type number to install ( Supports multiple ex: 1,2,3 )\n"))
         case 'installed':
-            print(clr("\n  - Type number to display info.\n"))
+            print(clr("\n  - Type number to display info ( Supports multiple ex: 1,2,3 )\n"))
         case 'updates':
-            print(clr("\n  - Type number to update.\n"))
+            print(clr("\n  - Type number to update ( Supports multiple ex: 1,2,3 )\n"))
 
 def print_info(id):
     cmd = subprocess.run(['winget', 'show', '--id', id], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
@@ -136,7 +136,7 @@ def main():
         elif cmd.lower().startswith('exit'):
             break
 
-        elif all(_.isdigit() for _ in cmd.split(',')):
+        elif all(_.isdigit() for _ in cmd.strip().split(',')):
 
             if results:
 
