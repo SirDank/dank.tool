@@ -69,7 +69,7 @@ def handle_response(cmd, results, mode):
 
     match mode:
         case 'search':
-            print(clr("\n  - Type number to install.\n"))
+            print(clr("\n  - Type number to install ( Supports multiple ex: 1,2,3 )\n"))
         case 'installed':
             print(clr("\n  - Type number to display info.\n"))
         case 'updates':
@@ -130,41 +130,45 @@ def main():
             else:
                 print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}",2))
 
-        elif cmd.isdigit():
-
-            if results:
-                cmd = int(cmd)
-                if cmd in results:
-
-                    match results['mode']:
-                        case 'search':
-                            if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith('y'):
-                                print(); print_info(results[cmd]['id'])
-                            else: rm_line(); rm_line()
-                            if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith('y'):
-                                print()
-                                os.system(f"winget install --interactive --id {results[cmd]['id']}")
-                                print()
-                            else: rm_line()
-
-                        case 'installed':
-                            print_info(results[cmd]['id'])
-
-                        case 'updates':
-                            print()
-                            os.system(f"winget upgrade --interactive --id {results[cmd]['id']}")
-                            print()
-
-                        case _: rm_line()
-                else: rm_line()
-            else: rm_line()
-
         elif cmd.lower().startswith('clear'):
             print_banner()
 
         elif cmd.lower().startswith('exit'):
             break
 
+        elif all(_.isdigit() for _ in cmd.split(',')):
+
+            if results:
+
+                for selected in cmd.split(','):
+                    selected = int(selected)
+                    if selected in results:
+
+                        match results['mode']:
+                            case 'search':
+                                if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith('y'):
+                                    print(); print_info(results[selected]['id'])
+                                else: rm_line(); rm_line()
+                                if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith('y'):
+                                    print()
+                                    os.system(f"winget install --interactive --id {results[selected]['id']}")
+                                    print()
+                                else: rm_line()
+
+                            case 'installed':
+                                print_info(results[selected]['id'])
+
+                            case 'updates':
+                                print()
+                                os.system(f"winget upgrade --interactive --id {results[selected]['id']}")
+                                print()
+
+                            case _:
+                                rm_line()
+                    else:
+                        rm_line()
+            else:
+                rm_line()
         else:
             rm_line()
 
