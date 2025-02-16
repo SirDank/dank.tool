@@ -943,7 +943,7 @@ def dank_revo_patcher():
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
 def execute_module(code: str):
-    exec(code, {})
+    exec(code, {'__file__': __file__})
 
 if __name__ == "__main__":
 
