@@ -64,9 +64,4 @@ def main():
     time.sleep(5)
     #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
 
-if __name__ == "__main__":
-    main()
-
-    if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('main', 'translate', 'translator'):
-            if _ in globals(): del globals()[_]
+main()

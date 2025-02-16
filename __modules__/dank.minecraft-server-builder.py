@@ -877,7 +877,3 @@ def main_two():
     cls(); Console().print(Align.center(complete_banner), style="blink red", highlight=False); time.sleep(5)
 
 main_two()
-
-if __name__ == "__main__" and "DANK_TOOL_VERSION" in os.environ:
-    for _ in ('name', 'version', 'cracked', 'install_Via', 'ram', 'motd_spaces', 'playit', 'extra_flag', 'dir_name', 'configs', 'headers', 'latest_java_version', 'translator', 'print_banner', 'print_read_me', 'main_one', 'main_two', 'translate'):
-        if _ in globals(): del globals()[_]

@@ -230,31 +230,25 @@ def enable_notifications():
         notifications = True
     del globals()['enable_notifications']
 
-if __name__ == "__main__":
+notifications = False
+session = requests.Session()
+headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
+uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
+icon = ({'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None)
 
-    notifications = False
-    session = requests.Session()
-    headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
-    uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
-    icon = ({'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None)
-
-    running = True
-    chatroom_login()
-    executor = ThreadPoolExecutor(5)
-    while running:
-        try:
-            sio.connect('https://dankware.onrender.com', {'UUID': uuid}, retry=False, wait_timeout=10)
-            # rm_line()
-            break
-        except:
-            input(clr("  > Failed to connect! Press [ENTER] to try again... ",2))
-            rm_line()
-    executor.submit(enable_notifications)
-    chatroom_input()
-    running = False
-    sio.shutdown()
-    executor.shutdown()
-
-    if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('username', 'session', 'headers', 'uuid', 'icon', 'running', 'notifications', 'x_offset', 'y_offset', 'executor', 'chatroom_login', 'chatroom_connect', 'message', 'chatroom_input', 'sio', 'windows'):
-            if _ in globals(): del globals()[_]
+running = True
+chatroom_login()
+executor = ThreadPoolExecutor(5)
+while running:
+    try:
+        sio.connect('https://dankware.onrender.com', {'UUID': uuid}, retry=False, wait_timeout=10)
+        # rm_line()
+        break
+    except:
+        input(clr("  > Failed to connect! Press [ENTER] to try again... ",2))
+        rm_line()
+executor.submit(enable_notifications)
+chatroom_input()
+running = False
+sio.shutdown()
+executor.shutdown()

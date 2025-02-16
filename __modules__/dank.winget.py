@@ -172,17 +172,11 @@ def main():
         else:
             rm_line()
 
-if __name__ == "__main__":
-
-    if os.name != 'nt' or 'WINELOADER' in os.environ:
-        input(clr("\n  - This module only works for Windows! Press [ ENTER ] to exit... ",2))
-    elif not winget_installed():
-        input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))
-        install_winget()
-        main()
-    else:
-        main()
-
-    if "DANK_TOOL_VERSION" in os.environ:
-        for _ in ('main', 'winget_installed', 'print_banner', 'handle_response', 'print_info'):
-            if _ in globals(): del globals()[_]
+if os.name != 'nt' or 'WINELOADER' in os.environ:
+    input(clr("\n  - This module only works for Windows! Press [ ENTER ] to exit... ",2))
+elif not winget_installed():
+    input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))
+    install_winget()
+    main()
+else:
+    main()

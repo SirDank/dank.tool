@@ -175,7 +175,7 @@ def download_assets(url, file_name):
 
 def print_modules():
 
-    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
+    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' DEV BRANCH') + "\n")
     user_renderables = []
     counter = 1
 
@@ -505,7 +505,7 @@ def _translate(text):
 
 def debug_mode():
 
-    cls(); title("𝚍𝚎𝚋𝚞𝚐 𝚖𝚘𝚍𝚎")
+    cls()
     while True:
         # this variable is long to prevent it from being changed!
         cmd_to_be_executed = input(clr("\n  > ") + white_bright)
@@ -523,7 +523,6 @@ def debug_mode():
                 continue
         try: exec(cmd_to_be_executed)
         except: print(clr("\n" + err(sys.exc_info()), 2))
-    set_title()
 
 def dank_tool_settings():
 
@@ -943,6 +942,9 @@ def dank_revo_patcher():
             patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
+def execute_module(code: str):
+    exec(code, {})
+
 if __name__ == "__main__":
 
     os.chdir(os.path.dirname(__file__))
@@ -1000,6 +1002,7 @@ if __name__ == "__main__":
                 if asset not in local_assets_json[folder] or local_assets_json[folder][asset] < latest_assets_json[folder][asset]:
                     asset_urls.append(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/{folder}/{asset}")
                     file_names.append(f"ursina/{folder}/{asset}")
+        del folder, asset
 
         if asset_urls:
 
@@ -1303,7 +1306,7 @@ if __name__ == "__main__":
                     print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds...')}",2))
                 time.sleep(5)
             else:
-                cls(); exec(code)
+                cls(); execute_module(code)
                 cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
                 time.sleep(3)
 
