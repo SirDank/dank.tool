@@ -1307,7 +1307,11 @@ if __name__ == "__main__":
                     print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds...')}",2))
                 time.sleep(5)
             else:
-                cls(); execute_module(code)
+                cls()
+                if PROJECT != 'dank.game':
+                    execute_module(code)
+                else:
+                    exec(code)
                 cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
                 time.sleep(3)
 
