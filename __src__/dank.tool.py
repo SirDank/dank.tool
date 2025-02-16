@@ -851,6 +851,7 @@ def dank_winrar_patcher():
     path = os.path.expandvars("%appdata%\\WinRAR")
 
     def patch():
+        os.chdir(os.path.dirname(__file__))
         with open("__assets__/dank.winrar/rarreg_1.key", 'r', encoding='utf-8') as file:
             key1 = file.read()
         with open("__assets__/dank.winrar/rarreg_2.key", 'r', encoding='utf-8') as file:
@@ -900,6 +901,7 @@ def dank_revo_patcher():
     path = os.path.expandvars("%ProgramData%\\VS Revo Group\\Revo Uninstaller Pro")
 
     def patch():
+        os.chdir(os.path.dirname(__file__))
         with open("__assets__/dank.revo-uninstaller/revouninstallerpro5.lic", 'rb') as file:
             key = file.read()
         try: os.chdir(path)
