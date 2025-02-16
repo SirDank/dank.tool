@@ -943,6 +943,9 @@ def dank_revo_patcher():
             patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
+def execute_module(code: str):
+    exec(code, {})
+
 if __name__ == "__main__":
 
     os.chdir(os.path.dirname(__file__))
@@ -1303,7 +1306,7 @@ if __name__ == "__main__":
                     print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds...')}",2))
                 time.sleep(5)
             else:
-                cls(); exec(code)
+                cls(); execute_module(code)
                 cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
                 time.sleep(3)
 
