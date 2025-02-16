@@ -943,7 +943,8 @@ def dank_revo_patcher():
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
 def execute_module(code: str):
-    exec(code, {'__file__': __file__})
+    exec_globals = {key: globals()[key] for key in globals() if key.startswith('__') and key.endswith('__')}
+    exec(code, exec_globals)
 
 if __name__ == "__main__":
 
