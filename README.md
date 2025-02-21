@@ -275,7 +275,7 @@
 
 ## ♦️ Minecraft Plugin ♦️
 
-<br><p align="center"><a href="https://github.com/SirDank/dank.chatroom-plugin"><img width="800" alt="image" src="https://github.com/SirDank/dank.chatroom-plugin/assets/52797753/bdc4ebc0-2028-4b13-8967-b09be943b9d9"></a></p><br>
+<br><p align="center"><a href="https://github.com/SirDank/dank.chatroom-plugin"><img width="800" alt="image" src="https://github.com/user-attachments/assets/b4930430-17c6-4d26-a292-bbc92ea64f43"></a></p><br>
 
 <p>&nbsp;</p>
 
