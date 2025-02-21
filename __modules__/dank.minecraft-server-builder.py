@@ -239,7 +239,7 @@ def main_one():
     # spigot / bukkit plugins
 
     spigot_plugins = {
-        #"dankchatroom": 112398, # Outdated
+        "dankchatroom": 112398,
         #"ActionHealth": 2661,
         "BetterSleeping": 60837,
         #"BloodEffect": 90955, # Broken
@@ -594,7 +594,6 @@ plugins:
     spigot-id: 27448
   DankChatroom: 
     spigot-id: 112398
-    custom-download-url: https://github.com/SirDank/dank.chatroom-plugin/raw/main/Visual%20Bukkit%20Project/Build/target/dankchatroom.jar
   VisualBukkit: 
     exclude: false
     alternatives: 
