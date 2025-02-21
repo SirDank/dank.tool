@@ -9,9 +9,9 @@ from zlib import compress, decompress
 from concurrent.futures import ThreadPoolExecutor
 from dankware import cls, clr, align, rm_line, green_bright, red, white_normal, blue_bright
 
-windows = (os.name == "nt" and 'WINELOADER' not in os.environ)
+WINDOWS = (os.name == "nt" and 'WINELOADER' not in os.environ)
 
-if windows:
+if WINDOWS:
     from win11toast import notify
 
 sio = Client()
@@ -81,7 +81,7 @@ def message(message: bytes):
     allow_notify = False
 
     message = decompress(message).decode('utf-8')
-    if message.startswith("[dank.server]") and (message.endswith(" joined!") or message.endswith(" left!")):
+    if (message.startswith("[dank.server]") and (message.endswith(" joined!") or message.endswith(" left!"))) or (message.endswith(" joined the server!") or message.endswith(" left the server!")):
         allow_notify = True
         print(clr(message, colour_two=blue_bright))
     elif message.startswith("[dank.server]"):
@@ -91,7 +91,7 @@ def message(message: bytes):
     elif message.startswith("[SirDank]"):
         if username != 'SirDank':
             allow_notify = True
-        print(clr(message.replace("[SirDank]",f"[{green_bright}SirDank{red}]")))
+        print(clr(message.replace("[SirDank]",f"[{green_bright}SirDank{red}]").replace("[SirDankenstein]",f"[{green_bright}SirDankenstein{red}]")))
     elif message.startswith(f"[{username}]"):
         print(clr(message))
     else:
@@ -101,7 +101,7 @@ def message(message: bytes):
     if notifications and allow_notify:
         executor.submit( # pylint: disable=used-before-assignment
             notify,
-            message.split(" - ")[0].replace('[','[ ',1).replace(']',' ]',1),
+            message.split(" - ")[0].replace('[','[ ',2).replace(']',' ]',2),
             message.split(" - ")[1],
             icon = icon,
         )
@@ -225,7 +225,7 @@ def chatroom_input():
 def enable_notifications():
 
     time.sleep(5)
-    if windows:
+    if WINDOWS:
         global notifications
         notifications = True
     del globals()['enable_notifications']
@@ -233,7 +233,10 @@ def enable_notifications():
 notifications = False
 session = requests.Session()
 headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
-uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
+if os.name == "nt":
+    uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
+else:
+    uuid = str(subprocess.check_output(r'sudo dmidecode -s system-uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().replace('UUID','').replace(':','').strip())
 icon = ({'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None)
 
 running = True
