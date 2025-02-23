@@ -1302,7 +1302,12 @@ if __name__ == "__main__":
                     #        rm_line(); rm_line()
 
                     while True:
-                        try: code = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode(); break
+                        try:
+                            code = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode()
+                            if PROJECT in offline_scripts:
+                                with open(f'__modules__/{PROJECT}.py', 'w', encoding='utf-8') as file:
+                                    file.write(code)
+                            break
                         except Exception as exc:
                             input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again...')} ",2))
                             rm_line(); rm_line()
