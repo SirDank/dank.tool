@@ -1,9 +1,26 @@
-import sys
 import os
-import logging
-from colorama import init, Fore, Back, Style
-import time
-from dankware import align, fade
+import shutil
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+from dankware import align, fade, cls, clr, yellow_bright, cyan, magenta, green_bright, white_bright
+
+BANNER = """
+
+ .d8888b.                                                                    
+d88P  Y88b                                                                   
+888    888                                                                   
+888    888 888  888 88888b.d88b.  888d888 88888b.   .d88b.  88888b.   .d88b. 
+888    888 `Y8bd8P' 888 "888 "88b 888P"   888 "88b d8P  Y8b 888 "88b d8P  Y8b
+888    888   X88K   888  888  888 888     888  888 88888888 888  888 88888888
+Y88b  d88P .d8""8b. 888  888  888 888     888 d88P Y8b.     888 d88P Y8b.    
+ "Y8888P"  888  888 888  888  888 888     88888P"   "Y8888  88888P"   "Y8888 
+                                          888               888              
+                                          888               888              
+                                          888               888              
+
+Sublime Text 4.1.9.2 Build 4192 Patcher
+
+"""
 
 NOP = 0x90
 offsets_and_values = {
@@ -34,62 +51,59 @@ offsets_and_values = {
     0x001BFB05: 0x00
 }
 
-BANNER = """
- .d8888b.                                                                     
-d88P  Y88b                                                                    
-888    888                                                                    
-888    888 888  888 88888b.d88b.  888d888 88888b.   .d88b.  88888b.   .d88b.  
- 888    888 `Y8bd8P' 888 "888 "88b 888P"   888 "88b d8P  Y8b 888 "88b d8P  Y8b 
- 888    888   X88K   888  888  888 888     888  888 88888888 888  888 88888888 
- Y88b  d88P .d8""8b. 888  888  888 888     888 d88P Y8b.     888 d88P Y8b.     
-  "Y8888P"  888  888 888  888  888 888     88888P"   "Y8888  88888P"   "Y8888  
-                                           888               888               
-                                           888               888               
-                                           888               888               
-[>] Sublime Text 4.1.9.2 Build 4192 patcher
-"""
+def is_patched(data):
+    for offset, value in offsets_and_values.items():
+        if offset >= len(data) or data[offset] != value:
+            return False
+    return True
 
-# Initialize colorama
-init(autoreset=True)
+def patch_exe(file_path):
+    os.chdir(os.path.dirname(file_path))
+    file_name = 'sublime_text.exe'
+    with open(file_path, 'rb') as f:
+        data = f.read()
 
-# Setup logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
+    if not is_patched(data):
 
+        if not os.path.isfile(f'{file_name}.bak'):
+            shutil.copy(file_name, f'{file_name}.bak')
 
-def patch_exe(input_file, output_file=None):
-    output_file = output_file or f"{os.path.splitext(input_file)[0]}_patched.exe"
-    try:
-        logging.info(Fore.YELLOW + Back.BLACK + Style.BRIGHT + f"[*] Starting patching: {os.path.basename(input_file)}...")
-        with open(input_file, 'rb') as f:
-            data = f.read()
+        print(clr(f"[*] Patching: {file_name}...", colour_two=yellow_bright))
+        print(clr(f"[*] File size: {len(data)} bytes", colour_two=cyan))
+
         patched_data = bytearray(data)
-        logging.info(Fore.CYAN + f"[*] File size: {len(data)} bytes")
-        
         for offset, value in offsets_and_values.items():
             if offset < len(patched_data):
                 patched_data[offset] = value
-                logging.info(Fore.MAGENTA + f"[+] Patched {hex(offset)} with {hex(value)}")
-        
-        with open(output_file, 'wb') as f:
-            f.write(patched_data)
-        
-        logging.info(Fore.GREEN + Back.BLACK + Style.BRIGHT + f"[+] Patch applied successfully! Output saved to: {output_file}")
-        logging.info(Fore.YELLOW + f"[*] Returning to the main menu...")
-        time.sleep(1)
+                print(clr(f"[+] Patched {magenta}{hex(offset)}{white_bright} with {magenta}{hex(value)}", colour_two=magenta))
 
-    except Exception as e:
-        logging.error(Fore.RED + f"[-] Error: {e}")
-    
-    input(Fore.CYAN + "Press Enter to return to the main menu...")
+        while True:
+            try:
+                with open(file_path, 'wb') as f:
+                    f.write(patched_data)
+                    break
+            except PermissionError:
+                input(clr("[!] Error: Sublime text is running! Press [ ENTER ] to terminate it and try again... ",2))
+                os.system("taskkill /f /im sublime_text.exe >nul 2>&1")
+        print(clr(f"[+] Patch applied successfully! Output saved to: {file_path}", colour_two=green_bright))
+
+    else:
+        print(clr("[!] This file is already patched!", colour_two=green_bright))
+
+    input(clr("\n  > Press [ ENTER ] to return to the main menu... ", colour_two=cyan))
 
 def main():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    cls()
     print(align(fade(BANNER, "green2yellow-v")))
-    # RESET FORE
-    input_file = input(Fore.CYAN + "Enter the input file path: " + Fore.RESET)
-    output_file = input(Fore.CYAN + "Enter the output file path (or press Enter to use the default): " + Fore.RESET)
+    # replace with file_selector() after update
+    root = Tk()
+    root.withdraw()
+    root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
+    while True:
+        print(clr("[*] Opening file selector...", colour_two=yellow_bright))
+        input_file = askopenfilename(title='Select sublime_text.exe', filetypes=[('Sublime', 'sublime_text.exe')], initialdir=('C:\\Program Files\\Sublime Text' if os.path.isdir('C:\\Program Files\\Sublime Text') else None), initialfile='sublime_text.exe').replace("/", "\\")
+        if input_file.endswith('sublime_text.exe'):
+            patch_exe(input_file)
+            break
 
-    patch_exe(input_file, output_file if output_file else None)
-
-if __name__ == "__main__":
-    main()
+main()

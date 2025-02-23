@@ -162,8 +162,12 @@ def get_menu_request_responses_api(task_id, request_key):
 def download_offline_modules(project):
 
     code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
-    with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as file:
-        file.write(code)
+    if not code.startswith('404: Not Found'):
+        with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as file:
+            file.write(code)
+    else:
+        print(clr(f'\n  - [IGNORE THIS] Remove "{project}" from offline_scripts as it does not exist! Sleeping 5s...',2))
+        time.sleep(5)
 
 def download_assets(url, file_name):
 
@@ -267,16 +271,23 @@ def set_globals_one():
 
             'WinRAR': {
                 'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛",
+                'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                 'project': "dank.winrar",
                 'rpc': "patching winrar"
             },
 
             'Revo Uninstaller Pro': {
                 'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛",
+                'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                 'project': "dank.revo-uninstaller",
                 'rpc': "patching revo uninstaller pro"
+            },
+
+            'Sublime Text': {
+                'info': '',
+                'title': '𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛',
+                'project': 'mrpepe.sublime-patcher',
+                'rpc': "patching sublime text"
             },
 
             'category': True
@@ -307,7 +318,7 @@ def set_globals_one():
         }
     }
 
-    offline_scripts = tuple(("dank.fusion-fall", "dank.browser-backup", "dank.game"))
+    offline_scripts = tuple(("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher"))
 
 def set_globals_two():
 
@@ -385,37 +396,44 @@ def set_globals_two():
 
                 'Spotify': {
                     'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX"] else ""),
-                    'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢",
+                    'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.spotify",
                     'rpc': _translate("patching spotify using spotx and spicetify")
                 },
 
                 'Vencord': {
                     'info': menu_request_responses["Vencord"],
-                    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍",
+                    'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.vencord",
                     'rpc': _translate("patching discord using vencord")
                 },
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["NetLimiter"],
-                    'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛",
+                    'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.netlimiter",
                     'rpc': _translate("patching netlimiter pro")
                 },
 
                 'WinRAR': {
                     'info': '',
-                    'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛",
+                    'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.winrar",
                     'rpc': _translate("patching winrar")
                 },
 
                 'Revo Uninstaller Pro': {
                     'info': '',
-                    'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛",
+                    'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.revo-uninstaller",
                     'rpc': _translate("patching revo uninstaller pro")
+                },
+
+                'Sublime Text': {
+                    'info': menu_request_responses["mrpepe.sublime-patcher"],
+                    'title': '𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛',
+                    'project': 'mrpepe.sublime-patcher.py',
+                    'rpc': _translate("patching sublime text")
                 },
 
                 'category': True
@@ -1049,7 +1067,8 @@ if __name__ == "__main__":
             #"dank.auto-clicker",
             "dank.browser-backup",
             "dank.game",
-            "dank.winget"
+            "dank.winget",
+            "mrpepe.sublime-patcher"
         )
 
         while True:
