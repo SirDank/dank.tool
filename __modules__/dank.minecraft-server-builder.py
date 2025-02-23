@@ -228,11 +228,11 @@ def main_one():
             to_download_urls.append(f"{url}/{file}")
             to_download_file_names.append(file)
 
-    for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines Pack.zip'):
+    for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines.zip'):
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
-    for file in ('Adventurers_Guild.zip', 'em_dark_cathedral.zip', 'em_enchantment_sanctums_free.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks.zip', 'em_hallosseum.zip', 'em_id_the_cave.zip', 'em_id_the_climb.zip', 'em_id_the_mines.zip', 'em_knights_castle_v6.zip', 'em_north_pole.zip', 'em_sewers.zip', 'em_shadow_of_the_binder_of_worlds.zip', 'em_the_binder_of_worlds.zip', 'em_the_steamworks.zip'):
+    for file in ('em_dark_cathedral_v7.zip', 'em_enchantment_sanctums_free_v3.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks_v8.zip', 'em_hallosseum_v7.zip', 'em_knights_castle_v8.zip', 'em_north_pole_v7.zip', 'em_sewers_v7.zip', 'em_shadow_of_the_binder_of_worlds_v10.zip', 'em_the_binder_of_worlds_v8.zip', 'em_the_steamworks_v5.zip', 'story_mode_dungeons_chapter_one_v2.zip'):
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
 
