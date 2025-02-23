@@ -594,6 +594,10 @@ plugins:
     spigot-id: 27448
   DankChatroom: 
     spigot-id: 112398
+    alternatives: 
+      github: 
+        repo-name: SirDank/dank.chatroom-plugin
+        asset-name: dankchatroom
   VisualBukkit: 
     exclude: false
     alternatives: 
@@ -612,6 +616,7 @@ plugins:
   SmoothTimber:
     spigot-id: 39965
   EliteMobs:
+    spigot-id: 40090
     alternatives: 
       github: 
         repo-name: MagmaGuy/EliteMobs
@@ -628,6 +633,8 @@ plugins:
   SilkSpawners_v2:
     exclude: false
     spigot-id: 60063
+  Graves:
+    spigot-id: 118271
 ''')
 
 # start server and shutdown server for optimizing the below settings and configuring
