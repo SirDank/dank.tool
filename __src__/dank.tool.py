@@ -142,20 +142,12 @@ def get_menu_request_responses(task_id, request_key):
                 else: menu_request_responses[request_key] = "[red1]⚠️"
             except: menu_request_responses[request_key] = "[red1]⚠️"
 
-def get_menu_request_responses_api(task_id, request_key):
+def get_menu_request_responses_api(request_key: str):
 
-    match task_id:
-        case 0 | 1 | 2 | 3 | 4: # get last update time for modules based on external repos
-            match task_id:
-                case 0: url = "https://api.github.com/repos/SpotX-Official/SpotX/commits?path=.&page=1&per_page=1"
-                case 1: url = "https://api.github.com/repos/spicetify/spicetify-cli/commits?path=.&page=1&per_page=1"
-                case 2: url = "https://api.github.com/repos/massgravel/Microsoft-Activation-Scripts/commits?path=.&page=1&per_page=1"
-                case 3: url = "https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=.&page=1&per_page=1"
-                case 4: url = "https://api.github.com/repos/Vendicated/Vencord/commits?path=.&page=1&per_page=1"
-            menu_request_responses[request_key] = updated_on(url, False)
-
-        case _: # get last update time for modules based on internal repo
-            menu_request_responses[request_key] = updated_on(request_key)
+    if '/' in request_key: # get last update time for modules based on external repos
+        menu_request_responses[request_key] = updated_on(f"https://api.github.com/repos/{request_key}/commits?path=.&page=1&per_page=1", False)
+    else: # get last update time for modules based on internal repo
+        menu_request_responses[request_key] = updated_on(request_key)
 
 # multithreaded module / asset downloader
 
@@ -361,7 +353,7 @@ def set_globals_two():
                 },
 
                 _translate('Windows / Office Activator'): {
-                    'info': menu_request_responses["Microsoft-Activation-Scripts"],
+                    'info': menu_request_responses["massgravel/Microsoft-Activation-Scripts"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                     'project': "dank.win-activate",
                     'rpc': _translate("activating windows / office")
@@ -395,21 +387,21 @@ def set_globals_two():
             _translate('Software Patchers'): {
 
                 'Spotify': {
-                    'info': (f'{menu_request_responses["Spicetify"]}, {menu_request_responses["SpotX"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX"] else ""),
+                    'info': (f'{menu_request_responses["spicetify/spicetify-cli"]}, {menu_request_responses["SpotX-Official/SpotX"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.spotify",
                     'rpc': _translate("patching spotify using spotx and spicetify")
                 },
 
-                'Vencord': {
-                    'info': menu_request_responses["Vencord"],
+                'Vencord (Discord)': {
+                    'info': menu_request_responses["Vendicated/Vencord"],
                     'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.vencord",
                     'rpc': _translate("patching discord using vencord")
                 },
 
                 'NetLimiter Pro': {
-                    'info': menu_request_responses["NetLimiter"],
+                    'info': menu_request_responses["Baseult/NetLimiterCrack"],
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.netlimiter",
                     'rpc': _translate("patching netlimiter pro")
@@ -427,6 +419,13 @@ def set_globals_two():
                     'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.revo-uninstaller",
                     'rpc': _translate("patching revo uninstaller pro")
+                },
+
+                'Brave Debloater': {
+                    'info': menu_request_responses["ltx0101/SlimBrave"],
+                    'title': '𝚍𝚊𝚗𝚔.𝚜𝚕𝚒𝚖-𝚋𝚛𝚊𝚟𝚎',
+                    'project': 'dank.slim-brave',
+                    'rpc': _translate("patching brave browser")
                 },
 
                 'Sublime Text': {
@@ -592,14 +591,26 @@ def dank_tool_settings():
         elif choice.lower() == "exit":
             break
 
-def dank_win_activate():
+def dank_github_command(software: str):
 
-    banner = "\n\n                                                          __    _______ _______ _______ \n.--------.---.-.-----.-----.-----.----.---.-.--.--.-----.|  |  |   |   |   _   |     __|\n|        |  _  |__ --|__ --|  _  |   _|  _  |  |  |  -__||  |__|       |       |__     |\n|__|__|__|___._|_____|_____|___  |__| |___._|\\___/|_____||__|__|__|_|__|___|___|_______|\n                           |_____|                                                      \n"
+    match software:
+        case 'MAS':
+            banner = "\n\n                                                          __    _______ _______ _______ \n.--------.---.-.-----.-----.-----.----.---.-.--.--.-----.|  |  |   |   |   _   |     __|\n|        |  _  |__ --|__ --|  _  |   _|  _  |  |  |  -__||  |__|       |       |__     |\n|__|__|__|___._|_____|_____|___  |__| |___._|\\___/|_____||__|__|__|_|__|___|___|_______|\n                           |_____|                                                      \n"
+            credit = 'massgravel team'
+            name = 'Microsoft-Activation-Script'
+            cmd = 'irm https://get.activated.win | iex'
+        case 'SlimBrave':
+            banner = "\n\n _ _       ___ ___   ___ ___     _____ _ _       _____                 \n| | |_ _ _|   |_  | |   |_  |   |   __| |_|_____| __  |___ ___ _ _ ___ \n| |  _|_'_| | |_| |_| | |_| |_ _|__   | | |     | __ -|  _| .'| | | -_|\n|_|_| |_,_|___|_____|___|_____|_|_____|_|_|_|_|_|_____|_| |__,|\\_/|___|\n"
+            credit = 'ltx0101'
+            name = software
+            cmd = 'iwr https://raw.githubusercontent.com/ltx0101/SlimBrave/main/SlimBrave.ps1 | iex'
+
     cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
-    print(clr(f"\n  - {_translate('Credits to massgravel team!')}"))
-    input(clr(f"\n  > {_translate('Hit [ ENTER ] to begin Microsoft-Activation-Script...')} "))
-    cls(); print(clr(f"\n  - {_translate('Exit inside the MAS window to return to the menu...')}"))
-    os.system('powershell -Command "irm https://get.activated.win | iex"')
+    print(clr(f"\n  - {_translate(f'Credits to {credit}!')}"))
+    input(clr(f"\n  > {_translate(f'Hit [ ENTER ] to begin {name}...')} "))
+    cls(); print(clr(f"\n  - {_translate('Close the opened window to return to the menu...')}"))
+
+    os.system(f'powershell -Command "{cmd}"')
 
 def dank_os_repair():
 
@@ -1057,11 +1068,12 @@ if __name__ == "__main__":
         )
 
         request_keys_api = (
-            "SpotX",
-            "Spicetify",
-            "Microsoft-Activation-Scripts",
-            "NetLimiter",
-            "Vencord",
+            "SpotX-Official/SpotX",
+            "spicetify/spicetify-cli",
+            "massgravel/Microsoft-Activation-Scripts",
+            "Baseult/NetLimiterCrack",
+            "Vendicated/Vencord",
+            "ltx0101/SlimBrave",
             "dank.minecraft-server-builder",
             "dank.minecraft-server-scanner",
             #"dank.auto-clicker",
@@ -1105,7 +1117,7 @@ if __name__ == "__main__":
 
             while True:
                 try:
-                    multithread(get_menu_request_responses_api, 50, tuple(_ for _ in range(len(request_keys_api))), request_keys_api, progress_bar=not COMPATIBILITY_MODE)
+                    multithread(get_menu_request_responses_api, 50, request_keys_api, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
                     input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
@@ -1125,10 +1137,6 @@ if __name__ == "__main__":
                 menu_request_responses[key] = github_api_json[key]
 
         del request_keys, request_keys_api, github_api
-
-    else:
-
-        del dank_win_activate, dank_github_software
 
     del updated_on, download_assets, download_offline_modules, get_menu_request_responses
 
@@ -1248,7 +1256,10 @@ if __name__ == "__main__":
                     dank_tool_settings()
                     continue
                 case "dank.win-activate":
-                    dank_win_activate()
+                    dank_github_command("MAS")
+                    continue
+                case "dank.slim-brave":
+                    dank_github_command("SlimBrave")
                     continue
                 case "dank.os-repair":
                     dank_os_repair()
