@@ -387,7 +387,7 @@ def set_globals_two():
             _translate('Software Patchers'): {
 
                 'Spotify': {
-                    'info': (f'{menu_request_responses["spicetify/spicetify-cli"]}, {menu_request_responses["SpotX-Official/SpotX"]}' if menu_request_responses["Spicetify"] and menu_request_responses["SpotX"] else ""),
+                    'info': (f'{menu_request_responses["spicetify/spicetify-cli"]}, {menu_request_responses["SpotX-Official/SpotX"]}' if menu_request_responses["spicetify/spicetify-cli"] and menu_request_responses["SpotX-Official/SpotX"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.spotify",
                     'rpc': _translate("patching spotify using spotx and spicetify")
