@@ -824,7 +824,7 @@ def dank_github_software(software):
 
     match software:
         case 'netlimiter':
-            if os.path.isfile('netlimiter-patcher.exe'):
+            if os.path.isfile('netlimiter-patcher.exe') and os.path.isfile('netlimiter-patcher-sha.txt'):
                 with open('netlimiter-patcher-sha.txt', 'r', encoding='utf-8') as file:
                     _sha = file.read()
                 if _sha == sha:
@@ -840,7 +840,7 @@ def dank_github_software(software):
                 with open('netlimiter-patcher-sha.txt', 'w', encoding='utf-8') as file:
                     file.write(sha)
         case 'vencord':
-            if os.path.isfile('vencord.exe'):
+            if os.path.isfile('vencord.exe') and os.path.isfile('vencord-version.txt'):
                 with open('vencord-version.txt', 'r', encoding='utf-8') as file:
                     _version = file.read()
                 if _version == version:
