@@ -103,7 +103,7 @@ def message(message: bytes):
             notify,
             message.split(" - ")[0].replace('[','[ ',2).replace(']',' ]',2),
             message.split(" - ")[1],
-            icon = icon,
+            icon = ({'src': icon_path, 'placement': 'appLogoOverride'} if icon_path else None),
         )
 
 def chatroom_input():
@@ -197,8 +197,8 @@ def chatroom_input():
     root.bind('<Button-1>', get_offset)
     root.bind("<B1-Motion>", move_window)
     root.protocol("WM_DELETE_WINDOW", on_closing)
-    if icon:
-        root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
+    if icon_path:
+        root.iconbitmap(icon_path)
     root.configure(highlightthickness=2, bg="#2B2B2B", highlightbackground="#FF0000", borderwidth=1)
 
     emoji_button = tk.Button(root, text="Emojis", command=toggle_emoji_panel, font=("Consolas", 12), fg="white", bg="#2B2B2B", activebackground="#3A3A3A")
@@ -237,7 +237,8 @@ if os.name == "nt":
     uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
 else:
     uuid = str(subprocess.check_output(r'sudo dmidecode -s system-uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().replace('UUID','').replace(':','').strip())
-icon = ({'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None)
+icon_path = os.path.join(os.path.dirname(__file__), "dankware.ico")
+icon_path = (icon_path if os.path.isfile(icon_path) else None)
 
 running = True
 chatroom_login()
