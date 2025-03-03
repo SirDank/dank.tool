@@ -105,7 +105,7 @@ def generate_ip():
         if ip in ips or ip in saved: continue
         ips[ip] = ""; break
 
-def generate_ip_targetted():
+def generate_ip_targeted():
     while True:
         ip = choice(target_ips, p=target_weights) + f".{randint(0,255)}.{randint(0,255)}" # pylint: disable=used-before-assignment
         if ip in ips or ip in saved: continue
@@ -166,15 +166,15 @@ def main():
 
     if server_type == "java":
         cls(); console.print(Align.center(banner), style="blink red")
-        print(clr(f"\n  - [0] {translate('Default Scan: Generates completely random IPs, good chance to find private / locally hosted servers, low find-rate.')}\n\n  - [1] {translate('Targetted Scan: Generates random IPs based on custom rules, good chance to find data center servers, high find-rate.')}"))
+        print(clr(f"\n  - [0] {translate('Default Scan: Generates completely random IPs, good chance to find private / locally hosted servers, low find-rate.')}\n\n  - [1] {translate('Targeted Scan: Generates random IPs based on custom rules, good chance to find data center servers, high find-rate.')}"))
 
         print("")
         while True:
-            targetted_scan = input(clr("  > Scan Type [0/1]: ") + red)
-            if targetted_scan in ('0', '1'): targetted_scan = int(targetted_scan); break
+            targeted_scan = input(clr("  > Scan Type [0/1]: ") + red)
+            if targeted_scan in ('0', '1'): targeted_scan = int(targeted_scan); break
             rm_line()
     else:
-        targetted_scan = 0
+        targeted_scan = 0
 
     # disclaimer
 
@@ -251,10 +251,10 @@ def main():
             while True:
                 try:
                     if gen_amt >= gen_rate:
-                        multithread((generate_ip_targetted if targetted_scan else generate_ip), gen_rate, progress_bar=False)
+                        multithread((generate_ip_targeted if targeted_scan else generate_ip), gen_rate, progress_bar=False)
                         generated += gen_rate
                     else:
-                        multithread((generate_ip_targetted if targetted_scan else generate_ip), gen_amt, progress_bar=False)
+                        multithread((generate_ip_targeted if targeted_scan else generate_ip), gen_amt, progress_bar=False)
                         generated += gen_amt
                     break
                 except: input(clr(f"\n  > {translate('Failed to generate ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); rm_line()
