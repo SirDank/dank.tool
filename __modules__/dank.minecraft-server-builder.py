@@ -232,9 +232,11 @@ def main_one():
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
-    for file in ('em_dark_cathedral_v7.zip', 'em_enchantment_sanctums_free_v3.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks_v8.zip', 'em_hallosseum_v7.zip', 'em_knights_castle_v8.zip', 'em_north_pole_v7.zip', 'em_sewers_v7.zip', 'em_shadow_of_the_binder_of_worlds_v10.zip', 'em_the_binder_of_worlds_v8.zip', 'em_the_steamworks_v5.zip', 'story_mode_dungeons_chapter_one_v2.zip'):
+    for file in ('em_dark_cathedral_v7.zip', 'em_enchantment_sanctums_free_v3.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks_v8.zip', 'em_hallosseum_v7.zip', 'em_knights_castle_v8.zip', 'em_north_pole_v7.zip', 'em_sewers_v7.zip', 'em_shadow_of_the_binder_of_worlds_v10.zip', 'em_the_binder_of_worlds_v8.zip', 'em_the_steamworks_v5.zip'):
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
+    to_download_urls.append("https://www.dropbox.com/scl/fi/nrkgsy0cyx753pgtkf7xe/story_mode_dungeons_chapter_one_v2.zip?rlkey=0uupjpuk23mcp82vipkb3baet&st=cncbdyix&dl=1")
+    to_download_file_names.append("plugins/EliteMobs/imports/story_mode_dungeons_chapter_one_v2.zip")
 
     # spigot / bukkit plugins
 
