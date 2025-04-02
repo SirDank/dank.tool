@@ -49,7 +49,7 @@ except:
 
 print(clr("\n  - Downloading dank.tool.zip..."))
 while True:
-    try: data = session.get(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip", timeout=3, allow_redirects=True).content; break
+    try: data = session.get(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip", timeout=60, allow_redirects=True).content; break
     except Exception as exc:
         input(clr(f"\n  > Failed to download! {exc} | Press [ENTER] to try again... ",2))
         rm_line(); rm_line()
