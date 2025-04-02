@@ -318,7 +318,7 @@ def main_one():
     def file_downloader(url, file_name):
         while True:
             try:
-                response = requests.get(url, headers=headers, timeout=3, allow_redirects=True)
+                response = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
                 break
             except:
                 print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n",2))

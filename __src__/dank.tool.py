@@ -163,7 +163,7 @@ def download_offline_modules(project):
 
 def download_assets(url, file_name):
 
-    data = requests.get(url, headers=headers, timeout=3).content
+    data = requests.get(url, headers=headers, timeout=10).content
     with open(file_name, 'wb') as file:
         file.write(data)
 
