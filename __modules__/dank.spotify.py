@@ -1,9 +1,35 @@
 import os
 import time
+import subprocess
 from rich.align import Align
 from dankware import cls, clr
 from rich.console import Console
 from translatepy import Translator
+
+def run_command(command_list, check=True, capture=False, suppress_output=False):
+    try:
+        stdout_pipe = subprocess.DEVNULL if suppress_output else None
+        stderr_pipe = subprocess.DEVNULL if suppress_output else None
+        # Use capture_output=True only if capture=True to avoid potential memory issues with large output
+        result = subprocess.run(
+            command_list,
+            check=check,
+            text=True,
+            stdout=stdout_pipe,
+            stderr=stderr_pipe,
+            capture_output=capture
+        )
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH.") from exc
+    except subprocess.CalledProcessError as e:
+        raise subprocess.CalledProcessError(
+            returncode=e.returncode,
+            cmd=e.cmd,
+            output=e.output,
+            stderr=e.stderr
+        )
+    except Exception as e:
+        raise RuntimeError(f"An unexpected error occurred running command: {e}") from e
 
 def translate(text):
     if DANK_TOOL_LANG:
@@ -43,25 +69,39 @@ def main():
 
     cls()
     print(clr(f"\n  - {translate('terminating Spotify...')}\n"))
-    os.system('taskkill /f /t /im spotify.exe >nul 2>&1')
+    run_command(['taskkill', '/f', '/t', '/im', 'spotify.exe'], check=False, suppress_output=True)
+
+    # Spicetify restore
+
     print(clr(f"\n  - {translate('restoring Spotify...')}\n"))
-    os.system('spicetify restore')
-    translated = translate('installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Enable Auto-Clear Cache (30d)\n  - Block Updates')
+    run_command(['runas', '/trustlevel:0x20000', 'spicetify restore'], check=False)
+
+    # SpotX
+
+    translated = translate('installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates')
     print(clr(f"\n  - {translated}"))
-    os.system('powershell -Command "& {[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(\'https://raw.githubusercontent.com/SpotX-Official/SpotX/main/run.ps1\'))} -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_on -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify"')
+    run_command(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', 'iex "& { $(iwr -useb \'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1\') } -new_theme"'], check=True)
+
     input(clr(f"  > {translate('Hit [ ENTER ] if you are signed in to Spotify...')} "))
+
     print(clr(f"\n  - {translate('terminating Spotify...')}\n"))
-    os.system('taskkill /f /t /im spotify.exe >nul 2>&1')
-    print(clr(f"\n  - {translate('installing Spicetify-CLI... (N to start installation)')}\n"))
-    os.system('powershell -Command "& Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"')
-    #print(clr(f"\n  - {translate('installing Spicetify-Marketplace')}...\n"))
-    #os.system('powershell -Command "& iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"')
+    run_command(['taskkill', '/f', '/t', '/im', 'spotify.exe'], check=False, suppress_output=True)
+
+    # Spicetify
+
+    print(clr(f"\n  - {translate('installing Spicetify-CLI...')}\n"))
+    run_command(['runas', '/trustlevel:0x20000', 'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"'], check=True)
+
+    input(clr(f"  > {translate('Hit [ ENTER ] after installing Spicetify...')} "))
+
     print(clr(f"\n  - {translate('applying Spicetify...')}\n"))
-    os.system('spicetify restore backup apply')
+    run_command(['runas', '/trustlevel:0x20000', 'spicetify restore backup apply'], check=True)
+
+    input(clr(f"  > {translate('Hit [ ENTER ] after applying Spicetify...')} "))
+
     translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom (darkmono)")
     print(clr(f"\n  {translated}"))
     print(clr(f"\n  - {translate('Sleeping for 5 seconds...')}\n"))
     time.sleep(5)
-    #os.system('start cmd.exe @cmd /k "spicetify backup apply && timeout 5 && exit"')
 
 main()
