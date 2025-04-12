@@ -220,12 +220,12 @@ def dank_tool_installer():
             rm_line(); rm_line()
 
     try: exec(code)
-    except:
-        err_message = err(sys.exc_info())
-        try: session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+    except Exception as exc:
+        error = err((type(exc), exc, exc.__traceback__),'mini')
+        try: session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{error}```"})
         except: pass
-        input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
-        sys.exit(err_message)
+        input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ",2))
+        sys.exit(error)
 
 # update environment variables
 
@@ -397,19 +397,19 @@ if not ONLINE_MODE and not OFFLINE_SRC:
     time.sleep(2)
 
 try: exec(code)
-except:
+except Exception as exc:
 
     cls()
-    err_message = err(sys.exc_info(), 'mini')
-    print(clr(err_message, 2))
+    error = err((type(exc), exc, exc.__traceback__),'mini')
+    print(clr(error, 2))
     LATEST_VERSION = latest_dank_tool_version()
 
-    if "- SystemExit" in err_message:
+    if "- SystemExit" in error:
         os.system("taskkill /f /t /im dank.tool.exe")
-    elif "- EOFError" in err_message:
+    elif "- EOFError" in error:
         print_warning_symbol()
         print(clr("\n  - No input provided!"))
-    elif "- KeyboardInterrupt" in err_message:
+    elif "- KeyboardInterrupt" in error:
         print_warning_symbol()
         print(clr("\n  - Please select text first and then use [ CTRL + C ]!"))
 
@@ -420,7 +420,7 @@ except:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{err_message}```"})
+                requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}```"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))

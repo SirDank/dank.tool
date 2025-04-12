@@ -55,12 +55,12 @@ def dank_tool_installer():
             rm_line(); rm_line()
 
     try: exec(code)
-    except:
-        err_message = err(sys.exc_info())
-        try: requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{err_message}```"})
+    except Exception as exc:
+        error = err((type(exc), exc, exc.__traceback__),'mini')
+        try: requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{error}```"})
         except: pass
-        input(clr(f"{err_message}\n\n  > Press [ENTER] to EXIT... ",2))
-        sys.exit(err_message)
+        input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ",2))
+        sys.exit(error)
 
 # print coloured and aligned banner
 
@@ -539,7 +539,7 @@ def debug_mode():
                         print(f"{green_bright}{key}{white}: {green}{val}\n")
                 continue
         try: exec(cmd_to_be_executed)
-        except: print(clr("\n" + err(sys.exc_info()), 2))
+        except Exception as exc: print(clr("\n" + err((type(exc), exc, exc.__traceback__),'mini'), 2))
 
 def dank_tool_settings():
 
@@ -1350,24 +1350,24 @@ if __name__ == "__main__":
                 cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
                 time.sleep(3)
 
-        except:
+        except Exception as exc:
 
-            err_message = err(sys.exc_info(), 'mini')
-            print(clr(err_message, 2))
+            error = err((type(exc), exc, exc.__traceback__),'mini')
+            print(clr(error, 2))
 
-            if "- SystemExit" in err_message:
+            if "- SystemExit" in error:
                 os.system("taskkill /f /t /im dank.tool.exe")
-            elif "- EOFError" in err_message:
+            elif "- EOFError" in error:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('No input provided!')}"))
-            elif "- KeyboardInterrupt" in err_message:
+            elif "- KeyboardInterrupt" in error:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]!')}"))
 
             elif ONLINE_MODE: # and not LOCAL_MODULE (removed to report all errors)
                 while True:
                     try:
-                        _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{err_message}```"}) # pylint: disable=used-before-assignment
+                        _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{error}```"}) # pylint: disable=used-before-assignment
                         break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ",2))

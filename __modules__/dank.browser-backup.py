@@ -129,7 +129,7 @@ def main():
     try:
         if not is_admin():
             raise RuntimeError(clr("Not executed as administrator! Exporting browser data and registry keys requires admin privileges!"))
-    except: sys.exit(clr(err(sys.exc_info()),2))
+    except Exception as exc: sys.exit(clr(err((type(exc), exc, exc.__traceback__)),2))
 
     # folders
 

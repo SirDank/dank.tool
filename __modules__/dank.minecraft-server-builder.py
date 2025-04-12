@@ -815,9 +815,9 @@ def main_two():
     for path in configs:
         while True:
             try: config_updater(path); break
-            except:
+            except Exception as exc:
                 string = translate('Press [ ENTER ] to retry or type "skip" to skip')
-                choice = input(clr(f"\n{err(sys.exc_info(),'mini')}\n\n  > {string}: ", 2) + white_bright)
+                choice = input(clr(f"\n{err((type(exc), exc, exc.__traceback__),'mini')}\n\n  > {string}: ", 2) + white_bright)
                 if choice == "skip": break
 
     string = f'''
