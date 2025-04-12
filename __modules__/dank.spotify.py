@@ -2,34 +2,45 @@ import os
 import time
 import subprocess
 from rich.align import Align
-from dankware import cls, clr
 from rich.console import Console
+from dankware import cls, clr
 from translatepy import Translator
 
-def run_command(command_list, check=True, capture=False, suppress_output=False):
-    try:
-        stdout_pipe = subprocess.DEVNULL if suppress_output else None
-        stderr_pipe = subprocess.DEVNULL if suppress_output else None
-        # Use capture_output=True only if capture=True to avoid potential memory issues with large output
-        result = subprocess.run(
-            command_list,
-            check=check,
-            text=True,
-            stdout=stdout_pipe,
-            stderr=stderr_pipe,
-            capture_output=capture
-        )
-    except FileNotFoundError as exc:
-        raise FileNotFoundError(f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH.") from exc
-    except subprocess.CalledProcessError as e:
-        raise subprocess.CalledProcessError(
-            returncode=e.returncode,
-            cmd=e.cmd,
-            output=e.output,
-            stderr=e.stderr
-        )
-    except Exception as e:
-        raise RuntimeError(f"An unexpected error occurred running command: {e}") from e
+def run_command(command_list, check=True, capture=False, suppress_output=False, retry=False):
+    max_attempts = 3 if retry else 1
+    attempt = 0
+
+    while attempt < max_attempts:
+        attempt += 1
+        try:
+            stdout_pipe = subprocess.DEVNULL if suppress_output else None
+            stderr_pipe = subprocess.DEVNULL if suppress_output else None
+            # Use capture_output=True only if capture=True to avoid potential memory issues with large output
+            result = subprocess.run(
+                command_list,
+                check=check,
+                text=True,
+                stdout=stdout_pipe,
+                stderr=stderr_pipe,
+                capture_output=capture
+            )
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH.") from exc
+        except subprocess.CalledProcessError as e:
+            if retry and attempt < max_attempts:
+                input(clr(f"  > [{command_list}] Command failed. Hit [ENTER] to retry... "))
+                continue
+            raise subprocess.CalledProcessError(
+                returncode=e.returncode,
+                cmd=e.cmd,
+                output=e.output,
+                stderr=e.stderr
+            )
+        except Exception as e:
+            if retry and attempt < max_attempts:
+                input(clr(f"  > [[{command_list}]] Command failed. Hit [ENTER] to retry... "))
+                continue
+            raise RuntimeError(f"An unexpected error occurred running command: {e}") from e
 
 def translate(text):
     if DANK_TOOL_LANG:
@@ -80,7 +91,7 @@ def main():
 
     translated = translate('installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates')
     print(clr(f"\n  - {translated}"))
-    run_command(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', 'iex "& { $(iwr -useb \'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1\') } -new_theme"'], check=True)
+    run_command(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', 'iex "& { $(iwr -useb \'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1\') } -new_theme"'], check=True, retry=True)
 
     input(clr(f"  > {translate('Hit [ ENTER ] if you are signed in to Spotify...')} "))
 
@@ -90,12 +101,12 @@ def main():
     # Spicetify
 
     print(clr(f"\n  - {translate('installing Spicetify-CLI...')}\n"))
-    run_command(['runas', '/trustlevel:0x20000', 'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"'], check=True)
+    run_command(['runas', '/trustlevel:0x20000', 'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"'], check=True, retry=True)
 
     input(clr(f"  > {translate('Hit [ ENTER ] after installing Spicetify...')} "))
 
     print(clr(f"\n  - {translate('applying Spicetify...')}\n"))
-    run_command(['runas', '/trustlevel:0x20000', 'spicetify restore backup apply'], check=True)
+    run_command(['runas', '/trustlevel:0x20000', 'spicetify restore backup apply'], check=True, retry=True)
 
     input(clr(f"  > {translate('Hit [ ENTER ] after applying Spicetify...')} "))
 
