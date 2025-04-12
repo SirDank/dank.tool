@@ -92,12 +92,12 @@ def main():
     print(clr(f"\n  - {translate('installing Spicetify-CLI...')}\n"))
     run_command(['runas', '/trustlevel:0x20000', 'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"'], check=True)
 
-    input(clr(f"  > {translate('Hit [ ENTER ] after installing Spicetify...')} "))
+    input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
     print(clr(f"\n  - {translate('applying Spicetify...')}\n"))
     run_command(['runas', '/trustlevel:0x20000', 'spicetify restore backup apply'], check=True)
 
-    input(clr(f"  > {translate('Hit [ ENTER ] after applying Spicetify...')} "))
+    input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
     translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom (darkmono)")
     print(clr(f"\n  {translated}"))
