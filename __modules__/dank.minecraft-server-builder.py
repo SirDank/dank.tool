@@ -86,8 +86,8 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions']
-            print(clr(f'  - {translate("Available Purpur Versions")}: {", ".join(version_list)}')); break
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions'][:3]
+            print(clr(f'  - {translate("Latest Purpur Versions")}: {", ".join(version_list)}')); break
         except Exception as exc:
             input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))
             rm_line(); rm_line()
@@ -128,33 +128,6 @@ def main_one():
             case 'y': install_Via = True; break
             case 'n': install_Via = False; break
         rm_line()
-
-    # setting extra flags
-
-    patched = False
-
-    for _ in ("1.17", "1.18"):
-        if version.startswith(_):
-            extra_flag = "-Dlog4j2.formatMsgNoLookups=true "
-            patched = True
-            break
-
-    if not patched:
-        for _ in ("1.12", "1.13", "1.14", "1.15", "1.16"):
-            if version.startswith(_):
-                extra_flag = "-Dlog4j.configurationFile=log4j2_112-116.xml "
-                patched = True
-                break
-
-    if not patched:
-        for _ in ("1.7", "1.8", "1.9", "1.10", "1.11"):
-            if version.startswith(_):
-                extra_flag = "-Dlog4j.configurationFile=log4j2_17-111.xml "
-                patched = True
-                break
-
-    if not patched:
-        extra_flag = ""
 
     # setting max ram
 
@@ -223,11 +196,6 @@ def main_one():
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(file)
 
-    if extra_flag:
-        for file in ('log4j2_17-111.xml', 'log4j2_112-116.xml'):
-            to_download_urls.append(f"{url}/{file}")
-            to_download_file_names.append(file)
-
     for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines.zip'):
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
@@ -273,8 +241,6 @@ def main_one():
 
     if cracked:
         spigot_plugins["SkinRestorer"] = 2124
-    if extra_flag:
-        spigot_plugins["Log4JExploitFix"] = 98243
     if playit:
         spigot_plugins["playit-gg"] = 105566
 
@@ -436,7 +402,7 @@ general:
     system-tray: 
       enable: false
   server: 
-    start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
+    start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true --add-modules=jdk.incubator.vector -jar purpur.jar -nogui
   directory-cleaner:
     enabled: true
     max-days: 3
@@ -772,9 +738,6 @@ configs = {
 
 if cracked:
     configs["server.properties"]["online-mode=true"] = "online-mode=false"
-
-if extra_flag:
-    configs["plugins/Log4JExploitFix/config.yml"] = {"enabled: false": "enabled: true"}
 
 def main_two():
 
