@@ -233,6 +233,7 @@ def main_one():
         "FancyPhysics": 110500,
         "TerraformGenerator": 75132,
         "GravesX": 118271,
+        "AutoPlug-Plugin": 95568,
     }
 
     bukkit_plugins = [
