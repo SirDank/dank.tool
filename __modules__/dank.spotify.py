@@ -95,7 +95,7 @@ def main():
     input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
     print(clr(f"\n  - {translate('applying Spicetify...')}\n"))
-    run_command(['runas', '/trustlevel:0x20000', 'spicetify restore backup apply'], check=True)
+    run_command(['runas', '/trustlevel:0x20000', 'spicetify restore backup apply'], check=False)
 
     input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
