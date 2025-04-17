@@ -34,7 +34,7 @@ def translate(text):
 
 def main_one():
 
-    global name, version, cracked, install_Via, ram, motd_spaces, playit, extra_flag, dir_name, latest_java_version, translator, DANK_TOOL_LANG
+    global name, version, cracked, install_Via, ram, motd_spaces, playit, dir_name, latest_java_version, translator, DANK_TOOL_LANG
 
     # check if translator is enabled (dank.tool.exe)
 
