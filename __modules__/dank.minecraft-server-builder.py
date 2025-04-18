@@ -86,7 +86,7 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions'][-3:]
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions'][-4:]
             print(clr(f'  - {translate("Latest Purpur Versions")}: {", ".join(version_list)}')); break
         except Exception as exc:
             input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))
