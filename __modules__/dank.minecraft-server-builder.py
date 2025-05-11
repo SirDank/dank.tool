@@ -636,7 +636,7 @@ configs = {
     },
 
     "server.properties": {
-        "simulation-distance=10": "simulation-distance=4",
+        # "simulation-distance=10": "simulation-distance=4",
         "motd=A Minecraft Server": f"motd=\\u00A7a{motd_spaces}---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\\{motd_spaces}\\n         \\u00A7l\\u00A7m\\u00A76-----\\u00A7r\\u00A78[ \\u00A74Made with \\u00A7cdank\\u00A7f.\\u00A7ctool \\u00A78]\\u00A7l\\u00A7m\\u00A76-----",
         "server-name=Unknown Server": f"server-name={name}",
         "require-resource-pack=false": "require-resource-pack=true",
