@@ -431,7 +431,7 @@ def set_globals_two():
                 'Sublime Text': {
                     'info': menu_request_responses["mrpepe.sublime-patcher"],
                     'title': '𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛',
-                    'project': 'mrpepe.sublime-patcher.py',
+                    'project': 'mrpepe.sublime-patcher',
                     'rpc': _translate("patching sublime text")
                 },
 
