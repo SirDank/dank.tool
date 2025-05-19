@@ -98,7 +98,7 @@ def main():
     # replace with file_selector() after update
     root = Tk()
     root.withdraw()
-    if "DANK_TOOL_VERSION" in os.environ:
+    if '__compiled__' in globals() and "DANK_TOOL_VERSION" in os.environ:
         root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
     while True:
         print(clr("[*] Opening file selector...", colour_two=yellow_bright))
