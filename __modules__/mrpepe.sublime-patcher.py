@@ -98,7 +98,8 @@ def main():
     # replace with file_selector() after update
     root = Tk()
     root.withdraw()
-    root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
+    if "DANK_TOOL_VERSION" in os.environ:
+        root.iconbitmap(os.path.join(os.path.dirname(__file__), "dankware.ico"))
     while True:
         print(clr("[*] Opening file selector...", colour_two=yellow_bright))
         input_file = askopenfilename(title='Select sublime_text.exe', filetypes=[('Sublime', 'sublime_text.exe')], initialdir=('C:\\Program Files\\Sublime Text' if os.path.isdir('C:\\Program Files\\Sublime Text') else None), initialfile='sublime_text.exe').replace("/", "\\")
