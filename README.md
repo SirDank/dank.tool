@@ -116,10 +116,6 @@
 
 - Beginnings of dank.serverbuilder ( dsb actually started out as a simple batch script ) > [old version](https://github.com/SirDank/dank.serverbuilder)
 
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/60cd8cf0-8cc2-4252-a8e9-9a23c6af2d2c"></p><br>
-
 ## ♦️ Youtube ♦️
 
 <br><p align="center"><a href="https://youtu.be/fPLEq33BGBM" target="_blank"><img width="400" alt="image" src="http://img.youtube.com/vi/fPLEq33BGBM/0.jpg"></a></p><br>
@@ -141,10 +137,6 @@
 - [x] Add targeted scans ( for specific IPs / ranges )
 - [ ] Use masscan for windows
 
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/31cc714d-cf96-425d-9054-1992df773e75"></p><br>
-
 ## ♦️ Also check out dank.resource-pack! ♦️
 
 - <https://github.com/SirDank/dank.resource-pack>
@@ -162,12 +154,6 @@
 
 - [ ] Add support for more browsers
 
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/f4a2313f-19af-4413-a559-5c97915d9a9d"></p><br>
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/2d3bc292-055d-4d1c-8649-f8ad9f386100"></p><br>
-
 <p>&nbsp;</p>
 
 ---  
@@ -176,10 +162,6 @@
 
 - A simple tool to download and update windows software using [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/)
 
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/aee3f2bd-834a-4fbc-b8f1-b8fd43126434"></p><br>
-
 <p>&nbsp;</p>
 
 ---  
@@ -187,12 +169,6 @@
 # 🚨 Windows Cleanup / Repair Tools 🚨
 
 - Do not use these modules if you do not know what you are doing!
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/394602e3-c574-4720-ab9c-4cb0c80b5837"></p><br>
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/c919c903-e0e2-4fd7-83f7-9e656c9849fc"></p><br>
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/2ae524f8-8622-4bc4-8bf7-5e361e0d0f1a"></p><br>
 
 <p>&nbsp;</p>
 
