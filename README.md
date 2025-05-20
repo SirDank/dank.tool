@@ -29,11 +29,11 @@
 
 - ZIP Password: `dankware`
 
-- Direct Download: https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip
+- Direct Download: <https://github.com/SirDank/dank.tool/raw/main/dank.tool.zip>
 
-- Short Direct Download: https://bit.ly/dank-tool-zip
+- Short Direct Download: <https://bit.ly/dank-tool-zip>
 
-- Short Github URL: https://bit.ly/dank-tool
+- Short Github URL: <https://bit.ly/dank-tool>
 
 ## ♦️ Preview ♦️
 
@@ -82,7 +82,7 @@
 
 ---  
 
-# 🚨 Most Advanced Minecraft Server Builder 🚨
+# 🚨 Pre-Customized Minecraft Server Builder 🚨
 
 - A complete package for building and hosting a fully optimised minecraft purpur server on your local Windows/Linux system without port-forwarding!
 
@@ -147,50 +147,7 @@
 
 ## ♦️ Also check out dank.resource-pack! ♦️
 
-- https://github.com/SirDank/dank.resource-pack
-
-<p>&nbsp;</p>
-
----  
-
-# 🚨 SpotX + Spicetify Installer 🚨
-
-- Full credits to [amd64fox](https://github.com/SpotX-Official/SpotX) and [spicetify contributors](https://github.com/spicetify/spicetify-cli) for their amazing work!
-
-## ♦️ System Requirements ♦️
-
-- OS: Windows 7-11
-- Spotify: latest official [versions](https://cutt.ly/8EH6NuH)
-- For Windows Desktop only (Microsoft store version is not suitable).
-
-## ♦️ SpotX Features ♦️
-
-- Blocks all banner, video and audio ads in the client
-- Hiding podcasts, episodes and audiobooks from the homepage (optional)
-- Block Spotify automatic updates (optional)
-- More experimental features have been activated ([see the full list](https://github.com/amd64fox/SpotX/discussions/50))
-- Disabled sentry's console log/error/warning messages to Spotify developers, halted user interaction logging, eliminated right-to-left CSS rules for simplification, and performed code minification
-
-## ♦️ Spicetify Features ♦️
-
-- Change colors whole UI
-- Inject CSS for advanced customization
-- Inject Extensions (Javascript script) to extend functionalities, manipulate UI and control player.
-- Inject Custom apps
-- Remove bloated components to improve performance
-
-## ♦️ Suggested Extensions / Themes ♦️
-
-- Extension: Beautiful Lyrics
-- Theme: Bloom (darkmono)
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/d4830eb1-d606-4906-a2fb-9256eb7733fd"></p><br>
-
-## ♦️ Preview Video ♦️
-
-<br><p align="center"><a href="https://mega.nz/embed/MKwSxIwD#yZBE4lVj-bPETlauIvOuKxulJyRfjClRAOHmL6_iOs8" target="_blank"><img width="400" alt="image" src="https://i.imgur.com/VQWZFsU.png"></a></p><br>
+- <https://github.com/SirDank/dank.resource-pack>
 
 <p>&nbsp;</p>
 
@@ -226,15 +183,6 @@
 <p>&nbsp;</p>
 
 ---  
-
-# 🚨 Windows / Office Activator 🚨
-
-- A Windows and Office activator using HWID / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.
-- Full credits to the [massgravel](https://github.com/massgravel/Microsoft-Activation-Scripts) team for their amazing work!
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="400" alt="image" src="https://github.com/SirDank/dank.tool/assets/52797753/48b12916-9b58-4f79-b8ea-998fd41c2c1a"></p><br>
 
 # 🚨 Windows Cleanup / Repair Tools 🚨
 
@@ -297,19 +245,13 @@
 
 ---  
 
-# 🚨 Auto-Clicker 🚨 [ DISABLED FOR NOW ]
+# 🚨 External Tools 🚨
 
-- Set your own click speed!
-- Shortcuts for [ start / stop / exit ]
-- Cool sounds and notifications!
-
-## ♦️ To Do ♦️
-
-- [ ] Full rework
-
-## ♦️ Preview ♦️
-
-<br><p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/52797753/197808031-042cbbbf-d33f-4043-b584-1cf89de26618.png"></p><br>
+- [SpotX](https://github.com/SpotX-Official/SpotX) + [Spicetify](https://github.com/spicetify/spicetify-cli) Installer
+- [Windows / Office Activator](https://github.com/massgravel/Microsoft-Activation-Scripts)
+- [NetLimiter Patcher](https://github.com/Baseult/NetLimiterCrack)
+- [Vencord](https://github.com/Vendicated/Vencord)
+- [SlimBrave](https://github.com/ltx0101/SlimBrave)
 
 <p>&nbsp;</p>
 
@@ -350,27 +292,18 @@
 ```
 📁 dank.tool/                     [ branches: main, dev ]
 ├─📄 dank.tool.zip                [ direct download to the latest dank.tool installer inside a zip protected by the password "dankware" ]
-├─📄 README.md
+├─📄 requirements.txt             [ python packages required to build dank.tool.exe ]
 ├─📁 __assets__/                  [ assets used by dank.tool's modules ]
-│ ├─📁 example_module_1/
-│ │ └─📄 example_file_1.exe
-│ └─📁 example_module_2/
-│   ├─📄 example_file_1.jar
-│   ├─📄 example_file_2.xml
-│   └─📄 example_file_3.png
+│ └─📁 example_module_1/
+│   └─📄 example_file_1.exe
 ├─📁 __modules__/                 [ src for dank.tool's modules ]
 │ ├─📄 example_module_1.py
-│ ├─📄 example_module_2.py
-│ ├─📄 example_module_3.py
 │ └─📁 __wip__/                   [ modules that are still being worked on ]
 │   └─📄 example_module_1.py
 ├─📁 __src__/
-│ ├─📄 checksums.txt              [ checksums for different versions of the dank.tool ( not being used / updated anymore ) ]
 │ ├─📄 dank.tool.py               [ dank.tool's interface + module executor ]
-│ ├─📄 documentation.md
 │ ├─📄 executor.py                [ dank.tool's main src (all imports used by every module, update checker (executes updater.py), discord rpc, online run counter, chatroom user validator, executes dank.tool.py) ]
 │ ├─📄 executor_version.txt       [ dank.tool's latest version number ( used for update checks ) ]
-│ ├─📄 requirements.txt           [ python packages required to build dank.tool.exe ]
 │ └─📄 updater.py                 [ dank.tool's updater ]
 └─📁 __tools__/
   └─📄 package-updater.cmd        [ script I use to quickly update all packages used by the dank.tool before I build the latest version ]
@@ -400,7 +333,7 @@
 - this script is added on top of every script that I build into an executable with my (private) custom python executable builder. In short it performs the following:
   - saves `runs.txt` to `%LOCALAPPDATA%\\Dankware` ( saves the amount of times the executable has been run )
   - scans the temp folder for any dankware files ( from my portable software ) and deletes them if they are not running ( cleanup )
-  - sends a get request to [api-ninjas.com](https://api-ninjas.com/profile) to increase the online run counter by 1 ( this is displayed on the main menu as `dankware global runs` )
+  - sends a get request to [api-ninjas.com](https://api-ninjas.com/) to increase the online run counter by 1 ( this is displayed on the main menu as `dank.tool runs` )
   - once in every 10 runs it displays the dankware animation and plays the dankware.wav file ( checks `runs.txt` )
 
 ## ⭕ executor.py ⭕
@@ -477,4 +410,3 @@
   </picture>
 </a>
 </p>
-

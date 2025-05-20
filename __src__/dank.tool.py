@@ -112,19 +112,16 @@ def updated_on(url, dankware_module = True):
 def get_menu_request_responses(task_id, request_key):
 
     match task_id:
-        case 0 | 1: # get global runs
-            match task_id:
-                case 0: url = "https://dankware.onrender.com/counter?id=dankware&hit=false"
-                case 1: url = "https://dankware.onrender.com/counter?id=dank.tool&hit=false"
+        case 0: # get global runs
             menu_request_responses[request_key] = f"{red_normal}⚠️"
             try:
-                result = requests.get(url, headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
+                result = requests.get("https://dankware.onrender.com/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
                 if result.isdigit():
                     menu_request_responses[request_key] = result
             except:
                 pass
 
-        case 2: # get motm
+        case 1: # get motm
             try:
                 motm = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
                 motm = clr(motm, colour_one=green_bright)
@@ -132,7 +129,7 @@ def get_menu_request_responses(task_id, request_key):
                 motm = f"{red_normal}⚠️"
             menu_request_responses[request_key] = motm
 
-        case 3: # get chatroom user count
+        case 2: # get chatroom user count
             try:
                 result = requests.get("https://dankware.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
                 if result.isdigit():
@@ -320,7 +317,7 @@ def set_globals_two():
 
         global online_modules
 
-        stats = f" [ dankware runs: {menu_request_responses['dankware_runs']} | dank.tool runs: {menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
+        stats = f" [ dank.tool runs: {menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
 
         online_modules = {
 
@@ -1061,7 +1058,6 @@ if __name__ == "__main__":
         # KEEP request_keys IN ORDER!
 
         request_keys = (
-            "dankware_runs",
             "danktool_runs",
             "motm",
             "chatroom_user_count"
@@ -1091,7 +1087,7 @@ if __name__ == "__main__":
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
 
-        for _ in ("dankware_runs", "danktool_runs"): # don't add motm
+        for _ in ("danktool_runs"): # don't add motm
             if '⚠️' not in menu_request_responses[_]:
                 menu_request_responses[_] = green_bright + menu_request_responses[_]
 
