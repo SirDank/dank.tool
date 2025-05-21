@@ -117,7 +117,7 @@ def get_menu_request_responses(task_id, request_key):
             try:
                 result = requests.get("https://dankware.onrender.com/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
                 if result.isdigit():
-                    menu_request_responses[request_key] = result
+                    menu_request_responses[request_key] = green_bright + result
             except:
                 pass
 
@@ -1086,10 +1086,6 @@ if __name__ == "__main__":
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
                 rm_line(); rm_line()
-
-        for _ in ("danktool_runs"): # don't add motm
-            if _ in menu_request_responses and '⚠️' not in menu_request_responses[_]:
-                menu_request_responses[_] = green_bright + menu_request_responses[_]
 
         # hourly limit on github api
 
