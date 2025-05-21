@@ -113,7 +113,7 @@ def get_menu_request_responses(task_id, request_key):
 
     match task_id:
         case 0: # get global runs
-            menu_request_responses[request_key] = f"{red_normal}⚠️"
+            menu_request_responses[request_key] = "[red1]⚠️"
             try:
                 result = requests.get("https://dankware.onrender.com/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
                 if result.isdigit():
@@ -126,7 +126,7 @@ def get_menu_request_responses(task_id, request_key):
                 motm = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
                 motm = clr(motm, colour_one=green_bright)
             except:
-                motm = f"{red_normal}⚠️"
+                motm = "[red1]⚠️"
             menu_request_responses[request_key] = motm
 
         case 2: # get chatroom user count
@@ -1356,7 +1356,7 @@ if __name__ == "__main__":
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]!')}"))
 
-            elif ONLINE_MODE: # and not LOCAL_MODULE (removed to report all errors)
+            elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
                     try:
                         _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{error}```"}) # pylint: disable=used-before-assignment

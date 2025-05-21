@@ -89,7 +89,7 @@
 ## ♦️ Features ♦️
 
 - Customization for server name, [purpur](https://github.com/PurpurMC/Purpur) version, server ram, allowing cracked players.
-- Multithreaded file downloader (2 threads)
+- Multithreaded file downloader (5 threads)
 - Uses [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) for updating jdk / plugins / server jar and much more!
 - Uses [playit.gg](https://github.com/playit-cloud/playit-agent) as the hosting solution
 - Downloads [purpur](https://github.com/PurpurMC/Purpur) of the selected minecraft version
