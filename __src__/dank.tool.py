@@ -1088,7 +1088,7 @@ if __name__ == "__main__":
                 rm_line(); rm_line()
 
         for _ in ("danktool_runs"): # don't add motm
-            if '⚠️' not in menu_request_responses[_]:
+            if _ in menu_request_responses and '⚠️' not in menu_request_responses[_]:
                 menu_request_responses[_] = green_bright + menu_request_responses[_]
 
         # hourly limit on github api
