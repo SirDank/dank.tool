@@ -7,7 +7,7 @@ from random import randint
 from rich.align import Align
 from rich.console import Console
 from translatepy import Translator
-from dankware import title, rm_line, cls, clr, github_file_selector, multithread, sys_open, err, get_path, white_bright, red
+from dankware import title, rm_line, cls, clr, github_file_selector, multithread, sys_open, err, get_path, white_bright, red, green, blue
 
 headers = {'User-Agent': ('dank.tool' if "DANK_TOOL_VERSION" not in os.environ else f'dank.tool {os.environ["DANK_TOOL_VERSION"]}'), 'Content-Type': 'application/json'}
 
@@ -34,7 +34,7 @@ def translate(text):
 
 def main_one():
 
-    global name, version, cracked, install_Via, ram, motd_spaces, playit, dir_name, latest_java_version, translator, DANK_TOOL_LANG
+    global name, version, cracked, install_Via, ram, motd_spaces, playit, dir_name, latest_java_version, download_settings, translator, DANK_TOOL_LANG
 
     # check if translator is enabled (dank.tool.exe)
 
@@ -152,37 +152,52 @@ def main_one():
             break
         rm_line()
 
-    # create and go to workspace
+    # begin download selector
 
-    if os.path.exists(name):
-        counter = 2
-        dir_name = f"{name}_{counter}"
-        while os.path.exists(dir_name):
-            counter += 1
-            dir_name = f"{name}_{counter}"
-    else:
-        dir_name = name
-    os.makedirs(dir_name)
-    os.system(f'explorer.exe "{dir_name}"')
-    os.chdir(dir_name)
+    toggle_all_to = False
 
-    # create folders
+    download_settings = {
+        "dankchatroom": True,
+        "BetterSleeping": True,
+        "ChestSort": True,
+        "ProtocolLib": True,
+        "Spark": True,
+        "PlaceholderAPI": True,
+        "LuckyBlock-NTD": True,
+        "BetterRTP": True,
+        "ChatFeelings": True,
+        "BetterStructures": True,
+        "EliteMobs": True,
+        "SilkSpawners": True,
+        "FancyPhysics": True,
+        "TerraformGenerator": True,
+        "GravesX": True,
+        "EssentialsX": True,
+        "FastAsyncWorldEdit-Paper": True,
+        "tabtps-spigot": True,
+        "MCAntiMalware": True,
+    }
 
-    for folder in (
-        'autoplug',
-        'world/datapacks',
-        'world_nether/datapacks',
-        'world_the_end/datapacks',
-        'plugins/BetterStructures/imports',
-        'plugins/BetterStructures/schematics/default',
-        'plugins/BetterStructures/schematics/exploration',
-        'plugins/BetterStructures/schematics/BetterStructures Free Elite Shrines',
-        'plugins/BetterStructures/elitemobs/powers/BetterStructures Free Elite Shrines',
-        'plugins/BetterStructures/elitemobs/customitems/BetterStructures Free Elite Shrines',
-        'plugins/BetterStructures/elitemobs/custombosses/BetterStructures Free Elite Shrines',
-        'plugins/EliteMobs/imports'):
-        try: os.makedirs(folder)
-        except: pass
+    while True:
+
+        cls(); print(clr(f"\n  - {translate('You can Enable / Disable content that will be downloaded!')}\n  - {translate('Enter the numbers of the contents you want to toggle separated by commas')}\n  - {translate('Finally press [ ENTER ] to continue')}\n"))
+
+        print(clr(f"  [0] {'Enable' if toggle_all_to else 'Disable'} All", colour_two=blue))
+        for index, (file, enabled) in enumerate(download_settings.items()):
+            print(clr(f"  [{index+1}] {file}", colour_one=green if enabled else red, colour_two=white_bright))
+
+        choices = input(clr("\n  > Choices: ") + red).strip()
+        if not choices: break
+        choices = choices.split(',')
+        for choice in choices:
+            if choice.isdigit() and int(choice) >= 0 and int(choice) <= int(len(download_settings)):
+                if choice == '0':
+                    for key in download_settings:
+                        download_settings[key] = toggle_all_to
+                    toggle_all_to = not toggle_all_to
+                    continue
+                choice = int(choice)-1
+                download_settings[list(download_settings.keys())[choice]] = not download_settings[list(download_settings.keys())[choice]]
 
     # begin preparing downloads
 
@@ -192,19 +207,21 @@ def main_one():
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png']:
+    for file in ['server-icon.png']: # keep as list
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(file)
 
-    for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines.zip'):
-        to_download_urls.append(f"{url}/{file}")
-        to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
+    if download_settings["BetterStructures"]:
+        for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines.zip'):
+            to_download_urls.append(f"{url}/{file}")
+            to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
-    for file in ('em_dark_cathedral_v7.zip', 'em_enchantment_sanctums_free_v3.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks_v8.zip', 'em_hallosseum_v7.zip', 'em_knights_castle_v8.zip', 'em_north_pole_v7.zip', 'em_sewers_v7.zip', 'em_shadow_of_the_binder_of_worlds_v10.zip', 'em_the_binder_of_worlds_v8.zip', 'em_the_steamworks_v5.zip'):
-        to_download_urls.append(f"{url}/{file}")
-        to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
-    to_download_urls.append("https://www.dropbox.com/scl/fi/nrkgsy0cyx753pgtkf7xe/story_mode_dungeons_chapter_one_v2.zip?rlkey=0uupjpuk23mcp82vipkb3baet&st=cncbdyix&dl=1")
-    to_download_file_names.append("plugins/EliteMobs/imports/story_mode_dungeons_chapter_one_v2.zip")
+    if download_settings["EliteMobs"]:
+        for file in ('em_dark_cathedral_v7.zip', 'em_enchantment_sanctums_free_v3.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks_v8.zip', 'em_hallosseum_v7.zip', 'em_knights_castle_v8.zip', 'em_north_pole_v7.zip', 'em_sewers_v7.zip', 'em_shadow_of_the_binder_of_worlds_v10.zip', 'em_the_binder_of_worlds_v8.zip', 'em_the_steamworks_v5.zip'):
+            to_download_urls.append(f"{url}/{file}")
+            to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
+        to_download_urls.append("https://www.dropbox.com/scl/fi/nrkgsy0cyx753pgtkf7xe/story_mode_dungeons_chapter_one_v2.zip?rlkey=0uupjpuk23mcp82vipkb3baet&st=cncbdyix&dl=1")
+        to_download_file_names.append("plugins/EliteMobs/imports/story_mode_dungeons_chapter_one_v2.zip")
 
     # spigot / bukkit plugins
 
@@ -246,18 +263,20 @@ def main_one():
         spigot_plugins["playit-gg"] = 105566
 
     for plugin, id in spigot_plugins.items():
-        to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/download")
-        to_download_file_names.append(f"plugins/{plugin}.jar")
+        if plugin not in download_settings or download_settings[plugin]:
+            to_download_urls.append(f"https://api.spiget.org/v2/resources/{id}/download")
+            to_download_file_names.append(f"plugins/{plugin}.jar")
 
     for plugin in bukkit_plugins:
-        to_download_urls.append(f"https://dev.bukkit.org/projects/{plugin}/files/latest")
-        to_download_file_names.append(f"plugins/{plugin}.jar")
+        if plugin not in download_settings or download_settings[plugin]:
+            to_download_urls.append(f"https://dev.bukkit.org/projects/{plugin}/files/latest")
+            to_download_file_names.append(f"plugins/{plugin}.jar")
 
     # github plugins
 
-    file_urls = github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) \
-              + github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit-Paper']) \
-              + github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot']) \
+    file_urls = (github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) if download_settings["EssentialsX"] else ()) \
+              + (github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit-Paper']) if download_settings["FastAsyncWorldEdit-Paper"] else ()) \
+              + (github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot'])  if download_settings["tabtps-spigot"] else ()) \
               + (github_file_selector("ViaVersion/ViaVersion", "add", ['ViaVersion']) if install_Via else ()) \
               + (github_file_selector("ViaVersion/ViaBackwards", "add", ['ViaBackwards']) if install_Via else ()) \
               #+ github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
@@ -270,9 +289,10 @@ def main_one():
         to_download_file_names.append(f"plugins/{file_url.split('/')[-1]}")
 
     # - MCAntiMalware.jar
-    for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
-        to_download_urls.append(file_url)
-        to_download_file_names.append(file_url.split('/')[-1])
+    if download_settings["MCAntiMalware"]:
+        for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
+            to_download_urls.append(file_url)
+            to_download_file_names.append(file_url.split('/')[-1])
 
     # - AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
@@ -300,19 +320,57 @@ def main_one():
             print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n",2))
             requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}```"})
 
-    # disabled due to repeated error reports
-
     translated = translate('Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process')
     print_read_me(); input(clr(f"\n  - {translated}... "))
 
-    # begin multithreaded downloader
+    # create and go to workspace
 
-    print(clr(f"\n  - {translate('Starting Multiple Downloads... [ this might take a few minutes ]')}\n"))
+    if os.path.exists(name):
+        counter = 2
+        dir_name = f"{name}_{counter}"
+        while os.path.exists(dir_name):
+            counter += 1
+            dir_name = f"{name}_{counter}"
+    else:
+        dir_name = name
+    os.makedirs(dir_name)
+    os.system(f'explorer.exe "{dir_name}"')
+    os.chdir(dir_name)
+
+    # create folders
+
+    for folder in ('autoplug', 'plugins'):
+        os.makedirs(folder, exist_ok=True)
+
+    if download_settings["BetterStructures"]:
+        for folder in (
+        'plugins/BetterStructures/imports',
+        'plugins/BetterStructures/schematics/default',
+        'plugins/BetterStructures/schematics/exploration',
+        'plugins/BetterStructures/schematics/BetterStructures Free Elite Shrines',
+        'plugins/BetterStructures/elitemobs/powers/BetterStructures Free Elite Shrines',
+        'plugins/BetterStructures/elitemobs/customitems/BetterStructures Free Elite Shrines',
+        'plugins/BetterStructures/elitemobs/custombosses/BetterStructures Free Elite Shrines'):
+            os.makedirs(folder, exist_ok=True)
+
+    if download_settings["EliteMobs"]:
+        os.makedirs('plugins/EliteMobs/imports', exist_ok=True)
+
+    # begin standard downloader
+
+    # start_time = time.time()
+    # for url, file_name in zip(to_download_urls, to_download_file_names):
+    #     file_downloader(url, file_name)
+    # time_taken = int(time.time()-start_time)
+
+    # begin multithreaded downloader # disabled due to repeated error reports
+
+    print(clr(f"\n  - {translate('Starting Multiple Downloads... [ this might take a couple minutes ]')}\n"))
 
     while True:
         try:
             start_time = time.time()
-            multithread(file_downloader, 5, to_download_urls, to_download_file_names, progress_bar=('COMPATIBILITY-MODE' not in os.environ))
+            multithread(file_downloader, (5 if len(to_download_urls) >= 5 else len(to_download_urls)), to_download_urls, to_download_file_names, progress_bar=('COMPATIBILITY-MODE' not in os.environ))
             time_taken = int(time.time()-start_time)
             break
         except: input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); cls()
@@ -328,8 +386,9 @@ cls(); print(clr(f"\n  - {translate('Creating local files...')}"))
 with open('eula.txt','w',encoding='utf-8') as file:
     file.write('eula=true')
 
-with open('bukkit.yml','w',encoding='utf-8') as file:
-    file.write('worlds:\n  world:\n    generator: TerraformGenerator')
+if download_settings["TerraformGenerator"]:
+    with open('bukkit.yml','w',encoding='utf-8') as file:
+        file.write('worlds:\n  world:\n    generator: TerraformGenerator')
 
 with open('start_server.cmd', 'w', encoding='utf-8') as file:
     file.write(f'''
@@ -345,15 +404,17 @@ with open('start_server.sh', 'wb') as file:
 java -jar AutoPlug-Client.jar
 '''.encode().replace(b'\r\n',b'\n'))
 
-with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as file:
-    file.write('''@echo off
+if download_settings["MCAntiMalware"]:
+    with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as file:
+        file.write('''@echo off
 title Minecraft Anti-Malware
 java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
 ''')
 
-with open('mc-anti-malware.sh', 'wb') as file:
-    file.write('''
+if download_settings["MCAntiMalware"]:
+    with open('mc-anti-malware.sh', 'wb') as file:
+        file.write('''
 #!/bin/sh
 java -jar MCAntiMalware.jar
 '''.encode().replace(b'\r\n',b'\n'))
@@ -667,15 +728,17 @@ configs = {
     #    #"max-loads-per-projectile: 10": "max-loads-per-projectile: 8",
     #},
 
-    # plugins
+}
 
-    "plugins/ChestSort/config.yml": {
+if download_settings['ChestSort']:
+    configs["plugins/ChestSort/config.yml"] = {
         "use-permissions: true": "use-permissions: false",
         "sorting-enabled-by-default: false": "sorting-enabled-by-default: true",
         "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
-    },
+    }
 
-    "plugins/Essentials/config.yml": {
+if download_settings['EssentialsX']:
+    configs["plugins/Essentials/config.yml"] = {
         "nickname-prefix: '~'": "nickname-prefix: ''",
         "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
         'custom-join-message: "none"': 'custom-join-message: "&8&l[&a+&8&l]&a&l {PLAYER}"',
@@ -684,58 +747,61 @@ configs = {
         "announce-format: '&dWelcome {DISPLAYNAME}&d to the server!'": "announce-format: '&dWelcome &6&l{DISPLAYNAME}&d to the server!'",
         "use-bukkit-permissions: true": "use-bukkit-permissions: false",
         "player-commands:\n": "player-commands:\n  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime\n",
-    },
+    }
 
-    "plugins/ntdLuckyBlock/config.yml": {
+if download_settings['LuckyBlock-NTD']:
+    configs["plugins/ntdLuckyBlock/config.yml"] = {
         "break-permissions: true": "break-permissions: false",
-    },
+    }
 
-    "plugins/BetterStructures/config.yml": {
+if download_settings['BetterStructures']:
+    configs["plugins/BetterStructures/config.yml"] = {
         "warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"
-    },
+    }
 
-    "plugins/ChatFeelings/config.yml": {
+if download_settings['ChatFeelings']:
+    configs["plugins/ChatFeelings/config.yml"] = {
         "Global-Feelings:\n    Enabled: false": "Global-Feelings:\n    Enabled: true",
         "Updates:\n    Check: true": "Updates:\n    Check: false"
-    },
+    }
 
-    "plugins/BetterRTP/config.yml": {
+if download_settings['BetterRTP']:
+    configs["plugins/BetterRTP/config.yml"] = {
         "DisableUpdater: false": "DisableUpdater: true"
-    },
+    }
 
-    "plugins/FancyPhysics/config.yml": {
+if download_settings['FancyPhysics']:
+    configs["plugins/FancyPhysics/config.yml"] = {
         "DamageParticles: true": "DamageParticles: false",
         "MaxAmount: 4000": "MaxAmount: 500"
     }
 
-    #"plugins/Corpses/config.yml": {
-    #    "secondsToDisappear: 300": "secondsToDisappear: 3600",
-    #},
+#"plugins/Corpses/config.yml": {
+#    "secondsToDisappear: 300": "secondsToDisappear: 3600",
+#},
 
-    #"plugins/LevelledMobs/rules.yml": {
-    #    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%%mob-lvl% &r%health-indicator%",
-    #    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%%mob-lvl%&8 &f%entity-health-rounded%",
-    #    "&8&l༺ &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "&f%entity-health-rounded% %tiered%%heart_symbol%",
-    #    "- nametag_using_numbers": "#- nametag_using_numbers",
-    #    "#- nametag_using_indicator": "- nametag_using_indicator",
-    #    "- weighted_random_Levelling": "#- weighted_random_Levelling",
-    #    "#- ycoord_Levelling": "- ycoord_Levelling",
-    #},
+#"plugins/LevelledMobs/rules.yml": {
+#    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%%mob-lvl% &r%health-indicator%",
+#    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%%mob-lvl%&8 &f%entity-health-rounded%",
+#    "&8&l༺ &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "&f%entity-health-rounded% %tiered%%heart_symbol%",
+#    "- nametag_using_numbers": "#- nametag_using_numbers",
+#    "#- nametag_using_indicator": "- nametag_using_indicator",
+#    "- weighted_random_Levelling": "#- weighted_random_Levelling",
+#    "#- ycoord_Levelling": "- ycoord_Levelling",
+#},
 
-    #"plugins/LevelledMobs/settings.yml": {
-    #    "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
-    #},
+#"plugins/LevelledMobs/settings.yml": {
+#    "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
+#},
 
-    #"plugins/NeoPerformance/performanceConfig.yml": {
-    #    "broadcastHalt: false": "broadcastHalt: true",
-    #},
+#"plugins/NeoPerformance/performanceConfig.yml": {
+#    "broadcastHalt: false": "broadcastHalt: true",
+#},
 
-    #"plugins/PhysicsToGo/config.yml": {
-    #    "tree-regeneration: true": "tree-regeneration: false",
-    #    "explosive-regeneration: true": "explosive-regeneration: false"
-    #},
-
-}
+#"plugins/PhysicsToGo/config.yml": {
+#    "tree-regeneration: true": "tree-regeneration: false",
+#    "explosive-regeneration: true": "explosive-regeneration: false"
+#},
 
 if cracked:
     configs["server.properties"]["online-mode=true"] = "online-mode=false"
