@@ -32,25 +32,30 @@ def print_banner():
     Console().print(Align.center(banner), style="blink red", highlight=False)
     print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - update-all\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
+def cleanup_result(cmd):
+    for i, line in enumerate(cmd):
+        cmd[i] = line.strip().replace('  ', '')
+    return cmd
+
 def handle_response(cmd, results, mode):
 
     indexes = [0]
     cmd = cmd.stdout.decode('utf-8').splitlines()
     if not (_ for _ in cmd if _.startswith('Name')):
-        raise RuntimeError(f"Error parsing response!\n  - cmd: {cmd}\n  - results: {results}\n  - mode: {mode}")
+        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}")
 
     try:
         while not cmd[0].startswith('Name'):
             cmd = cmd[1:]
     except IndexError as exc:
-        raise RuntimeError(f"Error parsing response!\n  - cmd: {cmd}\n  - results: {results}\n  - mode: {mode}") from exc
+        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}") from exc
 
     try:
         for char in ('I', 'V', 'M', 'S'):
             if char in cmd[0]:
                 indexes.append(cmd[0].index(char))
     except Exception as exc:
-        raise RuntimeError(f"Error parsing response!\n  - cmd: {cmd}\n  - results: {results}\n  - mode: {mode}") from exc
+        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}") from exc
 
     results.clear()
     cmd = cmd[2:]

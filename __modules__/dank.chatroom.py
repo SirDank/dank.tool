@@ -233,12 +233,16 @@ def enable_notifications():
 notifications = False
 session = requests.Session()
 headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
-if os.name == "nt":
-    uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
-else:
-    uuid = str(subprocess.check_output(r'sudo dmidecode -s system-uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().replace('UUID','').replace(':','').strip())
 icon_path = os.path.join(os.path.dirname(__file__), "dankware.ico")
 icon_path = (icon_path if os.path.isfile(icon_path) else None)
+
+if os.name == "nt":
+    try:
+        uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
+    except FileNotFoundError:
+        uuid = str(subprocess.check_output("powershell.exe -ExecutionPolicy bypass -command (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID", stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().strip())
+else:
+    uuid = str(subprocess.check_output(r'sudo dmidecode -s system-uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().replace('UUID','').replace(':','').strip())
 
 running = True
 chatroom_login()

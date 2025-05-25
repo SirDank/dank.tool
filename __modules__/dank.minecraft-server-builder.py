@@ -180,7 +180,7 @@ def main_one():
 
     while True:
 
-        cls(); print(clr(f"\n  - {translate('You can Enable / Disable content that will be downloaded!')}\n  - {translate('Enter the numbers of the contents you want to toggle separated by commas')}\n  - {translate('Finally press [ ENTER ] to continue')}\n"))
+        cls(); print(clr(f"\n  - {translate('You can Enable / Disable content to be downloaded!')}\n  - {translate('Enter the numbers of the contents you want to toggle separated by commas')}\n  - {translate('Finally press [ ENTER ] to continue')}\n"))
 
         print(clr(f"  [0] {'Enable' if toggle_all_to else 'Disable'} All", colour_two=blue))
         for index, (file, enabled) in enumerate(download_settings.items()):
