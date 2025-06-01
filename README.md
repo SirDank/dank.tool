@@ -131,6 +131,7 @@
 - IPs are crafted in such a way that it is unique and avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description (gamemode, map, motd on bedrock)
 - You automatically contribute to the minecraft [java](https://dankware.onrender.com/minecraft-java-servers) and [bedrock](https://dankware.onrender.com/minecraft-bedrock-servers) server lists by scanning!
+- Featured on [fmhy](https://fmhy.net/gaming-tools#minecraft-tools)
 
 ## ♦️ To Do ♦️
 

@@ -230,12 +230,7 @@ def enable_notifications():
         notifications = True
     del globals()['enable_notifications']
 
-notifications = False
-session = requests.Session()
-headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
-icon_path = os.path.join(os.path.dirname(__file__), "dankware.ico")
-icon_path = (icon_path if os.path.isfile(icon_path) else None)
-
+# [TODO] update to use https://pypi.org/project/py-machineid/
 if os.name == "nt":
     try:
         uuid = str(subprocess.check_output(r'wmic csproduct get uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split('\n')[1].strip())
@@ -244,6 +239,11 @@ if os.name == "nt":
 else:
     uuid = str(subprocess.check_output(r'sudo dmidecode -s system-uuid', stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().replace('UUID','').replace(':','').strip())
 
+notifications = False
+session = requests.Session()
+headers={'User-Agent': 'dank.tool', 'Content-Encoding': 'deflate', 'Content-Type': 'application/json'}
+icon_path = os.path.join(os.path.dirname(__file__), "dankware.ico")
+icon_path = (icon_path if os.path.isfile(icon_path) else None)
 running = True
 chatroom_login()
 executor = ThreadPoolExecutor(5)
