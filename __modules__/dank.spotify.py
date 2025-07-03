@@ -25,10 +25,6 @@ def run_command(command_list, check=True, capture=False, suppress_output=False):
         raise FileNotFoundError(
             f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH."
         ) from exc
-    # except subprocess.CalledProcessError as exc:
-    #     raise RuntimeError(f"The following command failed: {command_list[0]}") from exc
-    # except Exception as exc:
-    #     raise RuntimeError(f"An unexpected error occurred running command: {exc}") from exc
 
 
 def translate(text):

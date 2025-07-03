@@ -286,6 +286,16 @@ def main():
             rm_line()
 
 
+def special_case_error():
+    print(
+        clr(
+            "\n  - Known error occurred! Your system is unique, I need you to join my discord server and help me fix this error!",
+            2,
+        )
+    )
+    input(clr("  > Hit [ ENTER ] to go back to the main menu... "))
+
+
 try:
     if os.name != "nt" or "WINELOADER" in os.environ:
         input(
@@ -305,10 +315,6 @@ try:
     else:
         main()
 except RuntimeError:
-    print(
-        clr(
-            "\n  - Known error occurred! Your system is unique, I need you to join my discord server and help me fix this error!",
-            2,
-        )
-    )
-    input(clr("  > Hit [ ENTER ] to go back to the main menu... "))
+    special_case_error()
+except FileNotFoundError:
+    special_case_error()
