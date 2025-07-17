@@ -135,7 +135,8 @@ def main():
 
     try: os.chdir(get_path('Documents'))
     except: os.chdir("C:\\")
-    os.makedirs('dank.browser-backup', exist_ok=True)
+    if not os.path.isdir('dank.browser-backup'):
+        os.mkdir('dank.browser-backup')
     os.chdir('dank.browser-backup')
 
     # user input

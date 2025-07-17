@@ -213,13 +213,15 @@ def set_globals_one():
 
     global OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, ONLINE_MODE, COMPATIBILITY_MODE, DANK_TOOL_LANG, BRANCH, headers
 
+    # NOTE: Add script run support!
+    os.chdir(os.path.dirname(__file__))
     with open("settings.json", "r", encoding="utf-8") as file:
         settings = json.loads(file.read())
 
     OFFLINE_SRC = int(settings['offline-src'])
     DEV_BRANCH = int(settings['dev-branch'])
-    DANK_TOOL_VERSION = os.environ['DANK_TOOL_VERSION']
-    ONLINE_MODE = int(os.environ['DANK_TOOL_ONLINE'])
+    DANK_TOOL_VERSION = os.environ.get('DANK_TOOL_VERSION', '99.99.99')
+    ONLINE_MODE = int(os.environ.get('DANK_TOOL_ONLINE', '1'))
     COMPATIBILITY_MODE = int(settings['compatibility-mode'])
     DANK_TOOL_LANG = os.environ.get('DANK_TOOL_LANG', '')
     DANK_TOOL_LANG = '' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG
@@ -774,7 +776,7 @@ def dank_github_software(software):
             else:
                 print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
                 url = 'https://download.netlimiter.com' + session.get("https://www.netlimiter.com/download").content.decode().split('https://download.netlimiter.com',1)[1].split('"',1)[0]
-                data = session.get(url, headers=headers).content
+                data = session.get(url, headers=headers, timeout=60).content
                 with open('netlimiter.exe', 'wb') as file:
                     file.write(data)
                 os.system('netlimiter.exe')
@@ -795,7 +797,7 @@ def dank_github_software(software):
     def get_patcher():
         match software:
             case 'netlimiter':
-                data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers).content
+                data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers, timeout=60).content
                 print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
                 while True:
                     try:
@@ -807,7 +809,7 @@ def dank_github_software(software):
                         input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
                         rm_line(); rm_line()
             case 'vencord':
-                data = session.get(browser_download_url, headers=headers).content
+                data = session.get(browser_download_url, headers=headers, timeout=60).content
                 print(clr(f"\n  - {_translate('Vencord downloaded successfully!')}"))
                 while True:
                     try:
@@ -974,7 +976,6 @@ def execute_module(code: str):
 
 if __name__ == "__main__":
 
-    os.chdir(os.path.dirname(__file__))
     set_globals_one()
     _translator = Translator()
     _session = session = requests.Session()
@@ -1146,7 +1147,6 @@ if __name__ == "__main__":
         # reset
 
         os.environ['DISCORD_RPC'] = "on the main menu"
-        os.chdir(os.path.dirname(__file__))
 
         set_globals_one()
         set_globals_two()
@@ -1355,6 +1355,9 @@ if __name__ == "__main__":
             elif "- KeyboardInterrupt" in error:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('Please select text first and then use [ CTRL + C ]!')}"))
+            elif "rate limit exceeded" in error.lower():
+                print_warning_symbol()
+                print(clr(f"\n  - {_translate('Github rate limit exceeded! Try again in an hour!')}"))
 
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:

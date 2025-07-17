@@ -36,7 +36,7 @@ def install_winget():
             ),
             "Content-Type": "application/json",
         },
-        timeout=60,
+        timeout=180,
         allow_redirects=True,
     ).content
     print(clr("\n  - Downloaded!"))
