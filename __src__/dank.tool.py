@@ -11,13 +11,8 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from types import NoneType
+
 import requests
-from dateutil.tz import tzlocal, tzutc
-from rich.align import Align
-from rich.columns import Columns
-from rich.console import Console
-from rich.panel import Panel
-from translatepy import Translator
 from dankware import (
     clr,
     cls,
@@ -34,6 +29,12 @@ from dankware import (
     white,
     white_bright,
 )
+from dateutil.tz import tzlocal, tzutc
+from rich.align import Align
+from rich.columns import Columns
+from rich.console import Console
+from rich.panel import Panel
+from translatepy import Translator
 
 WINDOWS = (os.name == "nt" and 'WINELOADER' not in os.environ)
 if WINDOWS:
@@ -57,7 +58,7 @@ def dank_tool_installer():
     try: exec(code)
     except Exception as exc:
         error = err((type(exc), exc, exc.__traceback__),'mini')
-        try: requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{error}```"})
+        try: requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
         except: pass
         input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(error)
@@ -1362,11 +1363,12 @@ if __name__ == "__main__":
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
                     try:
-                        _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> {TITLE}\n\n{error}```"}) # pylint: disable=used-before-assignment
+                        _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 {TITLE}\n\n{error}"}) # pylint: disable=used-before-assignment
                         break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ",2))
                         rm_line(); rm_line()
                 print(clr(f"\n  > {_translate('Error Reported! If it is a logic error, it will be fixed soon!')}"))
 
+            input(clr("\n  > Press [ENTER] to return to the menu... "))
             input(clr("\n  > Press [ENTER] to return to the menu... "))

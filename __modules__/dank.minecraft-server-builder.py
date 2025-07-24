@@ -318,7 +318,7 @@ def main_one():
             print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
         else:
             print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n",2))
-            requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨 ---> 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}```"})
+            requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
 
     translated = translate('Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process')
     print_read_me(); input(clr(f"\n  - {translated}... "))
