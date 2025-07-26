@@ -880,9 +880,14 @@ def dank_winrar_patcher():
 
     def patch():
         os.chdir(os.path.dirname(__file__))
-        with open("__assets__/dank.winrar/rarreg_1.key", 'r', encoding='utf-8') as file:
+        key_1_path = "__assets__/dank.winrar/rarreg_1.key"
+        key_2_path = "__assets__/dank.winrar/rarreg_2.key"
+        if not (os.path.isfile(key_1_path) and os.path.isfile(key_2_path)):
+            print(clr(f"\n  - {_translate('rarreg_1.key or rarreg_2.key not found! relaunch the tool! create a github issue if this persists!')}",2))
+            return
+        with open(key_1_path, 'r', encoding='utf-8') as file:
             key1 = file.read()
-        with open("__assets__/dank.winrar/rarreg_2.key", 'r', encoding='utf-8') as file:
+        with open(key_2_path, 'r', encoding='utf-8') as file:
             key2 = file.read()
         try: os.chdir(path)
         except FileNotFoundError:
@@ -916,7 +921,7 @@ def dank_winrar_patcher():
         patch()
     else:
         print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
-        if ONLINE_MODE:
+        if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download WinRAR?')} [y/n]: ") + red).lower() == 'y':
             print(clr(f"\n  - {_translate('Downloading WinRAR...')}\n"))
             os.system("winget install --accept-source-agreements --interactive --id RARLab.WinRAR")
             input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
@@ -930,7 +935,11 @@ def dank_revo_patcher():
 
     def patch():
         os.chdir(os.path.dirname(__file__))
-        with open("__assets__/dank.revo-uninstaller/revouninstallerpro5.lic", 'rb') as file:
+        key_path = "__assets__/dank.revo-uninstaller/revouninstallerpro5.lic"
+        if not os.path.isfile(key_path):
+            print(clr(f"\n  - {_translate('revouninstallerpro5.lic not found! relaunch the tool! create a github issue if this persists!')}",2))
+            return
+        with open(key_path, 'rb') as file:
             key = file.read()
         try: os.chdir(path)
         except FileNotFoundError:
@@ -964,7 +973,7 @@ def dank_revo_patcher():
         patch()
     else:
         print(clr(f"\n  - {_translate('RevoUninstallerPro not installed!')}"))
-        if ONLINE_MODE:
+        if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download RevoUninstallerPro?')} [y/n]: ") + red).lower() == 'y':
             print(clr(f"\n  - {_translate('Downloading RevoUninstallerPro...')}\n"))
             os.system("winget install --accept-source-agreements --interactive --id RevoUninstaller.RevoUninstallerPro")
             input(clr(f"\n  > {_translate('Press [ENTER] after installing RevoUninstallerPro to start patching...')} "))
