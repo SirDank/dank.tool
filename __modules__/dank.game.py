@@ -731,6 +731,8 @@ def input(key): # pylint: disable=function-redefined
     match key:
         case 'escape':
             if pause_menu.pause_menu.enabled:
+                ambiance_trees.resume()
+                ambiance_crickets.resume()
                 pause_menu.resume_game()
             else:
                 ambiance_trees.pause()

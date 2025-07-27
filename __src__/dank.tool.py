@@ -1240,7 +1240,8 @@ if __name__ == "__main__":
 
             TITLE = _choice['title']
             PROJECT = _choice['project']
-            os.environ['DISCORD_RPC'] = _choice['rpc']
+            if ONLINE_MODE:
+                os.environ['DISCORD_RPC'] = _choice.get('rpc', f"running {PROJECT}")
 
             # built-in modules
 
