@@ -1,7 +1,9 @@
 import os
+
 import numpy as np
 import pretty_errors
 from dankware import clr, cls
+from direct.filter.CommonFilters import CommonFilters
 from numpy.random import choice as randchoice
 from numpy.random import randint, uniform
 from perlin_noise import PerlinNoise
@@ -11,20 +13,20 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from ursina.prefabs.health_bar import HealthBar
 from ursina.prefabs.splash_screen import SplashScreen
 from ursina.scripts.smooth_follow import SmoothFollow
-from direct.filter.CommonFilters import CommonFilters
 
 cls()
 
 os.chdir(os.path.dirname(__file__))
 
-if '__compiled__' in globals() and 'DANK_TOOL_VERSION' not in os.environ:
+if "__compiled__" in globals() and "DANK_TOOL_VERSION" not in os.environ:
     # rediect stderr to a file
-    if os.path.isfile('dank.game.log'):
-        os.remove('dank.game.log')
-    file = open('dank.game.log', 'w', encoding='utf-8')
+    if os.path.isfile("dank.game.log"):
+        os.remove("dank.game.log")
+    file = open("dank.game.log", "w", encoding="utf-8")
     sys.stderr = file
 
-input(clr("""\n  [ DISCLAIMER ]
+input(
+    clr("""\n  [ DISCLAIMER ]
 
   - This game is in early development, expect bugs!
   - If the ground is not visible, restart the game!
@@ -40,41 +42,42 @@ input(clr("""\n  [ DISCLAIMER ]
   - ESC to pause / quit game
 
   > Press [ENTER] to start...
-"""))
+""")
+)
 
 # game settings
 
 settings = {
-    'development_mode': False,
-    'enable_lighting': True,
-    'enable_pixelation': True,
-    'player_speed': 2.5,
-    'player_sprint_speed': 5,
-    'player_jump_height': 1,
-    'stamina_max': 40,  # Maximum stamina
-    'stamina_regen_rate': 5,  # Stamina regeneration per second
-    'stamina_drain_rate': 25,  # Stamina drain per second when sprinting
-    'stamina_jump_cost': 10,
-    'world_size': 40, # n*2 x n*2 # default: 250
-    'chunk_size': 16,  # Size of each terrain chunk
-    'render_dist': 2, # n*chunk_size x n*chunk_size
-    'player_y_min': -10,
-    'player_y_max': 100,
-    'perlin_scale': 50.0,  # Scale factor for Perlin noise (larger = smoother terrain)
-    'perlin_octaves': 6,  # Number of octaves for Perlin noise (more octaves = more detail)
-    'amplitude': 3.0,  # Height amplitude for terrain (lower = gentler slopes)
-    'entity_gen_delay': 0.1,
-    'tree_heights': list(range(7, 14)),
-    'camera_tilt_amount': 5.0,  # Maximum tilt angle in degrees
-    'camera_tilt_speed': 3.0,   # How quickly the camera tilts
-    'camera_return_speed': 2.0, # How quickly the camera returns to neutral
+    "development_mode": False,
+    "enable_lighting": True,
+    "enable_pixelation": True,
+    "player_speed": 2.5,
+    "player_sprint_speed": 5,
+    "player_jump_height": 1,
+    "stamina_max": 40,  # Maximum stamina
+    "stamina_regen_rate": 5,  # Stamina regeneration per second
+    "stamina_drain_rate": 25,  # Stamina drain per second when sprinting
+    "stamina_jump_cost": 10,
+    "world_size": 40,  # n*2 x n*2 # default: 250
+    "chunk_size": 16,  # Size of each terrain chunk
+    "render_dist": 2,  # n*chunk_size x n*chunk_size
+    "player_y_min": -10,
+    "player_y_max": 100,
+    "perlin_scale": 50.0,  # Scale factor for Perlin noise (larger = smoother terrain)
+    "perlin_octaves": 6,  # Number of octaves for Perlin noise (more octaves = more detail)
+    "amplitude": 3.0,  # Height amplitude for terrain (lower = gentler slopes)
+    "entity_gen_delay": 0.1,
+    "tree_heights": list(range(7, 14)),
+    "camera_tilt_amount": 5.0,  # Maximum tilt angle in degrees
+    "camera_tilt_speed": 3.0,  # How quickly the camera tilts
+    "camera_return_speed": 2.0,  # How quickly the camera returns to neutral
 }
+
 
 # Function to generate terrain textures
 def generate_terrain_textures():
-
-    if '__compiled__' in globals():
-        os.chdir('ursina')
+    if "__compiled__" in globals():
+        os.chdir("ursina")
 
     textures = {
         load_texture("grass1"): 0.445,
@@ -132,19 +135,14 @@ def generate_terrain_textures():
                         color_data = texture.get_pixel(texture_x, texture_y)
 
                         # Set the corresponding pixel in our terrain image
-                        terrain_img.putpixel((start_x + local_x, start_y + local_y), (
-                            int(color_data[0] * 255),
-                            int(color_data[1] * 255),
-                            int(color_data[2] * 255),
-                            255
-                        ))
+                        terrain_img.putpixel((start_x + local_x, start_y + local_y), (int(color_data[0] * 255), int(color_data[1] * 255), int(color_data[2] * 255), 255))
 
         # Save the image
         terrain_img.save(f"textures/tmp/terrain_{i}.png")
 
+
 # Function to generate tree models
 def generate_tree_models():
-
     # Ensure directory exists
     os.makedirs("models_compressed/tmp", exist_ok=True)
 
@@ -160,8 +158,8 @@ def generate_tree_models():
         z_rot = randint(-5, +5)
 
         # Random tree height
-        tree_height = randchoice(settings['tree_heights'])
-        leaves_level_start = tree_height-3
+        tree_height = randchoice(settings["tree_heights"])
+        leaves_level_start = tree_height - 3
         leaves_level_current = 1
 
         # Position at origin (will be repositioned when placed)
@@ -169,9 +167,7 @@ def generate_tree_models():
 
         # Generate the tree structure
         for level in range(tree_height):
-            log = Entity(model="cube",
-                        position=next_pos, rotation=(x_rot, y_rot, z_rot),
-                        ignore=True, parent=tree_logs)
+            log = Entity(model="cube", position=next_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree_logs)
 
             if level > leaves_level_start:
                 match leaves_level_current:
@@ -180,20 +176,11 @@ def generate_tree_models():
                         forward_2 = log.forward + log.forward
                         left_2 = log.left + log.left
                         right_2 = log.right + log.right
-                        for leaf_pos in [log.back + left_2, left_2, log.forward + left_2,
-                                        back_2 + log.left, forward_2 + log.left, back_2, forward_2,
-                                        back_2 + log.right, forward_2 + log.right,
-                                        log.back + right_2, right_2, log.forward + right_2]:
-                            leaf = Entity(model="cube",
-                                        position=next_pos + leaf_pos, rotation=(x_rot, y_rot, z_rot),
-                                        ignore=True, parent=tree_leaves)
+                        for leaf_pos in [log.back + left_2, left_2, log.forward + left_2, back_2 + log.left, forward_2 + log.left, back_2, forward_2, back_2 + log.right, forward_2 + log.right, log.back + right_2, right_2, log.forward + right_2]:
+                            leaf = Entity(model="cube", position=next_pos + leaf_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree_leaves)
                     case 2:
-                        for leaf_pos in [log.back + log.left, log.left, log.forward + log.left,
-                                        log.back, log.forward, log.back + log.right,
-                                        log.right, log.forward + log.right]:
-                            leaf = Entity(model="cube",
-                                        position=next_pos + leaf_pos, rotation=(x_rot, y_rot, z_rot),
-                                        ignore=True, parent=tree_leaves)
+                        for leaf_pos in [log.back + log.left, log.left, log.forward + log.left, log.back, log.forward, log.back + log.right, log.right, log.forward + log.right]:
+                            leaf = Entity(model="cube", position=next_pos + leaf_pos, rotation=(x_rot, y_rot, z_rot), ignore=True, parent=tree_leaves)
                 leaves_level_current += 1
 
             y_rot = randint(y_rot - 5, y_rot + 5)
@@ -213,31 +200,32 @@ def generate_tree_models():
         destroy(tree_logs)
         destroy(tree_leaves)
 
+
 # custom camera shader
 
 player_stress = {
-    'min': 0.0,
-    'max': 0.1,
-    'current': 0.0,
-    'speed': 0.000025, # final
+    "min": 0.0,
+    "max": 0.1,
+    "current": 0.0,
+    "speed": 0.000025,  # final
     # 'speed': 0.00025, # fast
-    'direction': 1,
-    'index': 0,
-    'levels': [],
+    "direction": 1,
+    "index": 0,
+    "levels": [],
 }
 
-while player_stress['current'] <= player_stress['max']:
-    player_stress['levels'].append(player_stress['current'])
-    player_stress['current'] += player_stress['speed']
-player_stress['current'] = player_stress['min']
+while player_stress["current"] <= player_stress["max"]:
+    player_stress["levels"].append(player_stress["current"])
+    player_stress["current"] += player_stress["speed"]
+player_stress["current"] = player_stress["min"]
 # linear to ease-in
-player_stress['levels'] = tuple(player_stress['levels'][-1] * (x / player_stress['levels'][-1])**25 for x in player_stress['levels'])
-player_stress['index_max'] = len(player_stress['levels'])
-del player_stress['current'], player_stress['speed']
+player_stress["levels"] = tuple(player_stress["levels"][-1] * (x / player_stress["levels"][-1]) ** 25 for x in player_stress["levels"])
+player_stress["index_max"] = len(player_stress["levels"])
+del player_stress["current"], player_stress["speed"]
 
 blur_noise_pixel_shader = Shader(
-    name='blur_noise_pixel_shader',
-    fragment='''
+    name="blur_noise_pixel_shader",
+    fragment="""
     #version 430
 
     uniform sampler2D tex;
@@ -288,16 +276,17 @@ blur_noise_pixel_shader = Shader(
 
         color = vec4(noised, 1.0);
     }
-    ''',
+    """,
     default_input={
-        'blur_size':      0.0,    # up to ~0.1
-        'noise_offset':   1.0,    # animate for rolling grain
-        'noise_strength': 0.0,    # up to ~0.1
-        'PixelCount':     3200.0 if settings['enable_pixelation'] else 0.0,
-    }
+        "blur_size": 0.0,  # up to ~0.1
+        "noise_offset": 1.0,  # animate for rolling grain
+        "noise_strength": 0.0,  # up to ~0.1
+        "PixelCount": 3200.0 if settings["enable_pixelation"] else 0.0,
+    },
 )
 
 # pause menu
+
 
 class PauseMenu(Entity):
     def __init__(self):
@@ -305,28 +294,28 @@ class PauseMenu(Entity):
         self.pause_menu = Entity(parent=camera.ui, enabled=False)
 
         # if application.development_mode:
-        self.render_mode_text = Text(text='Render Mode: default', parent=self.pause_menu, position=(0, 0.1875), origin=(0, 0))
+        self.render_mode_text = Text(text="Render Mode: default", parent=self.pause_menu, position=(0, 0.1875), origin=(0, 0))
         self.render_mode_buttons = []
         for i, mode in enumerate(window.render_modes):
-            button = Button(text=mode.capitalize(), parent=self.pause_menu, scale=(0.15, 0.05), position=(i * 0.16 - ((len(window.render_modes) * (0.16 - (len(window.render_modes)*0.01)))/2), 0.1125), color=color.black, radius=0.25)
+            button = Button(text=mode.capitalize(), parent=self.pause_menu, scale=(0.15, 0.05), position=(i * 0.16 - ((len(window.render_modes) * (0.16 - (len(window.render_modes) * 0.01))) / 2), 0.1125), color=color.black, radius=0.25)
             button.on_click = Func(self.change_render_mode, mode)
             self.render_mode_buttons.append(button)
 
-        self.camera_mode_text = Text(text='Camera Mode: None', parent=self.pause_menu, position=(0, -0.1125), origin=(0, 0))
+        self.camera_mode_text = Text(text="Camera Mode: None", parent=self.pause_menu, position=(0, -0.1125), origin=(0, 0))
         self.camera_mode_buttons = []
-        for i, mode in enumerate(['Blur Noise', 'None']):
-            button = Button(text=mode, parent=self.pause_menu, scale=(0.15, 0.05), position=(i * 0.16 - ((2 * (0.16 - (2*0.01)))/2), -0.1875), color=color.black, radius=0.25)
+        for i, mode in enumerate(["Blur Noise", "None"]):
+            button = Button(text=mode, parent=self.pause_menu, scale=(0.15, 0.05), position=(i * 0.16 - ((2 * (0.16 - (2 * 0.01))) / 2), -0.1875), color=color.black, radius=0.25)
             button.on_click = Func(self.change_camera_mode, mode)
             self.camera_mode_buttons.append(button)
 
         if not application.development_mode:
             self.render_mode_text.disable()
             # self.camera_mode_text.disable()
-            for button in (self.render_mode_buttons): # + self.camera_mode_buttons
+            for button in self.render_mode_buttons:  # + self.camera_mode_buttons
                 button.disable()
 
-        self.resume_button = Button(text='Resume', parent=self.pause_menu, scale=(0.15, 0.05), position=(0, 0.0375), color=color.green, radius=0.25)
-        self.quit_button = Button(text='Quit', parent=self.pause_menu, scale=(0.15, 0.05), position=(0, -0.0375), color=color.red, radius=0.25)
+        self.resume_button = Button(text="Resume", parent=self.pause_menu, scale=(0.15, 0.05), position=(0, 0.0375), color=color.green, radius=0.25)
+        self.quit_button = Button(text="Quit", parent=self.pause_menu, scale=(0.15, 0.05), position=(0, -0.0375), color=color.red, radius=0.25)
         self.resume_button.on_click = self.resume_game
         self.quit_button.on_click = self.quit_game
 
@@ -349,7 +338,7 @@ class PauseMenu(Entity):
         time.dt = 1
 
     def quit_game(self):
-        if '__compiled__' in globals():
+        if "__compiled__" in globals():
             if "DANK_TOOL_VERSION" in os.environ:
                 os.system("taskkill /f /im dank.tool.exe")
             else:
@@ -359,33 +348,34 @@ class PauseMenu(Entity):
 
     def change_render_mode(self, mode):
         if window.render_mode != mode:
-            self.render_mode_text.text = f'Render Mode: {mode}'
+            self.render_mode_text.text = f"Render Mode: {mode}"
             window.render_mode = mode
 
     def change_camera_mode(self, mode):
-        if self.camera_mode_text.text != f'Camera Mode: {mode}':
-            if 'Noise' in self.camera_mode_text.text and not player_stress_sequence.paused:
+        if self.camera_mode_text.text != f"Camera Mode: {mode}":
+            if "Noise" in self.camera_mode_text.text and not player_stress_sequence.paused:
                 player_stress_sequence.pause()
-            self.camera_mode_text.text = f'Camera Mode: {mode}'
+            self.camera_mode_text.text = f"Camera Mode: {mode}"
             match mode:
-                case 'Blur Noise':
+                case "Blur Noise":
                     camera.clip_plane_far = 1400
-                    if settings['enable_pixelation'] and camera.shader_input_getter().get('PixelCount', 0.0) == 0.0:
+                    if settings["enable_pixelation"] and camera.shader_input_getter().get("PixelCount", 0.0) == 0.0:
                         camera.set_shader_input("PixelCount", 3200.0)
                     camera.shader_setter(blur_noise_pixel_shader)
                     if not player_stress_sequence.started:
                         player_stress_sequence.start()
                     elif player_stress_sequence.paused:
                         player_stress_sequence.resume()
-                case 'None':
-                    if settings['enable_pixelation'] and camera.shader_input_getter().get('PixelCount', 3200.0) != 0.0:
+                case "None":
+                    if settings["enable_pixelation"] and camera.shader_input_getter().get("PixelCount", 3200.0) != 0.0:
                         camera.set_shader_input("PixelCount", 0.0)
                     camera.shader_setter(None)
 
+
 # lighting
 
-def enable_lighting():
 
+def enable_lighting():
     global torch_light
 
     scene.fog_density = 0.2
@@ -412,19 +402,13 @@ def enable_lighting():
     player_camera = Entity(parent=camera, position=(0.5, -0.5, 0.8), rotation=(0, 135, 5))
     torch.add_script(SmoothFollow(target=player_camera, rotation_speed=10))
 
-def enable_filters():
 
+def enable_filters():
     # Setup CommonFilters for advanced visual effects
     filters = CommonFilters(app.win, app.cam)
 
     # Enable ambient occlusion for better depth perception
-    filters.setAmbientOcclusion(
-        numsamples=16,
-        radius=0.05,
-        amount=2.0,
-        strength=0.01,
-        falloff=0.000002
-    )
+    filters.setAmbientOcclusion(numsamples=16, radius=0.05, amount=2.0, strength=0.01, falloff=0.000002)
 
     # Enable HDR for better light handling
     filters.setHighDynamicRange()
@@ -435,27 +419,29 @@ def enable_filters():
     # Enable MSAA for smoother edges
     # filters.setMSAA(samples=4)
 
+
 # Function to get height at a specific position
 def get_height(x, z):
     # Scale the coordinates to get smoother terrain
-    nx = x / settings['perlin_scale']
-    nz = z / settings['perlin_scale']
+    nx = x / settings["perlin_scale"]
+    nz = z / settings["perlin_scale"]
 
     # Use multiple noise layers for more interesting terrain
-    base_height = perlin([nx, nz]) * settings['amplitude']
+    base_height = perlin([nx, nz]) * settings["amplitude"]
 
     # Add some smaller details with higher frequency
-    detail = perlin([nx * 2, nz * 2]) * (settings['amplitude'] * 0.3)
+    detail = perlin([nx * 2, nz * 2]) * (settings["amplitude"] * 0.3)
 
     # Add some very small details for texture
-    micro_detail = perlin([nx * 4, nz * 4]) * (settings['amplitude'] * 0.1)
+    micro_detail = perlin([nx * 4, nz * 4]) * (settings["amplitude"] * 0.1)
 
     # Combine all layers
     return base_height + detail + micro_detail
 
+
 # Function to generate chunk mesh
 def generate_chunk_mesh(chunk_x, chunk_z):
-    chunk_size = settings['chunk_size']
+    chunk_size = settings["chunk_size"]
     vertices = []
     triangles = []
     uvs = []
@@ -468,7 +454,7 @@ def generate_chunk_mesh(chunk_x, chunk_z):
             world_z = chunk_z * chunk_size + z
             height = get_height(world_x, world_z)
             vertices.append(Vec3(world_x, height, world_z))
-            uvs.append((x/chunk_size, z/chunk_size))
+            uvs.append((x / chunk_size, z / chunk_size))
             # Add an upward-facing normal for each vertex
             normals.append(Vec3(0, 1, 0))
 
@@ -489,10 +475,11 @@ def generate_chunk_mesh(chunk_x, chunk_z):
     mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs, normals=normals)
     return mesh
 
+
 # terrain and entity generation
 
-def create_chunk_entity(chunk_pos):
 
+def create_chunk_entity(chunk_pos):
     # Create entity for the chunk
     chunk_entity = Entity(
         model=generate_chunk_mesh(chunk_pos[0], chunk_pos[1]),
@@ -512,14 +499,15 @@ def create_chunk_entity(chunk_pos):
 
     chunks[chunk_pos] = chunk_entity
 
+
 def add_vegetation_to_chunk(chunk_pos, chunk_entity):
-    chunk_size = settings['chunk_size']
+    chunk_size = settings["chunk_size"]
 
     # Add some trees randomly within the chunk
     for _ in range(int(chunk_size * chunk_size * 0.01)):  # 1% density
         # Random position within the chunk
-        local_x = randint(0, chunk_size-1)
-        local_z = randint(0, chunk_size-1)
+        local_x = randint(0, chunk_size - 1)
+        local_z = randint(0, chunk_size - 1)
         world_x = chunk_pos[0] * chunk_size + local_x
         world_z = chunk_pos[1] * chunk_size + local_z
 
@@ -528,13 +516,13 @@ def add_vegetation_to_chunk(chunk_pos, chunk_entity):
 
         # Randomly select one of the 10 tree models
         tree_model_num = randint(1, 10)
-        rotation = (0, randint(0, 360), 0) # Random Y rotation
+        rotation = (0, randint(0, 360), 0)  # Random Y rotation
 
         # Load the corresponding tree log and leaves models
         _ = Entity(
             model=f"models_compressed/tmp/tree_log_{tree_model_num}",
             texture=tree_log_texture,
-            collider = "mesh",
+            collider="mesh",
             position=(world_x, height, world_z),
             rotation=rotation,
             ignore=True,
@@ -554,8 +542,8 @@ def add_vegetation_to_chunk(chunk_pos, chunk_entity):
 
     # Add some ground vegetation (grass, flowers, etc.)
     for _ in range(int(chunk_size * chunk_size * 0.05)):  # 5% density
-        local_x = randint(0, chunk_size-1)
-        local_z = randint(0, chunk_size-1)
+        local_x = randint(0, chunk_size - 1)
+        local_z = randint(0, chunk_size - 1)
         world_x = chunk_pos[0] * chunk_size + local_x
         world_z = chunk_pos[1] * chunk_size + local_z
 
@@ -573,15 +561,17 @@ def add_vegetation_to_chunk(chunk_pos, chunk_entity):
             alpha=0,
         )
 
+
 # load / unload chunks
+
 
 def first_load():
     # Calculate player's chunk position
-    player_chunk_x = int(player.x) // settings['chunk_size']
-    player_chunk_z = int(player.z) // settings['chunk_size']
+    player_chunk_x = int(player.x) // settings["chunk_size"]
+    player_chunk_z = int(player.z) // settings["chunk_size"]
 
-    for cx in range(player_chunk_x - settings['render_dist'], player_chunk_x + settings['render_dist'] + 1):
-        for cz in range(player_chunk_z - settings['render_dist'], player_chunk_z + settings['render_dist'] + 1):
+    for cx in range(player_chunk_x - settings["render_dist"], player_chunk_x + settings["render_dist"] + 1):
+        for cz in range(player_chunk_z - settings["render_dist"], player_chunk_z + settings["render_dist"] + 1):
             chunk_pos = (cx, cz)
             if chunk_pos not in rendered_chunks:
                 create_chunk_entity(chunk_pos)
@@ -591,19 +581,20 @@ def first_load():
     game_sequence_1.start()
     game_sequence_2.start()
 
+
 def render_chunks():
     global render_grid
 
     # Calculate player's chunk position
-    player_chunk_x = int(player.x) // settings['chunk_size']
-    player_chunk_z = int(player.z) // settings['chunk_size']
+    player_chunk_x = int(player.x) // settings["chunk_size"]
+    player_chunk_z = int(player.z) // settings["chunk_size"]
 
     # Update render grid based on player's position
     _render_grid = {}
     r_loop = []
 
-    for cx in range(player_chunk_x - settings['render_dist'], player_chunk_x + settings['render_dist'] + 1):
-        for cz in range(player_chunk_z - settings['render_dist'], player_chunk_z + settings['render_dist'] + 1):
+    for cx in range(player_chunk_x - settings["render_dist"], player_chunk_x + settings["render_dist"] + 1):
+        for cz in range(player_chunk_z - settings["render_dist"], player_chunk_z + settings["render_dist"] + 1):
             chunk_pos = (cx, cz)
             _render_grid[chunk_pos] = None
 
@@ -617,6 +608,7 @@ def render_chunks():
     for chunk_pos in r_loop:
         create_chunk_entity(chunk_pos)
         rendered_chunks[chunk_pos] = None
+
 
 def unload_chunks():
     to_unload = []
@@ -642,17 +634,18 @@ def unload_chunks():
         if chunk_pos in rendered_chunks:
             del rendered_chunks[chunk_pos]
 
+
 def update_stamina():
     if player.is_sprinting:
-        player.stamina = max(0, player.stamina - settings['stamina_drain_rate'] * time.dt)
+        player.stamina = max(0, player.stamina - settings["stamina_drain_rate"] * time.dt)
         stamina_bar.value_setter(player.stamina)
         if player.stamina <= 0:
             player.is_sprinting = False
-            player.speed = settings['player_speed']
+            player.speed = settings["player_speed"]
     else:
-        player.stamina = min(settings['stamina_max'], player.stamina + settings['stamina_regen_rate'] * time.dt)
+        player.stamina = min(settings["stamina_max"], player.stamina + settings["stamina_regen_rate"] * time.dt)
         stamina_bar.value_setter(player.stamina)
-        if player.stamina >= settings['stamina_max'] and stamina_bar.bar.color == color.white:
+        if player.stamina >= settings["stamina_max"] and stamina_bar.bar.color == color.white:
             _ = Sequence(
                 Func(stamina_bar.bar.blink, duration=1),
                 Wait(1),
@@ -662,42 +655,44 @@ def update_stamina():
                 auto_destroy=True,
             ).start()
 
+
 seq_vars = {
-    'duration': 0,
-    'magnitude': 0,
+    "duration": 0,
+    "magnitude": 0,
 }
 
+
 def update_shader_values():
-    camera.set_shader_input("noise_offset", randint(0, 100)/100)
+    camera.set_shader_input("noise_offset", randint(0, 100) / 100)
 
     while True:
         try:
-            stress = player_stress['levels'][::player_stress['direction']][player_stress['index']]
+            stress = player_stress["levels"][:: player_stress["direction"]][player_stress["index"]]
             break
         except IndexError:
-            if player_stress['direction'] == 1:
-                seq_vars['magnitude'] = uniform(0.5, 2)
-                seq_vars['duration'] = uniform(1, 3)/4
+            if player_stress["direction"] == 1:
+                seq_vars["magnitude"] = uniform(0.5, 2)
+                seq_vars["duration"] = uniform(1, 3) / 4
                 Sequence(
-                    Func(camera.shake, duration = seq_vars['duration'], magnitude = seq_vars['magnitude']),
-                    Wait(seq_vars['duration']),
-                    Func(camera.shake, duration = seq_vars['duration'], magnitude = seq_vars['magnitude']/3),
-                    Wait(seq_vars['duration']),
-                    Func(camera.shake, duration = seq_vars['duration'], magnitude = seq_vars['magnitude']/3),
-                    Wait(seq_vars['duration']),
-                    Func(camera.shake, duration = seq_vars['duration'], magnitude = seq_vars['magnitude']/4),
+                    Func(camera.shake, duration=seq_vars["duration"], magnitude=seq_vars["magnitude"]),
+                    Wait(seq_vars["duration"]),
+                    Func(camera.shake, duration=seq_vars["duration"], magnitude=seq_vars["magnitude"] / 3),
+                    Wait(seq_vars["duration"]),
+                    Func(camera.shake, duration=seq_vars["duration"], magnitude=seq_vars["magnitude"] / 3),
+                    Wait(seq_vars["duration"]),
+                    Func(camera.shake, duration=seq_vars["duration"], magnitude=seq_vars["magnitude"] / 4),
                     auto_destroy=True,
                 ).start()
-            player_stress['direction'] *= -1
-            player_stress['index'] = 0
-    player_stress['index'] += 1
+            player_stress["direction"] *= -1
+            player_stress["index"] = 0
+    player_stress["index"] += 1
 
     camera.set_shader_input("blur_size", stress)
-    camera.set_shader_input("noise_strength", stress+0.075)
-    camera.fov = 90 - stress*200
+    camera.set_shader_input("noise_strength", stress + 0.075)
+    camera.fov = 90 - stress * 200
+
 
 def update_camera_tilt():
-
     # Smoothly interpolate current rotation to target rotation
     # current_x_tilt = player.camera_pivot.rotation_x
 
@@ -711,64 +706,66 @@ def update_camera_tilt():
     # Set target tilts based on movement keys
     # if held_keys['w']: target_x_tilt = settings['camera_tilt_amount'] + seq_vars['cam_x']
     # if held_keys['s']: target_x_tilt = -settings['camera_tilt_amount'] + seq_vars['cam_x']
-    if held_keys['a']:
-        target_y_tilt = -settings['camera_tilt_amount']
-        target_z_tilt = -settings['camera_tilt_amount']
-    if held_keys['d']:
-        target_y_tilt = settings['camera_tilt_amount']
-        target_z_tilt = settings['camera_tilt_amount']
+    if held_keys["a"]:
+        target_y_tilt = -settings["camera_tilt_amount"]
+        target_z_tilt = -settings["camera_tilt_amount"]
+    if held_keys["d"]:
+        target_y_tilt = settings["camera_tilt_amount"]
+        target_z_tilt = settings["camera_tilt_amount"]
 
     # Use different speeds for tilting and returning to neutral
     # x_speed = settings['camera_tilt_speed'] if abs(target_x_tilt) > 0 else settings['camera_return_speed']
-    y_speed = settings['camera_tilt_speed'] if abs(target_y_tilt) > 0 else settings['camera_return_speed']
-    z_speed = settings['camera_tilt_speed'] if abs(target_z_tilt) > 0 else settings['camera_return_speed']
+    y_speed = settings["camera_tilt_speed"] if abs(target_y_tilt) > 0 else settings["camera_return_speed"]
+    z_speed = settings["camera_tilt_speed"] if abs(target_z_tilt) > 0 else settings["camera_return_speed"]
 
     # Apply smooth interpolation
     # player.camera_pivot.rotation_x = lerp(current_x_tilt, target_x_tilt, time.dt * x_speed)
     player.camera_pivot.rotation_y = lerp(player.camera_pivot.rotation_y, target_y_tilt, time.dt * y_speed)
     player.camera_pivot.rotation_z = lerp(player.camera_pivot.rotation_z, target_z_tilt, time.dt * z_speed)
 
+
 def check_player_y():
-    if player.y < settings['player_y_min']:
-        player.position = (0, settings['player_y_max'], 0)
-        if settings['development_mode']:
+    if player.y < settings["player_y_min"]:
+        player.position = (0, settings["player_y_max"], 0)
+        if settings["development_mode"]:
             print(clr(f"  - updated player y: {player.y}"))
 
-def input(key): # pylint: disable=function-redefined
 
+def input(key):  # pylint: disable=function-redefined
     match key:
-        case 'escape':
+        case "escape":
             if pause_menu.pause_menu.enabled:
                 pause_menu.resume_game()
             else:
                 pause_menu.pause_game()
-        case 'shift':
+        case "shift":
             if player.stamina > 0:
                 player.is_sprinting = True
-                player.speed = settings['player_sprint_speed']
+                player.speed = settings["player_sprint_speed"]
                 if stamina_bar.bar.color == color.clear:
                     stamina_bar.bar.animate_color(color.white, duration=0.3)
-        case 'shift up':
+        case "shift up":
             player.is_sprinting = False
-            player.speed = settings['player_speed']
-        case 'space':
-            if not isinstance(player, EditorCamera) and player.stamina > settings['stamina_jump_cost']:
+            player.speed = settings["player_speed"]
+        case "space":
+            if not isinstance(player, EditorCamera) and player.stamina > settings["stamina_jump_cost"]:
                 player.jump()
-                player.stamina -= settings['stamina_jump_cost']
+                player.stamina -= settings["stamina_jump_cost"]
                 stamina_bar.value_setter(player.stamina)
                 if stamina_bar.bar.color == color.clear:
                     stamina_bar.bar.animate_color(color.white, duration=0.3)
 
+
 app = Ursina(
-    title='𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎',
-    icon = (os.path.join(os.path.dirname(__file__), "dankware.ico") if '__compiled__' in globals() else 'textures/ursina.ico'),
-    borderless=not settings['development_mode'],
-    fullscreen=not settings['development_mode'],
-    development_mode=settings['development_mode'],
+    title="𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
+    icon=(os.path.join(os.path.dirname(__file__), "dankware.ico") if "__compiled__" in globals() else "textures/ursina.ico"),
+    borderless=not settings["development_mode"],
+    fullscreen=not settings["development_mode"],
+    development_mode=settings["development_mode"],
 )
 
 Entity.default_shader = None
-application.ursina_splash = SplashScreen('dankware.png')
+application.ursina_splash = SplashScreen("dankware.png")
 
 # Generate the terrain textures
 print(clr("  - Generating terrain textures..."))
@@ -782,43 +779,39 @@ generate_tree_models()
 
 # Use the generated textures
 textures = tuple(load_texture(f"tmp/terrain_{i}") for i in range(1, 11))
-ground_leaves_textures = tuple([
-    load_texture("mangrove_leaves_inventory"),
-    load_texture("azalea_leaves"),
-    load_texture("flowering_azalea_leaves")
-])
+ground_leaves_textures = tuple([load_texture("mangrove_leaves_inventory"), load_texture("azalea_leaves"), load_texture("flowering_azalea_leaves")])
 
 # Create stamina bar
 stamina_bar = HealthBar(
-    name = 'stamina_bar',
-    max_value = settings['stamina_max'],
-    value = settings['stamina_max'],
-    color = color.clear,
-    bar_color = color.clear,
-    highlight_color = color.clear,
-    roundness = 0.15,
-    scale = (.3, .01),
-    position = (0, -.50),
-    origin = (0, 0),
-    parent = camera.ui,
-    show_text = False,
+    name="stamina_bar",
+    max_value=settings["stamina_max"],
+    value=settings["stamina_max"],
+    color=color.clear,
+    bar_color=color.clear,
+    highlight_color=color.clear,
+    roundness=0.15,
+    scale=(0.3, 0.01),
+    position=(0, -0.50),
+    origin=(0, 0),
+    parent=camera.ui,
+    show_text=False,
 )
 
 # Initialize Perlin noise generator
-perlin = PerlinNoise(octaves=settings['perlin_octaves'], seed=int(time.time()))
+perlin = PerlinNoise(octaves=settings["perlin_octaves"], seed=int(time.time()))
 chunks = {}
 render_grid = {}
 rendered_chunks = {}
 
 # player = EditorCamera(move_speed=15, zoom_speed=1)
-player = FirstPersonController(speed=settings['player_speed'], jump_height=settings['player_jump_height'])
+player = FirstPersonController(speed=settings["player_speed"], jump_height=settings["player_jump_height"])
 player.cursor.color = color.clear
 # Add player stamina system
-player.stamina = settings['stamina_max']
+player.stamina = settings["stamina_max"]
 player.is_sprinting = False
 # Set player position above the terrain
 player.position = (0, get_height(0, 0) + 100, 0)
-sky = Sky(texture='sky.png')
+sky = Sky(texture="sky.png")
 
 game_sequence_1 = Sequence(Func(render_chunks), Wait(1.5), loop=True)
 game_sequence_2 = Sequence(Func(unload_chunks), Wait(1.5), loop=True)
@@ -833,10 +826,10 @@ first_load()
 
 pause_menu = PauseMenu()
 if isinstance(player, FirstPersonController):
-    pause_menu.change_camera_mode('Blur Noise')
+    pause_menu.change_camera_mode("Blur Noise")
     player_stamina_sequence.start()
     player_camera_tilt_sequence.start()
-if settings['enable_lighting']:
+if settings["enable_lighting"]:
     enable_lighting()
     # enable_filters()
 # pause_menu.pause_game()

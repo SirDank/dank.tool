@@ -1,11 +1,12 @@
 import os
-import time
 import subprocess
+import time
+from subprocess import CalledProcessError
+
+from dankware import clr, cls
 from rich.align import Align
-from dankware import cls, clr
 from rich.console import Console
 from translatepy import Translator
-from subprocess import CalledProcessError
 
 
 def run_command(command_list, check=True, capture=False, suppress_output=False):
@@ -22,9 +23,7 @@ def run_command(command_list, check=True, capture=False, suppress_output=False):
             capture_output=capture,
         )
     except FileNotFoundError as exc:
-        raise FileNotFoundError(
-            f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH."
-        ) from exc
+        raise FileNotFoundError(f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH.") from exc
 
 
 def translate(text):
@@ -80,9 +79,7 @@ def main():
 
     # SpotX
 
-    translated = translate(
-        "installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates"
-    )
+    translated = translate("installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates")
     print(clr(f"\n  - {translated}"))
     run_command(
         [
@@ -116,15 +113,9 @@ def main():
         ],
         check=True,
     )
-    input(
-        clr(
-            f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "
-        )
-    )
+    input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
-    translated = translate(
-        "[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom (darkmono)"
-    )
+    translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom (darkmono)")
     print(clr(f"\n  {translated}"))
 
     print(clr(f"\n  - {translate('Sleeping for 5 seconds...')}\n"))
