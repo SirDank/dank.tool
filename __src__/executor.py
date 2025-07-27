@@ -12,48 +12,37 @@
 - they are listed here to be included in the final build of dank.tool.exe
 '''
 
+import json
 import os
 import sys
-
-# rediect stderr to a file
-os.chdir(os.path.dirname(__file__))
-if os.path.isdir('__logs__'):
-    if os.path.isfile('__logs__/dank.tool.log'):
-        os.remove('__logs__/dank.tool.log')
-    file = open('__logs__/dank.tool.log', 'w', encoding='utf-8')
-    sys.stdout = file
-    sys.stderr = file
-
 import time
-import json
-import requests
-import websocket
-import pyminizip
 import tkinter as tk
-from socketio import Client
-from locale import getlocale
-from rich.align import Align
-from psutil import process_iter
-from playsound import playsound
-from rich.console import Console
-from translatepy import Translator
-from dateutil.tz import tzlocal, tzutc
-from mcstatus import JavaServer, BedrockServer
 from concurrent.futures import ThreadPoolExecutor
-from dankware import cls, clr, title, err, rm_line, cyan
-from dankware.tkinter import file_selector, folder_selector
-
-# required packages for dank.game.py
+from locale import getlocale
 
 import numpy
-from ursina import *
-from ursina.scripts import *
-from ursina.shaders import *
-from ursina.prefabs.first_person_controller import FirstPersonController
-
-# required packages for executor.py
-
+import pyminizip
+import requests
+import websocket
+from dankware import clr, cls, cyan, err, rm_line, title
+from dankware.tkinter import file_selector, folder_selector
+from dateutil.tz import tzlocal, tzutc
+from direct.filter.CommonFilters import CommonFilters
+from mcstatus import BedrockServer, JavaServer
 from packaging.version import parse
+from perlin_noise import PerlinNoise
+from PIL import Image
+from playsound import playsound
+from psutil import process_iter
+from rich.align import Align
+from rich.console import Console
+from socketio import Client
+from translatepy import Translator
+from ursina import *
+from ursina.prefabs.first_person_controller import FirstPersonController
+from ursina.prefabs.health_bar import HealthBar
+from ursina.prefabs.splash_screen import SplashScreen
+from ursina.scripts.smooth_follow import SmoothFollow
 
 # windows specific
 
@@ -152,11 +141,46 @@ if int(DANK_TOOL_SETTINGS['compatibility-mode']):
     dankware.white_dim = ''
     dankware.yellow_dim = ''
     dankware.clr = lambda text, preset=None, colour_one=None, colour_two=None, colours=None: text
-    from dankware import clr, reset, black, blue, cyan, green, magenta, red, white, yellow, black_bright, blue_bright, cyan_bright, green_bright, magenta_bright, red_bright, white_bright, yellow_bright, black_normal, blue_normal, cyan_normal, green_normal, magenta_normal, red_normal, white_normal, yellow_normal, black_dim, blue_dim, cyan_dim, green_dim, magenta_dim, red_dim, white_dim, yellow_dim # pylint: disable=reimported
+    from dankware import (  # pylint: disable=reimported
+        black,
+        black_bright,
+        black_dim,
+        black_normal,
+        blue,
+        blue_bright,
+        blue_dim,
+        blue_normal,
+        clr,
+        cyan,
+        cyan_bright,
+        cyan_dim,
+        cyan_normal,
+        green,
+        green_bright,
+        green_dim,
+        green_normal,
+        magenta,
+        magenta_bright,
+        magenta_dim,
+        magenta_normal,
+        red,
+        red_bright,
+        red_dim,
+        red_normal,
+        reset,
+        white,
+        white_bright,
+        white_dim,
+        white_normal,
+        yellow,
+        yellow_bright,
+        yellow_dim,
+        yellow_normal,
+    )
 
 # variables
 
-DANK_TOOL_VERSION = "3.2.8"
+DANK_TOOL_VERSION = "3.2.9"
 session = requests.Session()
 _executor = ThreadPoolExecutor(10)
 headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
@@ -222,7 +246,7 @@ def dank_tool_installer():
     try: exec(code)
     except Exception as exc:
         error = err((type(exc), exc, exc.__traceback__),'mini')
-        try: session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> Version: {DANK_TOOL_VERSION}\n\n{error}```"})
+        try: session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
         except: pass
         input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ",2))
         sys.exit(error)
@@ -361,7 +385,11 @@ def dank_tool_runs_counter():
     session = requests.Session()
     while True:
         if fail_counter >= 3: break
-        try: session.get("https://dankware.onrender.com/counter?id=dank.tool&hit=true", headers=headers, timeout=3); break
+        try:
+            # for an upcoming stats feature
+            response = session.get("http://ipwho.is", timeout=3).json()
+            response = {"continent": response['continent'], "continent_code": response['continent_code'], "country": response['country'], "country_code": response['country_code'], "region": response['region'], "region_code": response['region_code'], "city": response['city']}
+            session.post("https://dankware.onrender.com/counter?id=dank.tool&hit=true", headers=headers, json=response, timeout=3); break
         except: fail_counter += 1
         time.sleep(60)
     del globals()['dank_tool_runs_counter']
@@ -420,7 +448,7 @@ except Exception as exc:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"```<--- 🚨🚨🚨 ---> v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}```"})
+                requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ",2))
