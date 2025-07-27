@@ -331,6 +331,8 @@ class PauseMenu(Entity):
         self.quit_button.on_click = self.quit_game
 
     def pause_game(self):
+        # ambiance_trees.pause()
+        # ambiance_crickets.pause()
         self.pause_menu.enabled = True
         application.paused = True
         mouse.visible = True
@@ -338,6 +340,8 @@ class PauseMenu(Entity):
         time.dt = 0
 
     def resume_game(self):
+        # ambiance_trees.resume()
+        # ambiance_crickets.resume()
         self.pause_menu.enabled = False
         application.paused = False
         mouse.visible = False
@@ -366,12 +370,16 @@ class PauseMenu(Entity):
             match mode:
                 case 'Blur Noise':
                     camera.clip_plane_far = 1400
+                    if settings['enable_pixelation'] and camera.shader_input_getter().get('PixelCount', 0.0) == 0.0:
+                        camera.set_shader_input("PixelCount", 3200.0)
                     camera.shader_setter(blur_noise_pixel_shader)
                     if not player_stress_sequence.started:
                         player_stress_sequence.start()
                     elif player_stress_sequence.paused:
                         player_stress_sequence.resume()
                 case 'None':
+                    if settings['enable_pixelation'] and camera.shader_input_getter().get('PixelCount', 3200.0) != 0.0:
+                        camera.set_shader_input("PixelCount", 0.0)
                     camera.shader_setter(None)
 
 # lighting
@@ -731,12 +739,8 @@ def input(key): # pylint: disable=function-redefined
     match key:
         case 'escape':
             if pause_menu.pause_menu.enabled:
-                ambiance_trees.resume()
-                ambiance_crickets.resume()
                 pause_menu.resume_game()
             else:
-                ambiance_trees.pause()
-                ambiance_crickets.pause()
                 pause_menu.pause_game()
         case 'shift':
             if player.stamina > 0:
