@@ -10,7 +10,9 @@ rich
 win11toast
 translatepy
 playsound==1.2.2
-numpy
+numpy==1.26.4 # for nuitka 2.6.4
 python-socketio[client]
 websocket-client
 https://github.com/pokepetter/ursina/archive/refs/heads/master.zip
+perlin-noise
+pillow

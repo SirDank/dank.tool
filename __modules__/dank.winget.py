@@ -1,12 +1,13 @@
 import os
-import requests
-import tempfile
 import subprocess
-from rich.panel import Panel
+import tempfile
+
+import requests
+from dankware import clr, cls, github_file_selector, green_bright, rm_line
 from rich.align import Align
 from rich.columns import Columns
 from rich.console import Console
-from dankware import cls, clr, rm_line, github_file_selector, green_bright
+from rich.panel import Panel
 
 
 def winget_installed():
@@ -29,11 +30,7 @@ def install_winget():
     data = requests.get(
         url,
         headers={
-            "User-Agent": (
-                "dank.tool"
-                if "DANK_TOOL_VERSION" not in os.environ
-                else f"dank.tool {os.environ['DANK_TOOL_VERSION']}"
-            ),
+            "User-Agent": ("dank.tool" if "DANK_TOOL_VERSION" not in os.environ else f"dank.tool {os.environ['DANK_TOOL_VERSION']}"),
             "Content-Type": "application/json",
         },
         timeout=180,
@@ -51,11 +48,7 @@ def print_banner():
     cls()
     banner = "\n\n   _         _           _             _   \n _| |___ ___| |_   _ _ _|_|___ ___ ___| |_ \n| . | .'|   | '_|_| | | | |   | . | -_|  _|\n|___|__,|_|_|_,_|_|_____|_|_|_|_  |___|_|  \n                              |___|        \n\n\n"
     Console().print(Align.center(banner), style="blink red", highlight=False)
-    print(
-        clr(
-            "  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - update-all\n\n  - clear (refresh screen)\n\n  - exit\n"
-        )
-    )
+    print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - update-all\n\n  - clear (refresh screen)\n\n  - exit\n"))
 
 
 def cleanup_result(cmd):
@@ -68,26 +61,20 @@ def handle_response(cmd, results, mode):
     indexes = [0]
     cmd = cmd.stdout.decode("utf-8").splitlines()
     if not (_ for _ in cmd if _.startswith("Name")):
-        raise RuntimeError(
-            f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}"
-        )
+        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}")
 
     try:
         while not cmd[0].startswith("Name"):
             cmd = cmd[1:]
     except IndexError as exc:
-        raise RuntimeError(
-            f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}"
-        ) from exc
+        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}") from exc
 
     try:
         for char in ("I", "V", "M", "S"):
             if char in cmd[0]:
                 indexes.append(cmd[0].index(char))
     except Exception as exc:
-        raise RuntimeError(
-            f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}"
-        ) from exc
+        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}") from exc
 
     results.clear()
     cmd = cmd[2:]
@@ -103,10 +90,7 @@ def handle_response(cmd, results, mode):
             index += 1
 
     console = Console()
-    user_renderables = [
-        f"[b][bright_white]{key} [bright_red]- [bright_white]{value['name']}[/b]"
-        for key, value in results.items()
-    ]
+    user_renderables = [f"[b][bright_white]{key} [bright_red]- [bright_white]{value['name']}[/b]" for key, value in results.items()]
     results["mode"] = mode
     print()
     console.print(
@@ -123,11 +107,7 @@ def handle_response(cmd, results, mode):
         case "search":
             print(clr("\n  - Type number to install ( Supports multiple ex: 1,2,3 )\n"))
         case "installed":
-            print(
-                clr(
-                    "\n  - Type number to display info ( Supports multiple ex: 1,2,3 )\n"
-                )
-            )
+            print(clr("\n  - Type number to display info ( Supports multiple ex: 1,2,3 )\n"))
         case "updates":
             print(clr("\n  - Type number to update ( Supports multiple ex: 1,2,3 )\n"))
 
@@ -208,14 +188,8 @@ def main():
                         handle_response(cmd, results, "update-all")
                         max = len(results) - 1
                         for index in range(1, max + 1):
-                            print(
-                                clr(
-                                    f"\n  - [{index}/{max}] Updating {results[index]['name']}...\n"
-                                )
-                            )
-                            os.system(
-                                f"winget upgrade --interactive --id {results[index]['id']}"
-                            )
+                            print(clr(f"\n  - [{index}/{max}] Updating {results[index]['name']}...\n"))
+                            os.system(f"winget upgrade --interactive --id {results[index]['id']}")
                         print()
                 else:
                     print(
@@ -240,28 +214,15 @@ def main():
                     if selected in results:
                         match results["mode"]:
                             case "search":
-                                if (
-                                    input(
-                                        clr("\n  > Display info? [y/n]: ")
-                                        + green_bright
-                                    )
-                                    .lower()
-                                    .startswith("y")
-                                ):
+                                if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith("y"):
                                     print()
                                     print_info(results[selected]["id"])
                                 else:
                                     rm_line()
                                     rm_line()
-                                if (
-                                    input(clr("\n  > Install? [y/n]: ") + green_bright)
-                                    .lower()
-                                    .startswith("y")
-                                ):
+                                if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith("y"):
                                     print()
-                                    os.system(
-                                        f"winget install --interactive --id {results[selected]['id']}"
-                                    )
+                                    os.system(f"winget install --interactive --id {results[selected]['id']}")
                                     print()
                                 else:
                                     rm_line()
@@ -271,9 +232,7 @@ def main():
 
                             case "updates":
                                 print()
-                                os.system(
-                                    f"winget upgrade --interactive --id {results[selected]['id']}"
-                                )
+                                os.system(f"winget upgrade --interactive --id {results[selected]['id']}")
                                 print()
 
                             case _:
@@ -305,11 +264,7 @@ try:
             )
         )
     elif not winget_installed():
-        input(
-            clr(
-                "\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "
-            )
-        )
+        input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))
         install_winget()
         main()
     else:
