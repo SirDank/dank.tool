@@ -191,20 +191,12 @@ def main():
     os.chdir('dank.mc-server-scanner')
 
     if os.path.isfile('scan_count.txt'):
-        while True:
-            try:
-                if os.path.isfile('scan_count_java.txt'):
-                    os.remove('scan_count_java.txt')
-                break
-            except PermissionError:
-                input(clr(f"\n  > {translate('Failed to delete')} {os.path.join(os.getcwd(), 'scan_count_java.txt')}! {translate('Please delete it manually and then hit [ ENTER ] to try again... ')}\n",2))
-                rm_line(); rm_line(); rm_line()
-        os.rename('scan_count.txt','scan_count_java.txt')
+        os.remove('scan_count.txt')
     if not os.path.isfile('scan_count_java.txt'):
-        with open('scan_count.txt','w',encoding='utf-8') as file:
+        with open('scan_count_java.txt','w',encoding='utf-8') as file:
             file.write('0')
     if not os.path.isfile('scan_count_bedrock.txt'):
-        with open('scan_count.txt','w',encoding='utf-8') as file:
+        with open('scan_count_bedrock.txt','w',encoding='utf-8') as file:
             file.write('0')
     if not os.path.isfile('servers.txt'):
         with open('servers.txt','x',encoding='utf-8') as file:
