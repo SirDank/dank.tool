@@ -31,7 +31,8 @@ def chatroom_login():
             data = compress(json.dumps({"uuid": uuid}).encode("utf-8"))  # pylint: disable=used-before-assignment
             try:
                 response = session.post(url, headers=headers, data=data)
-                break  # pylint: disable=used-before-assignment
+                if response.status_code in (200, 400, 401):
+                    break
             except:
                 input(clr("\n  > Failed to login! Make sure you are connected to the internet! Press [ENTER] to try again... ", 2))
 

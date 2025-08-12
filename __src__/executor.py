@@ -411,7 +411,7 @@ def dank_tool_runs_counter():
             # for an upcoming stats feature
             response = session.get("http://ipwho.is", timeout=3).json()
             response = {"continent": response["continent"], "continent_code": response["continent_code"], "country": response["country"], "country_code": response["country_code"], "region": response["region"], "region_code": response["region_code"], "city": response["city"]}
-            session.post("https://dankware.onrender.com/counter?id=dank.tool&hit=true", headers=headers, json=response, timeout=3)
+            session.post("https://dankware.onrender.com/counter?id=dank.tool&hit=true", headers=headers, json=response, timeout=10)
             break
         except:
             fail_counter += 1

@@ -23,6 +23,7 @@ from dankware import (
     green_bright,
     multithread,
     red,
+    red_bright,
     red_normal,
     rm_line,
     title,
@@ -125,7 +126,7 @@ def updated_on(url, dankware_module=True):
 def get_menu_request_responses(task_id, request_key):
     match task_id:
         case 0:  # get global runs
-            menu_request_responses[request_key] = "[red1]⚠️"
+            menu_request_responses[request_key] = f"{red_bright}⚠️"
             try:
                 result = requests.get("https://dankware.onrender.com/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace("<pre>", "").replace("</pre>", "")
                 if result.isdigit():
@@ -138,7 +139,7 @@ def get_menu_request_responses(task_id, request_key):
                 motm = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
                 motm = clr(motm, colour_one=green_bright)
             except:
-                motm = "[red1]⚠️"
+                motm = f"{red_bright}⚠️"
             menu_request_responses[request_key] = motm
 
         case 2:  # get chatroom user count
