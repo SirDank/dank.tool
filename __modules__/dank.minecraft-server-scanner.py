@@ -91,7 +91,7 @@ def check(ip, server):
                 json["city"] = response["city"]
                 json["org"] = response["connection"]["org"]
                 json["domain"] = response["connection"]["domain"]
-            executor.submit(requests.post, f"https://dankware.onrender.com/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json)  # pylint: disable=used-before-assignment
+            executor.submit(requests.post, f"https://dankware.alwaysdata.net/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json)  # pylint: disable=used-before-assignment
         except:
             pass
 
@@ -151,13 +151,13 @@ def main():
     console = Console(highlight=False)
     console.print(Align.center(banner), style="blink red")
     print(
-        clr(f"\n  - Java Server List: https://dankware.onrender.com/minecraft-java-servers\n\n  - Bedrock Server List: https://dankware.onrender.com/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}")
+        clr(f"\n  - Java Server List: https://dankware.alwaysdata.net/minecraft-java-servers\n\n  - Bedrock Server List: https://dankware.alwaysdata.net/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}")
     )
     match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
         case "1":
-            os.system("start https://dankware.onrender.com/minecraft-java-servers")
+            os.system("start https://dankware.alwaysdata.net/minecraft-java-servers")
         case "2":
-            os.system("start https://dankware.onrender.com/minecraft-bedrock-servers")
+            os.system("start https://dankware.alwaysdata.net/minecraft-bedrock-servers")
 
     cls()
     console.print(Align.center(banner), style="blink red")

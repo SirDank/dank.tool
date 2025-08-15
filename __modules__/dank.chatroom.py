@@ -20,7 +20,7 @@ sio = Client()
 
 def chatroom_login():
     global username
-    url = "https://dankware.onrender.com/chatroom-login"
+    url = "https://dankware.alwaysdata.net/chatroom-login"
 
     while True:
         cls()
@@ -265,7 +265,7 @@ chatroom_login()
 executor = ThreadPoolExecutor(5)
 while running:
     try:
-        sio.connect("https://dankware.onrender.com", {"UUID": uuid}, retry=False, wait_timeout=10)
+        sio.connect("https://dankware.alwaysdata.net", {"UUID": uuid}, retry=False, wait_timeout=10)
         # rm_line()
         break
     except:

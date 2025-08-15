@@ -253,7 +253,7 @@ def dank_tool_installer():
     except Exception as exc:
         error = err((type(exc), exc, exc.__traceback__), "mini")
         try:
-            session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
+            session.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
         except:
             pass
         input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ", 2))
@@ -411,7 +411,7 @@ def dank_tool_runs_counter():
             # for an upcoming stats feature
             response = session.get("http://ipwho.is", timeout=3).json()
             response = {"continent": response["continent"], "continent_code": response["continent_code"], "country": response["country"], "country_code": response["country_code"], "region": response["region"], "region_code": response["region_code"], "city": response["city"]}
-            session.post("https://dankware.onrender.com/counter?id=dank.tool&hit=true", headers=headers, json=response, timeout=10)
+            session.post("https://dankware.alwaysdata.net/counter?id=dank.tool&hit=true", headers=headers, json=response, timeout=10)
             break
         except:
             fail_counter += 1
@@ -434,7 +434,7 @@ def dank_tool_chatroom():
         if fail_counter >= 3:
             break
         try:
-            session.post("https://dankware.onrender.com/chatroom-users", headers=headers, timeout=3)
+            session.post("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3)
             fail_counter = 0  # do not add a break here! (keeps user validated)
         except:
             fail_counter += 1
@@ -478,7 +478,7 @@ except Exception as exc:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}"})
+                requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ", 2))
