@@ -1,6 +1,6 @@
 ###################################################################################
 
-#                            https://github.com/SirDank                            
+#                            https://github.com/SirDank
 
 ###################################################################################
 
@@ -23,6 +23,7 @@ from dankware import (
     green_bright,
     multithread,
     red,
+    red_bright,
     red_normal,
     rm_line,
     title,
@@ -36,147 +37,165 @@ from rich.console import Console
 from rich.panel import Panel
 from translatepy import Translator
 
-WINDOWS = (os.name == "nt" and 'WINELOADER' not in os.environ)
+WINDOWS = os.name == "nt" and "WINELOADER" not in os.environ
 if WINDOWS:
     from win11toast import notify
 
+
 def set_title():
-    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]")) # DANK_TOOL_VERSION defined in executor.py
+    title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]"))  # DANK_TOOL_VERSION defined in executor.py
+
 
 # dank.tool updater
 
-def dank_tool_installer():
 
+def dank_tool_installer():
     while True:
         try:
             code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
             break
         except Exception as exc:
-            input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ",2))
-            rm_line(); rm_line()
+            input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ", 2))
+            rm_line()
+            rm_line()
 
-    try: exec(code)
+    try:
+        exec(code)
     except Exception as exc:
-        error = err((type(exc), exc, exc.__traceback__),'mini')
-        try: requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
-        except: pass
-        input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ",2))
+        error = err((type(exc), exc, exc.__traceback__), "mini")
+        try:
+            requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
+        except:
+            pass
+        input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ", 2))
         sys.exit(error)
+
 
 # print coloured and aligned banner
 
-def dank_tool_banner():
 
+def dank_tool_banner():
     cls()
     banner = '\n   ..                                       ..                  s                                  .. \n dF                                   < .z@8"`                 :8                            x .d88"  \n\'88bu.                     u.    u.    !@88E                  .88           u.          u.    5888R   \n\'*88888bu         u      x@88k u@88c.  \'888E   u             :888ooo  ...ue888b   ...ue888b   \'888R   \n  ^"*8888N     us888u.  ^"8888""8888"   888E u@8NL         -*8888888  888R  888r  888R  888r   888R   \n beWE "888L .@88 "8888"   8888  888R    888E`"88*"           8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E .dN.            8888     888R  888>  888R  888>   888R   \n 888E  888E 9888  9888    8888  888R    888E~8888            8888     888R  888>  888R  888>   888R   \n 888E  888F 9888  9888    8888  888R    888E \'888&     .    .8888Lu= u8888cJ888  u8888cJ888    888R   \n.888N..888  9888  9888   "*88*" 8888"   888E  9888.  .@8c   ^%888*    "*888*P"    "*888*P"    .888B . \n `"888*""   "888*""888"    ""   \'Y"   \'"888*" 4888" \'%888"    \'Y"       \'Y"         \'Y"       ^*888%  \n    ""       ^Y"   ^Y\'                   ""    ""     ^*                                        "%    \n'
     console = Console(highlight=False)
     console.print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None))
     console.print(Align.center("[bright_white]s i r [red]. [bright_white]d a n k [red]💕\n"), style=("blink" if not COMPATIBILITY_MODE else None))
 
-def palestine_banner():
 
-    #cls()
-    banner = '\n[red]###[black]###########################################\n[red]#####[black]#########################################\n[red]########[black]######################################\n[red]##########[black]####################################\n[red]############[white]##################################\n[red]##############[white]################################\n[red]################[white]##############################\n[red]##############[white]################################\n[red]############[white]##################################\n[red]##########[green]####################################\n[red]########[green]######################################\n[red]#####[green]#########################################\n[red]###[green]###########################################\n'
+def palestine_banner():
+    # cls()
+    banner = "\n[red]###[black]###########################################\n[red]#####[black]#########################################\n[red]########[black]######################################\n[red]##########[black]####################################\n[red]############[white]##################################\n[red]##############[white]################################\n[red]################[white]##############################\n[red]##############[white]################################\n[red]############[white]##################################\n[red]##########[green]####################################\n[red]########[green]######################################\n[red]#####[green]#########################################\n[red]###[green]###########################################\n"
     console = Console(highlight=False)
     console.print(Align.center(banner), style=("blink" if not COMPATIBILITY_MODE else None))
     console.print(Align.center("[white]U S E [red]. [white]Y O U R [red]. [white]V O I C E\n"), style=("blink" if not COMPATIBILITY_MODE else None))
 
+
 # handle KeyboardInterrupt
 
-def print_warning_symbol():
 
+def print_warning_symbol():
     cls()
-    banner = '\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [bright_white]██████[red]      ██            \n[red]            ██      [bright_white]██████[red]      ██            \n[red]          ██        [bright_white]██████[red]        ██          \n[red]          ██        [bright_white]██████[red]        ██          \n[red]        ██          [bright_white]██████[red]          ██        \n[red]      ██            [bright_white]██████[red]            ██      \n[red]      ██            [bright_white]██████[red]            ██      \n[red]    ██              [bright_white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [bright_white]██████[red]                ██  \n[red]  ██                [bright_white]██████[red]                ██  \n[red]██                  [bright_white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n'
+    banner = "\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [bright_white]██████[red]      ██            \n[red]            ██      [bright_white]██████[red]      ██            \n[red]          ██        [bright_white]██████[red]        ██          \n[red]          ██        [bright_white]██████[red]        ██          \n[red]        ██          [bright_white]██████[red]          ██        \n[red]      ██            [bright_white]██████[red]            ██      \n[red]      ██            [bright_white]██████[red]            ██      \n[red]    ██              [bright_white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [bright_white]██████[red]                ██  \n[red]  ██                [bright_white]██████[red]                ██  \n[red]██                  [bright_white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n"
     Console().print(Align.center(banner), style=("blink" if not COMPATIBILITY_MODE else None), highlight=False)
+
 
 # get commit date & time
 
-def updated_on(url, dankware_module = True):
 
-    if dankware_module: url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1" + ('' if not DEV_BRANCH else '&sha=dev')
+def updated_on(url, dankware_module=True):
+    if dankware_module:
+        url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1" + ("" if not DEV_BRANCH else "&sha=dev")
     try:
-
         response = requests.get(url, headers=headers, timeout=3).json()
         if not response:
             return "[red1][[red] unreleased [red1]]"
 
         date, time = response[0]["commit"]["author"]["date"].split("T")
         date = date.split("-")
-        time = time.replace("Z","").split(":")
+        time = time.replace("Z", "").split(":")
         date_time_data = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
         return f"[bright_green]🔄 {get_duration(date_time_data, datetime.datetime.now(tzlocal()), interval='dynamic-mini')} ago"
 
-    except: return "" # [red1]⚠️
+    except:
+        return ""  # [red1]⚠️
+
 
 # multithread requests
 
-def get_menu_request_responses(task_id, request_key):
 
+def get_menu_request_responses(task_id, request_key):
     match task_id:
-        case 0: # get global runs
-            menu_request_responses[request_key] = "[red1]⚠️"
+        case 0:  # get global runs
+            menu_request_responses[request_key] = f"{red_bright}⚠️"
             try:
-                result = requests.get("https://dankware.onrender.com/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace('<pre>','').replace('</pre>','')
+                result = requests.get("https://dankware.alwaysdata.net/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace("<pre>", "").replace("</pre>", "")
                 if result.isdigit():
                     menu_request_responses[request_key] = green_bright + result
             except:
                 pass
 
-        case 1: # get motm
+        case 1:  # get motm
             try:
                 motm = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
                 motm = clr(motm, colour_one=green_bright)
             except:
-                motm = "[red1]⚠️"
+                motm = f"{red_bright}⚠️"
             menu_request_responses[request_key] = motm
 
-        case 2: # get chatroom user count
+        case 2:  # get chatroom user count
             try:
-                result = requests.get("https://dankware.onrender.com/chatroom-users", headers=headers, timeout=3).content.decode()
+                result = requests.get("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3).content.decode()
                 if result.isdigit():
-                    if result != "0": menu_request_responses[request_key] = result
-                    else: menu_request_responses[request_key] = "1"
+                    if result != "0":
+                        menu_request_responses[request_key] = result
+                    else:
+                        menu_request_responses[request_key] = "1"
                     menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
-                else: menu_request_responses[request_key] = "[red1]⚠️"
-            except: menu_request_responses[request_key] = "[red1]⚠️"
+                else:
+                    menu_request_responses[request_key] = "[red1]⚠️"
+            except:
+                menu_request_responses[request_key] = "[red1]⚠️"
+
 
 def get_menu_request_responses_api(request_key: str):
-
-    if '/' in request_key: # get last update time for modules based on external repos
+    if "/" in request_key:  # get last update time for modules based on external repos
         menu_request_responses[request_key] = updated_on(f"https://api.github.com/repos/{request_key}/commits?path=.&page=1&per_page=1", False)
-    else: # get last update time for modules based on internal repo
+    else:  # get last update time for modules based on internal repo
         menu_request_responses[request_key] = updated_on(request_key)
+
 
 # multithreaded module / asset downloader
 
-def download_offline_modules(project):
 
+def download_offline_modules(project):
     code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
-    if not code.startswith('404: Not Found'):
-        with open(f'__modules__/{project}.py', 'w', encoding='utf-8') as file:
+    if not code.startswith("404: Not Found"):
+        with open(f"__modules__/{project}.py", "w", encoding="utf-8") as file:
             file.write(code)
     else:
-        print(clr(f'\n  - [IGNORE THIS] Remove "{project}" from offline_scripts as it does not exist! Sleeping 5s...',2))
+        print(clr(f'\n  - [IGNORE THIS] Remove "{project}" from offline_scripts as it does not exist! Sleeping 5s...', 2))
         time.sleep(5)
 
-def download_assets(url, file_name):
 
+def download_assets(url, file_name):
     data = requests.get(url, headers=headers, timeout=10).content
-    with open(file_name, 'wb') as file:
+    with open(file_name, "wb") as file:
         file.write(data)
+
 
 # print modules with index and get choice
 
-def print_modules():
 
-    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' DEV BRANCH') + "\n")
+def print_modules():
+    dank_tool_banner()
+    print(clr(f"\n  - Modules:{stats}") + red_normal + ("" if ONLINE_MODE else " OFFLINE") + ("" if not OFFLINE_SRC else " DEBUG") + ("" if not DEV_BRANCH else " DEV BRANCH") + "\n")
     user_renderables = []
     counter = 1
 
     # online modules
 
     for _title, module in modules.items():
-        if not module['category']:
+        if not module["category"]:
             user_renderables.append(f"[b][bright_white]{counter} [red1]- [bright_white]{_title}[/b] {module['info']}")
         else:
             user_renderables.append(f"[b][bright_white]{counter} [red1][ [bright_white]{_title}[/b] [red1]]")
@@ -191,9 +210,10 @@ def print_modules():
     Console().print(Panel(title="[red1]> [bright_white][b]M O D U L E S[/b] [red1]<", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True), highlight=False)
     print()
 
-def print_category_modules(modules):
 
-    dank_tool_banner(); print(clr(f"\n  - Modules:{stats}") + red_normal + ('' if ONLINE_MODE else ' OFFLINE') + ('' if not OFFLINE_SRC else ' DEBUG') + ('' if not DEV_BRANCH else ' ONLINE DEBUG') + "\n")
+def print_category_modules(modules):
+    dank_tool_banner()
+    print(clr(f"\n  - Modules:{stats}") + red_normal + ("" if ONLINE_MODE else " OFFLINE") + ("" if not OFFLINE_SRC else " DEBUG") + ("" if not DEV_BRANCH else " ONLINE DEBUG") + "\n")
     user_renderables = []
     counter = 1
 
@@ -208,10 +228,11 @@ def print_category_modules(modules):
     Console().print(Panel(title="[b][red1]> [bright_white]M O D U L E S [red1]- [bright_white]I N [red1]- [bright_white]C A T E G O R Y [red1]<[/b]", title_align="center", renderable=Columns(user_renderables, expand=True), style="red", expand=True), highlight=False)
     print()
 
+
 # set globals
 
-def set_globals_one():
 
+def set_globals_one():
     global OFFLINE_SRC, DEV_BRANCH, DANK_TOOL_VERSION, ONLINE_MODE, COMPATIBILITY_MODE, DANK_TOOL_LANG, BRANCH, headers
 
     # NOTE: Add script run support!
@@ -219,108 +240,87 @@ def set_globals_one():
     with open("settings.json", "r", encoding="utf-8") as file:
         settings = json.loads(file.read())
 
-    OFFLINE_SRC = int(settings['offline-src'])
-    DEV_BRANCH = int(settings['dev-branch'])
-    DANK_TOOL_VERSION = os.environ.get('DANK_TOOL_VERSION', '99.99.99')
-    ONLINE_MODE = int(os.environ.get('DANK_TOOL_ONLINE', '1'))
-    COMPATIBILITY_MODE = int(settings['compatibility-mode'])
-    DANK_TOOL_LANG = os.environ.get('DANK_TOOL_LANG', '')
-    DANK_TOOL_LANG = '' if DANK_TOOL_LANG == 'en' else DANK_TOOL_LANG
-    BRANCH = ("main" if not DEV_BRANCH else "dev")
+    OFFLINE_SRC = int(settings["offline-src"])
+    DEV_BRANCH = int(settings["dev-branch"])
+    DANK_TOOL_VERSION = os.environ.get("DANK_TOOL_VERSION", "99.99.99")
+    ONLINE_MODE = int(os.environ.get("DANK_TOOL_ONLINE", "1"))
+    COMPATIBILITY_MODE = int(settings["compatibility-mode"])
+    DANK_TOOL_LANG = os.environ.get("DANK_TOOL_LANG", "")
+    DANK_TOOL_LANG = "" if DANK_TOOL_LANG == "en" else DANK_TOOL_LANG
+    BRANCH = "main" if not DEV_BRANCH else "dev"
     headers = {"User-Agent": f"dank.tool {DANK_TOOL_VERSION}"}
 
     global offline_modules, offline_scripts
 
     offline_modules = {
-
-        'OS Tools': {
-
-            'Operating System Repair': {
-                'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
-                'project': "dank.os-repair",
-                'rpc': "repairing windows operating system"    
+        "OS Tools": {
+            "Operating System Repair": {
+                "info": "",
+                "title": "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
+                "project": "dank.os-repair",
             },
-
-            'Network Reset': {
-                'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
-                'project': "dank.network-reset",
-                'rpc': "resetting network settings"
+            "Network Reset": {
+                "info": "",
+                "title": "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
+                "project": "dank.network-reset",
             },
-
-            'Clear Icon & Thumbnail Cache': {
-                'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
-                'project': "dank.clear-icons",
-                'rpc': "clearing icon and thumbnail cache"
+            "Clear Icon & Thumbnail Cache": {
+                "info": "",
+                "title": "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
+                "project": "dank.clear-icons",
             },
-
-            'category': True,
+            "category": True,
         },
-
-        'Software Patchers': {
-
-            'WinRAR': {
-                'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
-                'project': "dank.winrar",
-                'rpc': "patching winrar"
+        "Software Patchers": {
+            "WinRAR": {
+                "info": "",
+                "title": "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
+                "project": "dank.winrar",
             },
-
-            'Revo Uninstaller Pro': {
-                'info': '',
-                'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
-                'project': "dank.revo-uninstaller",
-                'rpc': "patching revo uninstaller pro"
+            "Revo Uninstaller Pro": {
+                "info": "",
+                "title": "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
+                "project": "dank.revo-uninstaller",
             },
-
-            'Sublime Text': {
-                'info': '',
-                'title': '𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛',
-                'project': 'mrpepe.sublime-patcher',
-                'rpc': "patching sublime text"
+            "Sublime Text": {
+                "info": "",
+                "title": "𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
+                "project": "mrpepe.sublime-patcher",
             },
-
-            'category': True
+            "category": True,
         },
-
-        'Browser Backup': {
-            'info': '',
-            'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
-            'project': "dank.browser-backup",
-            'rpc': "backing up a browser",
-            'category': False,
+        "Browser Backup": {
+            "info": "",
+            "title": "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
+            "project": "dank.browser-backup",
+            "category": False,
         },
-
-        'World Exploration Game [red1][[red]BETA[red1]]': {
-            'info': '',
-            'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
-            'project': "dank.game",
-            'rpc': "playing a world exploration game",
-            'category': False,
+        "World Exploration Game [red1][[red]BETA[red1]]": {
+            "info": "",
+            "title": "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
+            "project": "dank.game",
+            "category": False,
         },
-
-        'Settings': {
-            'info': '',
-            'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
-            'project': "dank.tool settings",
-            'rpc': "changing dank.tool settings",
-            'category': False,
-        }
+        "Settings": {
+            "info": "",
+            "title": "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
+            "project": "dank.tool settings",
+            "category": False,
+        },
     }
 
     offline_scripts = tuple(("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher"))
 
-def set_globals_two():
 
+def set_globals_two():
     global stats
 
     if ONLINE_MODE:
-
         global online_modules
 
         stats = f" [ dank.tool runs: {menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
+
+        # fmt: off
 
         online_modules = {
 
@@ -330,14 +330,14 @@ def set_globals_two():
                     'info': menu_request_responses["dank.minecraft-server-builder"],
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
                     'project': "dank.minecraft-server-builder",
-                    'rpc': _translate("building a minecraft server")
+                    'rpc': _translate("⛏️ building a minecraft server")
                 },
 
                 _translate('Minecraft Server Scanner'): {
                     'info': menu_request_responses["dank.minecraft-server-scanner"],
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
                     'project': "dank.minecraft-server-scanner",
-                    'rpc': _translate("scanning for minecraft servers")
+                    'rpc': _translate("🕵️ scanning for minecraft servers")
                 },
 
                 'category': True
@@ -349,35 +349,35 @@ def set_globals_two():
                     'info': menu_request_responses["dank.winget"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝",
                     'project': "dank.winget",
-                    'rpc': _translate("installing / updating software")
+                    'rpc': _translate("🔃 installing / updating software")
                 },
 
                 _translate('Windows / Office Activator'): {
                     'info': menu_request_responses["massgravel/Microsoft-Activation-Scripts"],
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                     'project': "dank.win-activate",
-                    'rpc': _translate("activating windows / office")
+                    'rpc': _translate("✅ activating windows / office")
                 },
 
                 _translate('Operating System Repair'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚘𝚜-𝚛𝚎𝚙𝚊𝚒𝚛",
                     'project': "dank.os-repair",
-                    'rpc': _translate("repairing windows operating system")
+                    'rpc': _translate("⚠️ repairing windows operating system")
                 },
 
                 _translate('Network Reset'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
                     'project': "dank.network-reset",
-                    'rpc': _translate("resetting network settings")
+                    'rpc': _translate("🛜 resetting network settings")
                 },
 
                 _translate('Clear Icon & Thumbnail Cache'): {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
                     'project': "dank.clear-icons",
-                    'rpc': _translate("clearing icon and thumbnail cache")
+                    'rpc': _translate("⚙️ clearing icon and thumbnail cache")
                 },
 
                 'category': True
@@ -390,49 +390,49 @@ def set_globals_two():
                     'info': (f'{menu_request_responses["spicetify/spicetify-cli"]}, {menu_request_responses["SpotX-Official/SpotX"]}' if menu_request_responses["spicetify/spicetify-cli"] and menu_request_responses["SpotX-Official/SpotX"] else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.spotify",
-                    'rpc': _translate("patching spotify using spotx and spicetify")
+                    'rpc': _translate("🥷 patching spotify using spotx and spicetify")
                 },
 
                 'Vencord (Discord)': {
                     'info': menu_request_responses["Vendicated/Vencord"],
                     'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.vencord",
-                    'rpc': _translate("patching discord using vencord")
+                    'rpc': _translate("🥷 patching discord using vencord")
                 },
 
                 'NetLimiter Pro': {
                     'info': menu_request_responses["Baseult/NetLimiterCrack"],
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.netlimiter",
-                    'rpc': _translate("patching netlimiter pro")
+                    'rpc': _translate("🥷 patching netlimiter pro")
                 },
 
                 'WinRAR': {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚛𝚊𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.winrar",
-                    'rpc': _translate("patching winrar")
+                    'rpc': _translate("🥷 patching winrar")
                 },
 
                 'Revo Uninstaller Pro': {
                     'info': '',
                     'title': "𝚍𝚊𝚗𝚔.𝚛𝚎𝚟𝚘-𝚞𝚗𝚒𝚗𝚜𝚝𝚊𝚕𝚕𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.revo-uninstaller",
-                    'rpc': _translate("patching revo uninstaller pro")
+                    'rpc': _translate("🥷 patching revo uninstaller pro")
                 },
 
                 'Brave Debloater': {
                     'info': menu_request_responses["ltx0101/SlimBrave"],
                     'title': '𝚍𝚊𝚗𝚔.𝚜𝚕𝚒𝚖-𝚋𝚛𝚊𝚟𝚎',
                     'project': 'dank.slim-brave',
-                    'rpc': _translate("patching brave browser")
+                    'rpc': _translate("🥷 patching brave browser")
                 },
 
                 'Sublime Text': {
                     'info': menu_request_responses["mrpepe.sublime-patcher"],
                     'title': '𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛',
                     'project': 'mrpepe.sublime-patcher',
-                    'rpc': _translate("patching sublime text")
+                    'rpc': _translate("🥷 patching sublime text")
                 },
 
                 'category': True
@@ -443,7 +443,7 @@ def set_globals_two():
                 'info': menu_request_responses["dank.browser-backup"],
                 'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
                 'project': "dank.browser-backup",
-                'rpc': _translate("backing up a browser"),
+                'rpc': _translate("🔃 backing up a browser"),
                 'category': False
             },
 
@@ -451,7 +451,7 @@ def set_globals_two():
                 'info': menu_request_responses["dank.game"],
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
-                'rpc': _translate("playing a world exploration game"),
+                'rpc': _translate("🎮 playing a world exploration game"),
                 'category': False
             },
 
@@ -466,29 +466,29 @@ def set_globals_two():
                 'info': menu_request_responses["chatroom_user_count"],
                 'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
                 'project': "dank.chatroom",
-                'rpc': _translate("chatting in the chatroom"),
+                'rpc': _translate("💬 chatting in the chatroom"),
                 'category': False
             },
 
-            'Discord / Telegram': {
+            _translate('Social Media'): {
 
                 'Discord Server': {
-                    'info': '[bright_green]Join Now!',
+                    'info': f'[bright_green]{_translate("Join Now!")}',
                     'project': "Discord Server"
                 },
 
                 'Telegram Group': {
-                    'info': '[bright_green]Join Now!',
+                    'info': f'[bright_green]{_translate("Join Now!")}',
                     'project': "Telegram Group"
                 },
 
                 'YouTube': {
-                    'info': '[bright_green]Subscribe!',
+                    'info': f'[bright_green]{_translate("Visit Now!")}',
                     'project': "YouTube"
                 },
 
                 'Website': {
-                    'info': '[bright_green]Visit Now!',
+                    'info': f'[bright_green]{_translate("Visit Now!")}',
                     'project': "Website"
                 },
 
@@ -499,59 +499,69 @@ def set_globals_two():
                 'info': '',
                 'title': "𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 𝚜𝚎𝚝𝚝𝚒𝚗𝚐𝚜",
                 'project': "dank.tool settings",
-                'rpc': _translate("changing dank.tool settings"),
+                'rpc': _translate("⚙️ changing dank.tool settings"),
                 'category': False
             }
         }
 
-    else:
+        # fmt: on
 
+    else:
         stats = ""
         online_modules = {}
 
+
 # translator
 
-def _translate(text):
 
+def _translate(text):
     if DANK_TOOL_LANG and ONLINE_MODE:
-        try: text = _translator.translate(text, DANK_TOOL_LANG, 'en').result
-        except: pass
+        try:
+            text = _translator.translate(text, DANK_TOOL_LANG, "en").result
+        except:
+            pass
     return text
+
 
 # built-in modules
 
-def debug_mode():
 
+def debug_mode():
     cls()
     while True:
         # this variable is long to prevent it from being changed!
         cmd_to_be_executed = input(clr("\n  > ") + white_bright)
         match cmd_to_be_executed:
-            case 'exit' | 'EXIT' | 'stop' | 'STOP': print_modules(); break
-            case 'env' | 'globals':
+            case "exit" | "EXIT" | "stop" | "STOP":
+                print_modules()
+                break
+            case "env" | "globals":
                 print()
-                if cmd_to_be_executed == 'env':
+                if cmd_to_be_executed == "env":
                     for key, val in os.environ.items():
                         print(f"{green_bright}{key}{white}: {green}{val}")
-                elif cmd_to_be_executed == 'globals':
+                elif cmd_to_be_executed == "globals":
                     for key, val in globals().items():
-                        if key == "code": val = "<code is too long to display>"
+                        if key == "code":
+                            val = "<code is too long to display>"
                         print(f"{green_bright}{key}{white}: {green}{val}\n")
                 continue
-        try: exec(cmd_to_be_executed)
-        except Exception as exc: print(clr("\n" + err((type(exc), exc, exc.__traceback__),'mini'), 2))
+        try:
+            exec(cmd_to_be_executed)
+        except Exception as exc:
+            print(clr("\n" + err((type(exc), exc, exc.__traceback__), "mini"), 2))
+
 
 def dank_tool_settings():
-
     try:
-        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), 'r', encoding='utf-8') as file:
+        with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), "r", encoding="utf-8") as file:
             runs = file.read()
     except:
         runs = "?"
 
     while True:
-
-        cls(); print(clr(f"\n  - Settings: [ {_translate('restart for all changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
+        cls()
+        print(clr(f"\n  - Settings: [ {_translate('restart for all changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
 
         with open("settings.json", "r", encoding="utf-8") as file:
             settings = json.loads(file.read())
@@ -563,9 +573,9 @@ def dank_tool_settings():
         choice = input(clr("\n  > Choice: ") + red).lower()
 
         if not isinstance(choice, NoneType) and choice.isdigit() and 0 <= int(choice) <= int(len(settings)):
-
             choice = int(choice)
-            if not choice: break
+            if not choice:
+                break
             settings = list(settings.items())
             setting_key = settings[choice - 1][0]
             settings[choice - 1] = (setting_key, str(int(not int(settings[choice - 1][1]))))
@@ -575,15 +585,15 @@ def dank_tool_settings():
                 match setting_key:
                     case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
                         if "force" in setting_key:
-                            settings[setting_key.replace('force', 'disable')] = "0"
+                            settings[setting_key.replace("force", "disable")] = "0"
                         elif "disable" in setting_key:
-                            settings[setting_key.replace('disable', 'force')] = "0"
+                            settings[setting_key.replace("disable", "force")] = "0"
                     case "offline-mode":
-                        os.environ['DANK_TOOL_ONLINE'] = "0"
+                        os.environ["DANK_TOOL_ONLINE"] = "0"
             else:
                 match setting_key:
                     case "offline-mode":
-                        os.environ['DANK_TOOL_ONLINE'] = "1"
+                        os.environ["DANK_TOOL_ONLINE"] = "1"
 
             with open("settings.json", "w", encoding="utf-8") as file:
                 file.write(json.dumps(settings, indent=4))
@@ -591,135 +601,177 @@ def dank_tool_settings():
         elif choice.lower() == "exit":
             break
 
+
 def dank_github_command(software: str):
-
     match software:
-        case 'MAS':
+        case "MAS":
             banner = "\n\n                                                          __    _______ _______ _______ \n.--------.---.-.-----.-----.-----.----.---.-.--.--.-----.|  |  |   |   |   _   |     __|\n|        |  _  |__ --|__ --|  _  |   _|  _  |  |  |  -__||  |__|       |       |__     |\n|__|__|__|___._|_____|_____|___  |__| |___._|\\___/|_____||__|__|__|_|__|___|___|_______|\n                           |_____|                                                      \n"
-            credit = 'massgravel team'
-            name = 'Microsoft-Activation-Script'
-            cmd = 'irm https://get.activated.win | iex'
-        case 'SlimBrave':
+            credit = "massgravel team"
+            name = "Microsoft-Activation-Script"
+            cmd = "irm https://get.activated.win | iex"
+        case "SlimBrave":
             banner = "\n\n _ _       ___ ___   ___ ___     _____ _ _       _____                 \n| | |_ _ _|   |_  | |   |_  |   |   __| |_|_____| __  |___ ___ _ _ ___ \n| |  _|_'_| | |_| |_| | |_| |_ _|__   | | |     | __ -|  _| .'| | | -_|\n|_|_| |_,_|___|_____|___|_____|_|_____|_|_|_|_|_|_____|_| |__,|\\_/|___|\n"
-            credit = 'ltx0101'
+            credit = "ltx0101"
             name = software
-            cmd = 'iwr https://raw.githubusercontent.com/ltx0101/SlimBrave/main/SlimBrave.ps1 | iex'
+            cmd = "iwr https://raw.githubusercontent.com/ltx0101/SlimBrave/main/SlimBrave.ps1 | iex"
 
-    cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
+    cls()
+    Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
     print(clr(f"\n  - {_translate(f'Credits to {credit}!')}"))
     input(clr(f"\n  > {_translate(f'Hit [ ENTER ] to begin {name}...')} "))
-    cls(); print(clr(f"\n  - {_translate('Close the opened window to return to the menu...')}"))
+    cls()
+    print(clr(f"\n  - {_translate('Close the opened window to return to the menu...')}"))
 
     os.system(f'powershell -Command "{cmd}"')
 
-def dank_os_repair():
 
-    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-    cls(); print(clr("""
+def dank_os_repair():
+    cls()
+    input(
+        clr(
+            f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "
+        )
+    )
+    cls()
+    print(
+        clr("""
   [ COMMANDS ]
 
   - [0] Return to menu
 
-  - [1] """) + clr('DISM /online /cleanup-image /restorehealth',2) + clr(f""" : {_translate('This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically')}.
+  - [1] """)
+        + clr("DISM /online /cleanup-image /restorehealth", 2)
+        + clr(f""" : {_translate("This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically")}.
   
-  - [2] """) + clr('sfc /scannow',2) + clr(f""" : {_translate('This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately')}.
+  - [2] """)
+        + clr("sfc /scannow", 2)
+        + clr(f""" : {_translate("This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately")}.
   
-  - [3] """) + clr('chkdsk C: /x /r',2) + clr(f""" : {_translate('This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information')}.
+  - [3] """)
+        + clr("chkdsk C: /x /r", 2)
+        + clr(f""" : {_translate("This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information")}.
 
   - [4] Run all commands
-"""))
+""")
+    )
 
     while True:
         choice = input(clr("  > Choice: ") + red).lower()
         if choice.isdigit() and 0 <= int(choice) <= 4:
-            if choice == '0': break
+            if choice == "0":
+                break
             cls()
-            if choice in ('1', '4'):
+            if choice in ("1", "4"):
                 print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
                 os.system("DISM /online /cleanup-image /restorehealth")
-            if choice in ('2', '4'):
+            if choice in ("2", "4"):
                 print(clr("\n\n  [ sfc /scannow ]"))
                 os.system("sfc /scannow")
-            if choice in ('3', '4'):
+            if choice in ("3", "4"):
                 print(clr("\n\n  [ chkdsk C: /x /r ]"))
                 os.system("chkdsk C: /x /r")
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
 
-def dank_network_reset():
 
-    cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-    cls(); print(clr("""
+def dank_network_reset():
+    cls()
+    input(
+        clr(
+            f"\n  [ DISCLAIMER ]\n\n  - {_translate('Do not use this module if you do not know what you are doing')}!\n  - {_translate('Close all other applications before continuing')}!\n  - {_translate('This tool is not responsible for any damage to your system')}!\n  - {_translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "
+        )
+    )
+    cls()
+    print(
+        clr("""
   [ COMMANDS ]
 
   - [0] Return to menu
 
-  - [1] """) + clr('ipconfig /flushdns',2) + clr(f""" : {_translate('This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information')}.
+  - [1] """)
+        + clr("ipconfig /flushdns", 2)
+        + clr(f""" : {_translate("This command purges the DNS Resolver cache. The DNS Resolver cache stores the IP addresses for websites that your computer has recently accessed, which can speed up subsequent accesses to the same websites. Flushing this cache can help resolve any outdated or incorrect DNS information")}.
 
-  - [2] """) + clr('ipconfig /registerdns',2) + clr(f""" : {_translate('This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records')}.
+  - [2] """)
+        + clr("ipconfig /registerdns", 2)
+        + clr(f""" : {_translate("This command refreshes all DHCP leases and re-registers DNS names. This is useful if you have changed your DNS server or refreshed your IP address and want to update the DNS records")}.
 
-  - [3] """) + clr('ipconfig /release',2) + clr(f""" : {_translate('This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server')}.
+  - [3] """)
+        + clr("ipconfig /release", 2)
+        + clr(f""" : {_translate("This command releases the IP address for the specified adapter. This is typically used when you are having issues with your current IP address and want to acquire a new one from your DHCP server")}.
 
-  - [4] """) + clr('ipconfig /renew',2) + clr(f""" : {_translate('This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one')}.
+  - [4] """)
+        + clr("ipconfig /renew", 2)
+        + clr(f""" : {_translate("This command renews the IP address for the specified adapter. You would typically use this after releasing an IP address to get a new one")}.
 
-  - [5] """) + clr('netsh winsock reset',2) + clr(f""" : {_translate('This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings')}.
+  - [5] """)
+        + clr("netsh winsock reset", 2)
+        + clr(f""" : {_translate("This command resets the Winsock Catalog to a clean state. All Winsock Layered Service Providers (LSPs) are removed from the Winsock catalog. Any LSPs that are installed will need to be re-installed. This is useful if you are experiencing networking issues due to corrupt LSPs or Winsock settings")}.
 
   - [6] Run all commands
-"""))
+""")
+    )
 
     while True:
         choice = input(clr("  > Choice: ") + red).lower()
         if choice.isdigit() and 0 <= int(choice) <= 6:
-            if choice == '0': break
+            if choice == "0":
+                break
             cls()
-            if choice in ('1', '6'):
+            if choice in ("1", "6"):
                 print(clr("\n\n  [ ipconfig /flushdns ]"))
                 os.system("ipconfig /flushdns")
-            if choice in ('2', '6'):
+            if choice in ("2", "6"):
                 print(clr("\n\n  [ ipconfig /registerdns ]"))
                 os.system("ipconfig /registerdns")
-            if choice in ('3', '6'):
+            if choice in ("3", "6"):
                 print(clr("\n\n  [ ipconfig /release ]"))
                 os.system("ipconfig /release")
-            if choice in ('4', '6'):
+            if choice in ("4", "6"):
                 print(clr("\n\n  [ ipconfig /renew ]"))
                 os.system("ipconfig /renew")
-            if choice in ('5', '6'):
+            if choice in ("5", "6"):
                 print(clr("\n\n  [ netsh winsock reset ]"))
                 os.system("netsh winsock reset")
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
 
-def dank_clear_icons():
 
-    #cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
-    cls(); print(clr("""
+def dank_clear_icons():
+    # cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
+    cls()
+    print(
+        clr("""
   [ COMMANDS ]
   
   - [0] Return to menu
   
-  - [1] """) + clr('Clear Icon Cache',2) + clr(f""" : {_translate('This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly')}.
+  - [1] """)
+        + clr("Clear Icon Cache", 2)
+        + clr(f""" : {_translate("This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly")}.
   
-  - [2] """) + clr('Clear Thumbnail Cache',2) + clr(f""" : {_translate('This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly')}.
+  - [2] """)
+        + clr("Clear Thumbnail Cache", 2)
+        + clr(f""" : {_translate("This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly")}.
   
   - [3] Run all tasks
-"""))
+""")
+    )
 
     while True:
-
         choice = input(clr("  > Choice: ") + red).lower()
         if choice.isdigit() and 0 <= int(choice) <= 3:
-
-            if choice == '0': break
+            if choice == "0":
+                break
 
             cls()
             print(clr(f"\n  [ {_translate('Terminating Explorer.exe')} ]"))
             os.system("taskkill /f /im explorer.exe >nul 2>&1")
             os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
-            if choice in ('1', '3'):
+            if choice in ("1", "3"):
                 print(clr(f"\n  [ {_translate('Clearing Icon Cache')} ]\n"))
                 os.system(r"attrib -h iconcache*")
                 for file in os.listdir():
@@ -728,9 +780,9 @@ def dank_clear_icons():
                             os.remove(file)
                             print(clr(f"  - {_translate('deleted')} {file}"))
                         except:
-                            print(clr(f"  - {_translate('failed to delete')} {file}",2))
+                            print(clr(f"  - {_translate('failed to delete')} {file}", 2))
 
-            if choice in ('2', '3'):
+            if choice in ("2", "3"):
                 print(clr(f"\n  [ {_translate('Clearing Thumbnail Cache')} ]\n"))
                 os.system(r"attrib -h thumbcache*")
                 for file in os.listdir():
@@ -739,7 +791,7 @@ def dank_clear_icons():
                             os.remove(file)
                             print(clr(f"  - {_translate('deleted')} {file}"))
                         except:
-                            print(clr(f"  - {_translate('failed to delete')} {file}",2))
+                            print(clr(f"  - {_translate('failed to delete')} {file}", 2))
 
             os.chdir(os.path.dirname(__file__))
             print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
@@ -749,41 +801,42 @@ def dank_clear_icons():
 
         rm_line()
 
-def dank_github_software(software):
 
+def dank_github_software(software):
     # dir
 
-    path = os.path.join(os.environ['USERPROFILE'], 'Downloads')
+    path = os.path.join(os.environ["USERPROFILE"], "Downloads")
     if os.path.isdir(path):
         os.chdir(path)
     else:
-        os.chdir(get_path('Temp'))
+        os.chdir(get_path("Temp"))
 
     session = requests.Session()
     match software:
-        case 'netlimiter':
+        case "netlimiter":
             banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
-        case 'vencord':
+        case "vencord":
             banner = "\n\n                                                                         \n                                                                     _|  \n _|      _|    _|_|    _|_|_|      _|_|_|    _|_|    _|  _|_|    _|_|_|  \n _|      _|  _|_|_|_|  _|    _|  _|        _|    _|  _|_|      _|    _|  \n   _|  _|    _|        _|    _|  _|        _|    _|  _|        _|    _|  \n     _|        _|_|_|  _|    _|    _|_|_|    _|_|    _|          _|_|_|  \n\n\n"
-    cls(); Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
+    cls()
+    Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
 
     # main
 
     match software:
-        case 'netlimiter':
+        case "netlimiter":
             print(clr(f"\n  - {_translate('Credits to')} Baseult!"))
             if os.path.isfile(r"C:\Program Files\Locktime Software\NetLimiter\NetLimiter.dll"):
                 print(clr(f"\n  - {_translate('NetLimiter found!')}"))
             else:
                 print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
-                url = 'https://download.netlimiter.com' + session.get("https://www.netlimiter.com/download").content.decode().split('https://download.netlimiter.com',1)[1].split('"',1)[0]
+                url = "https://download.netlimiter.com" + session.get("https://www.netlimiter.com/download").content.decode().split("https://download.netlimiter.com", 1)[1].split('"', 1)[0]
                 data = session.get(url, headers=headers, timeout=60).content
-                with open('netlimiter.exe', 'wb') as file:
+                with open("netlimiter.exe", "wb") as file:
                     file.write(data)
-                os.system('netlimiter.exe')
+                os.system("netlimiter.exe")
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
-            sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]['sha']
-        case 'vencord':
+            sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]["sha"]
+        case "vencord":
             print(clr(f"\n  - {_translate('Credits to')} Vendicated!"))
             if os.path.isfile(f"C:\\Users\\{os.getlogin()}\\AppData\\Local\\Discord\\Update.exe"):
                 print(clr(f"\n  - {_translate('Discord found!')}"))
@@ -793,88 +846,90 @@ def dank_github_software(software):
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
             asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
             browser_download_url = asset["browser_download_url"]
-            version = browser_download_url.split('/')[-2]
+            version = browser_download_url.split("/")[-2]
 
     def get_patcher():
         match software:
-            case 'netlimiter':
+            case "netlimiter":
                 data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers, timeout=60).content
                 print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
                 while True:
                     try:
-                        with open('netlimiter-patcher.exe', 'wb') as file:
+                        with open("netlimiter-patcher.exe", "wb") as file:
                             file.write(data)
                         print(clr(f"\n  - {_translate('NetLimiter-Patcher saved successfully!')}"))
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
-                        rm_line(); rm_line()
-            case 'vencord':
+                        input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                        rm_line()
+                        rm_line()
+            case "vencord":
                 data = session.get(browser_download_url, headers=headers, timeout=60).content
                 print(clr(f"\n  - {_translate('Vencord downloaded successfully!')}"))
                 while True:
                     try:
-                        with open('vencord.exe', 'wb') as file:
+                        with open("vencord.exe", "wb") as file:
                             file.write(data)
                         print(clr(f"\n  - {_translate('Vencord saved successfully!')}"))
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ",2))
-                        rm_line(); rm_line()
+                        input(clr(f"\n  > {_translate('Failed to save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                        rm_line()
+                        rm_line()
 
     match software:
-        case 'netlimiter':
-            if os.path.isfile('netlimiter-patcher.exe') and os.path.isfile('netlimiter-patcher-sha.txt'):
-                with open('netlimiter-patcher-sha.txt', 'r', encoding='utf-8') as file:
+        case "netlimiter":
+            if os.path.isfile("netlimiter-patcher.exe") and os.path.isfile("netlimiter-patcher-sha.txt"):
+                with open("netlimiter-patcher-sha.txt", "r", encoding="utf-8") as file:
                     _sha = file.read()
                 if _sha == sha:
                     print(clr(f"\n  - {_translate('NetLimiter-Patcher is up-to-date!')}"))
                 else:
                     print(clr(f"\n  - {_translate('Updating NetLimiter-Patcher...')}"))
                     get_patcher()
-                    with open('netlimiter-patcher-sha.txt', 'w', encoding='utf-8') as file:
+                    with open("netlimiter-patcher-sha.txt", "w", encoding="utf-8") as file:
                         file.write(sha)
             else:
                 print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
                 get_patcher()
-                with open('netlimiter-patcher-sha.txt', 'w', encoding='utf-8') as file:
+                with open("netlimiter-patcher-sha.txt", "w", encoding="utf-8") as file:
                     file.write(sha)
-        case 'vencord':
-            if os.path.isfile('vencord.exe') and os.path.isfile('vencord-version.txt'):
-                with open('vencord-version.txt', 'r', encoding='utf-8') as file:
+        case "vencord":
+            if os.path.isfile("vencord.exe") and os.path.isfile("vencord-version.txt"):
+                with open("vencord-version.txt", "r", encoding="utf-8") as file:
                     _version = file.read()
                 if _version == version:
                     print(clr(f"\n  - {_translate('Vencord is up-to-date!')}"))
                 else:
                     print(clr(f"\n  - {_translate('Updating Vencord...')}"))
                     get_patcher()
-                    with open('vencord-version.txt', 'w', encoding='utf-8') as file:
+                    with open("vencord-version.txt", "w", encoding="utf-8") as file:
                         file.write(version)
             else:
                 print(clr(f"\n  - {_translate('Downloading Vencord...')}"))
                 get_patcher()
-                with open('vencord-version.txt', 'w', encoding='utf-8') as file:
+                with open("vencord-version.txt", "w", encoding="utf-8") as file:
                     file.write(version)
 
     print(clr(f"\n  - {_translate('You may need to exclude the patcher from your antivirus for it to work!')}"))
     match software:
-        case 'netlimiter':
+        case "netlimiter":
             input(clr(f"\n  > {_translate('Hit [ ENTER ] to start NetLimiter-Patcher...')} "))
-        case 'vencord':
+        case "vencord":
             input(clr(f"\n  > {_translate('Hit [ ENTER ] to start Vencord...')} "))
     cls()
-    if software == 'vencord':
+    if software == "vencord":
         print(clr(f"\n  - {_translate('Click Install')}"))
         print(clr(f"\n  - {_translate('Click Install OpenAsar')}"))
     print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
     match software:
-        case 'netlimiter':
-            os.system('netlimiter-patcher.exe')
-        case 'vencord':
-            os.system('vencord.exe')
+        case "netlimiter":
+            os.system("netlimiter-patcher.exe")
+        case "vencord":
+            os.system("vencord.exe")
+
 
 def dank_winrar_patcher():
-
     cls()
     path = os.path.expandvars("%appdata%\\WinRAR")
 
@@ -883,36 +938,37 @@ def dank_winrar_patcher():
         key_1_path = "__assets__/dank.winrar/rarreg_1.key"
         key_2_path = "__assets__/dank.winrar/rarreg_2.key"
         if not (os.path.isfile(key_1_path) and os.path.isfile(key_2_path)):
-            print(clr(f"\n  - {_translate('rarreg_1.key or rarreg_2.key not found! relaunch the tool! create a github issue if this persists!')}",2))
+            print(clr(f"\n  - {_translate('rarreg_1.key or rarreg_2.key not found! relaunch the tool! create a github issue if this persists!')}", 2))
             return
-        with open(key_1_path, 'r', encoding='utf-8') as file:
+        with open(key_1_path, "r", encoding="utf-8") as file:
             key1 = file.read()
-        with open(key_2_path, 'r', encoding='utf-8') as file:
+        with open(key_2_path, "r", encoding="utf-8") as file:
             key2 = file.read()
-        try: os.chdir(path)
+        try:
+            os.chdir(path)
         except FileNotFoundError:
             os.makedirs(path)
             os.chdir(path)
         if os.path.isfile("rarreg.key"):
             try:
-                with open("rarreg.key", 'r', encoding='utf-8') as file:
+                with open("rarreg.key", "r", encoding="utf-8") as file:
                     existing_data = file.read()
             except UnicodeDecodeError:
-                print(clr(f"\n  - {_translate('Failed to read rarreg.key!')}",2))
+                print(clr(f"\n  - {_translate('Failed to read rarreg.key!')}", 2))
                 existing_data = None
             if existing_data in (key1, key2):
                 print(clr(f"\n  - {_translate('WinRAR already patched!')}"))
             else:
                 print(clr(f"\n  - {_translate('WinRAR already activated? (found rarreg.key)')}"))
-                if input(clr(f"\n  > {_translate('Would you like to patch WinRAR anyway?')} [y/n]: ") + red).lower() == 'y':
+                if input(clr(f"\n  > {_translate('Would you like to patch WinRAR anyway?')} [y/n]: ") + red).lower() == "y":
                     if os.path.isfile("rarreg.key.bak"):
                         os.remove("rarreg.key.bak")
                     os.rename("rarreg.key", "rarreg.key.bak")
-                    with open("rarreg.key", 'w', encoding='utf-8') as file:
+                    with open("rarreg.key", "w", encoding="utf-8") as file:
                         file.write(key1)
                     print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         else:
-            with open("rarreg.key", 'w', encoding='utf-8') as file:
+            with open("rarreg.key", "w", encoding="utf-8") as file:
                 file.write(key1)
             print(clr(f"\n  - {_translate('WinRAR patched!')}"))
         os.chdir(os.path.dirname(__file__))
@@ -921,15 +977,15 @@ def dank_winrar_patcher():
         patch()
     else:
         print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
-        if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download WinRAR?')} [y/n]: ") + red).lower() == 'y':
+        if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download WinRAR?')} [y/n]: ") + red).lower() == "y":
             print(clr(f"\n  - {_translate('Downloading WinRAR...')}\n"))
             os.system("winget install --accept-source-agreements --interactive --id RARLab.WinRAR")
             input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
             patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
-def dank_revo_patcher():
 
+def dank_revo_patcher():
     cls()
     path = os.path.expandvars("%ProgramData%\\VS Revo Group\\Revo Uninstaller Pro")
 
@@ -937,34 +993,35 @@ def dank_revo_patcher():
         os.chdir(os.path.dirname(__file__))
         key_path = "__assets__/dank.revo-uninstaller/revouninstallerpro5.lic"
         if not os.path.isfile(key_path):
-            print(clr(f"\n  - {_translate('revouninstallerpro5.lic not found! relaunch the tool! create a github issue if this persists!')}",2))
+            print(clr(f"\n  - {_translate('revouninstallerpro5.lic not found! relaunch the tool! create a github issue if this persists!')}", 2))
             return
-        with open(key_path, 'rb') as file:
+        with open(key_path, "rb") as file:
             key = file.read()
-        try: os.chdir(path)
+        try:
+            os.chdir(path)
         except FileNotFoundError:
             os.makedirs(path)
             os.chdir(path)
         if os.path.isfile("revouninstallerpro5.lic"):
             try:
-                with open("revouninstallerpro5.lic", 'rb') as file:
+                with open("revouninstallerpro5.lic", "rb") as file:
                     existing_data = file.read()
             except UnicodeDecodeError:
-                print(clr(f"\n  - {_translate('Failed to read revouninstallerpro5.lic!')}",2))
+                print(clr(f"\n  - {_translate('Failed to read revouninstallerpro5.lic!')}", 2))
                 existing_data = None
             if existing_data == key:
                 print(clr(f"\n  - {_translate('RevoUninstallerPro already patched!')}"))
             else:
                 print(clr(f"\n  - {_translate('RevoUninstaller installed? (found revouninstallerpro5.lic)')}"))
-                if input(clr(f"\n  > {_translate('Would you like to patch RevoUninstallerPro?')} [y/n]: ") + red).lower() == 'y':
+                if input(clr(f"\n  > {_translate('Would you like to patch RevoUninstallerPro?')} [y/n]: ") + red).lower() == "y":
                     if os.path.isfile("revouninstallerpro5.lic.bak"):
                         os.remove("revouninstallerpro5.lic.bak")
                     os.rename("revouninstallerpro5.lic", "revouninstallerpro5.lic.bak")
-                    with open("revouninstallerpro5.lic", 'wb') as file:
+                    with open("revouninstallerpro5.lic", "wb") as file:
                         file.write(key)
                     print(clr(f"\n  - {_translate('RevoUninstallerPro patched!')}"))
         else:
-            with open("revouninstallerpro5.lic", 'wb') as file:
+            with open("revouninstallerpro5.lic", "wb") as file:
                 file.write(key)
             print(clr(f"\n  - {_translate('RevoUninstallerPro patched!')}"))
         os.chdir(os.path.dirname(__file__))
@@ -973,44 +1030,51 @@ def dank_revo_patcher():
         patch()
     else:
         print(clr(f"\n  - {_translate('RevoUninstallerPro not installed!')}"))
-        if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download RevoUninstallerPro?')} [y/n]: ") + red).lower() == 'y':
+        if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download RevoUninstallerPro?')} [y/n]: ") + red).lower() == "y":
             print(clr(f"\n  - {_translate('Downloading RevoUninstallerPro...')}\n"))
             os.system("winget install --accept-source-agreements --interactive --id RevoUninstaller.RevoUninstallerPro")
             input(clr(f"\n  > {_translate('Press [ENTER] after installing RevoUninstallerPro to start patching...')} "))
             patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
 
+
 def execute_module(code: str):
-    exec_globals = {key: globals()[key] for key in globals() if key.startswith('__') and key.endswith('__')}
+    exec_globals = {key: globals()[key] for key in globals() if key.startswith("__") and key.endswith("__")}
     exec(code, exec_globals)
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     set_globals_one()
     _translator = Translator()
     _session = session = requests.Session()
-    palestine_banner() # 🍉
+    palestine_banner()  # 🍉
 
     # multithreaded requests responses, download modules / assets
 
     if ONLINE_MODE:
-
         print(clr(f"\n  - {_translate('Downloading modules...')}"))
 
-        if not os.path.isdir("__modules__"): os.mkdir("__modules__")
+        if not os.path.isdir("__modules__"):
+            os.mkdir("__modules__")
 
         while True:
-            try: multithread(download_offline_modules, 50, offline_scripts, progress_bar=False); break
+            try:
+                multithread(download_offline_modules, 50, offline_scripts, progress_bar=False)
+                break
             except:
-                input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
-                rm_line(); rm_line()
+                input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
+                rm_line()
+                rm_line()
 
         # download assets
 
-        if not os.path.isdir("ursina"): os.mkdir("ursina")
-        if not os.path.isdir("__assets__"): os.mkdir("__assets__")
+        if not os.path.isdir("ursina"):
+            os.mkdir("ursina")
+        if not os.path.isdir("__assets__"):
+            os.mkdir("__assets__")
         for _ in ("dank.winrar", "dank.revo-uninstaller"):
-            if not os.path.isdir(f"__assets__/{_}"): os.mkdir(f"__assets__/{_}")
+            if not os.path.isdir(f"__assets__/{_}"):
+                os.mkdir(f"__assets__/{_}")
         if not os.path.isfile("ursina/assets.json"):
             with open("ursina/assets.json", "w", encoding="utf-8") as _:
                 _.write("{}")
@@ -1018,10 +1082,13 @@ if __name__ == "__main__":
             local_assets_json = json.loads(_.read())
 
         while True:
-            try: latest_assets_json = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json(); break
+            try:
+                latest_assets_json = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__assets__/dank.game/assets.json", headers=headers, timeout=3).json()
+                break
             except Exception as exc:
-                input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again...')} ",2))
-                rm_line(); rm_line()
+                input(clr(f"\n  > {_translate(f'Failed to fetch assets.json! {exc} | Press [ENTER] to try again...')} ", 2))
+                rm_line()
+                rm_line()
 
         asset_urls = []
         file_names = []
@@ -1043,7 +1110,6 @@ if __name__ == "__main__":
         del folder, asset
 
         if asset_urls:
-
             print(clr(f"\n  - {_translate('Downloading assets...')}\n"))
 
             while True:
@@ -1051,8 +1117,9 @@ if __name__ == "__main__":
                     multithread(download_assets, 50, asset_urls, file_names, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
-                    input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
-                    rm_line(); rm_line()
+                    input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
+                    rm_line()
+                    rm_line()
 
             with open("ursina/assets.json", "w", encoding="utf-8") as _:
                 _.write(json.dumps(latest_assets_json, indent=4))
@@ -1068,11 +1135,7 @@ if __name__ == "__main__":
 
         # KEEP request_keys IN ORDER!
 
-        request_keys = (
-            "danktool_runs",
-            "motm",
-            "chatroom_user_count"
-        )
+        request_keys = ("danktool_runs", "motm", "chatroom_user_count")
 
         request_keys_api = (
             "SpotX-Official/SpotX",
@@ -1083,11 +1146,11 @@ if __name__ == "__main__":
             "ltx0101/SlimBrave",
             "dank.minecraft-server-builder",
             "dank.minecraft-server-scanner",
-            #"dank.auto-clicker",
+            # "dank.auto-clicker",
             "dank.browser-backup",
             "dank.game",
             "dank.winget",
-            "mrpepe.sublime-patcher"
+            "mrpepe.sublime-patcher",
         )
 
         while True:
@@ -1095,8 +1158,9 @@ if __name__ == "__main__":
                 multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=not COMPATIBILITY_MODE)
                 break
             except:
-                input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
-                rm_line(); rm_line()
+                input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
+                rm_line()
+                rm_line()
 
         # hourly limit on github api
 
@@ -1117,14 +1181,14 @@ if __name__ == "__main__":
                 break
 
         if github_api:
-
             while True:
                 try:
                     multithread(get_menu_request_responses_api, 50, request_keys_api, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
-                    input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ",2))
-                    rm_line(); rm_line()
+                    input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
+                    rm_line()
+                    rm_line()
 
             github_api_json["updated_on"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
 
@@ -1135,7 +1199,6 @@ if __name__ == "__main__":
                 _.write(json.dumps(github_api_json, indent=4))
 
         else:
-
             for key in request_keys_api:
                 menu_request_responses[key] = github_api_json[key]
 
@@ -1146,17 +1209,18 @@ if __name__ == "__main__":
     # main
 
     if WINDOWS:
-        ThreadPoolExecutor().submit(notify, '[ SirDank ]',
-            _translate('Thank you for using my tool ❤️\nShare it with your friends!'),
-            icon = {'src': f'{os.path.dirname(__file__)}\\dankware.ico', 'placement': 'appLogoOverride'} if os.path.exists(f'{os.path.dirname(__file__)}\\dankware.ico') else None,
-            image = f'{os.path.dirname(__file__)}\\red.png' if os.path.exists('red.png') else None
+        ThreadPoolExecutor().submit(
+            notify,
+            "[ SirDank ]",
+            _translate("Thank you for using my tool ❤️\nShare it with your friends!"),
+            icon={"src": f"{os.path.dirname(__file__)}\\dankware.ico", "placement": "appLogoOverride"} if os.path.exists(f"{os.path.dirname(__file__)}\\dankware.ico") else None,
+            image=f"{os.path.dirname(__file__)}\\red.png" if os.path.exists("red.png") else None,
         )
 
     while True:
-
         # reset
 
-        os.environ['DISCORD_RPC'] = "on the main menu"
+        os.environ["DISCORD_RPC"] = "on the main menu"
 
         set_globals_one()
         set_globals_two()
@@ -1164,32 +1228,26 @@ if __name__ == "__main__":
 
         # print available modules
 
-        modules = (offline_modules if not ONLINE_MODE else online_modules)
+        modules = offline_modules if not ONLINE_MODE else online_modules
         local_modules = {}
 
-        if not os.path.isdir('__local_modules__'):
-            os.mkdir('__local_modules__')
+        if not os.path.isdir("__local_modules__"):
+            os.mkdir("__local_modules__")
 
         for module in os.listdir("__local_modules__"):
             if os.path.isfile(f"__local_modules__/{module}") and module.endswith(".py"):
-                name = module.replace('.py','')
-                local_modules[name] = {
-                    'title': name,
-                    'project': name,
-                    'rpc': f'running "{module}"'}
+                name = module.replace(".py", "")
+                local_modules[name] = {"title": name, "project": name, "rpc": f'running "{module}"'}
 
         print_modules()
 
-        while True: # user input
-
+        while True:  # user input
             _choice = input(clr("  > Choice: ") + red)
 
             if isinstance(_choice, NoneType):
-
                 os.system("taskkill /f /t /im dank.tool.exe")
 
             elif _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
-
                 if int(_choice) <= len(modules):
                     _choice = modules[list(modules)[int(_choice) - 1]]
                     LOCAL_MODULE = False
@@ -1197,13 +1255,12 @@ if __name__ == "__main__":
                     _choice = local_modules[list(local_modules)[int(_choice) - len(modules) - 1]]
                     LOCAL_MODULE = True
 
-                if not LOCAL_MODULE and _choice['category']:
-
+                if not LOCAL_MODULE and _choice["category"]:
                     print_category_modules(_choice)
 
                     while True:
                         __choice = input(clr("  > Choice: ") + red)
-                        if __choice == '0':
+                        if __choice == "0":
                             print_modules()
                             break
                         if __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
@@ -1211,45 +1268,44 @@ if __name__ == "__main__":
                             break
                         rm_line()
 
-                    if 'category' not in _choice:
+                    if "category" not in _choice:
                         break
 
                 else:
                     break
 
             else:
-
                 match _choice.lower().strip():
-                    case 'refresh': # re-align ui
+                    case "refresh":  # re-align ui
                         print_modules()
-                    case 'debug': # debug menu
+                    case "debug":  # debug menu
                         debug_mode()
-                    case 'exit' | 'stop':
+                    case "exit" | "stop":
                         os.system("taskkill /f /t /im dank.tool.exe")
                     case _:
                         rm_line()
 
         try:
-
             # built-in modules
 
-            match _choice['project']:
+            match _choice["project"]:
                 case "Discord Server":
-                    os.system('start https://dankware.onrender.com/discord')
+                    os.system("start https://sirdank.github.io/dankware-website/discord")
                     continue
                 case "Telegram Group":
-                    os.system('start https://t.me/+18tWHJ_g2g4yZWI1')
+                    os.system("start https://sirdank.github.io/dankware-website/telegram")
                     continue
                 case "YouTube":
-                    os.system('start https://dankware.onrender.com/youtube')
+                    os.system("start https://sirdank.github.io/dankware-website/youtube")
                     continue
                 case "Website":
-                    os.system('start https://dankware.onrender.com/')
+                    os.system("start https://dankware.alwaysdata.net/")
                     continue
 
-            TITLE = _choice['title']
-            PROJECT = _choice['project']
-            os.environ['DISCORD_RPC'] = _choice['rpc']
+            TITLE = _choice["title"]
+            PROJECT = _choice["project"]
+            if ONLINE_MODE:
+                os.environ["DISCORD_RPC"] = _choice.get("rpc", f"running {PROJECT}")
 
             # built-in modules
 
@@ -1285,24 +1341,24 @@ if __name__ == "__main__":
                     dank_revo_patcher()
                     continue
 
-            if LOCAL_MODULE: # get src from local_module
-
+            if LOCAL_MODULE:  # get src from local_module
                 while True:
                     try:
-                        with open(f'__local_modules__/{PROJECT}.py', 'r', encoding='utf-8') as _:
-                            code = _.read(); break
+                        with open(f"__local_modules__/{PROJECT}.py", "r", encoding="utf-8") as _:
+                            code = _.read()
+                            break
                     except:
                         translation = _translate(f"Failed to get code! Unable to read '__local_modules__/{PROJECT}.py'! Press [ENTER] to try again")
-                        input(clr(f"\n  > {translation}... ",2)); del translation
-                        rm_line(); rm_line()
+                        input(clr(f"\n  > {translation}... ", 2))
+                        del translation
+                        rm_line()
+                        rm_line()
 
-            else: # get src from github if not debug mode else get src locally
-
-                if not OFFLINE_SRC and ( ONLINE_MODE or not os.path.exists(f'__modules__/{PROJECT}.py') ): # OFFLINE_SRC / ONLINE_MODE defined in executor.py
-
+            else:  # get src from github if not debug mode else get src locally
+                if not OFFLINE_SRC and (ONLINE_MODE or not os.path.exists(f"__modules__/{PROJECT}.py")):  # OFFLINE_SRC / ONLINE_MODE defined in executor.py
                     # [NOTE] check for update before getting src ( enable this for a short while before release )
 
-                    #while True:
+                    # while True:
                     #    try:
                     #        LATEST_VERSION = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/executor_version.txt", headers=headers, timeout=3).content.decode()
                     #        if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION):
@@ -1318,43 +1374,47 @@ if __name__ == "__main__":
                         try:
                             code = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{PROJECT}.py", headers=headers, timeout=3).content.decode()
                             if PROJECT in offline_scripts:
-                                with open(f'__modules__/{PROJECT}.py', 'w', encoding='utf-8') as file:
+                                with open(f"__modules__/{PROJECT}.py", "w", encoding="utf-8") as file:
                                     file.write(code)
                             break
                         except Exception as exc:
-                            input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again...')} ",2))
-                            rm_line(); rm_line()
+                            input(clr(f"\n  > {_translate(f'Failed to get code for {PROJECT}! {exc} | Press [ENTER] to try again...')} ", 2))
+                            rm_line()
+                            rm_line()
 
                 else:
                     while True:
                         try:
-                            with open(f'__modules__/{PROJECT}.py', 'r', encoding='utf-8') as _:
-                                code = _.read(); break
+                            with open(f"__modules__/{PROJECT}.py", "r", encoding="utf-8") as _:
+                                code = _.read()
+                                break
                         except:
                             translation = _translate(f"Failed to get code! Unable to read '__modules__/{PROJECT}.py'! Press [ENTER] to try again")
-                            input(clr(f"\n  > {translation}... ",2)); del translation
-                            rm_line(); rm_line()
+                            input(clr(f"\n  > {translation}... ", 2))
+                            del translation
+                            rm_line()
+                            rm_line()
 
             # execute src
 
             if code == "404: Not Found":
-                if PROJECT.startswith('_'):
-                    print(clr(f"\n  - {_translate(f'{PROJECT[1:]} has been disabled! Returning to menu in 5 seconds...')}",2))
+                if PROJECT.startswith("_"):
+                    print(clr(f"\n  - {_translate(f'{PROJECT[1:]} has been disabled! Returning to menu in 5 seconds...')}", 2))
                 else:
-                    print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds...')}",2))
+                    print(clr(f"\n  - {_translate(f'{PROJECT} has not been released yet! Returning to menu in 5 seconds...')}", 2))
                 time.sleep(5)
             else:
                 cls()
-                if PROJECT != 'dank.game':
+                if PROJECT != "dank.game":
                     execute_module(code)
                 else:
                     exec(code)
-                cls(); print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
+                cls()
+                print(clr(f"\n  - {_translate(f'{PROJECT} executed successfully! Returning to menu in 3 seconds...')}"))
                 time.sleep(3)
 
         except Exception as exc:
-
-            error = err((type(exc), exc, exc.__traceback__),'mini')
+            error = err((type(exc), exc, exc.__traceback__), "mini")
             print(clr(error, 2))
 
             if "- SystemExit" in error:
@@ -1372,11 +1432,12 @@ if __name__ == "__main__":
             elif ONLINE_MODE and not LOCAL_MODULE:
                 while True:
                     try:
-                        _session.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 {TITLE}\n\n{error}"}) # pylint: disable=used-before-assignment
+                        _session.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 {TITLE}\n\n{error}"})  # pylint: disable=used-before-assignment
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ",2))
-                        rm_line(); rm_line()
+                        input(clr(f"\n  > {_translate(f'Failed to post error report! {exc} | Press [ENTER] to try again...')} ", 2))
+                        rm_line()
+                        rm_line()
                 print(clr(f"\n  > {_translate('Error Reported! If it is a logic error, it will be fixed soon!')}"))
 
             input(clr("\n  > Press [ENTER] to return to the menu... "))

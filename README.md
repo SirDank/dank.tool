@@ -76,7 +76,7 @@
 
 ## ♦️ Anonymous Suggestions ♦️
 
-- [Suggest new modules for the dank.tool!](https://dankware.onrender.com/dank-tool-suggestions)
+- [Suggest new modules for the dank.tool!](https://dankware.alwaysdata.net/dank-tool-suggestions)
 
 <p>&nbsp;</p>
 
@@ -130,7 +130,7 @@
 - Generates the specified amount of IPs and scans the default Minecraft server port 25565 (java) / 19132 (bedrock)
 - IPs are crafted in such a way that it is unique and avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description (gamemode, map, motd on bedrock)
-- You automatically contribute to the minecraft [java](https://dankware.onrender.com/minecraft-java-servers) and [bedrock](https://dankware.onrender.com/minecraft-bedrock-servers) server lists by scanning!
+- You automatically contribute to the minecraft [java](https://dankware.alwaysdata.net/minecraft-java-servers) and [bedrock](https://dankware.alwaysdata.net/minecraft-bedrock-servers) server lists by scanning!
 - Featured on [fmhy](https://fmhy.net/gaming-tools#minecraft-tools)
 
 ## ♦️ To Do ♦️

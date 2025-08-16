@@ -1,83 +1,93 @@
 import os
-import sys
-import time
-import requests
 import subprocess
+import time
 from random import randint
+
+import requests
+from dankware import blue, clr, cls, err, get_path, github_file_selector, green, multithread, red, rm_line, sys_open, title, white_bright
 from rich.align import Align
 from rich.console import Console
 from translatepy import Translator
-from dankware import title, rm_line, cls, clr, github_file_selector, multithread, sys_open, err, get_path, white_bright, red, green, blue
 
-headers = {'User-Agent': ('dank.tool' if "DANK_TOOL_VERSION" not in os.environ else f'dank.tool {os.environ["DANK_TOOL_VERSION"]}'), 'Content-Type': 'application/json'}
+headers = {"User-Agent": ("dank.tool" if "DANK_TOOL_VERSION" not in os.environ else f"dank.tool {os.environ['DANK_TOOL_VERSION']}"), "Content-Type": "application/json"}
 
 # banners
+
 
 def print_banner():
     cls()
     banner = "\n\n   _         _                                 _       _ _   _            ___ \n _| |___ ___| |_   ___ ___ ___ _ _ ___ ___ ___| |_ _ _|_| |_| |___ ___   |_  |\n| . | .'|   | '_|_|_ -| -_|  _| | | -_|  _|___| . | | | | | . | -_|  _|  |_  |\n|___|__,|_|_|_,_|_|___|___|_|  \\_/|___|_|     |___|___|_|_|___|___|_|    |___|\n\n\n"
     Console().print(Align.center(banner), style="blink red", highlight=False)
 
+
 def print_read_me():
     cls()
-    read_me = '\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n'
+    read_me = "\n\n:::::::::  ::::::::::     :::     :::::::::       ::::    ::::  ::::::::::\n:+:    :+: :+:          :+: :+:   :+:    :+:      +:+:+: :+:+:+ :+:       \n+:+    +:+ +:+         +:+   +:+  +:+    +:+      +:+ +:+:+ +:+ +:+       \n+#++:++#:  +#++:++#   +#++:++#++: +#+    +:+      +#+  +:+  +#+ +#++:++#  \n+#+    +#+ +#+        +#+     +#+ +#+    +#+      +#+       +#+ +#+       \n#+#    #+# #+#        #+#     #+# #+#    #+#      #+#       #+# #+#       \n###    ### ########## ###     ### #########       ###       ### ##########\n\n\n"
     read_me = read_me.replace(":", "[bright_white]:[/bright_white]").replace("+", "[bright_white]+[/bright_white]").replace("#", "[red]#[/red]")
-    Console().print(Align.center(read_me), style='blink', highlight=False)
+    Console().print(Align.center(read_me), style="blink", highlight=False)
+
 
 # translator
 
+
 def translate(text):
     if DANK_TOOL_LANG:
-        try: text = translator.translate(text, DANK_TOOL_LANG, 'en').result
-        except: pass
+        try:
+            text = translator.translate(text, DANK_TOOL_LANG, "en").result
+        except:
+            pass
     return text
 
-def main_one():
 
+def main_one():
     global name, version, cracked, install_Via, ram, motd_spaces, playit, dir_name, latest_java_version, download_settings, translator, DANK_TOOL_LANG
 
     # check if translator is enabled (dank.tool.exe)
 
     try:
-        DANK_TOOL_LANG = os.environ['DANK_TOOL_LANG']
-        if DANK_TOOL_LANG == 'en':
-            DANK_TOOL_LANG = ''
+        DANK_TOOL_LANG = os.environ["DANK_TOOL_LANG"]
+        if DANK_TOOL_LANG == "en":
+            DANK_TOOL_LANG = ""
         else:
             translator = Translator()
     except:
-        DANK_TOOL_LANG = ''
+        DANK_TOOL_LANG = ""
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛")
 
     # change dir and print banner
 
-    try: os.chdir(get_path('Desktop'))
+    try:
+        os.chdir(get_path("Desktop"))
     except:
-        try: os.chdir(get_path('Documents'))
-        except: os.chdir("C:\\")
+        try:
+            os.chdir(get_path("Documents"))
+        except:
+            os.chdir("C:\\")
 
     # install java if not installed
 
     while True:
         try:
             latest_java_version = "21"
-            #latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
+            # latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
-            input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ",2))
-            rm_line(); rm_line()
+            input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ", 2))
+            rm_line()
+            rm_line()
 
     while True:
         try:
-            subprocess.run(['java', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            subprocess.run(["java", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             break
         except:
             print_read_me()
-            if input(clr(f"\n  - {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == 'y':
+            if input(clr(f"\n  - {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == "y":
                 print()
                 if os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE"):
                     print(clr(f"\n  - {translate('Winget is not installed! Please manually install it!')}"))
-                    sys_open('https://adoptium.net/temurin/releases/?os=windows&package=jre')
+                    sys_open("https://adoptium.net/temurin/releases/?os=windows&package=jre")
                     input(clr(f"\n  > {translate('Press [ ENTER ] after installing')}... "))
 
     print_banner()
@@ -86,18 +96,21 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()['versions'][-4:]
-            print(clr(f'  - {translate("Latest Purpur Versions")}: {", ".join(version_list)}')); break
+            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()["versions"][-4:]
+            print(clr(f"  - {translate('Latest Purpur Versions')}: {', '.join(version_list)}"))
+            break
         except Exception as exc:
-            input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ",2))
-            rm_line(); rm_line()
+            input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ", 2))
+            rm_line()
+            rm_line()
 
     # user inputs
 
     print("")
     while True:
         version = input(clr(f"  > {translate('Version')}: ") + red)
-        if version in version_list: break
+        if version in version_list:
+            break
         rm_line()
 
     max_motd_len = 49
@@ -105,9 +118,10 @@ def main_one():
     print("")
     while True:
         name = input(clr(f"  > {translate('Server Name')}: ") + red)
-        if not len(name) > (max_motd_len - used_motd_len): break
+        if not len(name) > (max_motd_len - used_motd_len):
+            break
         rm_line()
-    motd_spaces = ' '*int((max_motd_len - used_motd_len - len(name))/4)
+    motd_spaces = " " * int((max_motd_len - used_motd_len - len(name)) / 4)
 
     title(f"𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ {name} - {version} ]")
 
@@ -115,39 +129,58 @@ def main_one():
     while True:
         cracked = input(clr(f"  > {translate('Allow Cracked Players?')} [ y / n ]: ") + red).lower()
         match cracked:
-            case 'y': cracked = True; break
-            case 'n': cracked = False; break
+            case "y":
+                cracked = True
+                break
+            case "n":
+                cracked = False
+                break
         rm_line()
 
-    string = translate('The following plugins allow older / newer clients to join your server')
-    print_read_me(); print(clr(f"\n  - {string}!"))
-    print(clr(f"\n  - {translate('If you do not know what to choose here, type:')} \"n\"\n"))
+    string = translate("The following plugins allow older / newer clients to join your server")
+    print_read_me()
+    print(clr(f"\n  - {string}!"))
+    print(clr(f'\n  - {translate("If you do not know what to choose here, type:")} "n"\n'))
     while True:
         install_Via = input(clr(f"  > {translate('Download ViaVersion & ViaBackwards?')} [ y / n ]: ") + red).lower()
         match install_Via:
-            case 'y': install_Via = True; break
-            case 'n': install_Via = False; break
+            case "y":
+                install_Via = True
+                break
+            case "n":
+                install_Via = False
+                break
         rm_line()
 
     # setting max ram
 
-    string = translate('When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or "OOMKiller" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you cannot afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns.')
-    print_read_me(); print(clr(f"\n  - {string}"))
+    string = translate(
+        'When setting the Xms and Xmx values, if your host says you have 8000M memory, DO NOT USE 8000M! Minecraft (and Java) needs additional memory on top of that Xmx parameter. It is recommended to reduce your Xmx/Xms by about 1000-1500M to avoid running out of memory or "OOMKiller" hitting your server. This also leaves room for the Operating System to use memory too. Have 8000M memory? Use 6500M for safety. But you may also ask your host if they will cover this overhead for you and give you 9500M instead. Some hosts will! Just ask. We recommend using at least 6-10GB, no matter how few players! If you cannot afford 10GB of memory, give as much as you can. However going out and getting 32GB of RAM for a server will only waste your money with minimal returns.'
+    )
+    print_read_me()
+    print(clr(f"\n  - {string}"))
     print("")
     while True:
         ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + red)
-        if ram.isdigit(): ram = int(ram); break
+        if ram.isdigit():
+            ram = int(ram)
+            break
         rm_line()
     ram = max(ram, 256)
 
     # use playit.gg
 
-    print_read_me(); print(clr(f"\n  - {translate('Great! Now you need to pick a host for your mc server!')}\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"))
+    print_read_me()
+    print(
+        clr(
+            f"\n  - {translate('Great! Now you need to pick a host for your mc server!')}\n\n  - {translate('If you are new to hosting and would like to quickly host a server with the playit.gg plugin without port-forwarding')}\n  - {translate('Choose Option 1')}\n\n  - {translate('If you are experienced and would like to skip playit.gg and use port-forwarding or alternative hosting methods')}\n  - {translate('Choose Option 2')}"
+        )
+    )
 
     print("")
     while True:
         playit = input(clr("  > Choice [ 1 / 2 ]: ") + red)
-        if playit in ("1","2"):
+        if playit in ("1", "2"):
             playit = bool(playit == "1")
             break
         rm_line()
@@ -179,45 +212,59 @@ def main_one():
     }
 
     while True:
-
-        cls(); print(clr(f"\n  - {translate('You can Enable / Disable content to be downloaded!')}\n  - {translate('Enter the numbers of the contents you want to toggle separated by commas')}\n  - {translate('Finally press [ ENTER ] to continue')}\n"))
+        cls()
+        print(clr(f"\n  - {translate('You can Enable / Disable content to be downloaded!')}\n  - {translate('Enter the numbers of the contents you want to toggle separated by commas')}\n  - {translate('Finally press [ ENTER ] to continue')}\n"))
 
         print(clr(f"  [0] {'Enable' if toggle_all_to else 'Disable'} All", colour_two=blue))
         for index, (file, enabled) in enumerate(download_settings.items()):
-            print(clr(f"  [{index+1}] {file}", colour_one=green if enabled else red, colour_two=white_bright))
+            print(clr(f"  [{index + 1}] {file}", colour_one=green if enabled else red, colour_two=white_bright))
 
         choices = input(clr("\n  > Choices: ") + red).strip()
-        if not choices: break
-        choices = choices.split(',')
+        if not choices:
+            break
+        choices = choices.split(",")
         for choice in choices:
             if choice.isdigit() and int(choice) >= 0 and int(choice) <= int(len(download_settings)):
-                if choice == '0':
+                if choice == "0":
                     for key in download_settings:
                         download_settings[key] = toggle_all_to
                     toggle_all_to = not toggle_all_to
                     continue
-                choice = int(choice)-1
+                choice = int(choice) - 1
                 download_settings[list(download_settings.keys())[choice]] = not download_settings[list(download_settings.keys())[choice]]
 
     # begin preparing downloads
 
-    cls(); print(clr(f"\n  - {translate('Preparing Downloads...')}"))
+    cls()
+    print(clr(f"\n  - {translate('Preparing Downloads...')}"))
     to_download_urls, to_download_file_names = [], []
     url = "https://github.com/SirDank/dank.tool/raw/main/__assets__/dank.minecraft-server-builder"
 
     # github server-builder files and plugins
 
-    for file in ['server-icon.png']: # keep as list
+    for file in ["server-icon.png"]:  # keep as list
         to_download_urls.append(f"{url}/{file}")
         to_download_file_names.append(file)
 
     if download_settings["BetterStructures"]:
-        for file in ('BetterStructures Default Pack.zip', 'BetterStructures Exploration Pack.zip', 'BetterStructures Free Elite Shrines.zip'):
+        for file in ("BetterStructures Default Pack.zip", "BetterStructures Exploration Pack.zip", "BetterStructures Free Elite Shrines.zip"):
             to_download_urls.append(f"{url}/{file}")
             to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
     if download_settings["EliteMobs"]:
-        for file in ('em_dark_cathedral_v7.zip', 'em_enchantment_sanctums_free_v3.zip', 'em_events_craftenmines_creations.zip', 'em_fireworks_v8.zip', 'em_hallosseum_v7.zip', 'em_knights_castle_v8.zip', 'em_north_pole_v7.zip', 'em_sewers_v7.zip', 'em_shadow_of_the_binder_of_worlds_v10.zip', 'em_the_binder_of_worlds_v8.zip', 'em_the_steamworks_v5.zip'):
+        for file in (
+            "em_dark_cathedral_v7.zip",
+            "em_enchantment_sanctums_free_v3.zip",
+            "em_events_craftenmines_creations.zip",
+            "em_fireworks_v8.zip",
+            "em_hallosseum_v7.zip",
+            "em_knights_castle_v8.zip",
+            "em_north_pole_v7.zip",
+            "em_sewers_v7.zip",
+            "em_shadow_of_the_binder_of_worlds_v10.zip",
+            "em_the_binder_of_worlds_v8.zip",
+            "em_the_steamworks_v5.zip",
+        ):
             to_download_urls.append(f"{url}/{file}")
             to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")
         to_download_urls.append("https://www.dropbox.com/scl/fi/nrkgsy0cyx753pgtkf7xe/story_mode_dungeons_chapter_one_v2.zip?rlkey=0uupjpuk23mcp82vipkb3baet&st=cncbdyix&dl=1")
@@ -227,21 +274,21 @@ def main_one():
 
     spigot_plugins = {
         "dankchatroom": 112398,
-        #"ActionHealth": 2661,
+        # "ActionHealth": 2661,
         "BetterSleeping": 60837,
-        #"BloodEffect": 90955, # Broken
+        # "BloodEffect": 90955, # Broken
         # "BloodFading": 99263, # Outdated
         "ChestSort": 59773,
-        #"Chunky": 81534,
-        #"Corpses": 96774, # breaks on latest # disabled config
-        #"NeoPerformance": 103183, # removed from spigot? # disabled config
+        # "Chunky": 81534,
+        # "Corpses": 96774, # breaks on latest # disabled config
+        # "NeoPerformance": 103183, # removed from spigot? # disabled config
         "ProtocolLib": 1997,
         "Spark": 57242,
-        #"LevelledMobs": 74304, # scaling needs to be improved, too difficult
-        #"PlayTime": 26016, # Outdated, update to https://github.com/tbm00/PlayTime?
+        # "LevelledMobs": 74304, # scaling needs to be improved, too difficult
+        # "PlayTime": 26016, # Outdated, update to https://github.com/tbm00/PlayTime?
         "PlaceholderAPI": 6245,
         "LuckyBlock-NTD": 92026,
-        #"Multiverse-Core": 390,
+        # "Multiverse-Core": 390,
         "BetterRTP": 36081,
         "ChatFeelings": 12987,
         "BetterStructures": 103241,
@@ -274,15 +321,17 @@ def main_one():
 
     # github plugins
 
-    file_urls = (github_file_selector("EssentialsX/Essentials", "remove", ['AntiBuild', 'Discord', 'GeoIP', 'Protect', 'XMPP']) if download_settings["EssentialsX"] else ()) \
-              + (github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ['FastAsyncWorldEdit-Paper']) if download_settings["FastAsyncWorldEdit-Paper"] else ()) \
-              + (github_file_selector("jpenilla/TabTPS", "add", ['tabtps-spigot'])  if download_settings["tabtps-spigot"] else ()) \
-              + (github_file_selector("ViaVersion/ViaVersion", "add", ['ViaVersion']) if install_Via else ()) \
-              + (github_file_selector("ViaVersion/ViaBackwards", "add", ['ViaBackwards']) if install_Via else ()) \
-              #+ github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
-              #+ github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
-              #+ github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
-              #+ github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
+    file_urls = (
+        (github_file_selector("EssentialsX/Essentials", "remove", ["AntiBuild", "Discord", "GeoIP", "Protect", "XMPP"]) if download_settings["EssentialsX"] else ())
+        + (github_file_selector("IntellectualSites/FastAsyncWorldEdit", "add", ["FastAsyncWorldEdit-Paper"]) if download_settings["FastAsyncWorldEdit-Paper"] else ())
+        + (github_file_selector("jpenilla/TabTPS", "add", ["tabtps-spigot"]) if download_settings["tabtps-spigot"] else ())
+        + (github_file_selector("ViaVersion/ViaVersion", "add", ["ViaVersion"]) if install_Via else ())
+        + (github_file_selector("ViaVersion/ViaBackwards", "add", ["ViaBackwards"]) if install_Via else ())
+    )
+    # + github_file_selector("XZot1K/PhysicsToGo", "add", ['PhysicsToGo']) \
+    # + github_file_selector("SirDank/Iris-AutoCompile", "add", ['Iris']) \
+    # + github_file_selector("SirDank/Adapt-AutoCompile", "add", ['Adapt']) \
+    # + github_file_selector("MediumCraft/mcMMO", "remove", ['original']) \
 
     for file_url in file_urls:
         to_download_urls.append(file_url)
@@ -290,9 +339,9 @@ def main_one():
 
     # - MCAntiMalware.jar
     if download_settings["MCAntiMalware"]:
-        for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ['MCAntiMalware']):
+        for file_url in github_file_selector("OpticFusion1/MCAntiMalware", "add", ["MCAntiMalware"]):
             to_download_urls.append(file_url)
-            to_download_file_names.append(file_url.split('/')[-1])
+            to_download_file_names.append(file_url.split("/")[-1])
 
     # - AutoPlug
     to_download_urls.append("https://github.com/Osiris-Team/AutoPlug-Releases/raw/master/stable-builds/AutoPlug-Client.jar")
@@ -308,20 +357,23 @@ def main_one():
                 response = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
                 break
             except:
-                print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n",2))
+                print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n", 2))
         data = response.content
-        if not str(data).startswith('<!DOCTYPE html>'):
-            try: size = '{:.3}'.format(int(response.headers['Content-Length'])/1024000)
-            except: size = "?"
-            with open(file_name,"wb") as file:
+        if not str(data).startswith("<!DOCTYPE html>"):
+            try:
+                size = "{:.3}".format(int(response.headers["Content-Length"]) / 1024000)
+            except:
+                size = "?"
+            with open(file_name, "wb") as file:
                 file.write(data)
             print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
         else:
-            print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n",2))
-            requests.post("https://dankware.onrender.com/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
+            print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n", 2))
+            requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
 
-    translated = translate('Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process')
-    print_read_me(); input(clr(f"\n  - {translated}... "))
+    translated = translate("Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process")
+    print_read_me()
+    input(clr(f"\n  - {translated}... "))
 
     # create and go to workspace
 
@@ -339,22 +391,23 @@ def main_one():
 
     # create folders
 
-    for folder in ('autoplug', 'plugins'):
+    for folder in ("autoplug", "plugins"):
         os.makedirs(folder, exist_ok=True)
 
     if download_settings["BetterStructures"]:
         for folder in (
-        'plugins/BetterStructures/imports',
-        'plugins/BetterStructures/schematics/default',
-        'plugins/BetterStructures/schematics/exploration',
-        'plugins/BetterStructures/schematics/BetterStructures Free Elite Shrines',
-        'plugins/BetterStructures/elitemobs/powers/BetterStructures Free Elite Shrines',
-        'plugins/BetterStructures/elitemobs/customitems/BetterStructures Free Elite Shrines',
-        'plugins/BetterStructures/elitemobs/custombosses/BetterStructures Free Elite Shrines'):
+            "plugins/BetterStructures/imports",
+            "plugins/BetterStructures/schematics/default",
+            "plugins/BetterStructures/schematics/exploration",
+            "plugins/BetterStructures/schematics/BetterStructures Free Elite Shrines",
+            "plugins/BetterStructures/elitemobs/powers/BetterStructures Free Elite Shrines",
+            "plugins/BetterStructures/elitemobs/customitems/BetterStructures Free Elite Shrines",
+            "plugins/BetterStructures/elitemobs/custombosses/BetterStructures Free Elite Shrines",
+        ):
             os.makedirs(folder, exist_ok=True)
 
     if download_settings["EliteMobs"]:
-        os.makedirs('plugins/EliteMobs/imports', exist_ok=True)
+        os.makedirs("plugins/EliteMobs/imports", exist_ok=True)
 
     # begin standard downloader
 
@@ -370,64 +423,74 @@ def main_one():
     while True:
         try:
             start_time = time.time()
-            multithread(file_downloader, (5 if len(to_download_urls) >= 5 else len(to_download_urls)), to_download_urls, to_download_file_names, progress_bar=('COMPATIBILITY-MODE' not in os.environ))
-            time_taken = int(time.time()-start_time)
+            multithread(file_downloader, (5 if len(to_download_urls) >= 5 else len(to_download_urls)), to_download_urls, to_download_file_names, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
+            time_taken = int(time.time() - start_time)
             break
-        except: input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ",2)); cls()
+        except:
+            input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ", 2))
+            cls()
 
-    print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds...')}")); time.sleep(3)
+    print(clr(f"\n  - {translate(f'Finished downloads in {time_taken} seconds! Sleeping for 3 seconds...')}"))
+    time.sleep(3)
+
 
 main_one()
 
 # creating local files
 
-cls(); print(clr(f"\n  - {translate('Creating local files...')}"))
+cls()
+print(clr(f"\n  - {translate('Creating local files...')}"))
 
-with open('eula.txt','w',encoding='utf-8') as file:
-    file.write('eula=true')
+with open("eula.txt", "w", encoding="utf-8") as file:
+    file.write("eula=true")
 
 if download_settings["TerraformGenerator"]:
-    with open('bukkit.yml','w',encoding='utf-8') as file:
-        file.write('worlds:\n  world:\n    generator: TerraformGenerator')
+    with open("bukkit.yml", "w", encoding="utf-8") as file:
+        file.write("worlds:\n  world:\n    generator: TerraformGenerator")
 
-with open('start_server.cmd', 'w', encoding='utf-8') as file:
-    file.write(f'''
+with open("start_server.cmd", "w", encoding="utf-8") as file:
+    file.write(f"""
 @echo off
 title Minecraft Server Console [ {name} - {version} ]
 java -Dfile.encoding=UTF-8 -jar AutoPlug-Client.jar
 pause
-''')
+""")
 
-with open('start_server.sh', 'wb') as file:
-    file.write('''
+with open("start_server.sh", "wb") as file:
+    file.write(
+        """
 #!/bin/sh
 java -jar AutoPlug-Client.jar
-'''.encode().replace(b'\r\n',b'\n'))
+""".encode().replace(b"\r\n", b"\n")
+    )
 
 if download_settings["MCAntiMalware"]:
-    with open('mc-anti-malware.cmd', 'w', encoding='utf-8') as file:
-        file.write('''@echo off
+    with open("mc-anti-malware.cmd", "w", encoding="utf-8") as file:
+        file.write("""@echo off
 title Minecraft Anti-Malware
 java -Dfile.encoding=UTF-8 -jar MCAntiMalware.jar
 pause
-''')
+""")
 
 if download_settings["MCAntiMalware"]:
-    with open('mc-anti-malware.sh', 'wb') as file:
-        file.write('''
+    with open("mc-anti-malware.sh", "wb") as file:
+        file.write(
+            """
 #!/bin/sh
 java -jar MCAntiMalware.jar
-'''.encode().replace(b'\r\n',b'\n'))
+""".encode().replace(b"\r\n", b"\n")
+        )
 
-with open('quick_install_java.cmd', 'w', encoding='utf-8') as file:
-    file.write(f'''@echo off
+with open("quick_install_java.cmd", "w", encoding="utf-8") as file:
+    file.write(f"""@echo off
 title Java {latest_java_version} Installer
 winget install --accept-source-agreements --interactive --id EclipseAdoptium.Temurin.{latest_java_version}.JRE
 pause
-''')
+""")
 
-with open('quick_install_java.sh', 'wb') as file:
-    file.write(f"""
+with open("quick_install_java.sh", "wb") as file:
+    file.write(
+        f"""
 #!/bin/sh
 sudo apt update
 sudo apt install -y wget apt-transport-https
@@ -436,27 +499,28 @@ sudo wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | su
 sudo echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{{print$2}}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
 sudo apt update
 sudo apt install temurin-{latest_java_version}-jre
-""".encode().replace(b'\r\n',b'\n'))
+""".encode().replace(b"\r\n", b"\n")
+    )
 
 # creating autoplug configs
 
-with open('autoplug/logger.yml', 'w', encoding='utf-8') as file:
-    file.write('''
+with open("autoplug/logger.yml", "w", encoding="utf-8") as file:
+    file.write("""
 logger: 
   tasks: 
     live-tasks: 
       enable: true
-''')
+""")
 
-with open('autoplug/backup.yml', 'w', encoding='utf-8') as file:
-    file.write('''
+with open("autoplug/backup.yml", "w", encoding="utf-8") as file:
+    file.write("""
 backup: 
   enable: false
   cool-down: 1440
-''')
+""")
 
-with open('autoplug/general.yml', 'w', encoding='utf-8') as file:
-    file.write(f'''
+with open("autoplug/general.yml", "w", encoding="utf-8") as file:
+    file.write(f"""
 general: 
   autoplug: 
     target-software: MINECRAFT_SERVER
@@ -471,13 +535,13 @@ general:
     list: 
       - true ./autoplug/logs
       - ./autoplug/downloads
-''')
+""")
 
 # WORKING: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 # BROKEN: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Dterminal.jline=false -Dterminal.ansi=true -XX:+UnlockDiagnosticVMOptions -XX:-UseBiasedLocking -XX:UseAVX=3 -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseAES -XX:+UseAESIntrinsics -XX:UseSSE=4 -XX:+UseFMA -XX:AllocatePrefetchStyle=1 -XX:+UseLoopPredicate -XX:+RangeCheckElimination -XX:+EliminateLocks -XX:+DoEscapeAnalysis -XX:+UseCodeCacheFlushing -XX:+SegmentedCodeCache -XX:+UseFastJNIAccessors -XX:+OptimizeStringConcat -XX:+UseCompressedOops -XX:+UseThreadPriorities -XX:+OmitStackTraceInFastThrow -XX:+TrustFinalNonStaticFields -XX:ThreadPriorityPolicy=1 -XX:+UseInlineCaches -XX:+RewriteBytecodes -XX:+RewriteFrequentPairs -XX:+UseNUMA -XX:-DontCompileHugeMethods -XX:+UseFPUForSpilling -XX:+UseFastStosb -XX:+UseNewLongLShift -XX:+UseVectorCmov -XX:+UseXMMForArrayCopy -XX:+UseXmmI2D -XX:+UseXmmI2F -XX:+UseXmmLoadAndClearUpper -XX:+UseXmmRegToRegMoveAll -Dfile.encoding=UTF-8 -Xlog:async -Djava.security.egd=file:/dev/urandom {extra_flag}--add-modules=jdk.incubator.vector -jar purpur.jar -nogui
 
-with open('autoplug/updater.yml', 'w', encoding='utf-8') as file:
-    file.write(f'''
+with open("autoplug/updater.yml", "w", encoding="utf-8") as file:
+    file.write(f"""
 updater: 
   java-updater: 
     enable: true
@@ -496,10 +560,10 @@ updater:
   mods-updater: 
     enable: false
     profile: AUTOMATIC
-''')
+""")
 
-with open('autoplug/plugins.yml', 'w', encoding='utf-8') as file:
-    file.write('''
+with open("autoplug/plugins.yml", "w", encoding="utf-8") as file:
+    file.write("""
 plugins: 
   general: 
     keep-removed: true
@@ -665,16 +729,14 @@ plugins:
     spigot-id: 60063
   Graves:
     spigot-id: 118271
-''')
+""")
 
 # start server and shutdown server for optimizing the below settings and configuring
 
 resource_pack_sha1 = requests.get("https://raw.githubusercontent.com/SirDank/dank.resource-pack/main/sha1.txt", timeout=3).content.decode()
 
 configs = {
-
     # server configs
-
     "config/paper-world-defaults.yml": {
         "prevent-moving-into-unloaded-chunks: false": "prevent-moving-into-unloaded-chunks: true",
         "alt-item-despawn-rate:\n      enabled: false\n      items:\n        cobblestone: 300": "alt-item-despawn-rate:\n      enabled: true\n      items:\n        cobblestone: 300\n        netherrack: 300\n        sand: 300\n        red_sand: 300\n        gravel: 300\n        dirt: 300\n        grass: 300\n        pumpkin: 300\n        melon_slice: 300\n        kelp: 300\n        bamboo: 300\n        sugar_cane: 300\n        twisting_vines: 300\n        weeping_vines: 300\n        oak_leaves: 300\n        spruce_leaves: 300\n        birch_leaves: 300\n        jungle_leaves: 300\n        acacia_leaves: 300\n        dark_oak_leaves: 300\n        mangrove_leaves: 300\n        cactus: 300\n        diorite: 300\n        granite: 300\n        andesite: 300\n        scaffolding: 600",
@@ -687,7 +749,6 @@ configs = {
         "non-player-arrow-despawn-rate: default": "non-player-arrow-despawn-rate: 20",
         "creative-arrow-despawn-rate: default": "creative-arrow-despawn-rate: 20",
     },
-
     "purpur.yml": {
         "use-alternate-keepalive: false": "use-alternate-keepalive: true",
         "aggressive-towards-villager-when-lagging: true": "aggressive-towards-villager-when-lagging: false",
@@ -695,13 +756,12 @@ configs = {
         "lobotomize:\n          enabled: false": "lobotomize:\n          enabled: true",
         "teleport-if-outside-border: false": "teleport-if-outside-border: true",
     },
-
     "server.properties": {
         # "simulation-distance=10": "simulation-distance=4",
         "motd=A Minecraft Server": f"motd=\\u00A7a{motd_spaces}---\\u00A76>\\u00A7b\\u00A7l {motd_spaces + name + motd_spaces} \\u00A76<\\u00A7a---\\u00A7r\\{motd_spaces}\\n         \\u00A7l\\u00A7m\\u00A76-----\\u00A7r\\u00A78[ \\u00A74Made with \\u00A7cdank\\u00A7f.\\u00A7ctool \\u00A78]\\u00A7l\\u00A7m\\u00A76-----",
         "server-name=Unknown Server": f"server-name={name}",
         "require-resource-pack=false": "require-resource-pack=true",
-        'resource-pack-prompt=': 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
+        "resource-pack-prompt=": 'resource-pack-prompt={"text":"github.com/SirDank/dank.resource-pack","color":"light_purple"}',
         "resource-pack=": "resource-pack=https://github.com/SirDank/dank.resource-pack/raw/main/dank.resource-pack.zip",
         "enable-query=false": "enable-query=true",
         "max-players=20": "max-players=69",
@@ -709,35 +769,31 @@ configs = {
         "resource-pack-sha1=": f"resource-pack-sha1={resource_pack_sha1}",
         "spawn-protection=16": "spawn-protection=0",
         "max-world-size=29999984": "max-world-size=1000500",
-        "enforce-secure-profile=true": "enforce-secure-profile=false"
+        "enforce-secure-profile=true": "enforce-secure-profile=false",
     },
-
     "spigot.yml": {
         "merge-radius:\n      item: 2.5\n      exp: 3.0": "merge-radius:\n      item: 3.5\n      exp: 4.0",
         # "mob-spawn-range: 8": "mob-spawn-range: 2",
-        "entity-activation-range:\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range:\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32"
+        "entity-activation-range:\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      water: 16\n      villagers: 32\n      flying-monsters: 32": "entity-activation-range:\n      animals: 16\n      monsters: 24\n      raiders: 48\n      misc: 8\n      water: 8\n      villagers: 16\n      flying-monsters: 32",
     },
-
     "bukkit.yml": {
         "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 1\n  water-spawns: 1\n  water-ambient-spawns: 1\n  water-underground-creature-spawns: 1\n  axolotl-spawns: 1\n  ambient-spawns: 1": "ticks-per:\n  animal-spawns: 400\n  monster-spawns: 10\n  water-spawns: 400\n  water-ambient-spawns: 400\n  water-underground-creature-spawns: 400\n  axolotl-spawns: 400\n  ambient-spawns: 400",
     },
-
-    #"pufferfish.yml": {
+    # "pufferfish.yml": {
     #    "dab:\n  enabled: false\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 8": "dab:\n  enabled: true\n  start-distance: 12\n  max-tick-freq: 20\n  activation-dist-mod: 7",
     #    "inactive-goal-selector-throttle: false": "inactive-goal-selector-throttle: true",
     #    #"max-loads-per-projectile: 10": "max-loads-per-projectile: 8",
-    #},
-
+    # },
 }
 
-if download_settings['ChestSort']:
+if download_settings["ChestSort"]:
     configs["plugins/ChestSort/config.yml"] = {
         "use-permissions: true": "use-permissions: false",
         "sorting-enabled-by-default: false": "sorting-enabled-by-default: true",
         "inv-sorting-enabled-by-default: false": "inv-sorting-enabled-by-default: true",
     }
 
-if download_settings['EssentialsX']:
+if download_settings["EssentialsX"]:
     configs["plugins/Essentials/config.yml"] = {
         "nickname-prefix: '~'": "nickname-prefix: ''",
         "ignore-colors-in-max-nick-length: false": "ignore-colors-in-max-nick-length: true",
@@ -749,38 +805,28 @@ if download_settings['EssentialsX']:
         "player-commands:\n": "player-commands:\n  - playtime.check\n  - playtime.checkothers\n  - playtime.checktop\n  - playtime.uptime\n",
     }
 
-if download_settings['LuckyBlock-NTD']:
+if download_settings["LuckyBlock-NTD"]:
     configs["plugins/ntdLuckyBlock/config.yml"] = {
         "break-permissions: true": "break-permissions: false",
     }
 
-if download_settings['BetterStructures']:
-    configs["plugins/BetterStructures/config.yml"] = {
-        "warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"
-    }
+if download_settings["BetterStructures"]:
+    configs["plugins/BetterStructures/config.yml"] = {"warnAdminsAboutNewBuildings: true": "warnAdminsAboutNewBuildings: false"}
 
-if download_settings['ChatFeelings']:
-    configs["plugins/ChatFeelings/config.yml"] = {
-        "Global-Feelings:\n    Enabled: false": "Global-Feelings:\n    Enabled: true",
-        "Updates:\n    Check: true": "Updates:\n    Check: false"
-    }
+if download_settings["ChatFeelings"]:
+    configs["plugins/ChatFeelings/config.yml"] = {"Global-Feelings:\n    Enabled: false": "Global-Feelings:\n    Enabled: true", "Updates:\n    Check: true": "Updates:\n    Check: false"}
 
-if download_settings['BetterRTP']:
-    configs["plugins/BetterRTP/config.yml"] = {
-        "DisableUpdater: false": "DisableUpdater: true"
-    }
+if download_settings["BetterRTP"]:
+    configs["plugins/BetterRTP/config.yml"] = {"DisableUpdater: false": "DisableUpdater: true"}
 
-if download_settings['FancyPhysics']:
-    configs["plugins/FancyPhysics/config.yml"] = {
-        "DamageParticles: true": "DamageParticles: false",
-        "MaxAmount: 4000": "MaxAmount: 500"
-    }
+if download_settings["FancyPhysics"]:
+    configs["plugins/FancyPhysics/config.yml"] = {"DamageParticles: true": "DamageParticles: false", "MaxAmount: 4000": "MaxAmount: 500"}
 
-#"plugins/Corpses/config.yml": {
+# "plugins/Corpses/config.yml": {
 #    "secondsToDisappear: 300": "secondsToDisappear: 3600",
-#},
+# },
 
-#"plugins/LevelledMobs/rules.yml": {
+# "plugins/LevelledMobs/rules.yml": {
 #    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded% %tiered%%heart_symbol% &r%health-indicator% &8&l༻": "%tiered%%mob-lvl% &r%health-indicator%",
 #    "&8&l༺ %tiered%Lvl %mob-lvl%&8 | &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "%tiered%%mob-lvl%&8 &f%entity-health-rounded%",
 #    "&8&l༺ &f%displayname%&8 | &f%entity-health-rounded%&8/&f%entity-max-health-rounded% %tiered%%heart_symbol% &8&l༻": "&f%entity-health-rounded% %tiered%%heart_symbol%",
@@ -788,99 +834,102 @@ if download_settings['FancyPhysics']:
 #    "#- nametag_using_indicator": "- nametag_using_indicator",
 #    "- weighted_random_Levelling": "#- weighted_random_Levelling",
 #    "#- ycoord_Levelling": "- ycoord_Levelling",
-#},
+# },
 
-#"plugins/LevelledMobs/settings.yml": {
+# "plugins/LevelledMobs/settings.yml": {
 #    "mobs-multiply-head-drops: false": "mobs-multiply-head-drops: true",
-#},
+# },
 
-#"plugins/NeoPerformance/performanceConfig.yml": {
+# "plugins/NeoPerformance/performanceConfig.yml": {
 #    "broadcastHalt: false": "broadcastHalt: true",
-#},
+# },
 
-#"plugins/PhysicsToGo/config.yml": {
+# "plugins/PhysicsToGo/config.yml": {
 #    "tree-regeneration: true": "tree-regeneration: false",
 #    "explosive-regeneration: true": "explosive-regeneration: false"
-#},
+# },
 
 if cracked:
     configs["server.properties"]["online-mode=true"] = "online-mode=false"
 
-def main_two():
 
-    string = f'''
+def main_two():
+    string = f"""
 
   [ Scripts ]
-  - quick_install_java.cmd / quick_install_java.sh : {translate('Script to install Temurin JRE')}
-  - mc-anti-malware.cmd / mc-anti-malware.sh : {translate('Script to start mc-anti-malware')}
-  - start_server.cmd / start_server.sh : {translate('Script to start your server')}
+  - quick_install_java.cmd / quick_install_java.sh : {translate("Script to install Temurin JRE")}
+  - mc-anti-malware.cmd / mc-anti-malware.sh : {translate("Script to start mc-anti-malware")}
+  - start_server.cmd / start_server.sh : {translate("Script to start your server")}
   
   [ Autoplug Commands ]
-  - ".check java" : {translate('Command to install Java VM')}
-  - ".start" : {translate('Command to start the server')}
-  - ".stop" : {translate('Command to stop the server')}
-  - ".stop both" : {translate('Command to stop the server and Autoplug')}
-  - ".check plugins" : {translate('Command to update configured plugins')}
-  - ".help" : {translate('Command to display all available commands')}
+  - ".check java" : {translate("Command to install Java VM")}
+  - ".start" : {translate("Command to start the server")}
+  - ".stop" : {translate("Command to stop the server")}
+  - ".stop both" : {translate("Command to stop the server and Autoplug")}
+  - ".check plugins" : {translate("Command to update configured plugins")}
+  - ".help" : {translate("Command to display all available commands")}
   
-  '''
+  """
 
-    with open('readme.txt', 'w', encoding='utf-8') as file:
+    with open("readme.txt", "w", encoding="utf-8") as file:
         file.write(string)
 
-    print_read_me(); input(clr(f"  - {translate('Start the server using: start_server.cmd, then use the [.stop both] command to generate configs to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration...')} "))
+    print_read_me()
+    input(clr(f"  - {translate('Start the server using: start_server.cmd, then use the [.stop both] command to generate configs to be optimized')}" + string + f"> {translate('After your server has run at least once, press [ ENTER ] to apply custom configuration...')} "))
 
     def config_updater(path):
-        with open(path, 'r', encoding='utf-8') as file:
+        with open(path, "r", encoding="utf-8") as file:
             config_data = file.read()
         for setting in configs[path]:
-            #if setting in config_data:
+            # if setting in config_data:
             #    config_data = config_data.replace(configs[path][setting], setting)
             config_data = config_data.replace(setting, configs[path][setting])
-        with open(path, 'w', encoding='utf-8') as file:
+        with open(path, "w", encoding="utf-8") as file:
             file.write(config_data)
 
     # [ updating configs ] try all without ignoring errors
 
     for path in configs:
         while True:
-            try: config_updater(path); break
+            try:
+                config_updater(path)
+                break
             except Exception as exc:
                 string = translate('Press [ ENTER ] to retry or type "skip" to skip')
-                choice = input(clr(f"\n{err((type(exc), exc, exc.__traceback__),'mini')}\n\n  > {string}: ", 2) + white_bright)
-                if choice == "skip": break
+                choice = input(clr(f"\n{err((type(exc), exc, exc.__traceback__), 'mini')}\n\n  > {string}: ", 2) + white_bright)
+                if choice == "skip":
+                    break
 
-    string = f'''
-  - {translate('Follow these steps to enable custom world generation')}:
+    string = f"""
+  - {translate("Follow these steps to enable custom world generation")}:
 
-  [1] {translate('Start the server again using the following command')}: .start
-  [2] {translate('After it has properly started, copy and paste the following command')}: iris create name=world-iris seed={randint(1,9999999999)}
-  [3] {translate('Wait for it to complete then stop the server using the following command')}: .stop
+  [1] {translate("Start the server again using the following command")}: .start
+  [2] {translate("After it has properly started, copy and paste the following command")}: iris create name=world-iris seed={randint(1, 9999999999)}
+  [3] {translate("Wait for it to complete then stop the server using the following command")}: .stop
 
-  > {translate('Press [ ENTER ] after you have followed the steps...')} '''
+  > {translate("Press [ ENTER ] after you have followed the steps...")} """
 
-    #while not os.path.isdir("world-iris"):
+    # while not os.path.isdir("world-iris"):
     #    print_read_me(); input(clr(string))
 
-    #shutil.move("world/datapacks", "world-iris/datapacks")
-    #shutil.rmtree("world")
-    #os.rename("world_nether", "world-iris_nether")
-    #os.rename("world_the_end", "world-iris_the_end")
+    # shutil.move("world/datapacks", "world-iris/datapacks")
+    # shutil.rmtree("world")
+    # os.rename("world_nether", "world-iris_nether")
+    # os.rename("world_the_end", "world-iris_the_end")
 
-    #with open('server.properties', 'r', encoding='utf-8') as file:
+    # with open('server.properties', 'r', encoding='utf-8') as file:
     #    data = file.read().replace("level-name=world", "level-name=world-iris")
 
-    #with open('server.properties', 'w', encoding='utf-8') as file:
+    # with open('server.properties', 'w', encoding='utf-8') as file:
     #    file.write(data)
 
     if playit:
-
-        string = f'''
-  - {translate('It is extremely easy to setup the playit.gg plugin')}
+        string = f"""
+  - {translate("It is extremely easy to setup the playit.gg plugin")}
   
-  - {translate('After server setup is complete, start your server.')}
+  - {translate("After server setup is complete, start your server.")}
   
-  - {translate('Click on the URL displayed on the console.')}
+  - {translate("Click on the URL displayed on the console.")}
   
   - {translate("Create an account and login if you haven't already to save the tunnel on playit.gg")}
   
@@ -888,30 +937,36 @@ def main_two():
   
   - {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
   
-  > {translate('Press [ ENTER ] after you have read the message...')} '''
+  > {translate("Press [ ENTER ] after you have read the message...")} """
 
-        print_read_me(); input(clr(string))
+        print_read_me()
+        input(clr(string))
     else:
-        print_read_me(); print(clr(f"\n  - {translate('As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, you could follow this tutorial on port-forwarding.')}"))
+        print_read_me()
+        print(clr(f"\n  - {translate('As you have not selected playit.gg as a host, To allow players to connect to your server over the internet, you could follow this tutorial on port-forwarding.')}"))
         if input(clr(f"\n  > {translate('Open port forwarding tutorial on youtube?')} [ y / n ]: ") + red).lower() == "y":
-            sys_open('https://youtu.be/X75GbRaGzu8')
+            sys_open("https://youtu.be/X75GbRaGzu8")
 
-    tmp_path = f'{dir_name}\\autoplug\\updater.yml'
-    string = f'''
+    tmp_path = f"{dir_name}\\autoplug\\updater.yml"
+    string = f"""
   - {translate(f'If you would like to transfer the server to a linux system and run it there, set "build-id: 0" inside "{tmp_path}"')}
 
   - {translate('After you move the folder to a linux system, run "sudo chmod +x *.sh" to make all .sh files executable')}
 
   - {translate('Run "start_server.sh" and then install JVM with the ".check java" command')}
 
-  > {translate('Press [ ENTER ] after you have read the message...')} '''
+  > {translate("Press [ ENTER ] after you have read the message...")} """
 
-    print_read_me(); input(clr(string))
+    print_read_me()
+    input(clr(string))
 
     # done!
 
     title("𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛 [ 𝚌𝚘𝚖𝚙𝚕𝚎𝚝𝚎! ]")
     complete_banner = "\n\n\n\n ___  ___ _ ____   _____ _ __                 \n/ __|/ _ \\ '__\\ \\ / / _ \\ '__|                \n\\__ \\  __/ |   \\ V /  __/ |                   \n|___/\\___|_|    \\_/ \\___|_|                   \n\n                     _   _                    \n  ___ _ __ ___  __ _| |_(_) ___  _ __         \n / __| '__/ _ \\/ _` | __| |/ _ \\| '_ \\        \n| (__| | |  __/ (_| | |_| | (_) | | | |       \n \\___|_|  \\___|\\__,_|\\__|_|\\___/|_| |_|       \n\n                           _      _         _ \n  ___ ___  _ __ ___  _ __ | | ___| |_ ___  / \\\n / __/ _ \\| '_ ` _ \\| '_ \\| |/ _ \\ __/ _ \\/  /\n| (_| (_) | | | | | | |_) | |  __/ ||  __/\\_/ \n \\___\\___/|_| |_| |_| .__/|_|\\___|\\__\\___\\/   \n                    |_|                       \n\n"
-    cls(); Console().print(Align.center(complete_banner), style="blink red", highlight=False); time.sleep(5)
+    cls()
+    Console().print(Align.center(complete_banner), style="blink red", highlight=False)
+    time.sleep(5)
+
 
 main_two()

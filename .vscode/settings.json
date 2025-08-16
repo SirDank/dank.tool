@@ -1,4 +1,6 @@
 {
-  "editor.formatOnSave": false,
-  "editor.defaultFormatter": "charliermarsh.ruff",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.ruff": "always"
+  }
 }
