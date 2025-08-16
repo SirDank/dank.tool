@@ -1,13 +1,12 @@
 import json
 import os
-import subprocess
 import time
 import tkinter as tk
 from concurrent.futures import ThreadPoolExecutor
 from zlib import compress, decompress
 
 import requests
-from dankware import align, blue_bright, clr, cls, green_bright, red, rm_line, white_normal
+from dankware import align, blue_bright, clr, cls, green_bright, red, rm_line, white_normal, get_uuid
 from socketio import Client
 
 WINDOWS = os.name == "nt" and "WINELOADER" not in os.environ
@@ -247,14 +246,9 @@ def enable_notifications():
 
 
 # [TODO] update to use https://pypi.org/project/py-machineid/
-if os.name == "nt":
-    try:
-        uuid = str(subprocess.check_output(r"wmic csproduct get uuid", stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().split("\n")[1].strip())
-    except FileNotFoundError:
-        uuid = str(subprocess.check_output("powershell.exe -ExecutionPolicy bypass -command (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID", stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().strip())
-else:
-    uuid = str(subprocess.check_output(r"sudo dmidecode -s system-uuid", stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=0x08000000).decode().replace("UUID", "").replace(":", "").strip())
+# would need to be supported on java for mc plugin
 
+uuid = get_uuid()
 notifications = False
 session = requests.Session()
 headers = {"User-Agent": "dank.tool", "Content-Encoding": "deflate", "Content-Type": "application/json"}

@@ -410,7 +410,7 @@ def dank_tool_runs_counter():
         try:
             # for an upcoming stats feature
             response = session.get("http://ipwho.is", timeout=3).json()
-            response = {"continent": response["continent"], "continent_code": response["continent_code"], "country": response["country"], "country_code": response["country_code"], "region": response["region"], "region_code": response["region_code"], "city": response["city"]}
+            response = {"continent": response["continent"], "continent_code": response["continent_code"], "country": response["country"], "country_code": response["country_code"]}
             session.post("https://dankware.alwaysdata.net/counter?id=dank.tool&hit=true", headers=headers, json=response, timeout=10)
             break
         except:
