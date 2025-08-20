@@ -264,10 +264,10 @@ def set_globals_one():
                 "title": "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚠𝚘𝚛𝚔-𝚛𝚎𝚜𝚎𝚝",
                 "project": "dank.network-reset",
             },
-            "Clear Icon & Thumbnail Cache": {
+            "Clear Cache": {
                 "info": "",
-                "title": "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
-                "project": "dank.clear-icons",
+                "title": "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚌𝚊𝚌𝚑𝚎",
+                "project": "dank.clear-cache",
             },
             "category": True,
         },
@@ -373,11 +373,11 @@ def set_globals_two():
                     'rpc': _translate("🛜 resetting network settings")
                 },
 
-                _translate('Clear Icon & Thumbnail Cache'): {
+                _translate('Clear Cache'): {
                     'info': '',
-                    'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚒𝚌𝚘𝚗𝚜",
-                    'project': "dank.clear-icons",
-                    'rpc': _translate("⚙️ clearing icon and thumbnail cache")
+                    'title': "𝚍𝚊𝚗𝚔.𝚌𝚕𝚎𝚊𝚛-𝚌𝚊𝚌𝚑𝚎",
+                    'project': "dank.clear-cache",
+                    'rpc': _translate("⚙️ clearing cache")
                 },
 
                 'category': True
@@ -756,13 +756,17 @@ def dank_clear_icons():
         + clr("Clear Thumbnail Cache", 2)
         + clr(f""" : {_translate("This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly")}.
   
-  - [3] Run all tasks
+  - [3] """)
+        + clr("Clear Nvidia Cache", 2)
+        + clr(f""" : {_translate("This task clears the Nvidia cache for the current user. This is useful if you are experiencing stuttering or performance issues with Nvidia graphics cards")}.
+  
+  - [4] Run all tasks
 """)
     )
 
     while True:
         choice = input(clr("  > Choice: ") + red).lower()
-        if choice.isdigit() and 0 <= int(choice) <= 3:
+        if choice.isdigit() and 0 <= int(choice) <= 4:
             if choice == "0":
                 break
 
@@ -771,7 +775,7 @@ def dank_clear_icons():
             os.system("taskkill /f /im explorer.exe >nul 2>&1")
             os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
-            if choice in ("1", "3"):
+            if choice in ("1", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Icon Cache')} ]\n"))
                 os.system(r"attrib -h iconcache*")
                 for file in os.listdir():
@@ -782,7 +786,7 @@ def dank_clear_icons():
                         except:
                             print(clr(f"  - {_translate('failed to delete')} {file}", 2))
 
-            if choice in ("2", "3"):
+            if choice in ("2", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Thumbnail Cache')} ]\n"))
                 os.system(r"attrib -h thumbcache*")
                 for file in os.listdir():
@@ -793,9 +797,17 @@ def dank_clear_icons():
                         except:
                             print(clr(f"  - {_translate('failed to delete')} {file}", 2))
 
+            if choice in ("3", "4"):
+                print(clr(f"\n  [ {_translate('Clearing Nvidia Cache')} ]\n"))
+                os.system(r"del /f /s /q %localappdata%\NVIDIA\DXCache\*")
+                print(clr(f"  - {_translate('deleted')} %localappdata%\\NVIDIA\\DXCache\\*"))
+                os.system(r"del /f /s /q %localappdata%\NVIDIA\GLCache\*")
+                print(clr(f"  - {_translate('deleted')} %localappdata%\\NVIDIA\\GLCache\\*"))
+
             os.chdir(os.path.dirname(__file__))
-            print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
-            os.system("start explorer.exe")
+            if choice in ("1", "2", "4"):
+                print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
+                os.system("start explorer.exe")
             input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
             break
 
