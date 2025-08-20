@@ -805,9 +805,8 @@ def dank_clear_cache():
                 print(clr(f"  - {_translate('deleted')} %localappdata%\\NVIDIA\\GLCache\\*"))
 
             os.chdir(os.path.dirname(__file__))
-            if choice in ("1", "2", "4"):
-                print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
-                os.system("start explorer.exe")
+            print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
+            os.system("start explorer.exe")
             input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
             break
 
