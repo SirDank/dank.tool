@@ -739,7 +739,7 @@ def dank_network_reset():
         rm_line()
 
 
-def dank_clear_icons():
+def dank_clear_cache():
     # cls(); input(clr(f"\n  [ DISCLAIMER ]\n\n  - {translate('Do not use this module if you do not know what you are doing')}!\n  - {translate('Close all other applications before continuing')}!\n  - {translate('This tool is not responsible for any damage to your system')}!\n  - {translate('This tool is not responsible for any data loss')}!\n\n  > Press [ENTER] to continue... "))
     cls()
     print(
@@ -1337,8 +1337,8 @@ if __name__ == "__main__":
                 case "dank.network-reset":
                     dank_network_reset()
                     continue
-                case "dank.clear-icons":
-                    dank_clear_icons()
+                case "dank.clear-cache":
+                    dank_clear_cache()
                     continue
                 case "dank.vencord":
                     dank_github_software("vencord")
