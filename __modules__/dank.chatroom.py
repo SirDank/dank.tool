@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from zlib import compress, decompress
 
 import requests
-from dankware import align, blue_bright, clr, cls, green_bright, red, rm_line, white_normal, get_uuid
+from dankware import align, blue_bright, clr, cls, get_uuid, green_bright, red, rm_line, white_normal
 from socketio import Client
 
 WINDOWS = os.name == "nt" and "WINELOADER" not in os.environ

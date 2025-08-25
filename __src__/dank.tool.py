@@ -462,13 +462,15 @@ def set_globals_two():
             #    'rpc': "running auto-clicker"
             #},
 
-            _translate('Chatroom'): {
-                'info': menu_request_responses["chatroom_user_count"],
-                'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
-                'project': "dank.chatroom",
-                'rpc': _translate("💬 chatting in the chatroom"),
-                'category': False
-            },
+            # chatroom disabled until server related issues are resolved
+
+            # _translate('Chatroom'): {
+            #     'info': menu_request_responses["chatroom_user_count"],
+            #     'title': "𝚍𝚊𝚗𝚔.𝚌𝚑𝚊𝚝𝚛𝚘𝚘𝚖",
+            #     'project': "dank.chatroom",
+            #     'rpc': _translate("💬 chatting in the chatroom"),
+            #     'category': False
+            # },
 
             _translate('Social Media'): {
 
