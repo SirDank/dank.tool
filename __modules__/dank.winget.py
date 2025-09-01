@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 
 import requests
-from dankware import clr, cls, github_file_selector, green_bright, rm_line
+from dankware import clr, cls, err, github_file_selector, green_bright, rm_line
 from rich.align import Align
 from rich.columns import Columns
 from rich.console import Console
@@ -60,21 +60,19 @@ def cleanup_result(cmd):
 def handle_response(cmd, results, mode):
     indexes = [0]
     cmd = cmd.stdout.decode("utf-8").splitlines()
-    if not (_ for _ in cmd if _.startswith("Name")):
-        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}")
 
-    try:
-        while not cmd[0].startswith("Name"):
-            cmd = cmd[1:]
-    except IndexError as exc:
-        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}") from exc
+    for i, line in enumerate(cmd):
+        if line.count("-") > 3:
+            cmd = cmd[i - 1 :]
+            break
 
-    try:
-        for char in ("I", "V", "M", "S"):
-            if char in cmd[0]:
-                indexes.append(cmd[0].index(char))
-    except Exception as exc:
-        raise RuntimeError(f"Error parsing response\n  - mode: {mode}\n  - cmd:\n\n{cleanup_result(cmd)}") from exc
+    columns = cmd[0].split()[:3]
+
+    for char in (_[0] for _ in columns[1:]):
+        if char in cmd[0]:
+            index = cmd[0].index(char)
+            if cmd[0][index - 1] == " ":
+                indexes.append(index)
 
     results.clear()
     cmd = cmd[2:]
@@ -245,31 +243,16 @@ def main():
             rm_line()
 
 
-def special_case_error():
-    print(
+if os.name != "nt" or "WINELOADER" in os.environ:
+    input(
         clr(
-            "\n  - Known error occurred! Your system is unique, I need you to join my discord server and help me fix this error!",
+            "\n  - This module only works for Windows! Press [ ENTER ] to exit... ",
             2,
         )
     )
-    input(clr("  > Hit [ ENTER ] to go back to the main menu... "))
-
-
-try:
-    if os.name != "nt" or "WINELOADER" in os.environ:
-        input(
-            clr(
-                "\n  - This module only works for Windows! Press [ ENTER ] to exit... ",
-                2,
-            )
-        )
-    elif not winget_installed():
-        input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))
-        install_winget()
-        main()
-    else:
-        main()
-except RuntimeError:
-    special_case_error()
-except FileNotFoundError:
-    special_case_error()
+elif not winget_installed():
+    input(clr("\n  - This module requires winget to be installed! Press [ ENTER ] to download and install... "))
+    install_winget()
+    main()
+else:
+    main()
