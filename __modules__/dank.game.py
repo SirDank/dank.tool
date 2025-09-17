@@ -274,6 +274,11 @@ blur_noise_pixel_shader = Shader(
         vec4 blurred = apply_vertical_blur(use_uv);
         vec3 noised  = apply_noise(blurred.rgb, uv);
 
+        // Add vignette effect
+        vec2 pos = use_uv - 0.5;
+        float vignette = smoothstep(0.8, 0.2, length(pos));
+        noised *= vignette;
+
         color = vec4(noised, 1.0);
     }
     """,
