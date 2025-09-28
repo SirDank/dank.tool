@@ -554,16 +554,66 @@ def debug_mode():
             print(clr("\n" + err((type(exc), exc, exc.__traceback__), "mini"), 2))
 
 
-def dank_tool_settings():
+def dank_tool_get_runs() -> str:
     try:
         with open(os.path.join(os.path.expandvars("%LOCALAPPDATA%\\Dankware"), "runs.txt"), "r", encoding="utf-8") as file:
             runs = file.read()
     except:
         runs = "?"
+    return runs
+
+
+def dank_tool_settings():
+    runs = dank_tool_get_runs()
+    runs_str = clr(f"\n  - Your runs: {runs} | Global runs: {menu_request_responses['danktool_runs'].replace(green_bright, '')}")
+
+    if ONLINE_MODE:
+        cls()
+        print(clr("\n  - Gathering stats..."))
+
+        if "pantry" not in menu_request_responses or menu_request_responses["pantry"] == {}:
+            try:
+                menu_request_responses["pantry"] = _session.get("https://dankware.alwaysdata.net/pantry", headers=headers, timeout=3).json()
+            except:
+                menu_request_responses["pantry"] = {}
+        continents = menu_request_responses["pantry"].get("top_continents", {})
+        countries = menu_request_responses["pantry"].get("top_countries", {})
+        total_runs = menu_request_responses["pantry"].get("total", "?")
+
+        # build renderable strings
+        if continents:
+            continents_lines = []
+            for i, (k, v) in enumerate(sorted(continents.items(), key=lambda x: x[1], reverse=True), start=1):
+                continents_lines.append(f"[bright_white]{i}.[/bright_white] {k} [green]{v}[/green]")
+            continents_str = "\n".join(continents_lines)
+        else:
+            continents_str = "[red]No data[/red]"
+
+        if countries:
+            countries_lines = []
+            for i, (k, v) in enumerate(sorted(countries.items(), key=lambda x: x[1], reverse=True), start=1):
+                countries_lines.append(f"[bright_white]{i}.[/bright_white] {k} [green]{v}[/green]")
+            countries_str = "\n".join(countries_lines)
+        else:
+            countries_str = "[red]No data[/red]"
+
+        console = Console(highlight=False)
+        left = Panel(Align.left(continents_str), title="[b]Top Continents[/b]", expand=True, style="red")
+        right = Panel(Align.left(countries_str), title="[b]Top Countries[/b]", expand=True, style="red")
 
     while True:
         cls()
-        print(clr(f"\n  - Settings: [ {_translate('restart for all changes to take effect')} ]\n\n  - dank.tool run counter: {runs}\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
+
+        if ONLINE_MODE:
+            if continents and countries:
+                print(clr(f"\n  - Your runs: {runs} | Global recorded runs: {total_runs}/{menu_request_responses['danktool_runs'].replace(green_bright, '')} (since 10-Sept-25)\n"))
+                console.print(Columns([left, right], expand=True), highlight=False)
+            else:
+                print(runs_str)
+        else:
+            print(runs_str)
+
+        print(clr(f"\n  - Settings: [ {_translate('restart for all changes to take effect')} ]\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
 
         with open("settings.json", "r", encoding="utf-8") as file:
             settings = json.loads(file.read())
@@ -1299,7 +1349,7 @@ if __name__ == "__main__":
                         rm_line()
 
         try:
-            # built-in modules
+            # one liner built-in modules
 
             match _choice["project"]:
                 case "Discord Server":

@@ -8,10 +8,6 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/SirDank/dankware"><img width="800" alt="image" src="__wallpapers__/1.png"></a><br>
-</p>
-
-<p align="center">
 <a href="https://github.com/SirDank/dank.tool"><img width="800" alt="image" src="__wallpapers__/red.png"></a><br>
 </p>
 
@@ -59,7 +55,7 @@
 
 - Do not enable `offline-src`, `offline-mode` or `dev-branch` in settings as they are only meant for developers.
 
-- Documentation for developers can be found [here](https://github.com/SirDank/dank.tool#-danktool-documentation--for-devs--).
+- Documentation for developers can be found [below](https://github.com/SirDank/dank.tool#-danktool-documentation--for-devs--).
 
 ## ♦️ To Do ♦️
 
@@ -70,11 +66,11 @@
 
 ## ♦️ Support ♦️
 
-- [Discord](https://allmylinks.com/link/out?id=kdib4s-nu8b-1e19god)
+- [Discord](https://dankware.alwaysdata.net/discord)
 
 ## ♦️ Funding ♦️
 
-- I do not take any donations, but if you would like to support the growth of this tool, you can do so by sharing it with your friends!
+- I do not take any donations, I want this tool to be free for everyone, but if you would like to support the growth of this tool, you can do so by talking about it / sharing it with your friends!
 
 ## ♦️ Anonymous Suggestions ♦️
 
@@ -133,7 +129,7 @@
 - IPs are crafted in such a way that it is unique and avoids IPs that aren't valid / local IPs / will not have mc servers hosted on them
 - Prints server info including IP, version, number of players online, latency in ms, host city, host org, host domain, server description (gamemode, map, motd on bedrock)
 - You automatically contribute to the minecraft [java](https://dankware.alwaysdata.net/minecraft-java-servers) and [bedrock](https://dankware.alwaysdata.net/minecraft-bedrock-servers) server lists by scanning!
-- Featured on [fmhy](https://fmhy.net/gaming-tools#minecraft-tools)
+- Server lists featured on [fmhy](https://fmhy.net/gaming-tools#minecraft-tools)
 
 ## ♦️ To Do ♦️
 
@@ -271,7 +267,6 @@
 ```
 📁 dank.tool/                     [ branches: main, dev ]
 ├─📄 dank.tool.zip                [ direct download to the latest dank.tool installer inside a zip protected by the password "dankware" ]
-├─📄 requirements.txt             [ python packages required to build dank.tool.exe ]
 ├─📁 __assets__/                  [ assets used by dank.tool's modules ]
 │ └─📁 example_module_1/
 │   └─📄 example_file_1.exe
@@ -283,7 +278,8 @@
 │ ├─📄 dank.tool.py               [ dank.tool's interface + module executor ]
 │ ├─📄 executor.py                [ dank.tool's main src (all imports used by every module, update checker (executes updater.py), discord rpc, online run counter, chatroom user validator, executes dank.tool.py) ]
 │ ├─📄 executor_version.txt       [ dank.tool's latest version number ( used for update checks ) ]
-│ └─📄 updater.py                 [ dank.tool's updater ]
+│ ├─📄 updater.py                 [ dank.tool's updater ]
+│ └─📄 requirements.txt           [ python packages required to build dank.tool.exe ]
 └─📁 __tools__/
   └─📄 package-updater.cmd        [ script I use to quickly update all packages used by the dank.tool before I build the latest version ]
 ```
