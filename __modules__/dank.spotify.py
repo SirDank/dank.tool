@@ -79,8 +79,9 @@ def main():
 
     # SpotX
 
-    translated = translate("installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates")
-    print(clr(f"\n  - {translated}"))
+    # translated = translate("installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates")
+    # print(clr(f"\n  - {translated}"))
+    print(clr(f"\n  - {translate('SpotX is currently being detected as a virus by some antivirus software, it is a false positive, you may need to exclude it from your antivirus for it to work!')}\n"))
     run_command(
         [
             "powershell",
@@ -88,7 +89,7 @@ def main():
             "-ExecutionPolicy",
             "Bypass",
             "-Command",
-            "iex \"& { $(iwr -useb 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme\"",
+            "iex \"& { $(iwr -useb 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -block_update_on -start_spoti -new_theme -adsections_off -lyrics_stat spotify\"",
         ],
         check=True,
     )
