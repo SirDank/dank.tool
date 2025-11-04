@@ -285,7 +285,7 @@ else:  # LATEST VERSION IS LOWER THAN CURRENT VERSION
     print(clr("\n  - Development Version!"))
 
 if OFFLINE_SRC:
-    print(clr("\n  - Offline SRC!"))
+    print(clr("\n  - Using offline src!"))
 
 # check windows language
 

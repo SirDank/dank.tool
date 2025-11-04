@@ -81,7 +81,7 @@ def main():
 
     # translated = translate("installing SpotX...\n\n  [ RECOMMENDED SETTINGS ]\n  - Install Over\n  - Disable Podcasts\n  - Block Updates")
     # print(clr(f"\n  - {translated}"))
-    print(clr(f"\n  - {translate('SpotX is currently being detected as a virus by some antivirus software, it is a false positive, you may need to exclude it from your antivirus for it to work!')}\n"))
+    print(clr(f"\n  - {translate('SpotX is currently being detected as a virus by windows defender, it is a false positive, the easiest way to fix this is to TEMPORARILY disable real-time protection in windows defender!')}\n"))
     run_command(
         [
             "powershell",
@@ -116,7 +116,7 @@ def main():
     )
     input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
-    translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Theme: Bloom (darkmono)")
+    translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Extension: Cat-Jam Synced\n  - Theme: Fluent")
     print(clr(f"\n  {translated}"))
 
     print(clr(f"\n  - {translate('Sleeping for 5 seconds...')}\n"))
