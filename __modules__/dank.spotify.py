@@ -116,7 +116,7 @@ def main():
     )
     input(clr(f"  > {translate('Hit [ ENTER ] only after the new window has closed...')} "))
 
-    translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Extension: Cat-Jam Synced\n  - Theme: Fluent")
+    translated = translate("[ SUGGESTED EXTENSIONS / THEMES ]\n  - Extension: Beautiful Lyrics\n  - Extension: Cat-Jam Synced\n  - Theme: Lucid")
     print(clr(f"\n  {translated}"))
 
     print(clr(f"\n  - {translate('Sleeping for 5 seconds...')}\n"))
