@@ -98,7 +98,7 @@
 - Creates scripts to quickly install java, perform malware scan
 - Configures [AutoPlug](https://github.com/Osiris-Team/AutoPlug-Client) automatically (for the plugins downloaded by the server builder)
 - Applies most optimizations from [here](https://github.com/YouHaveTrouble/minecraft-optimization) automatically
-- Integrated with dank.tool's chatroom via the [dank.chatroom-plugin](https://github.com/SirDank/dank.chatroom-plugin)
+<!-- - Integrated with dank.tool's chatroom via the [dank.chatroom-plugin](https://github.com/SirDank/dank.chatroom-plugin) -->
 
 ## ♦️ To Do ♦️
 
@@ -181,7 +181,7 @@
 
 ---  
 
-# 🚨 Custom Chatroom 🚨
+<!-- # 🚨 Custom Chatroom 🚨
 
 - A custom chatroom that can be used to chat with other users of the dank.tool
 - The chatroom is hosted on a server and is accessible to all users of the dank.tool
@@ -202,7 +202,7 @@
 
 <p>&nbsp;</p>
 
----  
+---   -->
 
 # 🚨 World Exploration Game 🚨 [ WIP ]
 

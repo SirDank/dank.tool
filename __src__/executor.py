@@ -427,25 +427,25 @@ else:
 # chatroom user validator
 
 
-def dank_tool_chatroom():
-    fail_counter = 0
-    session = requests.Session()
-    while True:
-        if fail_counter >= 3:
-            break
-        try:
-            session.post("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3)
-            fail_counter = 0  # do not add a break here! (keeps user validated)
-        except:
-            fail_counter += 1
-        time.sleep(240)
-    del globals()["dank_tool_chatroom"]
+# def dank_tool_chatroom():
+#     fail_counter = 0
+#     session = requests.Session()
+#     while True:
+#         if fail_counter >= 3:
+#             break
+#         try:
+#             session.post("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3)
+#             fail_counter = 0  # do not add a break here! (keeps user validated)
+#         except:
+#             fail_counter += 1
+#         time.sleep(240)
+#     del globals()["dank_tool_chatroom"]
 
 
-if ONLINE_MODE:
-    _executor.submit(dank_tool_chatroom)
-else:
-    del dank_tool_chatroom
+# if ONLINE_MODE:
+#     _executor.submit(dank_tool_chatroom)
+# else:
+#     del dank_tool_chatroom
 
 # execute, catch errors if any
 

@@ -190,7 +190,7 @@ def main_one():
     toggle_all_to = False
 
     download_settings = {
-        "dankchatroom": True,
+        "dankchatroom": False,
         "BetterSleeping": True,
         "ChestSort": True,
         "ProtocolLib": True,
@@ -247,23 +247,25 @@ def main_one():
         to_download_file_names.append(file)
 
     if download_settings["BetterStructures"]:
-        for file in ("BetterStructures Default Pack.zip", "BetterStructures Exploration Pack.zip", "BetterStructures Free Elite Shrines.zip"):
+        for file in ("betterstructures_caves_and_lost_civilisations_free_pack_v2.zip", "betterstructures_default_pack_v4.zip", "betterstructures_exploration_pack_v6.zip", "betterstructures_free_elite_shrines_pack_v5.zip", "betterstructures_modules_dungeons_free_pack_v2.zip"):
             to_download_urls.append(f"{url}/{file}")
             to_download_file_names.append(f"plugins/BetterStructures/imports/{file}")
 
     if download_settings["EliteMobs"]:
         for file in (
+            "em_adventurers_guild_v6.zip",
             "em_dark_cathedral_v7.zip",
+            "em_enchantment_dungeons_free_v5.zip",
             "em_enchantment_sanctums_free_v3.zip",
-            "em_events_craftenmines_creations.zip",
-            "em_fireworks_v8.zip",
-            "em_hallosseum_v7.zip",
-            "em_knights_castle_v8.zip",
-            "em_north_pole_v7.zip",
-            "em_sewers_v7.zip",
-            "em_shadow_of_the_binder_of_worlds_v10.zip",
-            "em_the_binder_of_worlds_v8.zip",
-            "em_the_steamworks_v5.zip",
+            "em_events_craftenmines_creations_v3.zip",
+            "em_fireworks_v10.zip",
+            "em_hallosseum_v8.zip",
+            "em_knights_castle_v9.zip",
+            "em_north_pole_v8.zip",
+            "em_sewers_v10.zip",
+            "em_shadow_of_the_binder_of_worlds_v11.zip",
+            "em_the_binder_of_worlds_v10.zip",
+            "em_the_steamworks_v8.zip",
         ):
             to_download_urls.append(f"{url}/{file}")
             to_download_file_names.append(f"plugins/EliteMobs/imports/{file}")

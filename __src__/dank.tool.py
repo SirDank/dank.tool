@@ -142,19 +142,19 @@ def get_menu_request_responses(task_id, request_key):
                 motm = f"{red_bright}⚠️"
             menu_request_responses[request_key] = motm
 
-        case 2:  # get chatroom user count
-            try:
-                result = requests.get("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3).content.decode()
-                if result.isdigit():
-                    if result != "0":
-                        menu_request_responses[request_key] = result
-                    else:
-                        menu_request_responses[request_key] = "1"
-                    menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
-                else:
-                    menu_request_responses[request_key] = "[red1]⚠️"
-            except:
-                menu_request_responses[request_key] = "[red1]⚠️"
+        # case 2:  # get chatroom user count
+        #     try:
+        #         result = requests.get("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3).content.decode()
+        #         if result.isdigit():
+        #             if result != "0":
+        #                 menu_request_responses[request_key] = result
+        #             else:
+        #                 menu_request_responses[request_key] = "1"
+        #             menu_request_responses[request_key] = f"[bright_green]{menu_request_responses[request_key]} online{' (you)' if menu_request_responses[request_key] == '1' else ''}"
+        #         else:
+        #             menu_request_responses[request_key] = "[red1]⚠️"
+        #     except:
+        #         menu_request_responses[request_key] = "[red1]⚠️"
 
 
 def get_menu_request_responses_api(request_key: str):
@@ -462,7 +462,7 @@ def set_globals_two():
             #    'rpc': "running auto-clicker"
             #},
 
-            # chatroom disabled until server related issues are resolved
+            # chatroom disabled
 
             # _translate('Chatroom'): {
             #     'info': menu_request_responses["chatroom_user_count"],
@@ -1198,7 +1198,7 @@ if __name__ == "__main__":
 
         # KEEP request_keys IN ORDER!
 
-        request_keys = ("danktool_runs", "motm", "chatroom_user_count")
+        request_keys = ("danktool_runs", "motm")  # "chatroom_user_count"
 
         request_keys_api = (
             "SpotX-Official/SpotX",
