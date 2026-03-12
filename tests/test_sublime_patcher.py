@@ -1,9 +1,14 @@
+import os
 import sys
-sys.path.append('__modules__')
+
+# Add parent directory to path so we can import modules
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '__modules__')))
 
 # Load the module
 import importlib.util
-spec = importlib.util.spec_from_file_location("mrpepe_patcher", "__modules__/mrpepe.sublime-patcher.py")
+patcher_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '__modules__', 'mrpepe.sublime-patcher.py'))
+spec = importlib.util.spec_from_file_location("mrpepe_patcher", patcher_path)
 patcher = importlib.util.module_from_spec(spec)
 
 # Mock some dependencies to avoid runtime errors when loading the module
