@@ -1,5 +1,6 @@
 import datetime
 import os
+import subprocess
 import sys
 import winreg
 import zipfile
@@ -26,10 +27,16 @@ def translate(text):
 
 def chrome_installed():
     try:
-        reg_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"
-        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_path) as key:
-            winreg.QueryValueEx(key, "Path")
+        result = subprocess.run(
+            ["reg", "query", r"HKLM\SOFTWARE\Clients\StartMenuInternet\Google Chrome", "/v", ""],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
         return True
+    except subprocess.CalledProcessError:
+        return False
     except FileNotFoundError:
         return False
 
@@ -197,4 +204,5 @@ def main():
     backup(choice, compression_level)
 
 
-main()
+if __name__ == "__main__":
+    main()
