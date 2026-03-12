@@ -68,10 +68,7 @@ class TestExecutor(unittest.TestCase):
         cls.sys_exit_patcher.start()
 
         # Ensure we don't try to submit errors online
-        cls.requests_post_patcher = patch.object(cls.mock_requests.Session.return_value, 'post')
-        cls.requests_post_patcher.start()
-        cls.requests_direct_post_patcher = patch.object(cls.mock_requests, 'post')
-        cls.requests_direct_post_patcher.start()
+        # (magic mock already handles post, but let's make it explicit we don't need patcher)
 
         # Mock input
         cls.input_patcher = patch('builtins.input', return_value="n")
@@ -80,6 +77,17 @@ class TestExecutor(unittest.TestCase):
         # We need to NOT mock builtins.exec for our `exec(self.code, ...)`
         # Instead, we mock it ONLY during the script execution if it tries to exec updater code.
         # But `exec(self.code)` is how we run it! Let's mock the `code` variable inside globals.
+
+
+        # Prevent writing to __src__/dank.tool.py by patching builtins.open
+        cls.original_open = builtins.open
+        def fake_open(file, *args, **kwargs):
+            if file == '__src__/dank.tool.py' and 'w' in args:
+                return MagicMock()
+            return cls.original_open(file, *args, **kwargs)
+
+        cls.open_patcher = patch('builtins.open', side_effect=fake_open)
+        cls.open_patcher.start()
 
         # Save original settings.json if it exists
         cls.original_settings = None
@@ -96,9 +104,9 @@ class TestExecutor(unittest.TestCase):
         cls.os_system_patcher.stop()
         cls.time_sleep_patcher.stop()
         cls.sys_exit_patcher.stop()
-        cls.requests_post_patcher.stop()
-        cls.requests_direct_post_patcher.stop()
+
         cls.input_patcher.stop()
+        cls.open_patcher.stop()
 
         if cls.original_settings is not None:
             with open('settings.json', 'w') as f:
