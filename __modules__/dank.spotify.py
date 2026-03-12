@@ -123,14 +123,13 @@ def main():
     time.sleep(5)
 
 
-if __name__ == "__main__":
-    try:
-        main()
-    except CalledProcessError:
-        print(
-            clr(
-                f"\n  - {translate('Known error occurred! Your system is unique, I need you to join my discord server and help me fix this error!')} ",
-                2,
-            )
+try:
+    main()
+except CalledProcessError:
+    print(
+        clr(
+            f"\n  - {translate('Known error occurred! Your system is unique, I need you to join my discord server and help me fix this error!')} ",
+            2,
+        )
         )
         input(clr(f"  > {translate('Hit [ ENTER ] to go back to the main menu')}... "))
