@@ -695,11 +695,11 @@ def dank_os_repair():
   - [1] """)
         + clr("DISM /online /cleanup-image /restorehealth", 2)
         + clr(f""" : {_translate("This command uses the Deployment Image Servicing and Management (DISM) tool to scan the health of your Windows image and, if necessary, restore it. The /online option targets the running operating system, /cleanup-image specifies that you are servicing an image, and /restorehealth checks for component store corruption and performs repair operations automatically")}.
-  
+
   - [2] """)
         + clr("sfc /scannow", 2)
         + clr(f""" : {_translate("This command initiates the System File Checker (SFC) tool to scan all protected system files and replace incorrect versions with correct Microsoft versions. The /scannow option scans all protected system files immediately")}.
-  
+
   - [3] """)
         + clr("chkdsk C: /x /r", 2)
         + clr(f""" : {_translate("This command uses the Check Disk (chkdsk) utility to check the file system and file system metadata of a volume for logical and physical errors. C: specifies the drive you want to check, /x forces the volume to dismount before it is checked (necessary for fixing certain errors), and /r locates bad sectors and recovers readable information")}.
@@ -798,21 +798,21 @@ def dank_clear_cache():
     print(
         clr("""
   [ COMMANDS ]
-  
+
   - [0] Return to menu
-  
+
   - [1] """)
         + clr("Clear Icon Cache", 2)
         + clr(f""" : {_translate("This task clears the icon cache for the current user. This is useful if you are experiencing issues with icons not displaying correctly")}.
-  
+
   - [2] """)
         + clr("Clear Thumbnail Cache", 2)
         + clr(f""" : {_translate("This task clears the thumbnail cache for the current user. This is useful if you are experiencing issues with thumbnails not displaying correctly")}.
-  
+
   - [3] """)
         + clr("Clear Nvidia Cache", 2)
         + clr(f""" : {_translate("This task clears the Nvidia cache for the current user. This is useful if you are experiencing stuttering or performance issues with Nvidia graphics cards")}.
-  
+
   - [4] Run all tasks
 """)
     )
