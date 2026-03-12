@@ -174,12 +174,6 @@ def main():
             break
         rm_line()
 
-    # print("")
-    # while True:
-    #    password = input(clr("  > Enter backup password: ") + red)
-    #    if password: break
-    #    rm_line()
-
     print("")
     while True:
         compression_level = input(clr(f"  > {translate('Compression level (Fast/Best)')} [1/2]: ") + red).lower()
