@@ -5,50 +5,21 @@ from unittest.mock import patch, MagicMock
 import subprocess
 import os
 import types
+import importlib.util
 
 # Mock input to prevent EOFError during module execution
 builtins.input = MagicMock()
 
-# Create mock objects for the dependencies that we don't have installed
-class MockDankware:
-    clr = lambda *args, **kwargs: ""
-    cls = lambda *args, **kwargs: ""
-    err = lambda *args, **kwargs: ""
-    github_file_selector = lambda *args, **kwargs: []
-    green_bright = ""
-    rm_line = lambda *args, **kwargs: ""
-
-class MockRichAlign:
-    center = lambda *args, **kwargs: ""
-
-class MockRichColumns:
-    pass
-
-class MockRichConsole:
-    def print(self, *args, **kwargs):
-        pass
-
-class MockRichPanel:
-    pass
-
 # Mock dependencies to allow importing without them installed
 sys.modules['requests'] = MagicMock()
-mock_dankware = MockDankware()
-sys.modules['dankware'] = mock_dankware
-
-sys.modules['rich'] = types.ModuleType('rich')
-sys.modules['rich.align'] = types.ModuleType('rich.align')
-sys.modules['rich.align'].Align = MockRichAlign
-sys.modules['rich.columns'] = types.ModuleType('rich.columns')
-sys.modules['rich.columns'].Columns = MockRichColumns
-sys.modules['rich.console'] = types.ModuleType('rich.console')
-sys.modules['rich.console'].Console = MockRichConsole
-sys.modules['rich.panel'] = types.ModuleType('rich.panel')
-sys.modules['rich.panel'].Panel = MockRichPanel
+sys.modules['dankware'] = MagicMock()
+sys.modules['rich'] = MagicMock()
+sys.modules['rich.align'] = MagicMock()
+sys.modules['rich.columns'] = MagicMock()
+sys.modules['rich.console'] = MagicMock()
+sys.modules['rich.panel'] = MagicMock()
 
 # Import the module dynamically since it has dots in its filename
-import importlib.util
-
 spec = importlib.util.spec_from_file_location("dank_winget", "__modules__/dank.winget.py")
 dank_winget = importlib.util.module_from_spec(spec)
 
@@ -62,7 +33,6 @@ try:
         spec.loader.exec_module(dank_winget)
 except Exception as e:
     print(f"Error loading module: {e}")
-
 
 class TestWingetInstalled(unittest.TestCase):
     @patch('subprocess.run')
@@ -107,7 +77,6 @@ class TestWingetInstalled(unittest.TestCase):
 
         # Assert
         self.assertFalse(result)
-
 
 class TestDankWinget(unittest.TestCase):
     def test_cleanup_result(self):
