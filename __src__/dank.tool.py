@@ -582,18 +582,18 @@ def dank_tool_settings():
 
         # build renderable strings
         if continents:
-            continents_lines = []
-            for i, (k, v) in enumerate(sorted(continents.items(), key=lambda x: x[1], reverse=True), start=1):
-                continents_lines.append(f"[bright_white]{i}.[/bright_white] {k} [green]{v}[/green]")
-            continents_str = "\n".join(continents_lines)
+            continents_str = "\n".join(
+                f"[bright_white]{i}.[/bright_white] {k} [green]{v}[/green]"
+                for i, (k, v) in enumerate(sorted(continents.items(), key=lambda x: x[1], reverse=True), start=1)
+            )
         else:
             continents_str = "[red]No data[/red]"
 
         if countries:
-            countries_lines = []
-            for i, (k, v) in enumerate(sorted(countries.items(), key=lambda x: x[1], reverse=True), start=1):
-                countries_lines.append(f"[bright_white]{i}.[/bright_white] {k} [green]{v}[/green]")
-            countries_str = "\n".join(countries_lines)
+            countries_str = "\n".join(
+                f"[bright_white]{i}.[/bright_white] {k} [green]{v}[/green]"
+                for i, (k, v) in enumerate(sorted(countries.items(), key=lambda x: x[1], reverse=True), start=1)
+            )
         else:
             countries_str = "[red]No data[/red]"
 
