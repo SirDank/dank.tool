@@ -36,6 +36,8 @@ offsets_and_values = {
 
 
 def is_patched(data):
+    if not data:
+        return False
     for offset, value in offsets_and_values.items():
         if offset >= len(data) or data[offset] != value:
             return False
@@ -93,4 +95,5 @@ def main():
             break
 
 
-main()
+if __name__ == "__main__":
+    main()
