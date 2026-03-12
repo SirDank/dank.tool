@@ -902,29 +902,6 @@ def main_two():
                 if choice == "skip":
                     break
 
-    string = f"""
-  - {translate("Follow these steps to enable custom world generation")}:
-
-  [1] {translate("Start the server again using the following command")}: .start
-  [2] {translate("After it has properly started, copy and paste the following command")}: iris create name=world-iris seed={randint(1, 9999999999)}
-  [3] {translate("Wait for it to complete then stop the server using the following command")}: .stop
-
-  > {translate("Press [ ENTER ] after you have followed the steps...")} """
-
-    # while not os.path.isdir("world-iris"):
-    #    print_read_me(); input(clr(string))
-
-    # shutil.move("world/datapacks", "world-iris/datapacks")
-    # shutil.rmtree("world")
-    # os.rename("world_nether", "world-iris_nether")
-    # os.rename("world_the_end", "world-iris_the_end")
-
-    # with open('server.properties', 'r', encoding='utf-8') as file:
-    #    data = file.read().replace("level-name=world", "level-name=world-iris")
-
-    # with open('server.properties', 'w', encoding='utf-8') as file:
-    #    file.write(data)
-
     if playit:
         string = f"""
   - {translate("It is extremely easy to setup the playit.gg plugin")}
