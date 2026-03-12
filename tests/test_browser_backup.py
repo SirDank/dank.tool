@@ -36,7 +36,7 @@ def load_module_safely(name, path):
             print(f"Error loading {name}:", e)
         return module
 
-mod = load_module_safely('browser_backup', '__modules__/dank.browser-backup.py')
+mod = load_module_safely('browser_backup', os.path.join(os.path.dirname(__file__), '..', '__modules__', 'dank.browser-backup.py'))
 
 class TestBrowserBackup:
     @patch.object(mod, 'chrome_installed')
