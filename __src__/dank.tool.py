@@ -7,6 +7,7 @@
 import datetime
 import json
 import os
+import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -674,7 +675,7 @@ def dank_github_command(software: str):
     cls()
     print(clr(f"\n  - {_translate('Close the opened window to return to the menu...')}"))
 
-    os.system(f'powershell -Command "{cmd}"')
+    subprocess.run(["powershell", "-Command", cmd])
 
 
 def dank_os_repair():
