@@ -16,10 +16,11 @@ def winget_installed():
             ["winget", "--info"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            check=False,
+            text=True,
+            check=True,
         )
-        return bool(result.returncode == 0)
-    except FileNotFoundError:
+        return True
+    except (FileNotFoundError, subprocess.CalledProcessError):
         return False
 
 
