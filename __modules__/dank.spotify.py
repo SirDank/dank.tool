@@ -131,5 +131,5 @@ except CalledProcessError:
             f"\n  - {translate('Known error occurred! Your system is unique, I need you to join my discord server and help me fix this error!')} ",
             2,
         )
-        )
-        input(clr(f"  > {translate('Hit [ ENTER ] to go back to the main menu')}... "))
+    )
+    input(clr(f"  > {translate('Hit [ ENTER ] to go back to the main menu')}... "))
