@@ -123,122 +123,127 @@ def print_info(id):
         print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}", 2))
 
 
+def process_winget_output(cmd_result, results, mode):
+    if cmd_result.returncode == 0:
+        if len(cmd_result.stdout.decode("utf-8").splitlines()) > 0:
+            handle_response(cmd_result, results, mode)
+        else:
+            print(
+                clr(
+                    "\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",
+                    2,
+                )
+            )
+    else:
+        print(clr(f"\n  [ERROR]: {cmd_result.stdout.decode('utf-8')}", 2))
+
+
+def handle_search(cmd_input, results):
+    cmd_result = subprocess.run(
+        ["winget", "search", "--accept-source-agreements", cmd_input[7:]],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    process_winget_output(cmd_result, results, "search")
+
+
+def handle_installed(results):
+    cmd_result = subprocess.run(
+        ["winget", "list", "--accept-source-agreements"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    process_winget_output(cmd_result, results, "installed")
+
+
+def handle_updates(choice, results):
+    cmd_result = subprocess.run(
+        ["winget", "upgrade", "--accept-source-agreements"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if cmd_result.returncode == 0:
+        if len(cmd_result.stdout.decode("utf-8").splitlines()) > 0:
+            if not choice.startswith("update-all"):
+                handle_response(cmd_result, results, "updates")
+            else:
+                handle_response(cmd_result, results, "update-all")
+                max_items = len(results) - 1
+                for index in range(1, max_items + 1):
+                    print(clr(f"\n  - [{index}/{max_items}] Updating {results[index]['name']}...\n"))
+                    os.system(f"winget upgrade --interactive --id {results[index]['id']}")
+                print()
+        else:
+            print(
+                clr(
+                    "\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",
+                    2,
+                )
+            )
+    else:
+        print(clr(f"\n  [ERROR]: {cmd_result.stdout.decode('utf-8')}", 2))
+
+
+def handle_numeric_selection(cmd_input, results):
+    if not results:
+        rm_line()
+        return
+
+    for selected in cmd_input.split(","):
+        selected = int(selected)
+        if selected in results:
+            match results["mode"]:
+                case "search":
+                    if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith("y"):
+                        print()
+                        print_info(results[selected]["id"])
+                    else:
+                        rm_line()
+                        rm_line()
+                    if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith("y"):
+                        print()
+                        os.system(f"winget install --interactive --id {results[selected]['id']}")
+                        print()
+                    else:
+                        rm_line()
+
+                case "installed":
+                    print_info(results[selected]["id"])
+
+                case "updates":
+                    print()
+                    os.system(f"winget upgrade --interactive --id {results[selected]['id']}")
+                    print()
+
+                case _:
+                    rm_line()
+        else:
+            rm_line()
+
+
 def main():
     results = {}
     print_banner()
 
     while True:
-        cmd = input(clr("  > ") + green_bright)
+        cmd_input = input(clr("  > ") + green_bright)
+        cmd_lower = cmd_input.lower()
 
-        if cmd.lower().startswith("search "):
-            cmd = subprocess.run(
-                ["winget", "search", "--accept-source-agreements", cmd[7:]],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=False,
-            )
-            if cmd.returncode == 0:
-                if len(cmd.stdout.decode("utf-8").splitlines()) > 0:
-                    handle_response(cmd, results, "search")
-                else:
-                    print(
-                        clr(
-                            "\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",
-                            2,
-                        )
-                    )
-            else:
-                print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}", 2))
-
-        elif cmd.lower().startswith("installed"):
-            cmd = subprocess.run(
-                ["winget", "list", "--accept-source-agreements"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=False,
-            )
-            if cmd.returncode == 0:
-                if len(cmd.stdout.decode("utf-8").splitlines()) > 0:
-                    handle_response(cmd, results, "installed")
-                else:
-                    print(
-                        clr(
-                            "\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",
-                            2,
-                        )
-                    )
-            else:
-                print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}", 2))
-
-        elif cmd.lower().startswith("updates") or cmd.lower().startswith("update-all"):
-            choice = cmd.lower()
-            cmd = subprocess.run(
-                ["winget", "upgrade", "--accept-source-agreements"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=False,
-            )
-            if cmd.returncode == 0:
-                if len(cmd.stdout.decode("utf-8").splitlines()) > 0:
-                    if not choice.startswith("update-all"):
-                        handle_response(cmd, results, "updates")
-                    else:
-                        handle_response(cmd, results, "update-all")
-                        max = len(results) - 1
-                        for index in range(1, max + 1):
-                            print(clr(f"\n  - [{index}/{max}] Updating {results[index]['name']}...\n"))
-                            os.system(f"winget upgrade --interactive --id {results[index]['id']}")
-                        print()
-                else:
-                    print(
-                        clr(
-                            "\n  [KNOWN ERROR]: Please report this issue on GitHub / Discord Support Ticket to help fix it!",
-                            2,
-                        )
-                    )
-            else:
-                print(clr(f"\n  [ERROR]: {cmd.stdout.decode('utf-8')}", 2))
-
-        elif cmd.lower().startswith("clear"):
+        if cmd_lower.startswith("search "):
+            handle_search(cmd_input, results)
+        elif cmd_lower.startswith("installed"):
+            handle_installed(results)
+        elif cmd_lower.startswith("updates") or cmd_lower.startswith("update-all"):
+            handle_updates(cmd_lower, results)
+        elif cmd_lower.startswith("clear"):
             print_banner()
-
-        elif cmd.lower().startswith("exit"):
+        elif cmd_lower.startswith("exit"):
             break
-
-        elif all(_.isdigit() for _ in cmd.strip().split(",")):
-            if results:
-                for selected in cmd.split(","):
-                    selected = int(selected)
-                    if selected in results:
-                        match results["mode"]:
-                            case "search":
-                                if input(clr("\n  > Display info? [y/n]: ") + green_bright).lower().startswith("y"):
-                                    print()
-                                    print_info(results[selected]["id"])
-                                else:
-                                    rm_line()
-                                    rm_line()
-                                if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith("y"):
-                                    print()
-                                    os.system(f"winget install --interactive --id {results[selected]['id']}")
-                                    print()
-                                else:
-                                    rm_line()
-
-                            case "installed":
-                                print_info(results[selected]["id"])
-
-                            case "updates":
-                                print()
-                                os.system(f"winget upgrade --interactive --id {results[selected]['id']}")
-                                print()
-
-                            case _:
-                                rm_line()
-                    else:
-                        rm_line()
-            else:
-                rm_line()
+        elif all(_.isdigit() for _ in cmd_input.strip().split(",")) and cmd_input.strip() != "":
+            handle_numeric_selection(cmd_input.strip(), results)
         else:
             rm_line()
 
