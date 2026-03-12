@@ -7,7 +7,7 @@ import importlib.util
 
 # Load the module dynamically since it has dots in its name
 module_name = "mrpepe.sublime-patcher"
-file_path = os.path.join(os.path.dirname(__file__), f"{module_name}.py")
+file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "__modules__", f"{module_name}.py")
 
 spec = importlib.util.spec_from_file_location(module_name, file_path)
 patcher_module = importlib.util.module_from_spec(spec)
