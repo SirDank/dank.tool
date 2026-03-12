@@ -78,10 +78,11 @@ def backup(browser, compression_level):
 
         print(clr(f"\n  - {translate('Compressing... (this might take a few minutes)')}\n"))
 
-        num_source_files = 0
+        files_to_zip = []
         for root, dirs, files in os.walk(path_to_backup):
             for file in files:
-                num_source_files += 1
+                files_to_zip.append(os.path.join(root, file))
+        num_source_files = len(files_to_zip)
 
         now = datetime.datetime.now()
         zip_name = f"chrome_{now.strftime('%d-%m-%Y')}_{now.strftime('%I-%M-%S-%p')}.zip"
@@ -99,12 +100,10 @@ def backup(browser, compression_level):
 
         with Live(progress_table, refresh_per_second=10):
             with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED, True, compression_level, strict_timestamps=False) as zipf:
-                for root, dirs, files in os.walk(path_to_backup):
-                    for file in files:
-                        file_path = os.path.join(root, file)
-                        rel_path = os.path.relpath(file_path, path_to_backup)
-                        zipf.write(file_path, os.path.join("User Data", rel_path))
-                        job_progress.update(overall_task, advance=1)
+                for file_path in files_to_zip:
+                    rel_path = os.path.relpath(file_path, path_to_backup)
+                    zipf.write(file_path, os.path.join("User Data", rel_path))
+                    job_progress.update(overall_task, advance=1)
                 zipf.write("chrome.reg", "chrome.reg")
                 zipf.write("instructions.txt", "instructions.txt")
 
