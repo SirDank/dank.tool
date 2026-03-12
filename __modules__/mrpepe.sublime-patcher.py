@@ -36,10 +36,10 @@ offsets_and_values = {
 
 
 def is_patched(data):
-    for offset, value in offsets_and_values.items():
-        if offset >= len(data) or data[offset] != value:
-            return False
-    return True
+    # 80 78 05 00 0F 94 C1
+    # cmp byte ptr [rax+05h], 00h
+    # sete cl
+    return b"\x80\x78\x05\x00\x0F\x94\xC1" not in data
 
 
 def patch_exe(file_path):
@@ -93,4 +93,5 @@ def main():
             break
 
 
-main()
+if __name__ == "__main__":
+    main()
