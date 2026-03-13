@@ -241,7 +241,11 @@ BRANCH = "main" if not DEV_BRANCH else "dev"
 def dank_tool_installer():
     while True:
         try:
-            code = session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
+            # For security, we load updater.py from local __src__ directory
+            # instead of downloading it over the internet and running exec().
+            updater_path = os.path.join(os.path.dirname(__file__), "updater.py")
+            with open(updater_path, "r", encoding="utf-8") as file:
+                code = file.read()
             break
         except Exception as exc:
             input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ", 2))
