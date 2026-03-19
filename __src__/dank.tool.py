@@ -908,7 +908,7 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}\n"))
                 os.system("winget install --accept-source-agreements --interactive --id Discord.Discord")
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
-            asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
+            asset = next(_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe"))
             browser_download_url = asset["browser_download_url"]
             version = browser_download_url.split("/")[-2]
 
