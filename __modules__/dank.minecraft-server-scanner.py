@@ -1,6 +1,7 @@
 import os
 import socket
 import time
+import webbrowser
 from concurrent.futures import ThreadPoolExecutor
 from random import randint
 
@@ -157,9 +158,9 @@ def main():
     )
     match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
         case "1":
-            os.system("start https://dankware.alwaysdata.net/minecraft-java-servers")
+            webbrowser.open("https://dankware.alwaysdata.net/minecraft-java-servers")
         case "2":
-            os.system("start https://dankware.alwaysdata.net/minecraft-bedrock-servers")
+            webbrowser.open("https://dankware.alwaysdata.net/minecraft-bedrock-servers")
 
     cls()
     console.print(Align.center(banner), style="blink red")
