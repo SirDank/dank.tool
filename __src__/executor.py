@@ -194,9 +194,15 @@ print(clr(f"\n  - Version: {DANK_TOOL_VERSION}"))
 
 
 def print_warning_symbol():
-    cls()
-    banner = "\n\n[red]                      ██                      \n[red]                    ██  ██                    \n[red]                  ██      ██                  \n[red]                ██          ██                \n[red]                ██          ██                \n[red]              ██              ██              \n[red]            ██      [bright_white]██████[red]      ██            \n[red]            ██      [bright_white]██████[red]      ██            \n[red]          ██        [bright_white]██████[red]        ██          \n[red]          ██        [bright_white]██████[red]        ██          \n[red]        ██          [bright_white]██████[red]          ██        \n[red]      ██            [bright_white]██████[red]            ██      \n[red]      ██            [bright_white]██████[red]            ██      \n[red]    ██              [bright_white]██████[red]              ██    \n[red]    ██                                  ██    \n[red]  ██                [bright_white]██████[red]                ██  \n[red]  ██                [bright_white]██████[red]                ██  \n[red]██                  [bright_white]██████[red]                  ██\n[red]██                                          ██\n[red]  ██████████████████████████████████████████  \n\n"
-    Console().print(Align.center(banner), style="blink", highlight=False)
+    try:
+        if sys.platform == "win32":
+            # Windows command prompt may have issues with standard emoji
+            print("[⚠️]", end=" ")
+        else:
+            # Better support in typical Linux/macOS terminals
+            print("⚠️", end=" ")
+    except Exception:
+        print("[!]", end=" ")
 
 
 # get latest version number
