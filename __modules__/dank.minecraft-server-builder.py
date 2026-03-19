@@ -85,7 +85,9 @@ def main_one():
             print_read_me()
             if input(clr(f"\n  - {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == "y":
                 print()
-                if os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE"):
+                try:
+                    subprocess.run(["winget", "install", f"EclipseAdoptium.Temurin.{latest_java_version}.JRE"], check=True)
+                except (subprocess.CalledProcessError, FileNotFoundError):
                     print(clr(f"\n  - {translate('Winget is not installed! Please manually install it!')}"))
                     sys_open("https://adoptium.net/temurin/releases/?os=windows&package=jre")
                     input(clr(f"\n  > {translate('Press [ ENTER ] after installing')}... "))
