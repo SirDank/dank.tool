@@ -23,8 +23,7 @@ filepath = os.path.join(os.path.dirname(__file__), '..', '__modules__', 'dank.sp
 spec = importlib.util.spec_from_file_location("dank.spotify", filepath)
 dank_spotify = importlib.util.module_from_spec(spec)
 sys.modules["dank.spotify"] = dank_spotify
-with patch('builtins.input', return_value=''), patch('builtins.print'), patch('subprocess.run'):
-    spec.loader.exec_module(dank_spotify)
+spec.loader.exec_module(dank_spotify)
 
 run_command = dank_spotify.run_command
 
