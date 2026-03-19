@@ -40,7 +40,7 @@ def install_winget():
     os.chdir(tempfile.gettempdir())
     with open(file_name, "wb") as file:
         file.write(data)
-    os.system(file_name)
+    subprocess.run([file_name], check=False)
     input(clr("\n  - Hit [ ENTER ] after you have installed winget... "))
 
 
@@ -174,7 +174,7 @@ def handle_updates(choice, results):
                 max_items = len(results) - 1
                 for index in range(1, max_items + 1):
                     print(clr(f"\n  - [{index}/{max_items}] Updating {results[index]['name']}...\n"))
-                    os.system(f"winget upgrade --interactive --id {results[index]['id']}")
+                    subprocess.run(["winget", "upgrade", "--interactive", "--id", results[index]["id"]], check=False)
                 print()
         else:
             print(
@@ -205,7 +205,7 @@ def handle_numeric_selection(cmd_input, results):
                         rm_line()
                     if input(clr("\n  > Install? [y/n]: ") + green_bright).lower().startswith("y"):
                         print()
-                        os.system(f"winget install --interactive --id {results[selected]['id']}")
+                        subprocess.run(["winget", "install", "--interactive", "--id", results[selected]["id"]], check=False)
                         print()
                     else:
                         rm_line()
@@ -215,7 +215,7 @@ def handle_numeric_selection(cmd_input, results):
 
                 case "updates":
                     print()
-                    os.system(f"winget upgrade --interactive --id {results[selected]['id']}")
+                    subprocess.run(["winget", "upgrade", "--interactive", "--id", results[selected]["id"]], check=False)
                     print()
 
                 case _:
