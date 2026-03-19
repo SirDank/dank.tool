@@ -137,7 +137,7 @@ class TestExecutor(unittest.TestCase):
             if c is self.code or isinstance(c, type(compile('','','exec'))):
                 original_exec(c, *args, **kwargs)
 
-        with patch('builtins.exec', side_effect=fake_exec):
+        with patch('locale.getlocale', return_value=('fr_FR', 'UTF-8')), patch('builtins.exec', side_effect=fake_exec):
             compiled_code = compile(self.code, '__src__/executor.py', 'exec')
             original_exec(compiled_code, self.exec_globals)
 
@@ -229,6 +229,24 @@ class TestExecutor(unittest.TestCase):
             original_exec(compiled_code, self.exec_globals)
 
         self.assertIn("DANK_TOOL_LANG", os.environ)
+
+    def test_check_system_language_windows_mock(self):
+        original_exec = builtins.exec
+        def fake_exec(c, *args, **kwargs):
+            if c is self.code or isinstance(c, type(compile('','','exec'))):
+                original_exec(c, *args, **kwargs)
+
+        mock_windll = MagicMock()
+        mock_windll.kernel32.GetUserDefaultUILanguage.return_value = 0x0409
+
+        with patch('sys.platform', 'win32'), \
+             patch('ctypes.windll', mock_windll, create=True), \
+             patch('locale.getlocale', return_value=('fr_FR', 'UTF-8')), \
+             patch('builtins.exec', side_effect=fake_exec):
+            compiled_code = compile(self.code, '__src__/executor.py', 'exec')
+            original_exec(compiled_code, self.exec_globals)
+
+        self.assertEqual(os.environ.get("DANK_TOOL_LANG"), "en")
 
 if __name__ == '__main__':
     unittest.main()
