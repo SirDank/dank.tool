@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import webbrowser
 
 import pyminizip
 import requests
@@ -75,7 +76,7 @@ try:
 except:
     cls()
     if input(clr(f"\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
-        os.system(f"start https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
+        webbrowser.open(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
     sys.exit("Failed to save file!")
 
 # extract and execute installer

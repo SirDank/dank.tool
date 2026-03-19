@@ -10,6 +10,7 @@ import os
 import subprocess
 import sys
 import time
+import webbrowser
 from concurrent.futures import ThreadPoolExecutor
 from types import NoneType
 
@@ -1354,16 +1355,16 @@ if __name__ == "__main__":
 
             match _choice["project"]:
                 case "Discord Server":
-                    os.system("start https://sirdank.github.io/dankware-website/discord")
+                    webbrowser.open("https://sirdank.github.io/dankware-website/discord")
                     continue
                 case "Telegram Group":
-                    os.system("start https://sirdank.github.io/dankware-website/telegram")
+                    webbrowser.open("https://sirdank.github.io/dankware-website/telegram")
                     continue
                 case "YouTube":
-                    os.system("start https://sirdank.github.io/dankware-website/youtube")
+                    webbrowser.open("https://sirdank.github.io/dankware-website/youtube")
                     continue
                 case "Website":
-                    os.system("start https://dankware.alwaysdata.net/")
+                    webbrowser.open("https://dankware.alwaysdata.net/")
                     continue
 
             TITLE = _choice["title"]
