@@ -24,9 +24,48 @@ def translate(text):
     return text
 
 
-def chrome_installed():
+browsers_config = {
+    "Chrome": {
+        "exe_name": "chrome.exe",
+        "app_path_reg": r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe",
+        "data_path": r"%LOCALAPPDATA%\Google\Chrome\User Data",
+        "data_folder_name": "User Data",
+        "reg_export_key": r"Software\Google\Chrome\PreferenceMACs",
+        "reg_export_name": "chrome.reg",
+        "transfer_instructions": "\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install Chrome\n  - Exit Chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!"
+    },
+    "Firefox": {
+        "exe_name": "firefox.exe",
+        "app_path_reg": r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe",
+        "data_path": r"%APPDATA%\Mozilla\Firefox\Profiles",
+        "data_folder_name": "Profiles",
+        "reg_export_key": None,
+        "reg_export_name": None,
+        "transfer_instructions": "\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install Firefox\n  - Exit Firefox\n  - Open windows explorer\n  - Paste path [%APPDATA%\\Mozilla\\Firefox]\n  - Delete the [Profiles] folder\n  - Move extracted [Profiles] folder to [%APPDATA%\\Mozilla\\Firefox]\n  - Transfer Complete!"
+    },
+    "Opera": {
+        "exe_name": "opera.exe",
+        "app_path_reg": r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\opera.exe",
+        "data_path": r"%APPDATA%\Opera Software\Opera Stable",
+        "data_folder_name": "Opera Stable",
+        "reg_export_key": None,
+        "reg_export_name": None,
+        "transfer_instructions": "\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install Opera\n  - Exit Opera\n  - Open windows explorer\n  - Paste path [%APPDATA%\\Opera Software]\n  - Delete the [Opera Stable] folder\n  - Move extracted [Opera Stable] folder to [%APPDATA%\\Opera Software]\n  - Transfer Complete!"
+    },
+    "Brave": {
+        "exe_name": "brave.exe",
+        "app_path_reg": r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe",
+        "data_path": r"%LOCALAPPDATA%\BraveSoftware\Brave-Browser\User Data",
+        "data_folder_name": "User Data",
+        "reg_export_key": None,
+        "reg_export_name": None,
+        "transfer_instructions": "\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install Brave\n  - Exit Brave\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser]\n  - Transfer Complete!"
+    }
+}
+
+
+def browser_installed(reg_path):
     try:
-        reg_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"
         with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_path) as key:
             winreg.QueryValueEx(key, "Path")
         return True
@@ -35,90 +74,97 @@ def chrome_installed():
 
 
 def backup(browser, compression_level):
-    if browser == "Chrome":
-        path_to_backup = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data")
+    config = browsers_config.get(browser)
+    if not config:
+        return
 
-        # check if chrome is installed
+    path_to_backup = os.path.expandvars(config["data_path"])
 
-        if not chrome_installed():
-            cls()
-            print(clr(f"\n  - {translate('Chrome possibly not installed!')}", 2))
+    # check if browser is installed
 
-        # set path to backup
+    if not browser_installed(config["app_path_reg"]):
+        cls()
+        print(clr(f"\n  - {translate(browser + ' possibly not installed!')}", 2))
 
-        if not os.path.exists(path_to_backup):
-            print(clr(f"\n  - {translate('Invalid Path')}: {path_to_backup}\n", 2))
-            while True:
-                path_to_backup = input(clr(f"  > {translate('Input user data folder path')}: "))
-                rm_line()
-                if os.path.exists(path_to_backup) and r"Google\Chrome\User Data" in path_to_backup:
-                    break
+    # set path to backup
 
-        # check if chrome is running
-
+    if not os.path.exists(path_to_backup):
+        print(clr(f"\n  - {translate('Invalid Path')}: {path_to_backup}\n", 2))
         while True:
-            cls()
-            chrome_running = False
-            for proc in process_iter(["name"]):
-                if proc.info["name"] == "chrome.exe":
-                    chrome_running = True
-                    break
-            if chrome_running:
-                input(clr(f"\n  > {translate('Chrome is running! Terminate it and press [ENTER]...')} ", 2))
-            else:
+            path_to_backup = input(clr(f"  > {translate('Input user data folder path')}: "))
+            rm_line()
+            # Basic validation to make sure the expected data folder name is in the path
+            if os.path.exists(path_to_backup) and config["data_folder_name"] in path_to_backup:
                 break
 
-        # export registry keys
+    # check if browser is running
 
+    while True:
+        cls()
+        browser_running = False
+        for proc in process_iter(["name"]):
+            if proc.info["name"] == config["exe_name"]:
+                browser_running = True
+                break
+        if browser_running:
+            input(clr(f"\n  > {translate(browser + ' is running! Terminate it and press [ENTER]...')} ", 2))
+        else:
+            break
+
+    # export registry keys (if any)
+
+    if config["reg_export_key"]:
         cls()
         print(clr(f"\n  - {translate('Exporting registry keys...')}"))
-        export_registry_keys("HKEY_CURRENT_USER", r"Software\Google\Chrome\PreferenceMACs", export_path="chrome.reg")
+        export_registry_keys("HKEY_CURRENT_USER", config["reg_export_key"], export_path=config["reg_export_name"])
 
-        # compress files
+    # compress files
 
-        print(clr(f"\n  - {translate('Compressing... (this might take a few minutes)')}\n"))
+    print(clr(f"\n  - {translate('Compressing... (this might take a few minutes)')}\n"))
 
-        files_to_zip = []
-        for root, dirs, files in os.walk(path_to_backup):
-            for file in files:
-                files_to_zip.append(os.path.join(root, file))
-        num_source_files = len(files_to_zip)
+    files_to_zip = []
+    for root, dirs, files in os.walk(path_to_backup):
+        for file in files:
+            files_to_zip.append(os.path.join(root, file))
+    num_source_files = len(files_to_zip)
 
-        now = datetime.datetime.now()
-        zip_name = f"chrome_{now.strftime('%d-%m-%Y')}_{now.strftime('%I-%M-%S-%p')}.zip"
-        instructions = translate(
-            f"\n  - [INSTRUCTIONS TO TRANSFER]: \n\n  - Transfer {zip_name} to another computer\n  - Install chrome\n  - Exit chrome\n  - Open windows explorer\n  - Paste path [%LOCALAPPDATA%\\Google\\Chrome]\n  - Delete the [User Data] folder\n  - Move extracted [User Data] folder to [%LOCALAPPDATA%\\Google\\Chrome]\n  - Run [chrome.reg]\n  - Transfer Complete!"
-        )
-        with open("instructions.txt", "w", encoding="utf-8") as file:
-            file.write(instructions)
+    now = datetime.datetime.now()
+    zip_name = f"{browser.lower()}_{now.strftime('%d-%m-%Y')}_{now.strftime('%I-%M-%S-%p')}.zip"
 
-        width = os.get_terminal_size().columns
-        job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
-        overall_task = job_progress.add_task("[bright_green]Compressing", total=num_source_files)
-        progress_table = Table.grid()
-        progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="red", padding=(1, 2)))
+    raw_instructions = config["transfer_instructions"].replace("{zip_name}", zip_name)
+    instructions = translate(raw_instructions)
 
-        with Live(progress_table, refresh_per_second=10):
-            with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED, True, compression_level, strict_timestamps=False) as zipf:
-                for file_path in files_to_zip:
-                    rel_path = os.path.relpath(file_path, path_to_backup)
-                    zipf.write(file_path, os.path.join("User Data", rel_path))
-                    job_progress.update(overall_task, advance=1)
-                zipf.write("chrome.reg", "chrome.reg")
-                zipf.write("instructions.txt", "instructions.txt")
+    with open("instructions.txt", "w", encoding="utf-8") as file:
+        file.write(instructions)
 
-        # cleanup
+    width = os.get_terminal_size().columns
+    job_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(bar_width=width), TextColumn("[progress.percentage][bright_green]{task.percentage:>3.0f}%"), "[bright_cyan]ETA", TimeRemainingColumn(), TimeElapsedColumn())
+    overall_task = job_progress.add_task("[bright_green]Compressing", total=num_source_files)
+    progress_table = Table.grid()
+    progress_table.add_row(Panel.fit(job_progress, title="[bright_white]Jobs", border_style="red", padding=(1, 2)))
 
-        print(clr(f"\n  - {translate('Cleaning...')}"))
-        os.remove("chrome.reg")
+    with Live(progress_table, refresh_per_second=10):
+        with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED, True, compression_level, strict_timestamps=False) as zipf:
+            for file_path in files_to_zip:
+                rel_path = os.path.relpath(file_path, path_to_backup)
+                zipf.write(file_path, os.path.join(config["data_folder_name"], rel_path))
+                job_progress.update(overall_task, advance=1)
+
+            if config["reg_export_name"]:
+                zipf.write(config["reg_export_name"], config["reg_export_name"])
+
+            zipf.write("instructions.txt", "instructions.txt")
+
+    # cleanup
+
+    print(clr(f"\n  - {translate('Cleaning...')}"))
+    if config["reg_export_name"] and os.path.exists(config["reg_export_name"]):
+        os.remove(config["reg_export_name"])
+    if os.path.exists("instructions.txt"):
         os.remove("instructions.txt")
-        os.system(f'explorer.exe "{os.getcwd()}"')
-        cls()
-        input(clr(instructions + f"\n\n  > {translate('Press [ENTER] once you have read the steps...')} "))
-
-    # elif browser == "Firefox"
-    # elif browser == "Opera":
-    # elif browser == "Brave":
+    os.system(f'explorer.exe "{os.getcwd()}"')
+    cls()
+    input(clr(instructions + f"\n\n  > {translate('Press [ENTER] once you have read the steps...')} "))
 
 
 def main():
@@ -156,7 +202,7 @@ def main():
 
     # user input
 
-    browsers = ["Chrome"]
+    browsers = list(browsers_config.keys())
     to_print = "  - Supported Browsers: \n"
     for _, browser in enumerate(browsers):
         to_print += f"\n  - [{_ + 1}] {browser}"
