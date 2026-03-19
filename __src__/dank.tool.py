@@ -10,6 +10,7 @@ import os
 import subprocess
 import sys
 import time
+import webbrowser
 from concurrent.futures import ThreadPoolExecutor
 from types import NoneType
 
@@ -908,7 +909,7 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}\n"))
                 os.system("winget install --accept-source-agreements --interactive --id Discord.Discord")
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
-            asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
+            asset = next(_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe"))
             browser_download_url = asset["browser_download_url"]
             version = browser_download_url.split("/")[-2]
 
@@ -1354,16 +1355,16 @@ if __name__ == "__main__":
 
             match _choice["project"]:
                 case "Discord Server":
-                    os.system("start https://sirdank.github.io/dankware-website/discord")
+                    webbrowser.open("https://sirdank.github.io/dankware-website/discord")
                     continue
                 case "Telegram Group":
-                    os.system("start https://sirdank.github.io/dankware-website/telegram")
+                    webbrowser.open("https://sirdank.github.io/dankware-website/telegram")
                     continue
                 case "YouTube":
-                    os.system("start https://sirdank.github.io/dankware-website/youtube")
+                    webbrowser.open("https://sirdank.github.io/dankware-website/youtube")
                     continue
                 case "Website":
-                    os.system("start https://dankware.alwaysdata.net/")
+                    webbrowser.open("https://dankware.alwaysdata.net/")
                     continue
 
             TITLE = _choice["title"]

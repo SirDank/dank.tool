@@ -230,5 +230,58 @@ class TestExecutor(unittest.TestCase):
 
         self.assertIn("DANK_TOOL_LANG", os.environ)
 
+    @patch('sys.stdout', new_callable=MagicMock)
+    @patch('sys.platform', 'win32')
+    def test_print_warning_symbol_win32(self, mock_stdout):
+        original_exec = builtins.exec
+        def fake_exec(c, *args, **kwargs):
+            if c is self.code or isinstance(c, type(compile('','','exec'))):
+                original_exec(c, *args, **kwargs)
+
+        with patch('builtins.exec', side_effect=fake_exec):
+            compiled_code = compile(self.code, '__src__/executor.py', 'exec')
+            original_exec(compiled_code, self.exec_globals)
+
+        self.exec_globals['print_warning_symbol']()
+        mock_stdout.write.assert_any_call("[⚠️]")
+        mock_stdout.write.assert_any_call(" ")
+
+    @patch('sys.stdout', new_callable=MagicMock)
+    @patch('sys.platform', 'linux')
+    def test_print_warning_symbol_linux(self, mock_stdout):
+        original_exec = builtins.exec
+        def fake_exec(c, *args, **kwargs):
+            if c is self.code or isinstance(c, type(compile('','','exec'))):
+                original_exec(c, *args, **kwargs)
+
+        with patch('builtins.exec', side_effect=fake_exec):
+            compiled_code = compile(self.code, '__src__/executor.py', 'exec')
+            original_exec(compiled_code, self.exec_globals)
+
+        self.exec_globals['print_warning_symbol']()
+        mock_stdout.write.assert_any_call("⚠️")
+        mock_stdout.write.assert_any_call(" ")
+
+    @patch('sys.stdout', new_callable=MagicMock)
+    def test_print_warning_symbol_exception(self, mock_stdout):
+        original_exec = builtins.exec
+        def fake_exec(c, *args, **kwargs):
+            if c is self.code or isinstance(c, type(compile('','','exec'))):
+                original_exec(c, *args, **kwargs)
+
+        with patch('builtins.exec', side_effect=fake_exec):
+            compiled_code = compile(self.code, '__src__/executor.py', 'exec')
+            original_exec(compiled_code, self.exec_globals)
+
+        # Trigger exception by mocking sys.platform to raise an Exception
+        with patch.dict(self.exec_globals, {'sys': MagicMock(platform=MagicMock(side_effect=Exception("Test Exception")))}):
+            mock_sys = MagicMock()
+            type(mock_sys).platform = unittest.mock.PropertyMock(side_effect=Exception("Test Error"))
+            self.exec_globals['sys'] = mock_sys
+
+            self.exec_globals['print_warning_symbol']()
+            mock_stdout.write.assert_any_call("[!]")
+            mock_stdout.write.assert_any_call(" ")
+
 if __name__ == '__main__':
     unittest.main()

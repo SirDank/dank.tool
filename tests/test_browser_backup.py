@@ -5,8 +5,8 @@ import os
 import zipfile
 import datetime
 import importlib.util
+import unittest
 from unittest.mock import MagicMock, patch, mock_open
-
 def load_module_safely(name, path):
     # We create a dictionary of mocks for the missing or unwanted modules
     mocks = {
@@ -22,12 +22,10 @@ def load_module_safely(name, path):
         'rich.table': MagicMock(),
         'translatepy': MagicMock()
     }
-
     with patch.dict('sys.modules', mocks):
         module = types.ModuleType(name)
         with open(path, 'r') as f:
             code = f.read()
-
         # Remove execution of main() at the end of the script
         code = re.sub(r'^main\(\)$', '', code, flags=re.MULTILINE)
         try:
@@ -35,7 +33,6 @@ def load_module_safely(name, path):
         except Exception as e:
             print(f"Error loading {name}:", e)
         return module
-
 mod = load_module_safely('browser_backup', os.path.join(os.path.dirname(__file__), '..', '__modules__', 'dank.browser-backup.py'))
 
 import unittest
@@ -63,26 +60,21 @@ class TestBrowserBackup(unittest.TestCase):
 
         mock_proc = MagicMock()
         mock_proc.info = {"name": "not_chrome.exe"}
-        mock_process_iter.return_value = [mock_proc]
-
-        mock_walk.return_value = [
+        self.mock_process_iter.return_value = [mock_proc]
+        self.mock_walk.return_value = [
             ("C:\\path\\to\\user\\data", ["Default"], ["Preferences"]),
             ("C:\\path\\to\\user\\data\\Default", [], ["History", "Bookmarks"])
         ]
-
         mock_term_size_obj = MagicMock()
         mock_term_size_obj.columns = 80
-        mock_term_size.return_value = mock_term_size_obj
-
+        self.mock_term_size.return_value = mock_term_size_obj
         mock_now = MagicMock()
         mock_now.strftime.side_effect = ["12-03-2024", "10-30-00-AM"]
-        mock_datetime.now.return_value = mock_now
-        mock_getcwd.return_value = "C:\\current\\dir"
-
+        self.mock_datetime.now.return_value = mock_now
+        self.mock_getcwd.return_value = "C:\\current\\dir"
         mock_zip_instance = MagicMock()
-        mock_zipfile.return_value.__enter__.return_value = mock_zip_instance
-        mock_input.return_value = ""
-
+        self.mock_zipfile.return_value.__enter__.return_value = mock_zip_instance
+        self.mock_input.return_value = ""
         mod.backup("Chrome", compression_level=9)
 
         mock_expandvars.assert_called_with(r"%LOCALAPPDATA%\Google\Chrome\User Data")
@@ -93,7 +85,7 @@ class TestBrowserBackup(unittest.TestCase):
         mock_file_open.assert_called_once_with("instructions.txt", "w", encoding="utf-8")
 
         expected_zip_name = "chrome_12-03-2024_10-30-00-AM.zip"
-        mock_zipfile.assert_called_once_with(expected_zip_name, "w", zipfile.ZIP_DEFLATED, True, 9, strict_timestamps=False)
+        self.mock_zipfile.assert_called_once_with(expected_zip_name, "w", zipfile.ZIP_DEFLATED, True, 9, strict_timestamps=False)
         assert mock_zip_instance.write.call_count == 5
 
         mock_remove.assert_any_call("chrome.reg")
@@ -122,17 +114,15 @@ class TestBrowserBackup(unittest.TestCase):
 
         mock_proc = MagicMock()
         mock_proc.info = {"name": "not_chrome.exe"}
-        mock_process_iter.return_value = [mock_proc]
-
-        mock_walk.return_value = []
+        self.mock_process_iter.return_value = [mock_proc]
+        self.mock_walk.return_value = []
         mock_term_size_obj = MagicMock()
         mock_term_size_obj.columns = 80
-        mock_term_size.return_value = mock_term_size_obj
+        self.mock_term_size.return_value = mock_term_size_obj
         mock_now = MagicMock()
         mock_now.strftime.side_effect = ["12-03-2024", "10-30-00-AM"]
-        mock_datetime.now.return_value = mock_now
-        mock_getcwd.return_value = "C:\\current\\dir"
-
+        self.mock_datetime.now.return_value = mock_now
+        self.mock_getcwd.return_value = "C:\\current\\dir"
         with patch.object(mod, 'cls') as mock_cls, patch.object(mod, 'clr') as mock_clr:
             mod.backup("Chrome", compression_level=9)
             mock_browser_installed.assert_called_once()
@@ -166,20 +156,18 @@ class TestBrowserBackup(unittest.TestCase):
 
         mock_proc = MagicMock()
         mock_proc.info = {"name": "not_chrome.exe"}
-        mock_process_iter.return_value = [mock_proc]
-
-        mock_walk.return_value = []
+        self.mock_process_iter.return_value = [mock_proc]
+        self.mock_walk.return_value = []
         mock_term_size_obj = MagicMock()
         mock_term_size_obj.columns = 80
-        mock_term_size.return_value = mock_term_size_obj
+        self.mock_term_size.return_value = mock_term_size_obj
         mock_now = MagicMock()
         mock_now.strftime.side_effect = ["12-03-2024", "10-30-00-AM"]
-        mock_datetime.now.return_value = mock_now
-        mock_getcwd.return_value = "C:\\current\\dir"
-
+        self.mock_datetime.now.return_value = mock_now
+        self.mock_getcwd.return_value = "C:\\current\\dir"
         with patch.object(mod, 'rm_line') as mock_rm_line, patch.object(mod, 'clr', side_effect=lambda x, *args: x):
             mod.backup("Chrome", compression_level=9)
-            mock_input.assert_any_call("  > Input user data folder path: ")
+            self.mock_input.assert_any_call("  > Input user data folder path: ")
             mock_rm_line.assert_called_once()
 
     @patch.object(mod, 'browser_installed')
@@ -206,20 +194,17 @@ class TestBrowserBackup(unittest.TestCase):
         mock_proc_chrome.info = {"name": "chrome.exe"}
         mock_proc_not_chrome = MagicMock()
         mock_proc_not_chrome.info = {"name": "not_chrome.exe"}
-
-        mock_process_iter.side_effect = [[mock_proc_chrome], [mock_proc_not_chrome]]
-        mock_input.side_effect = ["", ""]
-
-        mock_walk.return_value = []
+        self.mock_process_iter.side_effect = [[mock_proc_chrome], [mock_proc_not_chrome]]
+        self.mock_input.side_effect = ["", ""]
+        self.mock_walk.return_value = []
         mock_term_size_obj = MagicMock()
         mock_term_size_obj.columns = 80
-        mock_term_size.return_value = mock_term_size_obj
+        self.mock_term_size.return_value = mock_term_size_obj
         mock_now = MagicMock()
         mock_now.strftime.side_effect = ["12-03-2024", "10-30-00-AM"]
-        mock_datetime.now.return_value = mock_now
-        mock_getcwd.return_value = "C:\\current\\dir"
-
+        self.mock_datetime.now.return_value = mock_now
+        self.mock_getcwd.return_value = "C:\\current\\dir"
         with patch.object(mod, 'clr', side_effect=lambda x, *args: x):
             mod.backup("Chrome", compression_level=9)
-            mock_input.assert_any_call("\n  > Chrome is running! Terminate it and press [ENTER]... ")
-            assert mock_process_iter.call_count == 2
+            self.mock_input.assert_any_call("\n  > Chrome is running! Terminate it and press [ENTER]... ")
+            assert self.mock_process_iter.call_count == 2

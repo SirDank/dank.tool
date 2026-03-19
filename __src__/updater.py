@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import webbrowser
 
 import pyminizip
 import requests
@@ -20,17 +21,19 @@ except:
 try:
     response = session.get("https://api.github.com/repos/SirDank/dank.tool/releases", headers={"User-Agent": f"dank.tool {DANK_TOOL_VERSION}", "Accept": "application/vnd.github.v3+json"}, timeout=3)
     # REMOVE THE BELOW CHECK IN THE FUTURE!
-    if response.status_code == 200 and DANK_TOOL_VERSION not in ("2.3.1", "2.3.2", "2.4") and f"v{DANK_TOOL_VERSION}" in (release["tag_name"] for release in response.json()):
-        tmp = []
-        for release in response.json():
-            if f"v{DANK_TOOL_VERSION}" == release["tag_name"]:
-                break
-            tmp.append(f"\n{release['tag_name']}\n{release['body']}")
+    if response.status_code == 200 and DANK_TOOL_VERSION not in ("2.3.1", "2.3.2", "2.4"):
+        releases = response.json()
+        if f"v{DANK_TOOL_VERSION}" in (release["tag_name"] for release in releases):
+            tmp = []
+            for release in releases:
+                if f"v{DANK_TOOL_VERSION}" == release["tag_name"]:
+                    break
+                tmp.append(f"\n{release['tag_name']}\n{release['body']}")
 
-        if tmp:
-            print(clr("\n  [ Release Notes ]"))
-            for _ in tmp:
-                print(clr(_, colour_two=green_bright))
+            if tmp:
+                print(clr("\n  [ Release Notes ]"))
+                for _ in tmp:
+                    print(clr(_, colour_two=green_bright))
 except:
     pass
 
@@ -73,7 +76,7 @@ try:
 except:
     cls()
     if input(clr(f"\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
-        os.system(f"start https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
+        webbrowser.open(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
     sys.exit("Failed to save file!")
 
 # extract and execute installer

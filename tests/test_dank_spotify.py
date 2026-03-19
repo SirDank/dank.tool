@@ -19,11 +19,14 @@ sys.modules['translatepy'] = MagicMock()
 
 import importlib.util
 
+import builtins
 filepath = os.path.join(os.path.dirname(__file__), '..', '__modules__', 'dank.spotify.py')
 spec = importlib.util.spec_from_file_location("dank.spotify", filepath)
 dank_spotify = importlib.util.module_from_spec(spec)
 sys.modules["dank.spotify"] = dank_spotify
-spec.loader.exec_module(dank_spotify)
+
+with patch.object(builtins, 'input', return_value=''), patch.object(builtins, 'print'), patch('subprocess.run'):
+    spec.loader.exec_module(dank_spotify)
 
 run_command = dank_spotify.run_command
 
