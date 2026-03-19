@@ -38,8 +38,10 @@ def load_module_safely(name, path):
 
 mod = load_module_safely('browser_backup', os.path.join(os.path.dirname(__file__), '..', '__modules__', 'dank.browser-backup.py'))
 
-class TestBrowserBackup:
-    @patch.object(mod, 'chrome_installed')
+import unittest
+
+class TestBrowserBackup(unittest.TestCase):
+    @patch.object(mod, 'browser_installed')
     @patch('os.path.expandvars')
     @patch('os.path.exists')
     @patch('os.walk')
@@ -54,8 +56,8 @@ class TestBrowserBackup:
     @patch.object(mod, 'export_registry_keys')
     @patch('os.getcwd')
     @patch.object(mod, 'translate', side_effect=lambda x: x)
-    def test_backup_chrome_happy_path(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_chrome_installed):
-        mock_chrome_installed.return_value = True
+    def test_backup_chrome_happy_path(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_browser_installed):
+        mock_browser_installed.return_value = True
         mock_expandvars.return_value = "C:\\path\\to\\user\\data"
         mock_exists.return_value = True
 
@@ -84,8 +86,8 @@ class TestBrowserBackup:
         mod.backup("Chrome", compression_level=9)
 
         mock_expandvars.assert_called_with(r"%LOCALAPPDATA%\Google\Chrome\User Data")
-        mock_exists.assert_called_once_with("C:\\path\\to\\user\\data")
-        mock_chrome_installed.assert_called_once()
+        mock_exists.assert_any_call("C:\\path\\to\\user\\data")
+        mock_browser_installed.assert_called_once()
         mock_process_iter.assert_called_with(["name"])
         mock_export.assert_called_once_with("HKEY_CURRENT_USER", r"Software\Google\Chrome\PreferenceMACs", export_path="chrome.reg")
         mock_file_open.assert_called_once_with("instructions.txt", "w", encoding="utf-8")
@@ -98,7 +100,7 @@ class TestBrowserBackup:
         mock_remove.assert_any_call("instructions.txt")
         mock_system.assert_called_once_with('explorer.exe "C:\\current\\dir"')
 
-    @patch.object(mod, 'chrome_installed')
+    @patch.object(mod, 'browser_installed')
     @patch('os.path.expandvars')
     @patch('os.path.exists')
     @patch('os.walk')
@@ -113,8 +115,8 @@ class TestBrowserBackup:
     @patch.object(mod, 'export_registry_keys')
     @patch('os.getcwd')
     @patch.object(mod, 'translate', side_effect=lambda x: x)
-    def test_backup_chrome_not_installed(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_chrome_installed):
-        mock_chrome_installed.return_value = False
+    def test_backup_chrome_not_installed(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_browser_installed):
+        mock_browser_installed.return_value = False
         mock_expandvars.return_value = "C:\\path\\to\\user\\data"
         mock_exists.return_value = True
 
@@ -133,11 +135,11 @@ class TestBrowserBackup:
 
         with patch.object(mod, 'cls') as mock_cls, patch.object(mod, 'clr') as mock_clr:
             mod.backup("Chrome", compression_level=9)
-            mock_chrome_installed.assert_called_once()
+            mock_browser_installed.assert_called_once()
             mock_cls.assert_any_call()
             mock_expandvars.assert_called_with(r"%LOCALAPPDATA%\Google\Chrome\User Data")
 
-    @patch.object(mod, 'chrome_installed')
+    @patch.object(mod, 'browser_installed')
     @patch('os.path.expandvars')
     @patch('os.path.exists')
     @patch('os.walk')
@@ -152,12 +154,15 @@ class TestBrowserBackup:
     @patch.object(mod, 'export_registry_keys')
     @patch('os.getcwd')
     @patch.object(mod, 'translate', side_effect=lambda x: x)
-    def test_backup_chrome_path_not_exists(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_chrome_installed):
-        mock_chrome_installed.return_value = True
+    def test_backup_chrome_path_not_exists(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_browser_installed):
+        mock_browser_installed.return_value = True
         mock_expandvars.return_value = "C:\\path\\to\\user\\data"
 
-        mock_exists.side_effect = [False, True]
-        mock_input.side_effect = ["C:\\valid\\path\\Google\\Chrome\\User Data", ""]
+        # mock_exists needs to return True eventually for the while loop condition to pass,
+        # but also it will be called for the cleanup. Let's just return True for everything
+        # after the first False (which simulates path_to_backup not existing initially).
+        mock_exists.side_effect = [False, True, True, True, True]
+        mock_input.side_effect = ["C:\\valid\\path\\User Data", ""]
 
         mock_proc = MagicMock()
         mock_proc.info = {"name": "not_chrome.exe"}
@@ -177,7 +182,7 @@ class TestBrowserBackup:
             mock_input.assert_any_call("  > Input user data folder path: ")
             mock_rm_line.assert_called_once()
 
-    @patch.object(mod, 'chrome_installed')
+    @patch.object(mod, 'browser_installed')
     @patch('os.path.expandvars')
     @patch('os.path.exists')
     @patch('os.walk')
@@ -192,8 +197,8 @@ class TestBrowserBackup:
     @patch.object(mod, 'export_registry_keys')
     @patch('os.getcwd')
     @patch.object(mod, 'translate', side_effect=lambda x: x)
-    def test_backup_chrome_running(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_chrome_installed):
-        mock_chrome_installed.return_value = True
+    def test_backup_chrome_running(self, mock_translate, mock_getcwd, mock_export, mock_datetime, mock_file_open, mock_system, mock_remove, mock_zipfile, mock_term_size, mock_process_iter, mock_input, mock_walk, mock_exists, mock_expandvars, mock_browser_installed):
+        mock_browser_installed.return_value = True
         mock_expandvars.return_value = "C:\\path\\to\\user\\data"
         mock_exists.return_value = True
 
