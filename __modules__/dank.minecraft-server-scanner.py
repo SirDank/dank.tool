@@ -6,6 +6,8 @@ from concurrent.futures import ThreadPoolExecutor
 from random import randint
 
 import requests
+from requests.adapters import HTTPAdapter
+
 from dankware import align, clr, cls, get_path, multithread, random_ip, red, rm_line
 from mcstatus import BedrockServer, JavaServer
 from numpy.random import choice
@@ -27,6 +29,8 @@ https://raw.githubusercontent.com/robertdavidgraham/masscan/master/data/exclude.
 https://github.com/Footsiefat/Minecraft-Server-Scanner
 
 """
+
+session = requests.Session()
 
 
 def translate(text):
@@ -76,7 +80,7 @@ def check(ip, server):
         # except: query_response = ""
 
         try:
-            response = requests.get(f"http://ipwho.is/{ip}", timeout=3).json()
+            response = session.get(f"http://ipwho.is/{ip}", timeout=3).json()
             if response["success"]:
                 server_info = f"{response['city']} | {response['connection']['org']} | {response['connection']['domain']}"
             else:
@@ -92,7 +96,7 @@ def check(ip, server):
                 json["city"] = response["city"]
                 json["org"] = response["connection"]["org"]
                 json["domain"] = response["connection"]["domain"]
-            executor.submit(requests.post, f"https://dankware.alwaysdata.net/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json)  # pylint: disable=used-before-assignment
+            executor.submit(session.post, f"https://dankware.alwaysdata.net/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json)  # pylint: disable=used-before-assignment
         except:
             pass
 
@@ -187,6 +191,9 @@ def main():
         threads = input(clr("  > Threads: ") + red)
         if threads.isdigit() and int(threads) > 0:
             threads = int(threads)
+            adapter = HTTPAdapter(pool_connections=threads, pool_maxsize=threads)
+            session.mount("http://", adapter)
+            session.mount("https://", adapter)
             break
         rm_line()
 
