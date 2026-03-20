@@ -1,5 +1,6 @@
 import datetime
 import os
+import subprocess
 import sys
 import winreg
 import zipfile
@@ -162,7 +163,7 @@ def backup(browser, compression_level):
         os.remove(config["reg_export_name"])
     if os.path.exists("instructions.txt"):
         os.remove("instructions.txt")
-    os.system(f'explorer.exe "{os.getcwd()}"')
+    subprocess.run(["explorer.exe", os.getcwd()])
     cls()
     input(clr(instructions + f"\n\n  > {translate('Press [ENTER] once you have read the steps...')} "))
 
