@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 
 import requests
-from dankware import clr, cls, err, github_file_selector, green_bright, rm_line
+from dankware import clr, cls, github_file_selector, green_bright, rm_line
 from rich.align import Align
 from rich.columns import Columns
 from rich.console import Console
@@ -49,12 +49,6 @@ def print_banner():
     banner = "\n\n   _         _           _             _   \n _| |___ ___| |_   _ _ _|_|___ ___ ___| |_ \n| . | .'|   | '_|_| | | | |   | . | -_|  _|\n|___|__,|_|_|_,_|_|_____|_|_|_|_  |___|_|  \n                              |___|        \n\n\n"
     Console().print(Align.center(banner), style="blink red", highlight=False)
     print(clr("  [ Commands ]\n\n  - search <NAME OF SOFTWARE>\n\n  - installed (list of installed software)\n\n  - updates\n\n  - update-all\n\n  - clear (refresh screen)\n\n  - exit\n"))
-
-
-def cleanup_result(cmd):
-    for i, line in enumerate(cmd):
-        cmd[i] = line.strip().replace("  ", "")
-    return cmd
 
 
 def handle_response(cmd, results, mode):
