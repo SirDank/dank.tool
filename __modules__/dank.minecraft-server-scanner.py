@@ -1,5 +1,6 @@
 import os
 import socket
+import subprocess
 import time
 import webbrowser
 from concurrent.futures import ThreadPoolExecutor
@@ -244,7 +245,7 @@ def main():
         os.mkdir("dank.mc-server-scanner")
     except FileExistsError:
         pass
-    os.system('explorer.exe "dank.mc-server-scanner"')
+    subprocess.run(["explorer.exe", "dank.mc-server-scanner"])
     os.chdir("dank.mc-server-scanner")
 
     if os.path.isfile("scan_count.txt"):

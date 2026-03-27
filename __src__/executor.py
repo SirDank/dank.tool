@@ -15,6 +15,7 @@
 import json
 import os
 import sys
+import subprocess
 import time
 import tkinter as tk
 from concurrent.futures import ThreadPoolExecutor
@@ -463,7 +464,7 @@ except Exception as exc:
     LATEST_VERSION = latest_dank_tool_version()
 
     if "- SystemExit" in error:
-        os.system("taskkill /f /t /im dank.tool.exe")
+        subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])
     elif "- EOFError" in error:
         print_warning_symbol()
         print(clr("\n  - No input provided!"))
@@ -487,4 +488,4 @@ except Exception as exc:
         print(clr("\n  - Error Reported! If it is a logic error, it will be fixed soon!"))
 
     input(clr("\n  > Press [ENTER] to EXIT... "))
-    os.system("taskkill /f /t /im dank.tool.exe")
+    subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])

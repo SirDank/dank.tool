@@ -344,10 +344,11 @@ class PauseMenu(Entity):
 
     def quit_game(self):
         if "__compiled__" in globals():
+            import subprocess
             if "DANK_TOOL_VERSION" in os.environ:
-                os.system("taskkill /f /im dank.tool.exe")
+                subprocess.run(["taskkill", "/f", "/im", "dank.tool.exe"])
             else:
-                os.system("taskkill /f /im dank.game.exe")
+                subprocess.run(["taskkill", "/f", "/im", "dank.game.exe"])
         else:
             application.quit()
 
