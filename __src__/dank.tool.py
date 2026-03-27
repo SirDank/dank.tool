@@ -725,13 +725,13 @@ def dank_os_repair():
             cls()
             if choice in ("1", "4"):
                 print(clr("\n\n  [ DISM /online /cleanup-image /restorehealth ]"))
-                os.system("DISM /online /cleanup-image /restorehealth")
+                subprocess.run(["DISM", "/online", "/cleanup-image", "/restorehealth"])
             if choice in ("2", "4"):
                 print(clr("\n\n  [ sfc /scannow ]"))
-                os.system("sfc /scannow")
+                subprocess.run(["sfc", "/scannow"])
             if choice in ("3", "4"):
                 print(clr("\n\n  [ chkdsk C: /x /r ]"))
-                os.system("chkdsk C: /x /r")
+                subprocess.run(["chkdsk", "C:", "/x", "/r"])
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
@@ -783,19 +783,19 @@ def dank_network_reset():
             cls()
             if choice in ("1", "6"):
                 print(clr("\n\n  [ ipconfig /flushdns ]"))
-                os.system("ipconfig /flushdns")
+                subprocess.run(["ipconfig", "/flushdns"])
             if choice in ("2", "6"):
                 print(clr("\n\n  [ ipconfig /registerdns ]"))
-                os.system("ipconfig /registerdns")
+                subprocess.run(["ipconfig", "/registerdns"])
             if choice in ("3", "6"):
                 print(clr("\n\n  [ ipconfig /release ]"))
-                os.system("ipconfig /release")
+                subprocess.run(["ipconfig", "/release"])
             if choice in ("4", "6"):
                 print(clr("\n\n  [ ipconfig /renew ]"))
-                os.system("ipconfig /renew")
+                subprocess.run(["ipconfig", "/renew"])
             if choice in ("5", "6"):
                 print(clr("\n\n  [ netsh winsock reset ]"))
-                os.system("netsh winsock reset")
+                subprocess.run(["netsh", "winsock", "reset"])
             input(clr("\n  > Press [ENTER] to return to the menu... "))
             break
         rm_line()
@@ -834,12 +834,12 @@ def dank_clear_cache():
 
             cls()
             print(clr(f"\n  [ {_translate('Terminating Explorer.exe')} ]"))
-            os.system("taskkill /f /im explorer.exe >nul 2>&1")
+            subprocess.run(["cmd", "/c", "taskkill", "/f", "/im", "explorer.exe", ">nul", "2>&1"])
             os.chdir(os.path.expandvars("%userprofile%\\AppData\\Local\\Microsoft\\Windows\\Explorer"))
 
             if choice in ("1", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Icon Cache')} ]\n"))
-                os.system(r"attrib -h iconcache*")
+                subprocess.run(["cmd", "/c", r"attrib -h iconcache*"])
                 for file in os.listdir():
                     if file.startswith("iconcache") and file.endswith(".db"):
                         try:
@@ -850,7 +850,7 @@ def dank_clear_cache():
 
             if choice in ("2", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Thumbnail Cache')} ]\n"))
-                os.system(r"attrib -h thumbcache*")
+                subprocess.run(["cmd", "/c", r"attrib -h thumbcache*"])
                 for file in os.listdir():
                     if file.startswith("thumbcache") and file.endswith(".db"):
                         try:
@@ -861,14 +861,14 @@ def dank_clear_cache():
 
             if choice in ("3", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Nvidia Cache')} ]\n"))
-                os.system(r"del /f /s /q %localappdata%\NVIDIA\DXCache\*")
+                subprocess.run(["cmd", "/c", r"del /f /s /q %localappdata%\NVIDIA\DXCache\*"])
                 print(clr(f"  - {_translate('deleted')} %localappdata%\\NVIDIA\\DXCache\\*"))
-                os.system(r"del /f /s /q %localappdata%\NVIDIA\GLCache\*")
+                subprocess.run(["cmd", "/c", r"del /f /s /q %localappdata%\NVIDIA\GLCache\*"])
                 print(clr(f"  - {_translate('deleted')} %localappdata%\\NVIDIA\\GLCache\\*"))
 
             os.chdir(os.path.dirname(__file__))
             print(clr(f"\n  [ {_translate('Starting Explorer.exe')} ]"))
-            os.system("start explorer.exe")
+            subprocess.Popen(["cmd", "/c", "start", "explorer.exe"])
             input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
             break
 
@@ -918,7 +918,7 @@ def dank_github_software(software):
                 data = session.get(url, headers=headers, timeout=60).content
                 with open("netlimiter.exe", "wb") as file:
                     file.write(data)
-                os.system("netlimiter.exe")
+                subprocess.run(["netlimiter.exe"])
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
             sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]["sha"]
         case "vencord":
@@ -927,7 +927,7 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('Discord found!')}"))
             else:
                 print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}\n"))
-                os.system("winget install --accept-source-agreements --interactive --id Discord.Discord")
+                subprocess.run(["winget", "install", "--accept-source-agreements", "--interactive", "--id", "Discord.Discord"])
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
             browser_download_url = next(_ for _ in github_downloads("Vencord/Installer") if _.endswith("VencordInstaller.exe"))
             version = browser_download_url.split("/")[-2]
@@ -937,7 +937,7 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('Steam found!')}"))
             else:
                 print(clr(f"\n  - {_translate('Steam not found!')}\n\n  - {_translate('Downloading Steam...')}\n"))
-                os.system("winget install --accept-source-agreements --interactive --id Valve.Steam")
+                subprocess.run(["winget", "install", "--accept-source-agreements", "--interactive", "--id", "Valve.Steam"])
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Steam...')} "))
             browser_download_url = next(_ for _ in github_downloads("SteamClientHomebrew/Installer") if _.endswith("MillenniumInstaller-Windows.exe"))
             version = browser_download_url.split("/")[-2]
@@ -1051,11 +1051,11 @@ def dank_github_software(software):
     print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
     match software:
         case "netlimiter":
-            os.system("netlimiter-patcher.exe")
+            subprocess.run(["netlimiter-patcher.exe"])
         case "vencord":
-            os.system("vencord.exe")
+            subprocess.run(["vencord.exe"])
         case "millennium":
-            os.system("millennium.exe")
+            subprocess.run(["millennium.exe"])
 
 
 def dank_winrar_patcher():
@@ -1108,7 +1108,7 @@ def dank_winrar_patcher():
         print(clr(f"\n  - {_translate('WinRAR not installed!')}"))
         if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download WinRAR?')} [y/n]: ") + red).lower() == "y":
             print(clr(f"\n  - {_translate('Downloading WinRAR...')}\n"))
-            os.system("winget install --accept-source-agreements --interactive --id RARLab.WinRAR")
+            subprocess.run(["winget", "install", "--accept-source-agreements", "--interactive", "--id", "RARLab.WinRAR"])
             input(clr(f"\n  > {_translate('Press [ENTER] after installing WinRAR to start patching...')} "))
             patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
@@ -1161,7 +1161,7 @@ def dank_revo_patcher():
         print(clr(f"\n  - {_translate('RevoUninstallerPro not installed!')}"))
         if ONLINE_MODE and input(clr(f"\n  > {_translate('Would you like to download RevoUninstallerPro?')} [y/n]: ") + red).lower() == "y":
             print(clr(f"\n  - {_translate('Downloading RevoUninstallerPro...')}\n"))
-            os.system("winget install --accept-source-agreements --interactive --id RevoUninstaller.RevoUninstallerPro")
+            subprocess.run(["winget", "install", "--accept-source-agreements", "--interactive", "--id", "RevoUninstaller.RevoUninstallerPro"])
             input(clr(f"\n  > {_translate('Press [ENTER] after installing RevoUninstallerPro to start patching...')} "))
             patch()
     input(clr(f"\n  > {_translate('Press [ENTER] to return to the menu...')} "))
@@ -1375,7 +1375,7 @@ if __name__ == "__main__":
             _choice = input(clr("  > Choice: ") + red)
 
             if isinstance(_choice, NoneType):
-                os.system("taskkill /f /t /im dank.tool.exe")
+                subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])
 
             elif _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
                 if int(_choice) <= len(modules):
@@ -1411,7 +1411,7 @@ if __name__ == "__main__":
                     case "debug":  # debug menu
                         debug_mode()
                     case "exit" | "stop":
-                        os.system("taskkill /f /t /im dank.tool.exe")
+                        subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])
                     case _:
                         rm_line()
 
@@ -1551,7 +1551,7 @@ if __name__ == "__main__":
             print(clr(error, 2))
 
             if "- SystemExit" in error:
-                os.system("taskkill /f /t /im dank.tool.exe")
+                subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])
             elif "- EOFError" in error:
                 print_warning_symbol()
                 print(clr(f"\n  - {_translate('No input provided!')}"))

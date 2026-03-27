@@ -3,6 +3,7 @@ import os
 import sys
 import webbrowser
 
+import subprocess
 import pyminizip
 import requests
 from colorama import Fore, Style
@@ -85,7 +86,7 @@ print(clr("\n  - Extracting..."))
 try:
     pyminizip.uncompress("dank.tool.zip", "dankware", ".", 0)  # pylint: disable=c-extension-no-member
 except:
-    os.system("explorer.exe .")
+    subprocess.run(["explorer.exe", "."])
     cls()
     input(clr(f'\n  - Failed to extract!\n\n  - Please manually extract and install from "{os.path.join(os.getcwd(), "dank.tool.zip")}" using the password "dankware"\n\n  > Press [ENTER] to EXIT... ', 2))
     sys.exit("Failed to extract file!")
@@ -103,5 +104,5 @@ try:
     input(clr("\n  > Press [ENTER] to install the latest version of dank.tool... "))
 except EOFError:
     pass
-os.system("start dank.tool-[installer].exe")
-os.system("taskkill /f /t /im dank.tool.exe")
+subprocess.Popen(["cmd", "/c", "start", "dank.tool-[installer].exe"])
+subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])

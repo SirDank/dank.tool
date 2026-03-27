@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
@@ -68,7 +69,7 @@ def patch_exe(file_path):
                     break
             except PermissionError:
                 input(clr("[!] Error: Sublime text is running! Press [ ENTER ] to terminate it and try again... ", 2))
-                os.system("taskkill /f /im sublime_text.exe >nul 2>&1")
+                subprocess.run(["cmd", "/c", "taskkill", "/f", "/im", "sublime_text.exe", ">nul", "2>&1"])
         print(clr(f"[+] Patch applied successfully! Output saved to: {file_path}", colour_two=green_bright))
 
     else:
