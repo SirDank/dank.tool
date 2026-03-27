@@ -109,7 +109,7 @@ def updated_on(url, dankware_module=True):
     if dankware_module:
         url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1" + ("" if not DEV_BRANCH else "&sha=dev")
     try:
-        response = requests.get(url, headers=headers, timeout=3).json()
+        response = _session.get(url, headers=headers, timeout=3).json()
         if not response:
             return "[red1][[red] unreleased [red1]]"
 
@@ -131,7 +131,7 @@ def get_menu_request_responses(task_id, request_key):
         case 0:  # get global runs
             menu_request_responses[request_key] = f"{red_bright}⚠️"
             try:
-                result = requests.get("https://dankware.alwaysdata.net/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace("<pre>", "").replace("</pre>", "")
+                result = _session.get("https://dankware.alwaysdata.net/counter?id=dank.tool&hit=false", headers=headers, timeout=3).content.decode().replace("<pre>", "").replace("</pre>", "")
                 if result.isdigit():
                     menu_request_responses[request_key] = green_bright + result
             except:
@@ -139,7 +139,7 @@ def get_menu_request_responses(task_id, request_key):
 
         case 1:  # get motm
             try:
-                motm = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
+                motm = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/motm.txt", headers=headers, timeout=3).content.decode()
                 motm = clr(motm, colour_one=green_bright)
             except:
                 motm = f"{red_bright}⚠️"
@@ -147,7 +147,7 @@ def get_menu_request_responses(task_id, request_key):
 
         # case 2:  # get chatroom user count
         #     try:
-        #         result = requests.get("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3).content.decode()
+        #         result = _session.get("https://dankware.alwaysdata.net/chatroom-users", headers=headers, timeout=3).content.decode()
         #         if result.isdigit():
         #             if result != "0":
         #                 menu_request_responses[request_key] = result
@@ -171,7 +171,7 @@ def get_menu_request_responses_api(request_key: str):
 
 
 def download_offline_modules(project):
-    code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
+    code = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__modules__/{project}.py", headers=headers, timeout=3).content.decode()
     if not code.startswith("404: Not Found"):
         with open(f"__modules__/{project}.py", "w", encoding="utf-8") as file:
             file.write(code)
@@ -181,7 +181,7 @@ def download_offline_modules(project):
 
 
 def download_assets(url, file_name):
-    data = requests.get(url, headers=headers, timeout=10).content
+    data = _session.get(url, headers=headers, timeout=10).content
     with open(file_name, "wb") as file:
         file.write(data)
 
@@ -1176,6 +1176,9 @@ if __name__ == "__main__":
     set_globals_one()
     _translator = Translator()
     _session = session = requests.Session()
+    adapter = requests.adapters.HTTPAdapter(pool_connections=50, pool_maxsize=50)
+    _session.mount('http://', adapter)
+    _session.mount('https://', adapter)
     palestine_banner()  # 🍉
 
     # multithreaded requests responses, download modules / assets
