@@ -390,7 +390,7 @@ def main_one():
     else:
         dir_name = name
     os.makedirs(dir_name)
-    subprocess.run(["explorer.exe", dir_name])
+    subprocess.Popen(["explorer.exe", dir_name])
     os.chdir(dir_name)
 
     # create folders
