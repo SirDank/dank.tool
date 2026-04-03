@@ -245,7 +245,7 @@ def main():
         os.mkdir("dank.mc-server-scanner")
     except FileExistsError:
         pass
-    subprocess.run(["explorer.exe", "dank.mc-server-scanner"])
+    subprocess.Popen(["explorer.exe", "dank.mc-server-scanner"])
     os.chdir("dank.mc-server-scanner")
 
     if os.path.isfile("scan_count.txt"):
