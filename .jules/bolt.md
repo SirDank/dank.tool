@@ -1,0 +1,3 @@
+## 2024-05-18 - JSON Loading Micro-Optimization
+**Learning:** In a codebase heavily relying on runtime I/O (like reading local json configs during initialization), `json.loads(file.read())` creates an intermediate string representation that adds measurable memory and overhead over direct file object parsing with `json.load(file)`.
+**Action:** Always prefer `json.load(file)` when reading JSON from files instead of `json.loads(file.read())` to avoid unnecessary memory overhead.

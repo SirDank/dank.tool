@@ -79,7 +79,7 @@ def settings_json():
         overwrite = True
     else:
         with open("settings.json", "r", encoding="utf-8") as file:
-            data = json.loads(file.read())
+            data = json.load(file)
         for key in settings:
             if key not in data:
                 overwrite = True
@@ -97,7 +97,7 @@ settings_json()
 del settings_json
 
 with open("settings.json", "r", encoding="utf-8") as _:
-    DANK_TOOL_SETTINGS = json.loads(_.read())
+    DANK_TOOL_SETTINGS = json.load(_)
 OFFLINE_SRC = int(DANK_TOOL_SETTINGS["offline-src"])
 DEV_BRANCH = int(DANK_TOOL_SETTINGS["dev-branch"])
 BRANCH = "main" if not DEV_BRANCH else "dev"
@@ -233,7 +233,7 @@ def latest_dank_tool_version():
 LATEST_VERSION = latest_dank_tool_version()
 ONLINE_MODE = int(os.environ["DANK_TOOL_ONLINE"])
 with open("settings.json", "r", encoding="utf-8") as file:
-    DEV_BRANCH = int(json.loads(file.read())["dev-branch"])
+    DEV_BRANCH = int(json.load(file)["dev-branch"])
 BRANCH = "main" if not DEV_BRANCH else "dev"
 
 # version checker / updater
@@ -267,7 +267,7 @@ if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or (ONLINE_MODE and int(DANK
     print(clr(f"\n  - Update Found: {LATEST_VERSION}" + ("" if not int(DANK_TOOL_SETTINGS["force-update"]) else " [ FORCED ]")))
     if int(DANK_TOOL_SETTINGS["force-update"]):
         with open("settings.json", "r", encoding="utf-8") as _:
-            settings = json.loads(_.read())
+            settings = json.load(_)
             settings["force-update"] = "0"
         with open("settings.json", "w", encoding="utf-8") as _:
             _.write(json.dumps(settings, indent=4))
