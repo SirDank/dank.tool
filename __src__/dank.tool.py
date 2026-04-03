@@ -241,7 +241,7 @@ def set_globals_one():
     # NOTE: Add script run support!
     os.chdir(os.path.dirname(__file__))
     with open("settings.json", "r", encoding="utf-8") as file:
-        settings = json.loads(file.read())
+        settings = json.load(file)
 
     OFFLINE_SRC = int(settings["offline-src"])
     DEV_BRANCH = int(settings["dev-branch"])
@@ -626,7 +626,7 @@ def dank_tool_settings():
         print(clr(f"\n  - Settings: [ {_translate('restart for all changes to take effect')} ]\n\n  - {_translate('do not use')}: offline-src, offline-mode, dev-branch!\n\n  [0] {_translate('Return to menu')}"))
 
         with open("settings.json", "r", encoding="utf-8") as file:
-            settings = json.loads(file.read())
+            settings = json.load(file)
 
         counter = 1
         for name, value in settings.items():
@@ -1201,7 +1201,7 @@ if __name__ == "__main__":
             with open("ursina/assets.json", "w", encoding="utf-8") as _:
                 _.write("{}")
         with open("ursina/assets.json", "r", encoding="utf-8") as _:
-            local_assets_json = json.loads(_.read())
+            local_assets_json = json.load(_)
 
         while True:
             try:
@@ -1294,7 +1294,7 @@ if __name__ == "__main__":
             github_api = True
 
         with open("github_api.json", "r", encoding="utf-8") as _:
-            github_api_json = json.loads(_.read())
+            github_api_json = json.load(_)
         if "updated_on" not in github_api_json or github_api_json["updated_on"] < (datetime.datetime.now() - datetime.timedelta(hours=1)).strftime("%d-%m-%Y %H:%M"):
             github_api = True
 
