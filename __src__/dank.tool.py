@@ -529,6 +529,9 @@ def set_globals_two():
 def _translate(text):
     if DANK_TOOL_LANG and ONLINE_MODE:
         try:
+            global _translator
+            if _translator is None:
+                _translator = Translator()
             text = _translator.translate(text, DANK_TOOL_LANG, "en").result
         except:
             pass
@@ -1164,7 +1167,7 @@ def execute_module(code: str):
 
 if __name__ == "__main__":
     set_globals_one()
-    _translator = Translator()
+    _translator = Translator() if DANK_TOOL_LANG and ONLINE_MODE else None
     _session = session = requests.Session()
     adapter = requests.adapters.HTTPAdapter(pool_connections=50, pool_maxsize=50)
     _session.mount('http://', adapter)
