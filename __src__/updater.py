@@ -46,7 +46,7 @@ branch = "main"
 if os.path.isfile("settings.json"):
     with open("settings.json", "r", encoding="utf-8") as file:
         try:
-            branch = "dev" if int(json.loads(file.read())["dev-branch"]) else "main"
+            branch = "dev" if int(json.load(file)["dev-branch"]) else "main"
         except:
             pass
 
