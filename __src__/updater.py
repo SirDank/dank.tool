@@ -63,22 +63,23 @@ except:
 print(clr("\n  - Downloading dank.tool.zip..."))
 while True:
     try:
-        data = session.get(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip", timeout=60, allow_redirects=True).content
-        break
+        # stream=True and iter_content() are used here to prevent loading the entire 100MB+ zip file into memory at once
+        with session.get(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip", timeout=60, allow_redirects=True, stream=True) as response:
+            response.raise_for_status()
+            try:
+                with open("dank.tool.zip", "wb") as _:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        _.write(chunk)
+                break
+            except OSError:
+                cls()
+                if input(clr(f"\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
+                    webbrowser.open(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
+                sys.exit("Failed to save file!")
     except Exception as exc:
         input(clr(f"\n  > Failed to download! {exc} | Press [ENTER] to try again... ", 2))
         rm_line()
         rm_line()
-
-try:
-    with open("dank.tool.zip", "wb") as _:
-        _.write(data)
-        del data
-except:
-    cls()
-    if input(clr(f"\n  - Failed to save file!\n\n  - Would you like to download from [https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip] on a browser?\n\n  > Choice [y/n]: ") + red) == "y":
-        webbrowser.open(f"https://github.com/SirDank/dank.tool/raw/{branch}/dank.tool.zip")
-    sys.exit("Failed to save file!")
 
 # extract and execute installer
 
