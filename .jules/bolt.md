@@ -7,3 +7,7 @@
 ## 2024-05-18 - Stream large file downloads
 **Learning:** Calling `session.get(url).content` buffers the entire response into memory. This causes huge memory spikes and performance degradation when downloading very large files (like `dank.tool.zip` which is >100MB).
 **Action:** Always use `session.get(url, stream=True)` and iterate over `response.iter_content(chunk_size=...)` when downloading large files instead of loading the entire content into memory at once.
+
+## 2024-04-04 - Optimize Directory Iteration
+**Learning:** `os.listdir()` combined with `os.path.isfile()` or subsequent `is_dir()` / string filtering checks requires fetching file details multiple times, increasing file system lookups. This matters especially on Windows for operations like clearing large icon/thumbnail caches.
+**Action:** Replaced `os.listdir()` loops with `os.scandir()` blocks whenever I iterate over files and need to fetch their attributes (e.g. check if they are files or get their names). This caches metadata.
