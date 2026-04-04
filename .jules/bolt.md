@@ -13,3 +13,6 @@
 ## 2024-04-04 - Optimize Directory Iteration
 **Learning:** `os.listdir()` combined with `os.path.isfile()` or subsequent `is_dir()` / string filtering checks requires fetching file details multiple times, increasing file system lookups. This matters especially on Windows for operations like clearing large icon/thumbnail caches.
 **Action:** Replaced `os.listdir()` loops with `os.scandir()` blocks whenever I iterate over files and need to fetch their attributes (e.g. check if they are files or get their names). This caches metadata.
+## 2024-05-20 - Lexicographical Date Comparison for Caching
+**Learning:** Using non-ISO date formats (like `%d-%m-%Y`) for string-based chronological comparison fails silently across month/year boundaries because lexicographical ordering evaluates the day first. This breaks cache expiration logic, leading to either perpetually stale caches or excessive API calls.
+**Action:** Always format datetime strings using an ISO-like format (e.g., `%Y-%m-%d %H:%M`) when relying on string comparison for cache invalidation mechanisms.

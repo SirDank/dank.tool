@@ -1300,8 +1300,21 @@ if __name__ == "__main__":
 
         with open("github_api.json", "r", encoding="utf-8") as _:
             github_api_json = json.load(_)
-        if "updated_on" not in github_api_json or github_api_json["updated_on"] < (datetime.datetime.now() - datetime.timedelta(hours=1)).strftime("%d-%m-%Y %H:%M"):
+
+        # Use ISO-like date format (%Y-%m-%d) for accurate lexicographical string comparison
+        # Also check for old date format (%d-%m-%Y) to prevent breaking backwards compatibility
+        if "updated_on" not in github_api_json:
             github_api = True
+        else:
+            updated_on_str = github_api_json["updated_on"]
+            try:
+                # Try parsing with the new format
+                updated_time = datetime.datetime.strptime(updated_on_str, "%Y-%m-%d %H:%M")
+                if updated_time < datetime.datetime.now() - datetime.timedelta(hours=1):
+                    github_api = True
+            except ValueError:
+                # If it fails, it's likely the old format (or corrupted). Invalidate cache.
+                github_api = True
 
         for key in request_keys_api:
             if key not in github_api_json:
@@ -1318,7 +1331,7 @@ if __name__ == "__main__":
                     rm_line()
                     rm_line()
 
-            github_api_json["updated_on"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
+            github_api_json["updated_on"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
             for key in request_keys_api:
                 github_api_json[key] = menu_request_responses[key]
