@@ -10,3 +10,6 @@
 ## 2024-05-18 - Infinite retries caused by raise_for_status() in generic exception loops
 **Learning:** When using `while True` loops with bare `except:` blocks for network retries, adding `response.raise_for_status()` can cause infinite loops if a legitimate error (like a 404 for a removed file) occurs, because the `HTTPError` gets caught and retried endlessly instead of allowing the application to gracefully handle the failure (like reading an HTML error page to report a broken download).
 **Action:** Be extremely cautious adding `raise_for_status()` to existing retry loops. If required, explicitly catch `HTTPError` separately from connection errors to prevent endless retries on permanent 4xx/5xx failures.
+## 2024-04-04 - Optimize Directory Iteration
+**Learning:** `os.listdir()` combined with `os.path.isfile()` or subsequent `is_dir()` / string filtering checks requires fetching file details multiple times, increasing file system lookups. This matters especially on Windows for operations like clearing large icon/thumbnail caches.
+**Action:** Replaced `os.listdir()` loops with `os.scandir()` blocks whenever I iterate over files and need to fetch their attributes (e.g. check if they are files or get their names). This caches metadata.
