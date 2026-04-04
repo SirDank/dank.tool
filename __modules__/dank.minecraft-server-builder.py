@@ -4,12 +4,18 @@ import time
 from random import randint
 
 import requests
+from requests.adapters import HTTPAdapter
 from dankware import blue, clr, cls, err, get_path, github_file_selector, green, multithread, red, rm_line, sys_open, title, white_bright
 from rich.align import Align
 from rich.console import Console
 from translatepy import Translator
 
 headers = {"User-Agent": ("dank.tool" if "DANK_TOOL_VERSION" not in os.environ else f"dank.tool {os.environ['DANK_TOOL_VERSION']}"), "Content-Type": "application/json"}
+
+session = requests.Session()
+adapter = HTTPAdapter(pool_connections=20, pool_maxsize=20)
+session.mount("http://", adapter)
+session.mount("https://", adapter)
 
 # banners
 
@@ -70,7 +76,7 @@ def main_one():
     while True:
         try:
             latest_java_version = "21"
-            # latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
+            # latest_java_version = session.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
             input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ", 2))
@@ -98,7 +104,7 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()["versions"][-4:]
+            version_list = session.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()["versions"][-4:]
             print(clr(f"  - {translate('Latest Purpur Versions')}: {', '.join(version_list)}"))
             break
         except Exception as exc:
@@ -358,22 +364,37 @@ def main_one():
     def file_downloader(url, file_name):
         while True:
             try:
-                response = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
+                response = session.get(url, headers=headers, timeout=30, allow_redirects=True, stream=True)
                 break
             except:
                 print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n", 2))
-        data = response.content
-        if not str(data).startswith("<!DOCTYPE html>"):
+
+        # We need to read the content to check if it's a broken download (e.g. github returning HTML)
+        # However, because we are streaming, we read the first chunk to peek
+        chunk_iterator = response.iter_content(chunk_size=8192)
+        try:
+            first_chunk = next(chunk_iterator)
+        except StopIteration:
+            first_chunk = b""
+
+        if not first_chunk.startswith(b"<!DOCTYPE html>"):
             try:
-                size = "{:.3}".format(int(response.headers["Content-Length"]) / 1024000)
+                size = "{:.3}".format(int(response.headers.get("Content-Length", 0)) / 1024000) if response.headers.get("Content-Length") else "?"
             except:
                 size = "?"
-            with open(file_name, "wb") as file:
-                file.write(data)
-            print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
+
+            try:
+                with open(file_name, "wb") as file:
+                    file.write(first_chunk)
+                    for chunk in chunk_iterator:
+                        file.write(chunk)
+                print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
+            except OSError as exc:
+                print(clr(f"  - {translate('Failed to write')} [ {file_name} ]: {exc}\n", 2))
         else:
+            response.close()
             print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n", 2))
-            requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
+            session.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
 
     translated = translate("Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process")
     print_read_me()
@@ -737,7 +758,7 @@ plugins:
 
 # start server and shutdown server for optimizing the below settings and configuring
 
-resource_pack_sha1 = requests.get("https://raw.githubusercontent.com/SirDank/dank.resource-pack/main/sha1.txt", timeout=3).content.decode()
+resource_pack_sha1 = session.get("https://raw.githubusercontent.com/SirDank/dank.resource-pack/main/sha1.txt", timeout=3).content.decode()
 
 configs = {
     # server configs
