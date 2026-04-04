@@ -843,8 +843,6 @@ def dank_clear_cache():
             if choice in ("1", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Icon Cache')} ]\n"))
                 subprocess.run(["cmd", "/c", r"attrib -h iconcache*"])
-                # ⚡ Bolt Optimization: Using os.scandir() instead of os.listdir() + os.path.isfile()
-                # Impact: Prevents loading the entire directory into a list and avoids extra stat() calls.
                 with os.scandir() as it:
                     for entry in it:
                         if entry.is_file() and entry.name.startswith("iconcache") and entry.name.endswith(".db"):
@@ -857,8 +855,6 @@ def dank_clear_cache():
             if choice in ("2", "4"):
                 print(clr(f"\n  [ {_translate('Clearing Thumbnail Cache')} ]\n"))
                 subprocess.run(["cmd", "/c", r"attrib -h thumbcache*"])
-                # ⚡ Bolt Optimization: Using os.scandir() instead of os.listdir() + os.path.isfile()
-                # Impact: Prevents loading the entire directory into a list and avoids extra stat() calls.
                 with os.scandir() as it:
                     for entry in it:
                         if entry.is_file() and entry.name.startswith("thumbcache") and entry.name.endswith(".db"):
@@ -1366,8 +1362,6 @@ if __name__ == "__main__":
         if not os.path.isdir("__local_modules__"):
             os.mkdir("__local_modules__")
 
-        # ⚡ Bolt Optimization: Using os.scandir() instead of os.listdir() + os.path.isfile()
-        # Impact: Reduces system calls by caching file metadata, accelerating local module loading at startup.
         with os.scandir("__local_modules__") as it:
             for entry in it:
                 if entry.is_file() and entry.name.endswith(".py"):
