@@ -1186,7 +1186,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(download_offline_modules, 50, offline_scripts, progress_bar=False)
+                multithread(download_offline_modules, min(50, len(offline_scripts)), offline_scripts, progress_bar=False)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to download modules! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
@@ -1241,7 +1241,7 @@ if __name__ == "__main__":
 
             while True:
                 try:
-                    multithread(download_assets, 50, asset_urls, file_names, progress_bar=not COMPATIBILITY_MODE)
+                    multithread(download_assets, min(50, len(asset_urls)), asset_urls, file_names, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
                     input(clr(f"\n  > {_translate('Failed to download assets! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
@@ -1283,7 +1283,7 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, 50, tuple(_ for _ in range(len(request_keys))), request_keys, progress_bar=not COMPATIBILITY_MODE)
+                multithread(get_menu_request_responses, min(50, len(request_keys)), tuple(range(len(request_keys))), request_keys, progress_bar=not COMPATIBILITY_MODE)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
@@ -1311,7 +1311,7 @@ if __name__ == "__main__":
         if github_api:
             while True:
                 try:
-                    multithread(get_menu_request_responses_api, 50, request_keys_api, progress_bar=not COMPATIBILITY_MODE)
+                    multithread(get_menu_request_responses_api, min(50, len(request_keys_api)), request_keys_api, progress_bar=not COMPATIBILITY_MODE)
                     break
                 except:
                     input(clr(f"\n  > {_translate('Failed to get github api request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
@@ -1378,10 +1378,10 @@ if __name__ == "__main__":
 
             elif _choice.isdigit() and 1 <= int(_choice) <= int(len(modules) + len(local_modules)):
                 if int(_choice) <= len(modules):
-                    _choice = modules[list(modules)[int(_choice) - 1]]
+                    _choice = next(val for i, val in enumerate(modules.values()) if i == int(_choice) - 1)
                     LOCAL_MODULE = False
                 else:
-                    _choice = local_modules[list(local_modules)[int(_choice) - len(modules) - 1]]
+                    _choice = next(val for i, val in enumerate(local_modules.values()) if i == int(_choice) - len(modules) - 1)
                     LOCAL_MODULE = True
 
                 if not LOCAL_MODULE and _choice["category"]:
@@ -1393,7 +1393,7 @@ if __name__ == "__main__":
                             print_modules()
                             break
                         if __choice.isdigit() and 1 <= int(__choice) <= (len(_choice) - 1):
-                            _choice = _choice[list(_choice)[int(__choice) - 1]]
+                            _choice = next(val for i, val in enumerate(_choice.values()) if i == int(__choice) - 1)
                             break
                         rm_line()
 
