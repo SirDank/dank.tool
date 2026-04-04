@@ -27,7 +27,11 @@ def install_winget():
     file_name = "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
     url = github_file_selector("microsoft/winget-cli", "add", [".msixbundle"])[0]
     print(clr("\n  - Downloading..."))
-    data = requests.get(
+    os.chdir(tempfile.gettempdir())
+
+    # ⚡ Bolt Optimization: Stream the msixbundle download (often >100MB) directly to disk
+    # This prevents loading the entire payload into RAM at once, massively reducing memory consumption.
+    with requests.get(
         url,
         headers={
             "User-Agent": ("dank.tool" if "DANK_TOOL_VERSION" not in os.environ else f"dank.tool {os.environ['DANK_TOOL_VERSION']}"),
@@ -35,11 +39,13 @@ def install_winget():
         },
         timeout=180,
         allow_redirects=True,
-    ).content
+        stream=True,
+    ) as response:
+        response.raise_for_status()
+        with open(file_name, "wb") as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
     print(clr("\n  - Downloaded!"))
-    os.chdir(tempfile.gettempdir())
-    with open(file_name, "wb") as file:
-        file.write(data)
     subprocess.run([file_name], check=False)
     input(clr("\n  - Hit [ ENTER ] after you have installed winget... "))
 
