@@ -13,7 +13,9 @@
 ## 2024-04-04 - Optimize Directory Iteration
 **Learning:** `os.listdir()` combined with `os.path.isfile()` or subsequent `is_dir()` / string filtering checks requires fetching file details multiple times, increasing file system lookups. This matters especially on Windows for operations like clearing large icon/thumbnail caches.
 **Action:** Replaced `os.listdir()` loops with `os.scandir()` blocks whenever I iterate over files and need to fetch their attributes (e.g. check if they are files or get their names). This caches metadata.
-
+## 2024-05-18 - String Date Comparisons for Caching
+**Learning:** Using non-ISO date formats like `%d-%m-%Y` for string-based chronological comparisons in caches breaks because `"26-05-2024" > "25-05-2025"` evaluates to True. This causes caches to invalidate incorrectly or get stuck.
+**Action:** Always use an ISO-like date format (e.g., `%Y-%m-%d %H:%M`) when comparing string representations of dates, ensuring lexicographical ordering matches chronological ordering.
 ## 2025-02-12 - Lazy load Translator for faster module startup
 **Learning:** Eagerly initializing `Translator()` at the top-level of module execution (e.g. inside `main()`) heavily impacts startup time since it fetches online resources to instantiate, blocking execution whether or not translations are actually required by any string (based solely on the `DANK_TOOL_LANG` environment variable).
 **Action:** Always prefer lazy instantiation of heavy objects like `Translator()` inside the wrapper functions (e.g. `translate(text)`) only when they are actually accessed (e.g. `if translator is None: translator = Translator()`).
