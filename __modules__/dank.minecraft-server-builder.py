@@ -39,6 +39,10 @@ def print_read_me():
 def translate(text):
     if DANK_TOOL_LANG:
         try:
+            global translator
+            # Lazy initialize the Translator to avoid blocking the module at startup
+            if translator is None:
+                translator = Translator()
             text = translator.translate(text, DANK_TOOL_LANG, "en").result
         except:
             pass
@@ -55,7 +59,7 @@ def main_one():
         if DANK_TOOL_LANG == "en":
             DANK_TOOL_LANG = ""
         else:
-            translator = Translator()
+            translator = None
     except:
         DANK_TOOL_LANG = ""
 
