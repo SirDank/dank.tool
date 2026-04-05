@@ -267,7 +267,11 @@ def main():
     else:
         saved = {}
         with open("servers.txt", "r", encoding="utf-8") as file:
-            for __ in file.read().splitlines():
+            for line in file:
+                # ⚡ Bolt Optimization: Stream large file instead of loading completely into memory
+                # servers.txt can be extremely large, so reading line-by-line avoids massive memory spikes
+                # compared to the previous file.read().splitlines() which buffered the entire payload.
+                __ = line.rstrip('\n')
                 try:
                     saved[__.split(" | ", 1)[0]] = None
                 except:
