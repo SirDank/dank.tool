@@ -1315,7 +1315,8 @@ if __name__ == "__main__":
 
         with open("github_api.json", "r", encoding="utf-8") as _:
             github_api_json = json.load(_)
-        if "updated_on" not in github_api_json or len(github_api_json["updated_on"].split("-")[0]) != 4 or github_api_json["updated_on"] < (datetime.datetime.now() - datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M"):
+        now = datetime.datetime.now()
+        if "updated_on" not in github_api_json or len(github_api_json["updated_on"].split("-")[0]) != 4 or github_api_json["updated_on"] < (now - datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M"):
             github_api = True
 
         for key in request_keys_api:
@@ -1333,7 +1334,7 @@ if __name__ == "__main__":
                     rm_line()
                     rm_line()
 
-            github_api_json["updated_on"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+            github_api_json["updated_on"] = now.strftime("%Y-%m-%d %H:%M")
 
             for key in request_keys_api:
                 github_api_json[key] = menu_request_responses[key]

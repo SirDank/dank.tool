@@ -207,10 +207,9 @@ def main():
 
     # user input
 
-    browsers = list(browsers_config.keys())
-    to_print = "  - Supported Browsers: \n"
-    for _, browser in enumerate(browsers):
-        to_print += f"\n  - [{_ + 1}] {browser}"
+    browsers = [browser for browser in browsers_config]
+    # ⚡ Bolt Optimization: Replace loop string concatenation with faster f-string generator joining
+    to_print = "  - Supported Browsers: \n" + "".join(f"\n  - [{i + 1}] {browser}" for i, browser in enumerate(browsers))
 
     banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     Console().print(Align.center(banner), style="blink red", highlight=False)
