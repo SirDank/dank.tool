@@ -895,7 +895,6 @@ def dank_github_software(software):
     else:
         os.chdir(get_path("Temp"))
 
-    # ⚡ Bolt Optimization: Reuse global _session with connection pooling instead of creating a new one
     session = _session
     match software:
         case "netlimiter":
