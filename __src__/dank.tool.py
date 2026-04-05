@@ -1184,7 +1184,6 @@ def execute_module(code: str):
 
 if __name__ == "__main__":
     set_globals_one()
-    # ⚡ Bolt Optimization: Lazy load Translator in _translate() to avoid blocking module startup with heavy online instantiation
     _translator = None
     _session = session = requests.Session()
     adapter = requests.adapters.HTTPAdapter(pool_connections=50, pool_maxsize=50)
