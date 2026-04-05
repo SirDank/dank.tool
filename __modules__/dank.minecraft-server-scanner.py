@@ -266,10 +266,12 @@ def main():
         saved = {}
     else:
         saved = {}
+        # ⚡ Bolt Optimization: Stream file line-by-line instead of loading entire payload into memory via .read().splitlines()
+        # This prevents massive memory allocation spikes when parsing large scanner output files.
         with open("servers.txt", "r", encoding="utf-8") as file:
-            for __ in file.read().splitlines():
+            for __ in file:
                 try:
-                    saved[__.split(" | ", 1)[0]] = None
+                    saved[__.strip().split(" | ", 1)[0]] = None
                 except:
                     pass
     cls()
