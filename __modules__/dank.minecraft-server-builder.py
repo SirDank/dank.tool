@@ -223,7 +223,7 @@ def main_one():
         "MCAntiMalware": True,
     }
 
-    # ⚡ Bolt Optimization: Precompute keys to avoid O(N) list creation during parsing loop
+    # ⚡ Bolt Optimization: Precompute keys to avoid O(N) list creation or iteration during parsing loop
     download_settings_keys = tuple(download_settings.keys())
 
     while True:
