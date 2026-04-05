@@ -243,7 +243,10 @@ def main_one():
                     toggle_all_to = not toggle_all_to
                     continue
                 choice = int(choice) - 1
-                download_settings[list(download_settings.keys())[choice]] = not download_settings[list(download_settings.keys())[choice]]
+                for i, key in enumerate(download_settings):
+                    if i == choice:
+                        download_settings[key] = not download_settings[key]
+                        break
 
     # begin preparing downloads
 
