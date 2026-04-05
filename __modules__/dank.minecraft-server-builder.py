@@ -81,7 +81,6 @@ def main_one():
         try:
             latest_java_version = "21"
             # latest_java_version = session.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
-            break
         except Exception as exc:
             input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ", 2))
             rm_line()
@@ -90,7 +89,6 @@ def main_one():
     while True:
         try:
             subprocess.run(["java", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            break
         except:
             print_read_me()
             if input(clr(f"\n  - {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == "y":
@@ -110,7 +108,6 @@ def main_one():
         try:
             version_list = session.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()["versions"][-4:]
             print(clr(f"  - {translate('Latest Purpur Versions')}: {', '.join(version_list)}"))
-            break
         except Exception as exc:
             input(clr(f"\n  > {translate(f'Failed to get purpur versions! {exc} | Press [ ENTER ] to try again')}... ", 2))
             rm_line()
@@ -143,10 +140,8 @@ def main_one():
         match cracked:
             case "y":
                 cracked = True
-                break
             case "n":
                 cracked = False
-                break
         rm_line()
 
     string = translate("The following plugins allow older / newer clients to join your server")
@@ -158,10 +153,8 @@ def main_one():
         match install_Via:
             case "y":
                 install_Via = True
-                break
             case "n":
                 install_Via = False
-                break
         rm_line()
 
     # setting max ram
@@ -176,7 +169,6 @@ def main_one():
         ram = input(clr("  > RAM in MB [ Leave 1500MB Free ]: ") + red)
         if ram.isdigit():
             ram = int(ram)
-            break
         rm_line()
     ram = max(ram, 256)
 
@@ -194,7 +186,6 @@ def main_one():
         playit = input(clr("  > Choice [ 1 / 2 ]: ") + red)
         if playit in ("1", "2"):
             playit = bool(playit == "1")
-            break
         rm_line()
 
     # begin download selector
@@ -299,7 +290,6 @@ def main_one():
         # "BloodFading": 99263, # Outdated
         "ChestSort": 59773,
         # "Chunky": 81534,
-        # "Corpses": 96774, # breaks on latest # disabled config
         # "NeoPerformance": 103183, # removed from spigot? # disabled config
         "ProtocolLib": 1997,
         "Spark": 57242,
@@ -374,7 +364,6 @@ def main_one():
         while True:
             try:
                 response = session.get(url, headers=headers, timeout=30, allow_redirects=True, stream=True)
-                break
             except:
                 print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n", 2))
 
@@ -459,7 +448,6 @@ def main_one():
             start_time = time.time()
             multithread(file_downloader, (5 if len(to_download_urls) >= 5 else len(to_download_urls)), to_download_urls, to_download_file_names, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
             time_taken = int(time.time() - start_time)
-            break
         except:
             input(clr(f"\n  > {translate('Failed to download files! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ", 2))
             cls()
@@ -841,7 +829,6 @@ if download_settings["EssentialsX"]:
 
 if download_settings["LuckyBlock-NTD"]:
     configs["plugins/ntdLuckyBlock/config.yml"] = {
-        "break-permissions: true": "break-permissions: false",
     }
 
 if download_settings["BetterStructures"]:

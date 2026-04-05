@@ -1,0 +1,17 @@
+--- __modules__/dank.minecraft-server-builder.py
++++ __modules__/dank.minecraft-server-builder.py
+@@ -244,14 +244,8 @@
+                     toggle_all_to = not toggle_all_to
+                     continue
+                 choice = int(choice) - 1
+-<<<<<<< bolt-optimize-dict-iteration-4302352952168370700
+                 key = keys[choice]
+                 download_settings[key] = not download_settings[key]
+-=======
+-                for i, key in enumerate(download_settings):
+-                    if i == choice:
+-                        download_settings[key] = not download_settings[key]
+-                        break
+->>>>>>> main
+
+     # begin preparing downloads
