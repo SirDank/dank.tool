@@ -915,9 +915,11 @@ def dank_github_software(software):
             else:
                 print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
                 url = "https://download.netlimiter.com" + session.get("https://www.netlimiter.com/download").content.decode().split("https://download.netlimiter.com", 1)[1].split('"', 1)[0]
-                data = session.get(url, headers=headers, timeout=60).content
-                with open("netlimiter.exe", "wb") as file:
-                    file.write(data)
+                with session.get(url, headers=headers, timeout=60, stream=True) as response:
+                    response.raise_for_status()
+                    with open("netlimiter.exe", "wb") as file:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            file.write(chunk)
                 subprocess.run(["netlimiter.exe"])
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
             sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]["sha"]
@@ -945,42 +947,48 @@ def dank_github_software(software):
     def get_patcher():
         match software:
             case "netlimiter":
-                data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers, timeout=60).content
-                print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
+                print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
                 while True:
                     try:
-                        with open("netlimiter-patcher.exe", "wb") as file:
-                            file.write(data)
-                        print(clr(f"\n  - {_translate('NetLimiter-Patcher saved successfully!')}"))
+                        with session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers, timeout=60, stream=True) as response:
+                            response.raise_for_status()
+                            with open("netlimiter-patcher.exe", "wb") as file:
+                                for chunk in response.iter_content(chunk_size=8192):
+                                    file.write(chunk)
+                        print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded and saved successfully!')}"))
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                        input(clr(f"\n  > {_translate('Failed to download/save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
                         rm_line()
                         rm_line()
             case "vencord":
-                data = session.get(browser_download_url, headers=headers, timeout=60).content
-                print(clr(f"\n  - {_translate('Vencord downloaded successfully!')}"))
+                print(clr(f"\n  - {_translate('Downloading Vencord...')}"))
                 while True:
                     try:
-                        with open("vencord.exe", "wb") as file:
-                            file.write(data)
-                        print(clr(f"\n  - {_translate('Vencord saved successfully!')}"))
+                        with session.get(browser_download_url, headers=headers, timeout=60, stream=True) as response:
+                            response.raise_for_status()
+                            with open("vencord.exe", "wb") as file:
+                                for chunk in response.iter_content(chunk_size=8192):
+                                    file.write(chunk)
+                        print(clr(f"\n  - {_translate('Vencord downloaded and saved successfully!')}"))
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                        input(clr(f"\n  > {_translate('Failed to download/save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
                         rm_line()
                         rm_line()
             case "millennium":
-                data = session.get(browser_download_url, headers=headers, timeout=60).content
-                print(clr(f"\n  - {_translate('Millennium downloaded successfully!')}"))
+                print(clr(f"\n  - {_translate('Downloading Millennium...')}"))
                 while True:
                     try:
-                        with open("millennium.exe", "wb") as file:
-                            file.write(data)
-                        print(clr(f"\n  - {_translate('Millennium saved successfully!')}"))
+                        with session.get(browser_download_url, headers=headers, timeout=60, stream=True) as response:
+                            response.raise_for_status()
+                            with open("millennium.exe", "wb") as file:
+                                for chunk in response.iter_content(chunk_size=8192):
+                                    file.write(chunk)
+                        print(clr(f"\n  - {_translate('Millennium downloaded and saved successfully!')}"))
                         break
                     except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save Millennium!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                        input(clr(f"\n  > {_translate('Failed to download/save Millennium!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
                         rm_line()
                         rm_line()
 
