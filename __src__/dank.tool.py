@@ -1184,7 +1184,7 @@ def execute_module(code: str):
 
 if __name__ == "__main__":
     set_globals_one()
-    _translator = Translator() if DANK_TOOL_LANG and ONLINE_MODE else None
+    _translator = None
     _session = session = requests.Session()
     adapter = requests.adapters.HTTPAdapter(pool_connections=50, pool_maxsize=50)
     _session.mount('http://', adapter)
