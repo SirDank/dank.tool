@@ -53,9 +53,10 @@ def set_title():
 
 
 def dank_tool_installer():
+    global _session
     while True:
         try:
-            code = requests.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
+            code = _session.get(f"https://raw.githubusercontent.com/SirDank/dank.tool/{BRANCH}/__src__/updater.py", headers=headers, timeout=3).content.decode()
             break
         except Exception as exc:
             input(clr(f"\n  > Failed to get code! {exc} | Press [ENTER] to try again... ", 2))
@@ -67,7 +68,7 @@ def dank_tool_installer():
     except Exception as exc:
         error = err((type(exc), exc, exc.__traceback__), "mini")
         try:
-            requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
+            _session.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 Version: {DANK_TOOL_VERSION}\n\n{error}"})
         except:
             pass
         input(clr(f"{error}\n\n  > Press [ENTER] to EXIT... ", 2))
