@@ -35,3 +35,6 @@
 ## 2025-03-01 - Be cautious referencing globals
 **Learning:** In dynamically executed codebases like `dank.tool`, variables defined at the bottom of the file (like `_session`) might not be safely referenced by functions depending on execution flow, leading to NameError.
 **Action:** Use the global variables only when 100% sure they are initialized before the function is called, and never blindly replace local objects with globals without verifying the scope.
+## 2026-04-05 - Cache datetime.datetime.now() to reduce computation overhead
+**Learning:** In initialization or repetitive code paths, evaluating `datetime.datetime.now()` multiple times sequentially imposes unnecessary micro-allocation and processing overhead.
+**Action:** When a block or short sequence of logic queries the current time more than once (such as API rate limit caching and tracking logic), calculate `now = datetime.datetime.now()` once and substitute the local variable in the operations.
