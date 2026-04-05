@@ -235,6 +235,10 @@ def main_one():
         if not choices:
             break
         choices = choices.split(",")
+
+        # ⚡ Bolt Optimization: Precompute keys into a tuple instead of calling list(dict.keys()) inside the loop.
+        # This prevents recreating the list multiple times during iteration.
+        keys = tuple(download_settings.keys())
         for choice in choices:
             if choice.isdigit() and int(choice) >= 0 and int(choice) <= int(len(download_settings)):
                 if choice == "0":
@@ -243,7 +247,8 @@ def main_one():
                     toggle_all_to = not toggle_all_to
                     continue
                 choice = int(choice) - 1
-                download_settings[list(download_settings.keys())[choice]] = not download_settings[list(download_settings.keys())[choice]]
+                key = keys[choice]
+                download_settings[key] = not download_settings[key]
 
     # begin preparing downloads
 
