@@ -29,3 +29,7 @@
 ## 2025-02-28 - Bound Thread Pool Sizes for Small Workloads
 **Learning:** Creating a thread pool with a large hardcoded max workers limit (like 50) for a small job queue (like 2-3 items) results in unnecessary OS thread allocation overhead, slowing down I/O-bound multithreaded wrappers during fast startup steps.
 **Action:** Use a dynamic bounding formula like `min(50, len(items))` to limit the thread pool max workers when passing workloads to custom concurrency wrappers like `multithread()`.
+
+## 2025-03-02 - Reusing globally pooled sessions over un-pooled local sessions
+**Learning:** Creating new `requests.Session()` objects locally inside frequently called functions (e.g., software downloaders) neglects the connection pooling and connection limits already configured in the global module session (e.g., `_session = session = requests.Session()`). This limits throughput and increases latency when making subsequent HTTP requests to the same domains.
+**Action:** When working in modules that perform sequential or batched network operations, always inherit and reuse the global `_session` variable (or equivalent globally configured session) instead of spinning up a generic `requests.Session()` within the local function block.

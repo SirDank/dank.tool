@@ -181,9 +181,12 @@ def download_offline_modules(project):
 
 
 def download_assets(url, file_name):
-    data = _session.get(url, headers=headers, timeout=10).content
-    with open(file_name, "wb") as file:
-        file.write(data)
+    # ⚡ Bolt Optimization: Stream large asset downloads directly to disk using iter_content
+    # Impact: Reduces memory overhead and prevents massive spikes by not loading the entire response into RAM.
+    with _session.get(url, headers=headers, timeout=10, stream=True) as response:
+        with open(file_name, "wb") as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
 
 
 # print modules with index and get choice
@@ -889,7 +892,6 @@ def dank_github_software(software):
     else:
         os.chdir(get_path("Temp"))
 
-    session = requests.Session()
     match software:
         case "netlimiter":
             banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
@@ -909,13 +911,17 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('NetLimiter found!')}"))
             else:
                 print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
-                url = "https://download.netlimiter.com" + session.get("https://www.netlimiter.com/download").content.decode().split("https://download.netlimiter.com", 1)[1].split('"', 1)[0]
-                data = session.get(url, headers=headers, timeout=60).content
-                with open("netlimiter.exe", "wb") as file:
-                    file.write(data)
+                url = "https://download.netlimiter.com" + _session.get("https://www.netlimiter.com/download").content.decode().split("https://download.netlimiter.com", 1)[1].split('"', 1)[0]
+
+                # ⚡ Bolt Optimization: Stream software downloads and use the globally pooled _session
+                # Impact: Prevents memory spikes and leverages HTTP connection pooling for faster network operations.
+                with _session.get(url, headers=headers, timeout=60, stream=True) as response:
+                    with open("netlimiter.exe", "wb") as file:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            file.write(chunk)
                 subprocess.run(["netlimiter.exe"])
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
-            sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]["sha"]
+            sha = _session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]["sha"]
         case "vencord":
             print(clr(f"\n  - {_translate('Credits to')} Vendicated!"))
             if os.path.isfile(f"C:\\Users\\{os.getlogin()}\\AppData\\Local\\Discord\\Update.exe"):
@@ -940,44 +946,39 @@ def dank_github_software(software):
     def get_patcher():
         match software:
             case "netlimiter":
-                data = session.get("https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe", headers=headers, timeout=60).content
-                print(clr(f"\n  - {_translate('NetLimiter-Patcher downloaded successfully!')}"))
-                while True:
-                    try:
-                        with open("netlimiter-patcher.exe", "wb") as file:
-                            file.write(data)
-                        print(clr(f"\n  - {_translate('NetLimiter-Patcher saved successfully!')}"))
-                        break
-                    except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save NetLimiter-Patcher!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
-                        rm_line()
-                        rm_line()
+                url = "https://github.com/Baseult/NetLimiterCrack/raw/main/NetLimiter%20Crack.exe"
+                filename = "netlimiter-patcher.exe"
+                name = "NetLimiter-Patcher"
             case "vencord":
-                data = session.get(browser_download_url, headers=headers, timeout=60).content
-                print(clr(f"\n  - {_translate('Vencord downloaded successfully!')}"))
-                while True:
-                    try:
-                        with open("vencord.exe", "wb") as file:
-                            file.write(data)
-                        print(clr(f"\n  - {_translate('Vencord saved successfully!')}"))
-                        break
-                    except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
-                        rm_line()
-                        rm_line()
+                url = browser_download_url
+                filename = "vencord.exe"
+                name = "Vencord"
             case "millennium":
-                data = session.get(browser_download_url, headers=headers, timeout=60).content
-                print(clr(f"\n  - {_translate('Millennium downloaded successfully!')}"))
-                while True:
+                url = browser_download_url
+                filename = "millennium.exe"
+                name = "Millennium"
+
+        while True:
+            try:
+                # ⚡ Bolt Optimization: Stream patcher downloads and use the globally pooled _session
+                # Impact: Prevents memory spikes and leverages HTTP connection pooling for faster network operations.
+                with _session.get(url, headers=headers, timeout=60, stream=True) as response:
+                    response.raise_for_status()
+                    print(clr(f"\n  - {_translate(f'{name} downloaded successfully!')}"))
                     try:
-                        with open("millennium.exe", "wb") as file:
-                            file.write(data)
-                        print(clr(f"\n  - {_translate('Millennium saved successfully!')}"))
+                        with open(filename, "wb") as file:
+                            for chunk in response.iter_content(chunk_size=8192):
+                                file.write(chunk)
+                        print(clr(f"\n  - {_translate(f'{name} saved successfully!')}"))
                         break
-                    except Exception as exc:
-                        input(clr(f"\n  > {_translate('Failed to save Millennium!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                    except OSError as exc:
+                        input(clr(f"\n  > {_translate(f'Failed to save {name}!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
                         rm_line()
                         rm_line()
+            except Exception as exc:
+                input(clr(f"\n  > {_translate(f'Failed to download {name}!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                rm_line()
+                rm_line()
 
     match software:
         case "netlimiter":
