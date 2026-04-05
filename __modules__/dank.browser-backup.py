@@ -207,20 +207,20 @@ def main():
 
     # user input
 
-    browsers = list(browsers_config.keys())
-    to_print = "  - Supported Browsers: \n"
-    for _, browser in enumerate(browsers):
-        to_print += f"\n  - [{_ + 1}] {browser}"
+    to_print = ["  - Supported Browsers: \n"]
+    for _, browser in enumerate(browsers_config):
+        to_print.append(f"\n  - [{_ + 1}] {browser}")
 
     banner = "\n\n\n   _         _     _                                 _           _           \n _| |___ ___| |_  | |_ ___ ___ _ _ _ ___ ___ ___ ___| |_ ___ ___| |_ _ _ ___ \n| . | .'|   | '_|_| . |  _| . | | | |_ -| -_|  _|___| . | .'|  _| '_| | | . |\n|___|__,|_|_|_,_|_|___|_| |___|_____|___|___|_|     |___|__,|___|_,_|___|  _|\n                                                                        |_|  \n\n"
     Console().print(Align.center(banner), style="blink red", highlight=False)
-    print(clr(to_print))
+    print(clr("".join(to_print)))
 
     print("")
     while True:
         choice = input(clr(f"  > {translate('Enter choice')}: ") + red)
-        if choice.isdigit() and int(choice) > 0 and int(choice) <= int(len(browsers)):
-            choice = browsers[int(choice) - 1]
+        if choice.isdigit() and int(choice) > 0 and int(choice) <= len(browsers_config):
+            # ⚡ Bolt Optimization: Use generator expression instead of allocating an intermediate list
+            choice = next(key for i, key in enumerate(browsers_config) if i == int(choice) - 1)
             break
         rm_line()
 
