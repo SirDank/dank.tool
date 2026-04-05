@@ -243,7 +243,6 @@ def main_one():
                     toggle_all_to = not toggle_all_to
                     continue
                 choice = int(choice) - 1
-                # ⚡ Bolt Optimization: Use direct dict iteration instead of creating lists from dict keys twice
                 for i, key in enumerate(download_settings):
                     if i == choice:
                         download_settings[key] = not download_settings[key]
