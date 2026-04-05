@@ -641,27 +641,33 @@ def dank_tool_settings():
             choice = int(choice)
             if not choice:
                 break
-            settings = list(settings.items())
-            setting_key = settings[choice - 1][0]
-            settings[choice - 1] = (setting_key, str(int(not int(settings[choice - 1][1]))))
-            settings = dict(settings)
 
-            if int(settings[setting_key]):
-                match setting_key:
-                    case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
-                        if "force" in setting_key:
-                            settings[setting_key.replace("force", "disable")] = "0"
-                        elif "disable" in setting_key:
-                            settings[setting_key.replace("disable", "force")] = "0"
-                    case "offline-mode":
-                        os.environ["DANK_TOOL_ONLINE"] = "0"
-            else:
-                match setting_key:
-                    case "offline-mode":
-                        os.environ["DANK_TOOL_ONLINE"] = "1"
+            # ⚡ Bolt Optimization: Replace O(N) list(dict.items()) and dict() conversions with direct dict iteration
+            setting_key = None
+            for i, key in enumerate(settings):
+                if i == choice - 1:
+                    setting_key = key
+                    break
 
-            with open("settings.json", "w", encoding="utf-8") as file:
-                file.write(json.dumps(settings, indent=4))
+            if setting_key is not None:
+                settings[setting_key] = str(int(not int(settings[setting_key])))
+
+                if int(settings[setting_key]):
+                    match setting_key:
+                        case "force-startup-audio" | "disable-startup-audio" | "force-translate" | "disable-translate":
+                            if "force" in setting_key:
+                                settings[setting_key.replace("force", "disable")] = "0"
+                            elif "disable" in setting_key:
+                                settings[setting_key.replace("disable", "force")] = "0"
+                        case "offline-mode":
+                            os.environ["DANK_TOOL_ONLINE"] = "0"
+                else:
+                    match setting_key:
+                        case "offline-mode":
+                            os.environ["DANK_TOOL_ONLINE"] = "1"
+
+                with open("settings.json", "w", encoding="utf-8") as file:
+                    file.write(json.dumps(settings, indent=4))
 
         elif choice.lower() == "exit":
             break
@@ -889,7 +895,8 @@ def dank_github_software(software):
     else:
         os.chdir(get_path("Temp"))
 
-    session = requests.Session()
+    # ⚡ Bolt Optimization: Reuse global _session with connection pooling instead of creating a new one
+    session = _session
     match software:
         case "netlimiter":
             banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
