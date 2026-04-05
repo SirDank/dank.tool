@@ -181,7 +181,6 @@ def download_offline_modules(project):
 
 
 def download_assets(url, file_name):
-    # ⚡ Bolt Optimization: Stream large downloads to prevent memory spikes
     with _session.get(url, headers=headers, timeout=10, stream=True) as response:
         with open(file_name, "wb") as file:
             for chunk in response.iter_content(chunk_size=8192):
