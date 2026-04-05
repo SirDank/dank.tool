@@ -642,7 +642,6 @@ def dank_tool_settings():
             if not choice:
                 break
 
-            # ⚡ Bolt Optimization: Replace O(N) list(dict.items()) and dict() conversions with direct dict iteration
             setting_key = None
             for i, key in enumerate(settings):
                 if i == choice - 1:
