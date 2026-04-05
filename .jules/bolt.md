@@ -29,3 +29,6 @@
 ## 2025-02-28 - Bound Thread Pool Sizes for Small Workloads
 **Learning:** Creating a thread pool with a large hardcoded max workers limit (like 50) for a small job queue (like 2-3 items) results in unnecessary OS thread allocation overhead, slowing down I/O-bound multithreaded wrappers during fast startup steps.
 **Action:** Use a dynamic bounding formula like `min(50, len(items))` to limit the thread pool max workers when passing workloads to custom concurrency wrappers like `multithread()`.
+## 2024-05-18 - Optimize list(dict.keys()) in parsing loops
+**Learning:** Using `list(my_dict.keys())[index]` creates a new list from the dictionary keys in O(N) time. When this pattern is used inside a while loop for parsing inputs or configuring options, it results in repeated unnecessary memory allocations and parsing overhead.
+**Action:** When you need index-based access to dictionary keys multiple times within a loop, always precompute the keys into a tuple outside the loop (e.g. `keys = tuple(my_dict.keys())`) to achieve O(1) access inside the loop without the repeated O(N) list creation overhead.

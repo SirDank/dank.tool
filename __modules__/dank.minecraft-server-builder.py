@@ -223,6 +223,9 @@ def main_one():
         "MCAntiMalware": True,
     }
 
+    # ⚡ Bolt Optimization: Precompute keys to avoid O(N) list creation during parsing loop
+    download_settings_keys = tuple(download_settings.keys())
+
     while True:
         cls()
         print(clr(f"\n  - {translate('You can Enable / Disable content to be downloaded!')}\n  - {translate('Enter the numbers of the contents you want to toggle separated by commas')}\n  - {translate('Finally press [ ENTER ] to continue')}\n"))
@@ -243,7 +246,8 @@ def main_one():
                     toggle_all_to = not toggle_all_to
                     continue
                 choice = int(choice) - 1
-                download_settings[list(download_settings.keys())[choice]] = not download_settings[list(download_settings.keys())[choice]]
+                key = download_settings_keys[choice]
+                download_settings[key] = not download_settings[key]
 
     # begin preparing downloads
 
