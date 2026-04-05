@@ -181,9 +181,10 @@ def download_offline_modules(project):
 
 
 def download_assets(url, file_name):
-    data = _session.get(url, headers=headers, timeout=10).content
-    with open(file_name, "wb") as file:
-        file.write(data)
+    with _session.get(url, headers=headers, timeout=10, stream=True) as response:
+        with open(file_name, "wb") as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
 
 
 # print modules with index and get choice
