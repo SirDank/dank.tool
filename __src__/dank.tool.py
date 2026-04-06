@@ -1298,8 +1298,6 @@ if __name__ == "__main__":
 
         while True:
             try:
-                # ⚡ Bolt Optimization: Replace `tuple(range(...))` with `range(...)`
-                # A range object is a generator and takes less memory than allocating an entire tuple.
                 multithread(get_menu_request_responses, min(50, len(request_keys)), range(len(request_keys)), request_keys, progress_bar=not COMPATIBILITY_MODE)
                 break
             except:
