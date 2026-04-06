@@ -1298,7 +1298,9 @@ if __name__ == "__main__":
 
         while True:
             try:
-                multithread(get_menu_request_responses, min(50, len(request_keys)), tuple(range(len(request_keys))), request_keys, progress_bar=not COMPATIBILITY_MODE)
+                # ⚡ Bolt Optimization: Replace `tuple(range(...))` with `range(...)`
+                # A range object is a generator and takes less memory than allocating an entire tuple.
+                multithread(get_menu_request_responses, min(50, len(request_keys)), range(len(request_keys)), request_keys, progress_bar=not COMPATIBILITY_MODE)
                 break
             except:
                 input(clr(f"\n  > {_translate('Failed to get request responses! Make sure you are connected to the internet! Press [ENTER] to try again...')} ", 2))
