@@ -266,8 +266,6 @@ def main():
         saved = {}
     else:
         saved = {}
-        # ⚡ Bolt Optimization: Stream file line-by-line instead of loading entire payload into memory via .read().splitlines()
-        # This prevents massive memory allocation spikes when parsing large scanner output files.
         with open("servers.txt", "r", encoding="utf-8") as file:
             for __ in file:
                 try:
@@ -325,8 +323,6 @@ def main():
         while True:
             try:
                 print(clr(f"\n  - Checking {len(ips)} unique ips...\n"))
-                # ⚡ Bolt Optimization: Replaced tuple(ips.keys()) with direct dictionary iteration (ips)
-                # to prevent memory allocation overhead for large queues (e.g. 50,000 IPs).
                 if server_type == "java":
                     multithread(check_java, threads, ips, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
                     break
