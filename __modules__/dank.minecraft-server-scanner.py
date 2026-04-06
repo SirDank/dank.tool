@@ -266,8 +266,6 @@ def main():
         saved = {}
     else:
         saved = {}
-        # ⚡ Bolt Optimization: Stream file line-by-line instead of loading entire payload into memory via .read().splitlines()
-        # This prevents massive memory allocation spikes when parsing large scanner output files.
         with open("servers.txt", "r", encoding="utf-8") as file:
             for __ in file:
                 try:
@@ -326,10 +324,10 @@ def main():
             try:
                 print(clr(f"\n  - Checking {len(ips)} unique ips...\n"))
                 if server_type == "java":
-                    multithread(check_java, threads, tuple(ips.keys()), progress_bar=("COMPATIBILITY-MODE" not in os.environ))
+                    multithread(check_java, threads, ips, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
                     break
                 if server_type == "bedrock":
-                    multithread(check_bedrock, threads, tuple(ips.keys()), progress_bar=("COMPATIBILITY-MODE" not in os.environ))
+                    multithread(check_bedrock, threads, ips, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
                     break
             except:
                 input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ", 2))
