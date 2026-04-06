@@ -325,11 +325,13 @@ def main():
         while True:
             try:
                 print(clr(f"\n  - Checking {len(ips)} unique ips...\n"))
+                # ⚡ Bolt Optimization: Replaced tuple(ips.keys()) with direct dictionary iteration (ips)
+                # to prevent memory allocation overhead for large queues (e.g. 50,000 IPs).
                 if server_type == "java":
-                    multithread(check_java, threads, tuple(ips.keys()), progress_bar=("COMPATIBILITY-MODE" not in os.environ))
+                    multithread(check_java, threads, ips, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
                     break
                 if server_type == "bedrock":
-                    multithread(check_bedrock, threads, tuple(ips.keys()), progress_bar=("COMPATIBILITY-MODE" not in os.environ))
+                    multithread(check_bedrock, threads, ips, progress_bar=("COMPATIBILITY-MODE" not in os.environ))
                     break
             except:
                 input(clr(f"\n  > {translate('Failed to check ips! Do not use [ Ctrl + C ]! Press [ENTER] to try again...')} ", 2))
