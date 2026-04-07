@@ -59,7 +59,9 @@ def print_banner():
 
 def handle_response(cmd, results, mode):
     indexes = [0]
-    cmd = cmd.stdout.decode("utf-8").splitlines()
+    # Bolt Optimization: Accept a pre-decoded and pre-split array instead of repeating the operation
+    if not isinstance(cmd, list):
+        cmd = cmd.stdout.decode("utf-8").splitlines()
 
     for i, line in enumerate(cmd):
         if line.count("-") > 3:
@@ -125,8 +127,9 @@ def print_info(id):
 
 def process_winget_output(cmd_result, results, mode):
     if cmd_result.returncode == 0:
-        if len(cmd_result.stdout.decode("utf-8").splitlines()) > 0:
-            handle_response(cmd_result, results, mode)
+        output_lines = cmd_result.stdout.decode("utf-8").splitlines()
+        if len(output_lines) > 0:
+            handle_response(output_lines, results, mode)
         else:
             print(
                 clr(
@@ -166,11 +169,12 @@ def handle_updates(choice, results):
         check=False,
     )
     if cmd_result.returncode == 0:
-        if len(cmd_result.stdout.decode("utf-8").splitlines()) > 0:
+        output_lines = cmd_result.stdout.decode("utf-8").splitlines()
+        if len(output_lines) > 0:
             if not choice.startswith("update-all"):
-                handle_response(cmd_result, results, "updates")
+                handle_response(output_lines, results, "updates")
             else:
-                handle_response(cmd_result, results, "update-all")
+                handle_response(output_lines, results, "update-all")
                 max_items = len(results) - 1
                 for index in range(1, max_items + 1):
                     print(clr(f"\n  - [{index}/{max_items}] Updating {results[index]['name']}...\n"))
