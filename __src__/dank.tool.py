@@ -314,7 +314,8 @@ def set_globals_one():
         },
     }
 
-    offline_scripts = tuple(("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher"))
+    # ⚡ Bolt Optimization: Use direct tuple literals to avoid unnecessary tuple constructor memory allocation overhead at module startup
+    offline_scripts = ("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher")
 
 
 def set_globals_two():
