@@ -38,3 +38,7 @@
 ## 2026-04-05 - Cache datetime.datetime.now() to reduce computation overhead
 **Learning:** In initialization or repetitive code paths, evaluating `datetime.datetime.now()` multiple times sequentially imposes unnecessary micro-allocation and processing overhead.
 **Action:** When a block or short sequence of logic queries the current time more than once (such as API rate limit caching and tracking logic), calculate `now = datetime.datetime.now()` once and substitute the local variable in the operations.
+
+## 2025-03-01 - Avoid tuple(list) for constant definitions
+**Learning:** Initializing large constant arrays at the module level using `tuple([...])` forces Python to allocate a temporary list object via `BUILD_LIST` bytecode, only to convert it to a tuple and discard the list. This creates unnecessary temporary memory spikes during module import/exec.
+**Action:** To avoid unnecessary bytecode execution and intermediate list memory allocations at module startup, define large constant sequences using direct tuple literals `(val1, val2)` instead of passing a list literal to the tuple constructor `tuple([val1, val2])`.
