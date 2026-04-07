@@ -42,3 +42,6 @@
 ## 2025-03-01 - Avoid tuple(list) for constant definitions
 **Learning:** Initializing large constant arrays at the module level using `tuple([...])` forces Python to allocate a temporary list object via `BUILD_LIST` bytecode, only to convert it to a tuple and discard the list. This creates unnecessary temporary memory spikes during module import/exec.
 **Action:** To avoid unnecessary bytecode execution and intermediate list memory allocations at module startup, define large constant sequences using direct tuple literals `(val1, val2)` instead of passing a list literal to the tuple constructor `tuple([val1, val2])`.
+## 2024-10-27 - Prevent Duplicate Decoding of Command Output
+**Learning:** To prevent redundant memory allocation and CPU overhead when processing subprocess command outputs, avoid repeatedly calling `stdout.decode().splitlines()`.
+**Action:** Instead, perform the decode and split once, store the result in a variable, and pass the resulting list to subsequent functions.
