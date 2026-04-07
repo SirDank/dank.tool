@@ -314,7 +314,7 @@ def set_globals_one():
         },
     }
 
-    offline_scripts = tuple(("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher"))
+    offline_scripts = ("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher")
 
 
 def set_globals_two():
