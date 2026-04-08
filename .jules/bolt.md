@@ -57,3 +57,7 @@
 ## 2025-03-15 - Eliminate Redundant File I/O for Empty JSON Files
 **Learning:** It is an I/O anti-pattern to initialize missing configuration states by writing an empty JSON object `{}` to disk and immediately reopening the file to read and parse it back into memory (`json.load(file)`). This blocks execution and hits the file system unnecessarily twice.
 **Action:** Directly assign an empty dictionary `{}` in memory when handling missing configuration file states, completely bypassing the redundant write and read steps.
+
+## 2025-05-15 - Optimize process iteration with any()
+**Learning:** Using `any()` with a generator expression to check for a running process short-circuits as soon as a match is found, replacing more verbose manual loops and boolean flags. While it may have slight overhead in extremely fast cases, it improves readability and ensures the fastest possible exit in worst-case scenarios.
+**Action:** Prefer `any()` with generator expressions for simple existence checks in collections or iterators instead of manual loops with boolean flags.

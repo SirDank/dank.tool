@@ -106,12 +106,7 @@ def backup(browser, compression_level):
 
     while True:
         cls()
-        browser_running = False
-        for proc in process_iter(["name"]):
-            if proc.info["name"] == config["exe_name"]:
-                browser_running = True
-                break
-        if browser_running:
+        if any(proc.info["name"] == config["exe_name"] for proc in process_iter(["name"])):
             input(clr(f"\n  > {translate(browser + ' is running! Terminate it and press [ENTER]...')} ", 2))
         else:
             break
