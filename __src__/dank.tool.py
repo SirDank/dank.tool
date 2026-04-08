@@ -1218,10 +1218,11 @@ if __name__ == "__main__":
             if not os.path.isdir(f"__assets__/{_}"):
                 os.mkdir(f"__assets__/{_}")
         if not os.path.isfile("ursina/assets.json"):
-            with open("ursina/assets.json", "w", encoding="utf-8") as _:
-                _.write("{}")
-        with open("ursina/assets.json", "r", encoding="utf-8") as _:
-            local_assets_json = json.load(_)
+            # ⚡ Bolt Optimization: Avoid unnecessary disk write and read for empty JSON
+            local_assets_json = {}
+        else:
+            with open("ursina/assets.json", "r", encoding="utf-8") as _:
+                local_assets_json = json.load(_)
 
         while True:
             try:
@@ -1309,12 +1310,12 @@ if __name__ == "__main__":
 
         github_api = False
         if not os.path.isfile("github_api.json"):
-            with open("github_api.json", "w", encoding="utf-8") as _:
-                _.write("{}")
+            # ⚡ Bolt Optimization: Avoid unnecessary disk write and read for empty JSON
+            github_api_json = {}
             github_api = True
-
-        with open("github_api.json", "r", encoding="utf-8") as _:
-            github_api_json = json.load(_)
+        else:
+            with open("github_api.json", "r", encoding="utf-8") as _:
+                github_api_json = json.load(_)
         now = datetime.datetime.now()
         if "updated_on" not in github_api_json or len(github_api_json["updated_on"].split("-")[0]) != 4 or github_api_json["updated_on"] < (now - datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M"):
             github_api = True

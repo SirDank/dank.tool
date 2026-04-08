@@ -28,13 +28,16 @@
 
 ## 2025-02-28 - Bound Thread Pool Sizes for Small Workloads
 **Learning:** Creating a thread pool with a large hardcoded max workers limit (like 50) for a small job queue (like 2-3 items) results in unnecessary OS thread allocation overhead, slowing down I/O-bound multithreaded wrappers during fast startup steps.
-**Action:** Use a dynamic bounding formula like `min(50, len(items))` to limit the thread pool max workers when passing workloads to custom concurrency wrappers like `multithread()`.## 2025-03-01 - Avoid creating test scripts
+**Action:** Use a dynamic bounding formula like `min(50, len(items))` to limit the thread pool max workers when passing workloads to custom concurrency wrappers like `multithread()`.
+
+## 2025-03-01 - Avoid creating test scripts
 **Learning:** Creating test scripts (like `test_perf.py`) violates strict constraints in repositories that expressly forbid testing frameworks.
 **Action:** Rely purely on linting (`pylint`) and syntax checking (`py_compile`) for verification instead of writing runtime tests.
 
 ## 2025-03-01 - Be cautious referencing globals
 **Learning:** In dynamically executed codebases like `dank.tool`, variables defined at the bottom of the file (like `_session`) might not be safely referenced by functions depending on execution flow, leading to NameError.
 **Action:** Use the global variables only when 100% sure they are initialized before the function is called, and never blindly replace local objects with globals without verifying the scope.
+
 ## 2026-04-05 - Cache datetime.datetime.now() to reduce computation overhead
 **Learning:** In initialization or repetitive code paths, evaluating `datetime.datetime.now()` multiple times sequentially imposes unnecessary micro-allocation and processing overhead.
 **Action:** When a block or short sequence of logic queries the current time more than once (such as API rate limit caching and tracking logic), calculate `now = datetime.datetime.now()` once and substitute the local variable in the operations.
@@ -42,6 +45,15 @@
 ## 2025-03-01 - Avoid tuple(list) for constant definitions
 **Learning:** Initializing large constant arrays at the module level using `tuple([...])` forces Python to allocate a temporary list object via `BUILD_LIST` bytecode, only to convert it to a tuple and discard the list. This creates unnecessary temporary memory spikes during module import/exec.
 **Action:** To avoid unnecessary bytecode execution and intermediate list memory allocations at module startup, define large constant sequences using direct tuple literals `(val1, val2)` instead of passing a list literal to the tuple constructor `tuple([val1, val2])`.
+
 ## 2024-10-27 - Prevent Duplicate Decoding of Command Output
 **Learning:** To prevent redundant memory allocation and CPU overhead when processing subprocess command outputs, avoid repeatedly calling `stdout.decode().splitlines()`.
 **Action:** Instead, perform the decode and split once, store the result in a variable, and pass the resulting list to subsequent functions.
+
+## 2025-03-15 - Never Modify the Entry executable
+**Learning:** Optimizations applied to static entry files (like `__src__/executor.py`) bypass the application's hot-loading architecture completely, requiring maintainers to build and distribute a new `.exe` binary to users, defeating the point of dynamic loading.
+**Action:** Strictly isolate performance optimizations to dynamically loaded components (like `__src__/dank.tool.py` and files in `__modules__/`) unless specifically requested to update the executor binary.
+
+## 2025-03-15 - Eliminate Redundant File I/O for Empty JSON Files
+**Learning:** It is an I/O anti-pattern to initialize missing configuration states by writing an empty JSON object `{}` to disk and immediately reopening the file to read and parse it back into memory (`json.load(file)`). This blocks execution and hits the file system unnecessarily twice.
+**Action:** Directly assign an empty dictionary `{}` in memory when handling missing configuration file states, completely bypassing the redundant write and read steps.
