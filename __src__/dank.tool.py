@@ -1218,7 +1218,6 @@ if __name__ == "__main__":
             if not os.path.isdir(f"__assets__/{_}"):
                 os.mkdir(f"__assets__/{_}")
         if not os.path.isfile("ursina/assets.json"):
-            # ⚡ Bolt Optimization: Avoid unnecessary disk write and read for empty JSON
             local_assets_json = {}
         else:
             with open("ursina/assets.json", "r", encoding="utf-8") as _:
@@ -1310,7 +1309,6 @@ if __name__ == "__main__":
 
         github_api = False
         if not os.path.isfile("github_api.json"):
-            # ⚡ Bolt Optimization: Avoid unnecessary disk write and read for empty JSON
             github_api_json = {}
             github_api = True
         else:
