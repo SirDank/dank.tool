@@ -105,8 +105,13 @@ def print_warning_symbol():
 
 # get commit date & time
 
+_cached_tzlocal_now = None
 
 def updated_on(url, dankware_module=True):
+    global _cached_tzlocal_now
+    if _cached_tzlocal_now is None:
+        _cached_tzlocal_now = datetime.datetime.now(tzlocal())
+
     if dankware_module:
         url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1" + ("" if not DEV_BRANCH else "&sha=dev")
     try:
@@ -118,7 +123,8 @@ def updated_on(url, dankware_module=True):
         date = date.split("-")
         time = time.replace("Z", "").split(":")
         date_time_data = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
-        return f"[bright_green]🔄 {get_duration(date_time_data, datetime.datetime.now(tzlocal()), interval='dynamic-mini')} ago"
+        # ⚡ Bolt Optimization: Cache the localized datetime since getting tzlocal() is expensive
+        return f"[bright_green]🔄 {get_duration(date_time_data, _cached_tzlocal_now, interval='dynamic-mini')} ago"
 
     except:
         return ""  # [red1]⚠️
@@ -1364,6 +1370,7 @@ if __name__ == "__main__":
         # reset
 
         os.environ["DISCORD_RPC"] = "on the main menu"
+        _cached_tzlocal_now = None  # Reset cache so it updates each loop
 
         set_globals_one()
         set_globals_two()

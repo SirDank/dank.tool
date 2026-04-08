@@ -61,3 +61,6 @@
 ## 2025-05-15 - Optimize process iteration with any()
 **Learning:** Using `any()` with a generator expression to check for a running process short-circuits as soon as a match is found, replacing more verbose manual loops and boolean flags. While it may have slight overhead in extremely fast cases, it improves readability and ensures the fastest possible exit in worst-case scenarios.
 **Action:** Prefer `any()` with generator expressions for simple existence checks in collections or iterators instead of manual loops with boolean flags.
+## 2025-06-15 - Cache expensive time localization during loops
+**Learning:** Calling `datetime.datetime.now(tzlocal())` inside a loop or a function invoked by a multithreaded mapped queue (like retrieving GitHub commits) is extremely expensive, as `tzlocal()` accesses system configuration or registry repeatedly, causing redundant I/O and blocking execution on every call.
+**Action:** Always cache the value of `datetime.datetime.now(tzlocal())` in a module-level or loop-scoped variable to prevent redundant lookup overhead during high-frequency concurrent network operations.
