@@ -1217,11 +1217,12 @@ if __name__ == "__main__":
         for _ in ("dank.winrar", "dank.revo-uninstaller"):
             if not os.path.isdir(f"__assets__/{_}"):
                 os.mkdir(f"__assets__/{_}")
+        # Bolt Optimization: Avoid unnecessary disk I/O when initializing empty JSON
         if not os.path.isfile("ursina/assets.json"):
-            with open("ursina/assets.json", "w", encoding="utf-8") as _:
-                _.write("{}")
-        with open("ursina/assets.json", "r", encoding="utf-8") as _:
-            local_assets_json = json.load(_)
+            local_assets_json = {}
+        else:
+            with open("ursina/assets.json", "r", encoding="utf-8") as _:
+                local_assets_json = json.load(_)
 
         while True:
             try:
@@ -1308,13 +1309,13 @@ if __name__ == "__main__":
         # hourly limit on github api
 
         github_api = False
+        # Bolt Optimization: Avoid unnecessary disk I/O when initializing empty JSON
         if not os.path.isfile("github_api.json"):
-            with open("github_api.json", "w", encoding="utf-8") as _:
-                _.write("{}")
+            github_api_json = {}
             github_api = True
-
-        with open("github_api.json", "r", encoding="utf-8") as _:
-            github_api_json = json.load(_)
+        else:
+            with open("github_api.json", "r", encoding="utf-8") as _:
+                github_api_json = json.load(_)
         now = datetime.datetime.now()
         if "updated_on" not in github_api_json or len(github_api_json["updated_on"].split("-")[0]) != 4 or github_api_json["updated_on"] < (now - datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M"):
             github_api = True
