@@ -44,6 +44,8 @@ WINDOWS = os.name == "nt" and "WINELOADER" not in os.environ
 if WINDOWS:
     from win11toast import notify
 
+_cached_tzlocal_tz = None
+
 
 def set_title():
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]"))  # DANK_TOOL_VERSION defined in executor.py
@@ -107,6 +109,7 @@ def print_warning_symbol():
 
 
 def updated_on(url, dankware_module=True):
+    global _cached_tzlocal_tz
     if dankware_module:
         url = f"https://api.github.com/repos/SirDank/dank.tool/commits?path=__modules__/{url}.py&page=1&per_page=1" + ("" if not DEV_BRANCH else "&sha=dev")
     try:
@@ -118,7 +121,12 @@ def updated_on(url, dankware_module=True):
         date = date.split("-")
         time = time.replace("Z", "").split(":")
         date_time_data = datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), int(time[2]), tzinfo=tzutc())
-        return f"[bright_green]🔄 {get_duration(date_time_data, datetime.datetime.now(tzlocal()), interval='dynamic-mini')} ago"
+
+        # Performance optimization: lazily evaluate and cache tzlocal to prevent blocking Windows registry reads on every thread
+        if _cached_tzlocal_tz is None:
+            _cached_tzlocal_tz = tzlocal()
+
+        return f"[bright_green]🔄 {get_duration(date_time_data, datetime.datetime.now(_cached_tzlocal_tz), interval='dynamic-mini')} ago"
 
     except:
         return ""  # [red1]⚠️
