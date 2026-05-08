@@ -14,7 +14,7 @@ def run_command(command_list, check=True, capture=False, suppress_output=False):
         stdout_pipe = subprocess.DEVNULL if suppress_output else None
         stderr_pipe = subprocess.DEVNULL if suppress_output else None
         # Use capture_output=True only if capture=True to avoid potential memory issues with large output
-        result = subprocess.run(
+        subprocess.run(
             command_list,
             check=check,
             text=True,

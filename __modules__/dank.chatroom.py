@@ -32,7 +32,7 @@ def chatroom_login():
                 response = session.post(url, headers=headers, data=data)
                 if response.status_code in (200, 400, 401):
                     break
-            except:
+            except Exception:
                 input(clr("\n  > Failed to login! Make sure you are connected to the internet! Press [ENTER] to try again... ", 2))
 
         # register user
@@ -61,7 +61,7 @@ def chatroom_login():
                     try:
                         response = session.post(url, headers=headers, data=data)
                         break
-                    except:
+                    except Exception:
                         input(clr("\n  > Failed to create user! Make sure you are connected to the internet! Press [ENTER] to try again... ", 2))
 
                 match response.status_code:
@@ -171,7 +171,7 @@ def chatroom_input():
         if send_msg:
             try:
                 sio.send(compress(msg.encode("utf-8")))
-            except:
+            except Exception:
                 print(clr("[dank.tool] Failed to send!", 2))
                 running = False
 
@@ -262,7 +262,7 @@ while running:
         sio.connect("https://dankware.alwaysdata.net", {"UUID": uuid}, retry=False, wait_timeout=10)
         # rm_line()
         break
-    except:
+    except Exception:
         input(clr("  > Failed to connect! Press [ENTER] to try again... ", 2))
         rm_line()
 executor.submit(enable_notifications)
