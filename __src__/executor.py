@@ -15,6 +15,7 @@
 import json
 import os
 import sys
+import subprocess
 import time
 import tkinter as tk
 from concurrent.futures import ThreadPoolExecutor
@@ -78,7 +79,7 @@ def settings_json():
         overwrite = True
     else:
         with open("settings.json", "r", encoding="utf-8") as file:
-            data = json.loads(file.read())
+            data = json.load(file)
         for key in settings:
             if key not in data:
                 overwrite = True
@@ -96,7 +97,7 @@ settings_json()
 del settings_json
 
 with open("settings.json", "r", encoding="utf-8") as _:
-    DANK_TOOL_SETTINGS = json.loads(_.read())
+    DANK_TOOL_SETTINGS = json.load(_)
 OFFLINE_SRC = int(DANK_TOOL_SETTINGS["offline-src"])
 DEV_BRANCH = int(DANK_TOOL_SETTINGS["dev-branch"])
 BRANCH = "main" if not DEV_BRANCH else "dev"
@@ -232,7 +233,7 @@ def latest_dank_tool_version():
 LATEST_VERSION = latest_dank_tool_version()
 ONLINE_MODE = int(os.environ["DANK_TOOL_ONLINE"])
 with open("settings.json", "r", encoding="utf-8") as file:
-    DEV_BRANCH = int(json.loads(file.read())["dev-branch"])
+    DEV_BRANCH = int(json.load(file)["dev-branch"])
 BRANCH = "main" if not DEV_BRANCH else "dev"
 
 # version checker / updater
@@ -266,7 +267,7 @@ if parse(LATEST_VERSION) > parse(DANK_TOOL_VERSION) or (ONLINE_MODE and int(DANK
     print(clr(f"\n  - Update Found: {LATEST_VERSION}" + ("" if not int(DANK_TOOL_SETTINGS["force-update"]) else " [ FORCED ]")))
     if int(DANK_TOOL_SETTINGS["force-update"]):
         with open("settings.json", "r", encoding="utf-8") as _:
-            settings = json.loads(_.read())
+            settings = json.load(_)
             settings["force-update"] = "0"
         with open("settings.json", "w", encoding="utf-8") as _:
             _.write(json.dumps(settings, indent=4))
@@ -463,7 +464,7 @@ except Exception as exc:
     LATEST_VERSION = latest_dank_tool_version()
 
     if "- SystemExit" in error:
-        os.system("taskkill /f /t /im dank.tool.exe")
+        subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])
     elif "- EOFError" in error:
         print_warning_symbol()
         print(clr("\n  - No input provided!"))
@@ -478,7 +479,7 @@ except Exception as exc:
     elif ONLINE_MODE:
         while True:
             try:
-                requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}"})
+                session.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨🚨🚨 v{DANK_TOOL_VERSION}{' OFFLINE_SRC' if OFFLINE_SRC else ''} BRANCH: {BRANCH}\n\n{error}"})
                 break
             except Exception as exc:
                 input(clr(f"\n  > Failed to post error report! {exc} | Press [ENTER] to try again... ", 2))
@@ -487,4 +488,4 @@ except Exception as exc:
         print(clr("\n  - Error Reported! If it is a logic error, it will be fixed soon!"))
 
     input(clr("\n  > Press [ENTER] to EXIT... "))
-    os.system("taskkill /f /t /im dank.tool.exe")
+    subprocess.run(["taskkill", "/f", "/t", "/im", "dank.tool.exe"])

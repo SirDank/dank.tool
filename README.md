@@ -144,19 +144,6 @@
 
 ---  
 
-# 🚨 Browser Backup 🚨
-
-- Creates a full backup of your browser data including registry keys and protects it using a user set password
-- Easily transfer your browser to another system by following the provided steps
-
-## ♦️ To Do ♦️
-
-- [ ] Add support for more browsers
-
-<p>&nbsp;</p>
-
----  
-
 # 🚨 Windows Software Downloader / Updater 🚨
 
 - A simple tool to download and update windows software using [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/)

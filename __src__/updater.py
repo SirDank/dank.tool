@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import subprocess
 
 import pyminizip
 import requests
@@ -82,7 +83,7 @@ print(clr("\n  - Extracting..."))
 try:
     pyminizip.uncompress("dank.tool.zip", "dankware", ".", 0)  # pylint: disable=c-extension-no-member
 except:
-    os.system("explorer.exe .")
+    subprocess.run(["explorer.exe", "."])
     cls()
     input(clr(f'\n  - Failed to extract!\n\n  - Please manually extract and install from "{os.path.join(os.getcwd(), "dank.tool.zip")}" using the password "dankware"\n\n  > Press [ENTER] to EXIT... ', 2))
     sys.exit("Failed to extract file!")

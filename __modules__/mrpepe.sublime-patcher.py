@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
@@ -7,17 +8,17 @@ from dankware import align, clr, cls, cyan, fade, green_bright, magenta, white_b
 
 BANNER = """
 
- .d8888b.                                                                    
-d88P  Y88b                                                                   
-888    888                                                                   
-888    888 888  888 88888b.d88b.  888d888 88888b.   .d88b.  88888b.   .d88b. 
+ .d8888b.
+d88P  Y88b
+888    888
+888    888 888  888 88888b.d88b.  888d888 88888b.   .d88b.  88888b.   .d88b.
 888    888 `Y8bd8P' 888 "888 "88b 888P"   888 "88b d8P  Y8b 888 "88b d8P  Y8b
 888    888   X88K   888  888  888 888     888  888 88888888 888  888 88888888
-Y88b  d88P .d8""8b. 888  888  888 888     888 d88P Y8b.     888 d88P Y8b.    
- "Y8888P"  888  888 888  888  888 888     88888P"   "Y8888  88888P"   "Y8888 
-                                          888               888              
-                                          888               888              
-                                          888               888              
+Y88b  d88P .d8""8b. 888  888  888 888     888 d88P Y8b.     888 d88P Y8b.
+ "Y8888P"  888  888 888  888  888 888     88888P"   "Y8888  88888P"   "Y8888
+                                          888               888
+                                          888               888
+                                          888               888
 
 Sublime Text 4.1.9.2 Build 4192 Patcher
 
@@ -68,7 +69,7 @@ def patch_exe(file_path):
                     break
             except PermissionError:
                 input(clr("[!] Error: Sublime text is running! Press [ ENTER ] to terminate it and try again... ", 2))
-                os.system("taskkill /f /im sublime_text.exe >nul 2>&1")
+                subprocess.run(["cmd", "/c", "taskkill", "/f", "/im", "sublime_text.exe", ">nul", "2>&1"])
         print(clr(f"[+] Patch applied successfully! Output saved to: {file_path}", colour_two=green_bright))
 
     else:

@@ -289,12 +289,6 @@ def set_globals_one():
             },
             "category": True,
         },
-        "Browser Backup": {
-            "info": "",
-            "title": "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
-            "project": "dank.browser-backup",
-            "category": False,
-        },
         "World Exploration Game [red1][[red]BETA[red1]]": {
             "info": "",
             "title": "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
@@ -309,7 +303,7 @@ def set_globals_one():
         },
     }
 
-    offline_scripts = tuple(("dank.browser-backup", "dank.game", "mrpepe.sublime-patcher"))
+    offline_scripts = tuple(("dank.game", "mrpepe.sublime-patcher"))
 
 
 def set_globals_two():
@@ -400,6 +394,13 @@ def set_globals_two():
                     'rpc': _translate("🥷 patching discord using vencord")
                 },
 
+                'Steam Millennium': {
+                    'info': menu_request_responses["SteamClientHomebrew/Millennium"],
+                    'title': "𝚍𝚊𝚗𝚔.𝚜𝚝𝚎𝚊𝚖-𝚖𝚒𝚕𝚕𝚎𝚗𝚗𝚒𝚞𝚖",
+                    'project': "dank.millennium",
+                    'rpc': _translate("🥷 patching steam using millennium")
+                },
+
                 'NetLimiter Pro': {
                     'info': menu_request_responses["Baseult/NetLimiterCrack"],
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
@@ -439,13 +440,7 @@ def set_globals_two():
 
             },
 
-            _translate('Browser Backup'): {
-                'info': menu_request_responses["dank.browser-backup"],
-                'title': "𝚍𝚊𝚗𝚔.𝚋𝚛𝚘𝚠𝚜𝚎𝚛-𝚋𝚊𝚌𝚔𝚞𝚙",
-                'project': "dank.browser-backup",
-                'rpc': _translate("🔃 backing up a browser"),
-                'category': False
-            },
+
 
             _translate('World Exploration Game') + ' [red1][[red]BETA[red1]]': {
                 'info': menu_request_responses["dank.game"],
@@ -880,6 +875,8 @@ def dank_github_software(software):
             banner = "\n\n     __     _     __ _           _ _                   ___           \n  /\\ \\ \\___| |_  / /(_)_ __ ___ (_) |_ ___ _ __       / _ \\_ __ ___  \n /  \\/ / _ \\ __|/ / | | '_ ` _ \\| | __/ _ \\ '__|____ / /_)/ '__/ _ \\ \n/ /\\  /  __/ |_/ /__| | | | | | | | ||  __/ | |_____/ ___/| | | (_) |\n\\_\\ \\/ \\___|\\__\\____/_|_| |_| |_|_|\\__\\___|_|       \\/    |_|  \\___/ \n\n\n"
         case "vencord":
             banner = "\n\n                                                                         \n                                                                     _|  \n _|      _|    _|_|    _|_|_|      _|_|_|    _|_|    _|  _|_|    _|_|_|  \n _|      _|  _|_|_|_|  _|    _|  _|        _|    _|  _|_|      _|    _|  \n   _|  _|    _|        _|    _|  _|        _|    _|  _|        _|    _|  \n     _|        _|_|_|  _|    _|    _|_|_|    _|_|    _|          _|_|_|  \n\n\n"
+        case "millennium":
+            banner = "\n\n▄▄   ▄▄ ▄▄ ▄▄    ▄▄    ▄▄▄▄▄ ▄▄  ▄▄ ▄▄  ▄▄ ▄▄ ▄▄ ▄▄ ▄▄   ▄▄ \n██▀▄▀██ ██ ██    ██    ██▄▄  ███▄██ ███▄██ ██ ██ ██ ██▀▄▀██ \n██   ██ ██ ██▄▄▄ ██▄▄▄ ██▄▄▄ ██ ▀██ ██ ▀██ ██ ▀███▀ ██   ██ \n\n\n"
     cls()
     Console().print(Align.center(banner), style=("blink red" if not COMPATIBILITY_MODE else None), highlight=False)
 
@@ -910,6 +907,16 @@ def dank_github_software(software):
             asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
             browser_download_url = asset["browser_download_url"]
             version = browser_download_url.split("/")[-2]
+        case "millennium":
+            print(clr(f"\n  - {_translate('Credits to')} SteamClientHomebrew!"))
+            if os.path.isfile(r"C:\Program Files (x86)\Steam\steam.exe") or os.path.isfile(r"C:\Program Files\Steam\steam.exe"):
+                print(clr(f"\n  - {_translate('Steam found!')}"))
+            else:
+                print(clr(f"\n  - {_translate('Steam not found!')}\n\n  - {_translate('Downloading Steam...')}\n"))
+                os.system("winget install --accept-source-agreements --interactive --id Valve.Steam")
+                input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Steam...')} "))
+            browser_download_url = next(_ for _ in github_downloads("SteamClientHomebrew/Installer") if _.endswith("MillenniumInstaller-Windows.exe"))
+            version = browser_download_url.split("/")[-2]
 
     def get_patcher():
         match software:
@@ -937,6 +944,21 @@ def dank_github_software(software):
                         break
                     except Exception as exc:
                         input(clr(f"\n  > {_translate('Failed to save Vencord!')} {exc} | {_translate('Press [ ENTER ] to try again...')} ", 2))
+                        rm_line()
+                        rm_line()
+            case "millennium":
+                print(clr(f"\n  - {_translate('Downloading Millennium...')}"))
+                while True:
+                    try:
+                        with session.get(browser_download_url, headers=headers, timeout=60, stream=True) as response:
+                            response.raise_for_status()
+                            with open("millennium.exe", "wb") as file:
+                                for chunk in response.iter_content(chunk_size=8192):
+                                    file.write(chunk)
+                        print(clr(f"\n  - {_translate('Millennium downloaded and saved successfully!')}"))
+                        break
+                    except Exception as exc:
+                        input(clr(f"\n  > {_translate('Failed to download/save Millennium!')} {exc} | {_translate('Press [ ENTER ] to try again...')} "))
                         rm_line()
                         rm_line()
 
@@ -973,6 +995,22 @@ def dank_github_software(software):
                 get_patcher()
                 with open("vencord-version.txt", "w", encoding="utf-8") as file:
                     file.write(version)
+        case "millennium":
+            if os.path.isfile("millennium.exe") and os.path.isfile("millennium-version.txt"):
+                with open("millennium-version.txt", "r", encoding="utf-8") as file:
+                    _version = file.read()
+                if _version == version:
+                    print(clr(f"\n  - {_translate('Millennium is up-to-date!')}"))
+                else:
+                    print(clr(f"\n  - {_translate('Updating Millennium...')}"))
+                    get_patcher()
+                    with open("millennium-version.txt", "w", encoding="utf-8") as file:
+                        file.write(version)
+            else:
+                print(clr(f"\n  - {_translate('Downloading Millennium...')}"))
+                get_patcher()
+                with open("millennium-version.txt", "w", encoding="utf-8") as file:
+                    file.write(version)
 
     print(clr(f"\n  - {_translate('You may need to exclude the patcher from your antivirus for it to work!')}"))
     match software:
@@ -980,16 +1018,22 @@ def dank_github_software(software):
             input(clr(f"\n  > {_translate('Hit [ ENTER ] to start NetLimiter-Patcher...')} "))
         case "vencord":
             input(clr(f"\n  > {_translate('Hit [ ENTER ] to start Vencord...')} "))
+        case "millennium":
+            input(clr(f"\n  > {_translate('Hit [ ENTER ] to start Millennium...')} "))
     cls()
     if software == "vencord":
         print(clr(f"\n  - {_translate('Click Install')}"))
         print(clr(f"\n  - {_translate('Click Install OpenAsar')}"))
+    elif software == "millennium":
+        print(clr(f"\n  - {_translate('Follow the installer instructions')}"))
     print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
     match software:
         case "netlimiter":
             os.system("netlimiter-patcher.exe")
         case "vencord":
             os.system("vencord.exe")
+        case "millennium":
+            os.system("millennium.exe")
 
 
 def dank_winrar_patcher():
@@ -1210,7 +1254,6 @@ if __name__ == "__main__":
             "dank.minecraft-server-builder",
             "dank.minecraft-server-scanner",
             # "dank.auto-clicker",
-            "dank.browser-backup",
             "dank.game",
             "dank.winget",
             "mrpepe.sublime-patcher",
