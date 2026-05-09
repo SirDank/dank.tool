@@ -1,37 +1,43 @@
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor
+
+from dankware import align, clr, cls, magenta, title
 from playsound import playsound
-from win10toast import ToastNotifier
 from pynput.keyboard import Key, Listener
 from pynput.mouse import Button, Controller
-from concurrent.futures import ThreadPoolExecutor
-from dankware import align, clr, cls, title, magenta
+from win10toast import ToastNotifier
 
 # sounds
 
+
 def start():
     try:
-        playsound('start.mp3')
+        playsound("start.mp3")
     except Exception:
         pass
     if notifications:
-        toast.show_toast("dank.auto-clicker","✅ Started",duration = 3,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
+        toast.show_toast("dank.auto-clicker", "✅ Started", duration=3, icon_path=f"{os.path.dirname(__file__)}\\dankware.ico", threaded=False)
+
 
 def stop():
     try:
-        playsound('stop.mp3')
+        playsound("stop.mp3")
     except Exception:
         pass
     if notifications:
-        toast.show_toast("dank.auto-clicker","❌ Stopped",duration = 3,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
+        toast.show_toast("dank.auto-clicker", "❌ Stopped", duration=3, icon_path=f"{os.path.dirname(__file__)}\\dankware.ico", threaded=False)
+
 
 def terminate():
     try:
-        playsound('stop.mp3')
+        playsound("stop.mp3")
     except Exception:
         pass
 
+
 # main
+
 
 def notify(mode):
     if mode == 1:
@@ -40,6 +46,7 @@ def notify(mode):
         executor.submit(stop)
     elif mode == 3:
         executor.submit(terminate)
+
 
 def on_press(key):
     global running, paused
@@ -52,23 +59,24 @@ def on_press(key):
         running = False
         notify(3)
 
+
 def main():
 
     global delay, notifications, toast, start_key, stop_key, exit_key, running, paused, executor
 
-    banner ="\n\n                                                               \n   _         _             _               _ _     _           \n _| |___ ___| |_   ___ _ _| |_ ___ ___ ___| |_|___| |_ ___ ___ \n| . | .'|   | '_|_| .'| | |  _| . |___|  _| | |  _| '_| -_|  _|\n|___|__,|_|_|_,_|_|__,|___|_| |___|   |___|_|_|___|_,_|___|_|  \n                                                               \n"
+    banner = "\n\n                                                               \n   _         _             _               _ _     _           \n _| |___ ___| |_   ___ _ _| |_ ___ ___ ___| |_|___| |_ ___ ___ \n| . | .'|   | '_|_| .'| | |  _| . |___|  _| | |  _| '_| -_|  _|\n|___|__,|_|_|_,_|_|__,|___|_| |___|   |___|_|_|___|_,_|___|_|  \n                                                               \n"
 
-    os.chdir(os.path.dirname(__file__)) # exec(chdir("script"))
+    os.chdir(os.path.dirname(__file__))  # exec(chdir("script"))
     while True:
         try:
             cls()
-            print(align(clr(banner,4)))
+            print(align(clr(banner, 4)))
             delay = float(input(clr("\n  > Click Delay in Seconds: ") + magenta))
             break
         except Exception:
             pass
     notifications = input(clr("\n  > Disable Notifications? [y/n]: ") + magenta).lower()
-    if 'y' in notifications:
+    if "y" in notifications:
         notifications = False
     else:
         notifications = True
@@ -82,8 +90,8 @@ def main():
     running = True
     paused = True
 
-    print(clr(f"\n  > Controls: Start = {start_key} | Stop = {stop_key} | Exit = {exit_key}".replace("Key.","")))
-    toast.show_toast("dank.auto-clicker","😎 Online!",duration = 5,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
+    print(clr(f"\n  > Controls: Start = {start_key} | Stop = {stop_key} | Exit = {exit_key}".replace("Key.", "")))
+    toast.show_toast("dank.auto-clicker", "😎 Online!", duration=5, icon_path=f"{os.path.dirname(__file__)}\\dankware.ico", threaded=False)
 
     listener = Listener(on_press=on_press)
     listener.start()
@@ -96,7 +104,8 @@ def main():
     listener.stop()
 
     executor.shutdown()
-    toast.show_toast("dank.auto-clicker","😁 Goodbye!",duration = 5,icon_path = f"{os.path.dirname(__file__)}\\dankware.ico",threaded = False)
+    toast.show_toast("dank.auto-clicker", "😁 Goodbye!", duration=5, icon_path=f"{os.path.dirname(__file__)}\\dankware.ico", threaded=False)
+
 
 if __name__ == "__main__":
     title("𝚍𝚊𝚗𝚔.𝚊𝚞𝚝𝚘-𝚌𝚕𝚒𝚌𝚔𝚎𝚛")

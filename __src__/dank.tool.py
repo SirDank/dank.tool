@@ -1248,6 +1248,7 @@ if __name__ == "__main__":
             "SpotX-Official/SpotX",
             "spicetify/spicetify-cli",
             "massgravel/Microsoft-Activation-Scripts",
+            "SteamClientHomebrew/Millennium",
             "Baseult/NetLimiterCrack",
             "Vendicated/Vencord",
             "ltx0101/SlimBrave",
