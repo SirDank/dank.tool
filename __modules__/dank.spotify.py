@@ -1,16 +1,5 @@
 import os
 import subprocess
-
-# Inject standard System32 paths on Windows
-if os.name == "nt":
-    system32 = os.path.join(os.environ.get("SystemRoot", "C:\\Windows"), "System32")
-    powershell_dir = os.path.join(system32, "WindowsPowerShell", "v1.0")
-    paths = os.environ.get("PATH", "").split(os.pathsep)
-    for path_dir in (system32, powershell_dir, os.environ.get("SystemRoot", "C:\\Windows")):
-        if path_dir and path_dir not in paths:
-            paths.append(path_dir)
-    os.environ["PATH"] = os.pathsep.join(paths)
-
 import time
 from subprocess import CalledProcessError
 
@@ -20,52 +9,11 @@ from rich.console import Console
 from translatepy import Translator
 
 
-def resolve_cmd(cmd):
-    if os.name == 'nt':
-        if os.path.isabs(cmd) or not cmd.endswith(('.exe', '')):
-            return cmd
-        win_dir = os.environ.get('SystemRoot', 'C:\\Windows')
-        candidates = []
-        if cmd.lower() in ('taskkill', 'taskkill.exe'):
-            candidates = [os.path.join(win_dir, 'System32', 'taskkill.exe')]
-        elif cmd.lower() in ('powershell', 'powershell.exe'):
-            candidates = [os.path.join(win_dir, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe')]
-        elif cmd.lower() in ('runas', 'runas.exe'):
-            candidates = [os.path.join(win_dir, 'System32', 'runas.exe')]
-        for c in candidates:
-            if os.path.isfile(c):
-                return c
-    return cmd
-
 def run_command(command_list, check=True, capture=False, suppress_output=False):
-    if not command_list:
-        return
-        
-    command_list = list(command_list)
-    command_list[0] = resolve_cmd(command_list[0])
-    
-    # Check if we should bypass runas (e.g. if we are not admin)
-    if command_list[0].lower().endswith('runas.exe') or command_list[0] == 'runas':
-        is_admin = False
-        if os.name == 'nt':
-            import ctypes
-            try:
-                is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
-            except:
-                pass
-        
-        if not is_admin:
-            # Bypass runas and run the command payload directly
-            cmd_payload = command_list[-1]
-            if os.name == 'nt':
-                command_list = ["cmd.exe", "/c", cmd_payload]
-            else:
-                command_list = cmd_payload.split()
-            command_list[0] = resolve_cmd(command_list[0])
-
     try:
         stdout_pipe = subprocess.DEVNULL if suppress_output else None
         stderr_pipe = subprocess.DEVNULL if suppress_output else None
+        # Use capture_output=True only if capture=True to avoid potential memory issues with large output
         subprocess.run(
             command_list,
             check=check,
@@ -74,28 +22,8 @@ def run_command(command_list, check=True, capture=False, suppress_output=False):
             stderr=stderr_pipe,
             capture_output=capture,
         )
-    except (FileNotFoundError, PermissionError) as exc:
-        # Fallback if runas wrapper failed
-        if command_list[0].lower().endswith('runas.exe') or command_list[0] == 'runas':
-            cmd_payload = command_list[-1]
-            fallback_cmd = ["cmd.exe", "/c", cmd_payload] if os.name == 'nt' else cmd_payload.split()
-            fallback_cmd[0] = resolve_cmd(fallback_cmd[0])
-            try:
-                subprocess.run(
-                    fallback_cmd,
-                    check=check,
-                    text=True,
-                    stdout=stdout_pipe,
-                    stderr=stderr_pipe,
-                    capture_output=capture,
-                )
-                return
-            except Exception as fallback_exc:
-                raise fallback_exc
-        
-        if isinstance(exc, FileNotFoundError):
-            raise FileNotFoundError(f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH.") from exc
-        raise exc
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(f"Command not found: '{command_list[0]}'. Make sure it's in your system PATH.") from exc
 
 
 def translate(text):
