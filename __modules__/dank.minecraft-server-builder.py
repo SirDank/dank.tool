@@ -1,15 +1,20 @@
 import os
 import subprocess
 import time
-from random import randint
 
 import requests
+from requests.adapters import HTTPAdapter
 from dankware import blue, clr, cls, err, get_path, github_file_selector, green, multithread, red, rm_line, sys_open, title, white_bright
 from rich.align import Align
 from rich.console import Console
 from translatepy import Translator
 
 headers = {"User-Agent": ("dank.tool" if "DANK_TOOL_VERSION" not in os.environ else f"dank.tool {os.environ['DANK_TOOL_VERSION']}"), "Content-Type": "application/json"}
+
+session = requests.Session()
+adapter = HTTPAdapter(pool_connections=20, pool_maxsize=20)
+session.mount("http://", adapter)
+session.mount("https://", adapter)
 
 # banners
 
@@ -33,6 +38,10 @@ def print_read_me():
 def translate(text):
     if DANK_TOOL_LANG:
         try:
+            global translator
+            # Lazy initialize the Translator to avoid blocking the module at startup
+            if translator is None:
+                translator = Translator()
             text = translator.translate(text, DANK_TOOL_LANG, "en").result
         except:
             pass
@@ -49,7 +58,7 @@ def main_one():
         if DANK_TOOL_LANG == "en":
             DANK_TOOL_LANG = ""
         else:
-            translator = Translator()
+            translator = None
     except:
         DANK_TOOL_LANG = ""
 
@@ -63,14 +72,17 @@ def main_one():
         try:
             os.chdir(get_path("Documents"))
         except:
-            os.chdir("C:\\")
+            try:
+                os.chdir(os.path.expanduser("~"))
+            except:
+                pass
 
     # install java if not installed
 
     while True:
         try:
             latest_java_version = "21"
-            # latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
+            # latest_java_version = session.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
             input(clr(f"\n  > {translate('Failed to get latest java version!')} {exc} | {translate('Press [ ENTER ] to try again')}... ", 2))
@@ -85,7 +97,9 @@ def main_one():
             print_read_me()
             if input(clr(f"\n  - {translate('Java is not installed!')}\n\n  > {translate(f'Install Adoptium JRE {latest_java_version}?')} [ y / n ]: ") + red).lower() == "y":
                 print()
-                if os.system(f"winget install EclipseAdoptium.Temurin.{latest_java_version}.JRE"):
+                try:
+                    subprocess.run(["winget", "install", f"EclipseAdoptium.Temurin.{latest_java_version}.JRE"], check=True)
+                except (subprocess.CalledProcessError, FileNotFoundError):
                     print(clr(f"\n  - {translate('Winget is not installed! Please manually install it!')}"))
                     sys_open("https://adoptium.net/temurin/releases/?os=windows&package=jre")
                     input(clr(f"\n  > {translate('Press [ ENTER ] after installing')}... "))
@@ -96,7 +110,7 @@ def main_one():
 
     while True:
         try:
-            version_list = requests.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()["versions"][-4:]
+            version_list = session.get("https://api.purpurmc.org/v2/purpur", headers=headers, timeout=3).json()["versions"][-4:]
             print(clr(f"  - {translate('Latest Purpur Versions')}: {', '.join(version_list)}"))
             break
         except Exception as exc:
@@ -117,8 +131,8 @@ def main_one():
     used_motd_len = 10
     print("")
     while True:
-        name = input(clr(f"  > {translate('Server Name')}: ") + red)
-        if not len(name) > (max_motd_len - used_motd_len):
+        name = input(clr(f"  > {translate('Server Name')}: ") + red).strip()
+        if name and not len(name) > (max_motd_len - used_motd_len):
             break
         rm_line()
     motd_spaces = " " * int((max_motd_len - used_motd_len - len(name)) / 4)
@@ -231,7 +245,10 @@ def main_one():
                     toggle_all_to = not toggle_all_to
                     continue
                 choice = int(choice) - 1
-                download_settings[list(download_settings.keys())[choice]] = not download_settings[list(download_settings.keys())[choice]]
+                for i, key in enumerate(download_settings):
+                    if i == choice:
+                        download_settings[key] = not download_settings[key]
+                        break
 
     # begin preparing downloads
 
@@ -356,22 +373,37 @@ def main_one():
     def file_downloader(url, file_name):
         while True:
             try:
-                response = requests.get(url, headers=headers, timeout=30, allow_redirects=True)
+                response = session.get(url, headers=headers, timeout=30, allow_redirects=True, stream=True)
                 break
             except:
                 print(clr(f"  - {translate('Failed')} [ {file_name} ] Retrying...\n", 2))
-        data = response.content
-        if not str(data).startswith("<!DOCTYPE html>"):
+
+        # We need to read the content to check if it's a broken download (e.g. github returning HTML)
+        # However, because we are streaming, we read the first chunk to peek
+        chunk_iterator = response.iter_content(chunk_size=8192)
+        try:
+            first_chunk = next(chunk_iterator)
+        except StopIteration:
+            first_chunk = b""
+
+        if not first_chunk.startswith(b"<!DOCTYPE html>"):
             try:
-                size = "{:.3}".format(int(response.headers["Content-Length"]) / 1024000)
+                size = "{:.3}".format(int(response.headers.get("Content-Length", 0)) / 1024000) if response.headers.get("Content-Length") else "?"
             except:
                 size = "?"
-            with open(file_name, "wb") as file:
-                file.write(data)
-            print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
+
+            try:
+                with open(file_name, "wb") as file:
+                    file.write(first_chunk)
+                    for chunk in chunk_iterator:
+                        file.write(chunk)
+                print(clr(f"  - {translate('Downloaded')} [ {file_name} ] [ {size} MB ]\n"))
+            except OSError as exc:
+                print(clr(f"  - {translate('Failed to write')} [ {file_name} ]: {exc}\n", 2))
         else:
+            response.close()
             print(clr(f"  - {translate('BROKEN DOWNLOAD')} [ {file_name} ]\n", 2))
-            requests.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
+            session.post("https://dankware.alwaysdata.net/dank-tool-errors", headers=headers, timeout=3, data={"text": f"🚨 𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛\n\n[ BROKEN DOWNLOAD ]\n{url}\n{file_name}"})
 
     translated = translate("Do not use [ Ctrl + C ]!\n\n  > Press [ ENTER ] to start the multithreaded download process")
     print_read_me()
@@ -388,7 +420,7 @@ def main_one():
     else:
         dir_name = name
     os.makedirs(dir_name)
-    os.system(f'explorer.exe "{dir_name}"')
+    subprocess.Popen(["explorer.exe", dir_name])
     os.chdir(dir_name)
 
     # create folders
@@ -508,33 +540,33 @@ sudo apt install temurin-{latest_java_version}-jre
 
 with open("autoplug/logger.yml", "w", encoding="utf-8") as file:
     file.write("""
-logger: 
-  tasks: 
-    live-tasks: 
+logger:
+  tasks:
+    live-tasks:
       enable: true
 """)
 
 with open("autoplug/backup.yml", "w", encoding="utf-8") as file:
     file.write("""
-backup: 
+backup:
   enable: false
   cool-down: 1440
 """)
 
 with open("autoplug/general.yml", "w", encoding="utf-8") as file:
     file.write(f"""
-general: 
-  autoplug: 
+general:
+  autoplug:
     target-software: MINECRAFT_SERVER
     start-on-boot: false
-    system-tray: 
+    system-tray:
       enable: false
-  server: 
+  server:
     start-command: java -Xms256M -Xmx{ram}M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCLiveThresholdPercent=90 -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true --add-modules=jdk.incubator.vector -jar purpur.jar -nogui
   directory-cleaner:
     enabled: true
     max-days: 3
-    list: 
+    list:
       - true ./autoplug/logs
       - ./autoplug/downloads
 """)
@@ -544,177 +576,177 @@ general:
 
 with open("autoplug/updater.yml", "w", encoding="utf-8") as file:
     file.write(f"""
-updater: 
-  java-updater: 
+updater:
+  java-updater:
     enable: true
     profile: AUTOMATIC
     version: {latest_java_version}
-  server-updater: 
+  server-updater:
     enable: true
     profile: AUTOMATIC
     software: purpur
     version: {version}
-  plugins-updater: 
+  plugins-updater:
     enable: true
     profile: AUTOMATIC
-    web-database: 
+    web-database:
       enable: false
-  mods-updater: 
+  mods-updater:
     enable: false
     profile: AUTOMATIC
 """)
 
 with open("autoplug/plugins.yml", "w", encoding="utf-8") as file:
     file.write("""
-plugins: 
-  general: 
+plugins:
+  general:
     keep-removed: true
-  ActionHealth: 
+  ActionHealth:
     exclude: false
     spigot-id: 2661
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: zeshan321/ActionHealth
         asset-name: ActionHealth
-  ChestSort: 
+  ChestSort:
     spigot-id: 59773
-  Essentials: 
-    alternatives: 
-      #github: 
+  Essentials:
+    alternatives:
+      #github:
       #  repo-name: EssentialsX/Essentials
       #  asset-name: EssentialsX
-      jenkins: 
+      jenkins:
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsX
-  EssentialsChat: 
-    alternatives: 
-      #github: 
+  EssentialsChat:
+    alternatives:
+      #github:
       #  repo-name: EssentialsX/Essentials
       #  asset-name: EssentialsXChat
-      jenkins: 
+      jenkins:
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXChat
-  EssentialsSpawn: 
-    alternatives: 
-      #github: 
+  EssentialsSpawn:
+    alternatives:
+      #github:
       #  repo-name: EssentialsX/Essentials
       #  asset-name: EssentialsXSpawn
-      jenkins: 
+      jenkins:
         project-url: https://ci.ender.zone/job/EssentialsX/
         artifact-name: EssentialsXSpawn
-  Iris: 
+  Iris:
     #spigot-id: 84586
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: SirDank/Iris-AutoCompile
         asset-name: Iris
-  Adapt: 
+  Adapt:
     #spigot-id: 103790
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: SirDank/Adapt-AutoCompile
         asset-name: Adapt
-  Log4JExploitFix: 
+  Log4JExploitFix:
     exclude: false
     spigot-id: 98243
-  mcMMO: 
+  mcMMO:
     #spigot-id: 64348
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: MediumCraft/mcMMO
         asset-name: mcMMO
-  PlayerNPC: 
+  PlayerNPC:
     spigot-id: 93625
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: SergiFerry/PlayerNPC
         asset-name: PlayerNPC
-  playit-gg: 
+  playit-gg:
     spigot-id: 105566
-  SkinsRestorer: 
+  SkinsRestorer:
     spigot-id: 2124
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: SkinsRestorer/SkinsRestorerX
         asset-name: SkinsRestorer
-  ProtocolLib: 
+  ProtocolLib:
     spigot-id: 1997
-    alternatives: 
-      #github: 
+    alternatives:
+      #github:
       #  repo-name: dmulloy2/ProtocolLib
       #  asset-name: ProtocolLib
-      jenkins: 
+      jenkins:
         project-url: https://ci.dmulloy2.net/job/ProtocolLib
         artifact-name: ProtocolLib
-  NeoPerformance: 
+  NeoPerformance:
     spigot-id: 103183
-  BetterSleeping4: 
+  BetterSleeping4:
     spigot-id: 60837
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: Nuytemans-Dieter/BetterSleeping
         asset-name: BetterSleeping
-  TabTPS: 
+  TabTPS:
     spigot-id: 82528
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: jpenilla/TabTPS
         asset-name: tabtps-spigot
-  BloodEffect: 
+  BloodEffect:
     spigot-id: 90955
-  BloodFading: 
+  BloodFading:
     spigot-id: 99263
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: ventureoo/BloodFading
         asset-name: BloodFading
-  LevelledMobs: 
+  LevelledMobs:
     spigot-id: 74304
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: ArcanePlugins/LevelledMobs
         asset-name: LevelledMobs
-  PlayTime: 
+  PlayTime:
     spigot-id: 26016
-  ntdLuckyBlock: 
+  ntdLuckyBlock:
     spigot-id: 92026
   Multiverse-Core:
     spigot-id: 390
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: Multiverse/Multiverse-Core
         asset-name: multiverse-core
   ViaVersion:
     spigot-id: 19254
   ViaBackwards:
     spigot-id: 27448
-  DankChatroom: 
+  DankChatroom:
     spigot-id: 112398
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: SirDank/dank.chatroom-plugin
         asset-name: dankchatroom
-  VisualBukkit: 
+  VisualBukkit:
     exclude: false
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: OfficialDonut/VisualBukkit
         asset-name: VisualBukkitPlugin
-  FastAsyncWorldEdit: 
+  FastAsyncWorldEdit:
     spigot-id: 13932
-    alternatives: 
-      #github: 
+    alternatives:
+      #github:
       #  repo-name: IntellectualSites/FastAsyncWorldEdit
       #  asset-name: FastAsyncWorldEdit-Bukkit
-      jenkins: 
+      jenkins:
         project-url: https://ci.athion.net/job/FastAsyncWorldEdit/
         artifact-name: FastAsyncWorldEdit-Bukkit
   SmoothTimber:
     spigot-id: 39965
   EliteMobs:
     spigot-id: 40090
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: MagmaGuy/EliteMobs
         asset-name: EliteMobs
   WorldGuard:
@@ -722,8 +754,8 @@ plugins:
     bukkit-id: 31054
   FancyPhysics:
     spigot-id: 110500
-    alternatives: 
-      github: 
+    alternatives:
+      github:
         repo-name: max1mde/FancyPhysics
         asset-name: FancyPhysics
   SilkSpawners_v2:
@@ -735,7 +767,7 @@ plugins:
 
 # start server and shutdown server for optimizing the below settings and configuring
 
-resource_pack_sha1 = requests.get("https://raw.githubusercontent.com/SirDank/dank.resource-pack/main/sha1.txt", timeout=3).content.decode()
+resource_pack_sha1 = session.get("https://raw.githubusercontent.com/SirDank/dank.resource-pack/main/sha1.txt", timeout=3).content.decode()
 
 configs = {
     # server configs
@@ -862,7 +894,7 @@ def main_two():
   - quick_install_java.cmd / quick_install_java.sh : {translate("Script to install Temurin JRE")}
   - mc-anti-malware.cmd / mc-anti-malware.sh : {translate("Script to start mc-anti-malware")}
   - start_server.cmd / start_server.sh : {translate("Script to start your server")}
-  
+
   [ Autoplug Commands ]
   - ".check java" : {translate("Command to install Java VM")}
   - ".start" : {translate("Command to start the server")}
@@ -870,7 +902,7 @@ def main_two():
   - ".stop both" : {translate("Command to stop the server and Autoplug")}
   - ".check plugins" : {translate("Command to update configured plugins")}
   - ".help" : {translate("Command to display all available commands")}
-  
+
   """
 
     with open("readme.txt", "w", encoding="utf-8") as file:
@@ -883,8 +915,6 @@ def main_two():
         with open(path, "r", encoding="utf-8") as file:
             config_data = file.read()
         for setting in configs[path]:
-            # if setting in config_data:
-            #    config_data = config_data.replace(configs[path][setting], setting)
             config_data = config_data.replace(setting, configs[path][setting])
         with open(path, "w", encoding="utf-8") as file:
             file.write(config_data)
@@ -902,43 +932,20 @@ def main_two():
                 if choice == "skip":
                     break
 
-    string = f"""
-  - {translate("Follow these steps to enable custom world generation")}:
-
-  [1] {translate("Start the server again using the following command")}: .start
-  [2] {translate("After it has properly started, copy and paste the following command")}: iris create name=world-iris seed={randint(1, 9999999999)}
-  [3] {translate("Wait for it to complete then stop the server using the following command")}: .stop
-
-  > {translate("Press [ ENTER ] after you have followed the steps...")} """
-
-    # while not os.path.isdir("world-iris"):
-    #    print_read_me(); input(clr(string))
-
-    # shutil.move("world/datapacks", "world-iris/datapacks")
-    # shutil.rmtree("world")
-    # os.rename("world_nether", "world-iris_nether")
-    # os.rename("world_the_end", "world-iris_the_end")
-
-    # with open('server.properties', 'r', encoding='utf-8') as file:
-    #    data = file.read().replace("level-name=world", "level-name=world-iris")
-
-    # with open('server.properties', 'w', encoding='utf-8') as file:
-    #    file.write(data)
-
     if playit:
         string = f"""
   - {translate("It is extremely easy to setup the playit.gg plugin")}
-  
+
   - {translate("After server setup is complete, start your server.")}
-  
+
   - {translate("Click on the URL displayed on the console.")}
-  
+
   - {translate("Create an account and login if you haven't already to save the tunnel on playit.gg")}
-  
+
   - {translate('Click "Add Agent"')}
-  
+
   - {translate("A tunnel will be created and your server's public ip will be displayed: example.craft.playit.gg")}
-  
+
   > {translate("Press [ ENTER ] after you have read the message...")} """
 
         print_read_me()

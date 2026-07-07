@@ -41,6 +41,29 @@ WINDOWS = os.name == "nt" and "WINELOADER" not in os.environ
 if WINDOWS:
     from win11toast import notify
 
+if WINDOWS:
+    system32 = os.path.join(os.environ.get("SystemRoot", "C:\\Windows"), "System32")
+    powershell_dir = os.path.join(system32, "WindowsPowerShell", "v1.0")
+    paths = os.environ.get("PATH", "").split(os.pathsep)
+    for path_dir in (system32, powershell_dir, os.environ.get("SystemRoot", "C:\\Windows")):
+        if path_dir and path_dir not in paths:
+            paths.append(path_dir)
+    os.environ["PATH"] = os.pathsep.join(paths)
+
+
+def safe_mkdir(path):
+    if not os.path.isdir(path):
+        try:
+            os.makedirs(path, exist_ok=True)
+        except FileExistsError:
+            try:
+                os.remove(path)
+                os.makedirs(path, exist_ok=True)
+            except:
+                pass
+        except:
+            pass
+
 
 def set_title():
     title(f"𝚍𝚊𝚗𝚔.𝚝𝚘𝚘𝚕 {DANK_TOOL_VERSION}" + ("" if ONLINE_MODE else " [ 𝙾𝙵𝙵𝙻𝙸𝙽𝙴 ]"))  # DANK_TOOL_VERSION defined in executor.py
@@ -312,7 +335,7 @@ def set_globals_two():
     if ONLINE_MODE:
         global online_modules
 
-        stats = f" [ dank.tool runs: {menu_request_responses['danktool_runs']} | motm: {menu_request_responses['motm']} ]"
+        stats = f" [ dank.tool runs: {menu_request_responses.get('danktool_runs', '')} | motm: {menu_request_responses.get('motm', '')} ]"
 
         # fmt: off
 
@@ -321,14 +344,14 @@ def set_globals_two():
             _translate('Minecraft Tools'): {
 
                 _translate('Minecraft Server Builder'): {
-                    'info': menu_request_responses["dank.minecraft-server-builder"],
+                    'info': menu_request_responses.get("dank.minecraft-server-builder", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚋𝚞𝚒𝚕𝚍𝚎𝚛",
                     'project': "dank.minecraft-server-builder",
                     'rpc': _translate("⛏️ building a minecraft server")
                 },
 
                 _translate('Minecraft Server Scanner'): {
-                    'info': menu_request_responses["dank.minecraft-server-scanner"],
+                    'info': menu_request_responses.get("dank.minecraft-server-scanner", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚖𝚒𝚗𝚎𝚌𝚛𝚊𝚏𝚝-𝚜𝚎𝚛𝚟𝚎𝚛-𝚜𝚌𝚊𝚗𝚗𝚎𝚛",
                     'project': "dank.minecraft-server-scanner",
                     'rpc': _translate("🕵️ scanning for minecraft servers")
@@ -340,14 +363,14 @@ def set_globals_two():
             _translate('OS Tools'): {
 
                 _translate('Software Installer / Updater'): {
-                    'info': menu_request_responses["dank.winget"],
+                    'info': menu_request_responses.get("dank.winget", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗𝚐𝚎𝚝",
                     'project': "dank.winget",
                     'rpc': _translate("🔃 installing / updating software")
                 },
 
                 _translate('Windows / Office Activator'): {
-                    'info': menu_request_responses["massgravel/Microsoft-Activation-Scripts"],
+                    'info': menu_request_responses.get("massgravel/Microsoft-Activation-Scripts", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚠𝚒𝚗-𝚊𝚌𝚝𝚒𝚟𝚊𝚝𝚎",
                     'project': "dank.win-activate",
                     'rpc': _translate("✅ activating windows / office")
@@ -381,28 +404,28 @@ def set_globals_two():
             _translate('Software Patchers'): {
 
                 'Spotify': {
-                    'info': (f'{menu_request_responses["spicetify/spicetify-cli"]}, {menu_request_responses["SpotX-Official/SpotX"]}' if menu_request_responses["spicetify/spicetify-cli"] and menu_request_responses["SpotX-Official/SpotX"] else ""),
+                    'info': (f'{menu_request_responses.get("spicetify/spicetify-cli", "")}, {menu_request_responses.get("SpotX-Official/SpotX", "")}' if menu_request_responses.get("spicetify/spicetify-cli", "") and menu_request_responses.get("SpotX-Official/SpotX", "") else ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚙𝚘𝚝𝚒𝚏𝚢-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.spotify",
                     'rpc': _translate("🥷 patching spotify using spotx and spicetify")
                 },
 
                 'Vencord (Discord)': {
-                    'info': menu_request_responses["Vendicated/Vencord"],
+                    'info': menu_request_responses.get("Vendicated/Vencord", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚟𝚎𝚗𝚌𝚘𝚛𝚍-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.vencord",
                     'rpc': _translate("🥷 patching discord using vencord")
                 },
 
                 'Steam Millennium': {
-                    'info': menu_request_responses["SteamClientHomebrew/Millennium"],
+                    'info': menu_request_responses.get("SteamClientHomebrew/Millennium", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚜𝚝𝚎𝚊𝚖-𝚖𝚒𝚕𝚕𝚎𝚗𝚗𝚒𝚞𝚖",
                     'project': "dank.millennium",
                     'rpc': _translate("🥷 patching steam using millennium")
                 },
 
                 'NetLimiter Pro': {
-                    'info': menu_request_responses["Baseult/NetLimiterCrack"],
+                    'info': menu_request_responses.get("Baseult/NetLimiterCrack", ""),
                     'title': "𝚍𝚊𝚗𝚔.𝚗𝚎𝚝𝚕𝚒𝚖𝚒𝚝𝚎𝚛-𝚙𝚊𝚝𝚌𝚑𝚎𝚛",
                     'project': "dank.netlimiter",
                     'rpc': _translate("🥷 patching netlimiter pro")
@@ -423,14 +446,14 @@ def set_globals_two():
                 },
 
                 'Brave Debloater': {
-                    'info': menu_request_responses["ltx0101/SlimBrave"],
+                    'info': menu_request_responses.get("ltx0101/SlimBrave", ""),
                     'title': '𝚍𝚊𝚗𝚔.𝚜𝚕𝚒𝚖-𝚋𝚛𝚊𝚟𝚎',
                     'project': 'dank.slim-brave',
                     'rpc': _translate("🥷 patching brave browser")
                 },
 
                 'Sublime Text': {
-                    'info': menu_request_responses["mrpepe.sublime-patcher"],
+                    'info': menu_request_responses.get("mrpepe.sublime-patcher", ""),
                     'title': '𝚖𝚛𝚙𝚎𝚙𝚎.𝚜𝚞𝚋𝚕𝚒𝚖𝚎-𝚙𝚊𝚝𝚌𝚑𝚎𝚛',
                     'project': 'mrpepe.sublime-patcher',
                     'rpc': _translate("🥷 patching sublime text")
@@ -443,7 +466,7 @@ def set_globals_two():
 
 
             _translate('World Exploration Game') + ' [red1][[red]BETA[red1]]': {
-                'info': menu_request_responses["dank.game"],
+                'info': menu_request_responses.get("dank.game", ""),
                 'title': "𝚍𝚊𝚗𝚔.𝚐𝚊𝚖𝚎",
                 'project': "dank.game",
                 'rpc': _translate("🎮 playing a world exploration game"),
@@ -560,20 +583,20 @@ def dank_tool_get_runs() -> str:
 
 def dank_tool_settings():
     runs = dank_tool_get_runs()
-    runs_str = clr(f"\n  - Your runs: {runs} | Global runs: {menu_request_responses['danktool_runs'].replace(green_bright, '')}")
+    runs_str = clr(f"\n  - Your runs: {runs} | Global runs: {menu_request_responses.get('danktool_runs', '').replace(green_bright, '')}")
 
     if ONLINE_MODE:
         cls()
         print(clr("\n  - Gathering stats..."))
 
-        if "pantry" not in menu_request_responses or menu_request_responses["pantry"] == {}:
+        if "pantry" not in menu_request_responses or menu_request_responses.get("pantry") is None or menu_request_responses["pantry"] == {}:
             try:
                 menu_request_responses["pantry"] = _session.get("https://dankware.alwaysdata.net/pantry", headers=headers, timeout=3).json()
             except:
                 menu_request_responses["pantry"] = {}
-        continents = menu_request_responses["pantry"].get("top_continents", {})
-        countries = menu_request_responses["pantry"].get("top_countries", {})
-        total_runs = menu_request_responses["pantry"].get("total", "?")
+        continents = menu_request_responses.get("pantry", {}).get("top_continents", {})
+        countries = menu_request_responses.get("pantry", {}).get("top_countries", {})
+        total_runs = menu_request_responses.get("pantry", {}).get("total", "?")
 
         # build renderable strings
         if continents:
@@ -601,7 +624,7 @@ def dank_tool_settings():
 
         if ONLINE_MODE:
             if continents and countries:
-                print(clr(f"\n  - Your runs: {runs} | Global recorded runs: {total_runs}/{menu_request_responses['danktool_runs'].replace(green_bright, '')} (since 10-Sept-25)\n"))
+                print(clr(f"\n  - Your runs: {runs} | Global recorded runs: {total_runs}/{menu_request_responses.get('danktool_runs', '').replace(green_bright, '')} (since 10-Sept-25)\n"))
                 console.print(Columns([left, right], expand=True), highlight=False)
             else:
                 print(runs_str)
@@ -863,7 +886,7 @@ def dank_clear_cache():
 def dank_github_software(software):
     # dir
 
-    path = os.path.join(os.environ["USERPROFILE"], "Downloads")
+    path = os.path.join(os.environ.get("USERPROFILE", os.path.expanduser("~")), "Downloads")
     if os.path.isdir(path):
         os.chdir(path)
     else:
@@ -889,13 +912,24 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('NetLimiter found!')}"))
             else:
                 print(clr(f"\n  - {_translate('NetLimiter not found!')}\n\n  - {_translate('Downloading NetLimiter...')}"))
-                url = "https://download.netlimiter.com" + session.get("https://www.netlimiter.com/download").content.decode().split("https://download.netlimiter.com", 1)[1].split('"', 1)[0]
-                data = session.get(url, headers=headers, timeout=60).content
-                with open("netlimiter.exe", "wb") as file:
-                    file.write(data)
-                os.system("netlimiter.exe")
-                input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
-            sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers).json()[0]["sha"]
+                try:
+                    url_part = session.get("https://www.netlimiter.com/download", timeout=10).content.decode().split("https://download.netlimiter.com", 1)[1].split('"', 1)[0]
+                    url = "https://download.netlimiter.com" + url_part
+                except Exception as exc:
+                    print(clr(f"\n  - {_translate('Failed to retrieve NetLimiter download link!')} {exc}", 2))
+                    url = "https://download.netlimiter.com/nl-releases/netlimiter5/netlimiter-5.3.15.exe"
+                try:
+                    data = session.get(url, headers=headers, timeout=60).content
+                    with open("netlimiter.exe", "wb") as file:
+                        file.write(data)
+                    os.system("netlimiter.exe")
+                    input(clr(f"\n  > {_translate('Press [ ENTER ] after installing NetLimiter...')} "))
+                except Exception as exc:
+                    print(clr(f"\n  - {_translate('Failed to download/install NetLimiter!')} {exc}", 2))
+            try:
+                sha = session.get("https://api.github.com/repos/Baseult/NetLimiterCrack/commits?path=NetLimiter%20Crack.exe&page=1&per_page=1", headers=headers, timeout=10).json()[0]["sha"]
+            except Exception:
+                sha = "unknown" 
         case "vencord":
             print(clr(f"\n  - {_translate('Credits to')} Vendicated!"))
             if os.path.isfile(f"C:\\Users\\{os.getlogin()}\\AppData\\Local\\Discord\\Update.exe"):
@@ -904,9 +938,18 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('Discord not found!')}\n\n  - {_translate('Downloading Discord...')}\n"))
                 os.system("winget install --accept-source-agreements --interactive --id Discord.Discord")
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Discord...')} "))
-            asset = [_ for _ in session.get("https://api.github.com/repos/Vencord/Installer/releases/latest").json()["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
-            browser_download_url = asset["browser_download_url"]
-            version = browser_download_url.split("/")[-2]
+            try:
+                response = session.get("https://api.github.com/repos/Vencord/Installer/releases/latest", timeout=10).json()
+                if "assets" in response:
+                    asset = [_ for _ in response["assets"] if _["browser_download_url"].endswith("VencordInstaller.exe")][0]
+                    browser_download_url = asset["browser_download_url"]
+                    version = browser_download_url.split("/")[-2]
+                else:
+                    raise KeyError("assets key missing")
+            except Exception as exc:
+                print(clr(f"\n  - {_translate('Failed to get Vencord release info from GitHub!')} {exc}", 2))
+                browser_download_url = "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
+                version = "latest" 
         case "millennium":
             print(clr(f"\n  - {_translate('Credits to')} SteamClientHomebrew!"))
             if os.path.isfile(r"C:\Program Files (x86)\Steam\steam.exe") or os.path.isfile(r"C:\Program Files\Steam\steam.exe"):
@@ -915,8 +958,13 @@ def dank_github_software(software):
                 print(clr(f"\n  - {_translate('Steam not found!')}\n\n  - {_translate('Downloading Steam...')}\n"))
                 os.system("winget install --accept-source-agreements --interactive --id Valve.Steam")
                 input(clr(f"\n  > {_translate('Press [ ENTER ] after installing Steam...')} "))
-            browser_download_url = next(_ for _ in github_downloads("SteamClientHomebrew/Installer") if _.endswith("MillenniumInstaller-Windows.exe"))
-            version = browser_download_url.split("/")[-2]
+            try:
+                browser_download_url = next(_ for _ in github_downloads("SteamClientHomebrew/Installer") if _.endswith("MillenniumInstaller-Windows.exe"))
+                version = browser_download_url.split("/")[-2]
+            except Exception as exc:
+                print(clr(f"\n  - {_translate('Failed to get Millennium release info from GitHub!')} {exc}", 2))
+                browser_download_url = "https://github.com/SteamClientHomebrew/Installer/releases/latest/download/MillenniumInstaller-Windows.exe"
+                version = "latest" 
 
     def get_patcher():
         match software:
@@ -971,14 +1019,22 @@ def dank_github_software(software):
                     print(clr(f"\n  - {_translate('NetLimiter-Patcher is up-to-date!')}"))
                 else:
                     print(clr(f"\n  - {_translate('Updating NetLimiter-Patcher...')}"))
+                    try:
+                        get_patcher()
+                        with open("netlimiter-patcher-sha.txt", "w", encoding="utf-8") as file:
+                            file.write(sha)
+                    except Exception as e:
+                        print(clr(f"\n  - {_translate('Failed to update NetLimiter-Patcher! Using existing version.')} {e}", 2))
+            else:
+                print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
+                try:
                     get_patcher()
                     with open("netlimiter-patcher-sha.txt", "w", encoding="utf-8") as file:
                         file.write(sha)
-            else:
-                print(clr(f"\n  - {_translate('Downloading NetLimiter-Patcher...')}"))
-                get_patcher()
-                with open("netlimiter-patcher-sha.txt", "w", encoding="utf-8") as file:
-                    file.write(sha)
+                except Exception as e:
+                    print(clr(f"\n  - {_translate('Failed to download NetLimiter-Patcher!')} {e}", 2))
+                    input(clr(f"\n  > {_translate('Press [ ENTER ] to return to the menu...')} "))
+                    return
         case "vencord":
             if os.path.isfile("vencord.exe") and os.path.isfile("vencord-version.txt"):
                 with open("vencord-version.txt", "r", encoding="utf-8") as file:
@@ -987,14 +1043,22 @@ def dank_github_software(software):
                     print(clr(f"\n  - {_translate('Vencord is up-to-date!')}"))
                 else:
                     print(clr(f"\n  - {_translate('Updating Vencord...')}"))
+                    try:
+                        get_patcher()
+                        with open("vencord-version.txt", "w", encoding="utf-8") as file:
+                            file.write(version)
+                    except Exception as e:
+                        print(clr(f"\n  - {_translate('Failed to update Vencord! Using existing version.')} {e}", 2))
+            else:
+                print(clr(f"\n  - {_translate('Downloading Vencord...')}"))
+                try:
                     get_patcher()
                     with open("vencord-version.txt", "w", encoding="utf-8") as file:
                         file.write(version)
-            else:
-                print(clr(f"\n  - {_translate('Downloading Vencord...')}"))
-                get_patcher()
-                with open("vencord-version.txt", "w", encoding="utf-8") as file:
-                    file.write(version)
+                except Exception as e:
+                    print(clr(f"\n  - {_translate('Failed to download Vencord!')} {e}", 2))
+                    input(clr(f"\n  > {_translate('Press [ ENTER ] to return to the menu...')} "))
+                    return
         case "millennium":
             if os.path.isfile("millennium.exe") and os.path.isfile("millennium-version.txt"):
                 with open("millennium-version.txt", "r", encoding="utf-8") as file:
@@ -1003,14 +1067,22 @@ def dank_github_software(software):
                     print(clr(f"\n  - {_translate('Millennium is up-to-date!')}"))
                 else:
                     print(clr(f"\n  - {_translate('Updating Millennium...')}"))
+                    try:
+                        get_patcher()
+                        with open("millennium-version.txt", "w", encoding="utf-8") as file:
+                            file.write(version)
+                    except Exception as e:
+                        print(clr(f"\n  - {_translate('Failed to update Millennium! Using existing version.')} {e}", 2))
+            else:
+                print(clr(f"\n  - {_translate('Downloading Millennium...')}"))
+                try:
                     get_patcher()
                     with open("millennium-version.txt", "w", encoding="utf-8") as file:
                         file.write(version)
-            else:
-                print(clr(f"\n  - {_translate('Downloading Millennium...')}"))
-                get_patcher()
-                with open("millennium-version.txt", "w", encoding="utf-8") as file:
-                    file.write(version)
+                except Exception as e:
+                    print(clr(f"\n  - {_translate('Failed to download Millennium!')} {e}", 2))
+                    input(clr(f"\n  > {_translate('Press [ ENTER ] to return to the menu...')} "))
+                    return
 
     print(clr(f"\n  - {_translate('You may need to exclude the patcher from your antivirus for it to work!')}"))
     match software:
@@ -1027,13 +1099,17 @@ def dank_github_software(software):
     elif software == "millennium":
         print(clr(f"\n  - {_translate('Follow the installer instructions')}"))
     print(clr(f"\n  - {_translate('Close the patcher to return to the menu...')}"))
-    match software:
-        case "netlimiter":
-            os.system("netlimiter-patcher.exe")
-        case "vencord":
-            os.system("vencord.exe")
-        case "millennium":
-            os.system("millennium.exe")
+    try:
+        match software:
+            case "netlimiter":
+                os.system("netlimiter-patcher.exe")
+            case "vencord":
+                os.system("vencord.exe")
+            case "millennium":
+                os.system("millennium.exe")
+    except Exception as exc:
+        print(clr(f"\n  - {_translate('Failed to execute patcher!')} {exc}", 2))
+        input(clr(f"\n  > {_translate('Press [ ENTER ] to return to the menu...')} "))
 
 
 def dank_winrar_patcher():
@@ -1162,7 +1238,7 @@ if __name__ == "__main__":
         print(clr(f"\n  - {_translate('Downloading modules...')}"))
 
         if not os.path.isdir("__modules__"):
-            os.mkdir("__modules__")
+            safe_mkdir("__modules__")
 
         while True:
             try:
@@ -1176,17 +1252,20 @@ if __name__ == "__main__":
         # download assets
 
         if not os.path.isdir("ursina"):
-            os.mkdir("ursina")
+            safe_mkdir("ursina")
         if not os.path.isdir("__assets__"):
-            os.mkdir("__assets__")
+            safe_mkdir("__assets__")
         for _ in ("dank.winrar", "dank.revo-uninstaller"):
             if not os.path.isdir(f"__assets__/{_}"):
-                os.mkdir(f"__assets__/{_}")
+                safe_mkdir(f"__assets__/{_}")
         if not os.path.isfile("ursina/assets.json"):
             with open("ursina/assets.json", "w", encoding="utf-8") as _:
                 _.write("{}")
-        with open("ursina/assets.json", "r", encoding="utf-8") as _:
-            local_assets_json = json.loads(_.read())
+        try:
+            with open("ursina/assets.json", "r", encoding="utf-8") as _:
+                local_assets_json = json.loads(_.read())
+        except (json.JSONDecodeError, FileNotFoundError):
+            local_assets_json = {}
 
         while True:
             try:
@@ -1277,8 +1356,11 @@ if __name__ == "__main__":
                 _.write("{}")
             github_api = True
 
-        with open("github_api.json", "r", encoding="utf-8") as _:
-            github_api_json = json.loads(_.read())
+        try:
+            with open("github_api.json", "r", encoding="utf-8") as _:
+                github_api_json = json.loads(_.read())
+        except (json.JSONDecodeError, FileNotFoundError):
+            github_api_json = {}
         if "updated_on" not in github_api_json or github_api_json["updated_on"] < (datetime.datetime.now() - datetime.timedelta(hours=1)).strftime("%d-%m-%Y %H:%M"):
             github_api = True
 
@@ -1339,7 +1421,7 @@ if __name__ == "__main__":
         local_modules = {}
 
         if not os.path.isdir("__local_modules__"):
-            os.mkdir("__local_modules__")
+            safe_mkdir("__local_modules__")
 
         for module in os.listdir("__local_modules__"):
             if os.path.isfile(f"__local_modules__/{module}") and module.endswith(".py"):
