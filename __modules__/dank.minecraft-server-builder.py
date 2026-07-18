@@ -69,7 +69,7 @@ def main_one():
 
     while True:
         try:
-            latest_java_version = "21"
+            latest_java_version = "25"
             # latest_java_version = requests.get("https://api.adoptium.net/v3/info/available_releases", headers=headers, timeout=3).json()['most_recent_feature_release']
             break
         except Exception as exc:
