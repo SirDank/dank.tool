@@ -72,10 +72,6 @@
 
 - I do not take any donations, I want this tool to be free for everyone, but if you would like to support the growth of this tool, you can do so by talking about it / sharing it with your friends!
 
-## ♦️ Anonymous Suggestions ♦️
-
-- [Suggest new modules for the dank.tool!](https://dankware.alwaysdata.net/dank-tool-suggestions)
-
 <p>&nbsp;</p>
 
 ---  
@@ -295,7 +291,6 @@
 - this script is added on top of every script that I build into an executable with my (private) custom python executable builder. In short it performs the following:
   - saves `runs.txt` to `%LOCALAPPDATA%\\Dankware` ( saves the amount of times the executable has been run )
   - scans the temp folder for any dankware files ( from my portable software ) and deletes them if they are not running ( cleanup )
-  - sends a get request to [api-ninjas.com](https://api-ninjas.com/) to increase the online run counter by 1 ( this is displayed on the main menu as `dank.tool runs` )
   - once in every 10 runs it displays the dankware animation and plays the dankware.wav file ( checks `runs.txt` )
 
 ## ⭕ executor.py ⭕
