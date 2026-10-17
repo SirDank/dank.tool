@@ -83,15 +83,15 @@ def check(ip, server):
         except:
             server_info = "ipwho.is is unreachable"
 
-        # for https://dashboard.render.com/minecraft-java-servers
-        # for https://dashboard.render.com/minecraft-bedrock-servers
+        # for https://dankware.alwaysdata.net/minecraft/java-server-list
+        # for https://dankware.alwaysdata.net/minecraft/bedrock-server-list
         try:
             json = {"server_ip": ip, "city": "", "org": "", "domain": ""}
             if response["success"]:
                 json["city"] = response["city"]
                 json["org"] = response["connection"]["org"]
                 json["domain"] = response["connection"]["domain"]
-            executor.submit(requests.post, f"https://dankware.alwaysdata.net/minecraft-{server_type}-servers", headers={"User-Agent": "dank.tool"}, json=json)  # pylint: disable=used-before-assignment
+            executor.submit(requests.post, f"https://dankware.alwaysdata.net/minecraft/{server_type}-server-list", headers={"User-Agent": "dank.tool"}, json=json)  # pylint: disable=used-before-assignment
         except:
             pass
 
@@ -152,14 +152,14 @@ def main():
     console.print(Align.center(banner), style="blink red")
     print(
         clr(
-            f"\n  - Java Server List: https://dankware.alwaysdata.net/minecraft-java-servers\n\n  - Bedrock Server List: https://dankware.alwaysdata.net/minecraft-bedrock-servers\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"
+            f"\n  - Java Server List: https://dankware.alwaysdata.net/minecraft/java-server-list\n\n  - Bedrock Server List: https://dankware.alwaysdata.net/minecraft/bedrock-server-list\n\n  - {translate('You can use the above links to get a list of servers that have been found by the users of this tool!')}"
         )
     )
     match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
         case "1":
-            os.system("start https://dankware.alwaysdata.net/minecraft-java-servers")
+            os.system("start https://dankware.alwaysdata.net/minecraft/java-servers")
         case "2":
-            os.system("start https://dankware.alwaysdata.net/minecraft-bedrock-servers")
+            os.system("start https://dankware.alwaysdata.net/minecraft/bedrock-servers")
 
     cls()
     console.print(Align.center(banner), style="blink red")
