@@ -157,9 +157,9 @@ def main():
     )
     match input(clr("\n  - 1: Open Java Server List | 2: Open Bedrock Server List | ENTER: Skip\n\n  > Choice [1/2/ENTER]: ") + red):
         case "1":
-            os.system("start https://dankware.alwaysdata.net/minecraft/java-servers")
+            os.system("start https://dankware.alwaysdata.net/minecraft/java-server-list")
         case "2":
-            os.system("start https://dankware.alwaysdata.net/minecraft/bedrock-servers")
+            os.system("start https://dankware.alwaysdata.net/minecraft/bedrock-server-list")
 
     cls()
     console.print(Align.center(banner), style="blink red")
